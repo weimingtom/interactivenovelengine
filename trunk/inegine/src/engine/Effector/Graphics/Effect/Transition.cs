@@ -5,8 +5,9 @@ using System.Drawing;
 using SampleFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
+using INovelEngine.Core;
 
-namespace INovelEngine
+namespace INovelEngine.Effector
 {
     class Transition : IResource
     {

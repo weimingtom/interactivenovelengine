@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace INovelEngine
+namespace INovelEngine.Core
 {
     public class Clock
     {

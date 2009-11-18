@@ -7,7 +7,7 @@ using SampleFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
 
-namespace INovelEngine
+namespace INovelEngine.Effector
 {
     class ImageWindow : TextWindow
     {

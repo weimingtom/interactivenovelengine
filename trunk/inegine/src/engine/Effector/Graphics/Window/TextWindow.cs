@@ -5,8 +5,9 @@ using System.Text;
 using SampleFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
+using INovelEngine.Core;
 
-namespace INovelEngine
+namespace INovelEngine.Effector
 {
              
     public class TextWindow : WindowBase

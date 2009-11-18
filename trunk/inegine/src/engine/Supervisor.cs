@@ -3,7 +3,9 @@ using System.Drawing;
 using System.Windows.Forms;
 using SampleFramework;
 using SlimDX.Direct3D9;
-using LuaInterface;
+using INovelEngine.Core;
+using INovelEngine.StateManager;
+using INovelEngine.Script;
 
 namespace INovelEngine
 {
@@ -24,7 +26,6 @@ namespace INovelEngine
 
         //SpriteBase testSprite = new SpriteBase("testsprite.png", 100, 100, 0, false);
 
-        Lua lua = new Lua();
 
         public Device Device
         {
@@ -56,7 +57,13 @@ namespace INovelEngine
             Resources.Add(testSprite);
             */
 
-            
+
+            this.RegisterLuaGlue();
+            GameState teststate = new GameState("TestTest('hello world');");
+
+            Components.Add(teststate);
+            //Resources.Add(teststate);
+
             //GraphicsDeviceManager.ChangeDevice(DeviceVersion.Direct3D9, true, InitialWidth, InitialHeight);
 
             this.Window.FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -159,8 +166,9 @@ namespace INovelEngine
 
         protected override void Initialize()
         {
-            
             base.Initialize();
+            
+            
             //this.sprite = new Sprite(Device);
             //this.bgImg = Texture.FromFile(Device, "bg.png");
             //this.charImg = Texture.FromFile(Device, "testsprite.png");
@@ -177,6 +185,17 @@ namespace INovelEngine
         {
             //this.sprite.Dispose();
             base.UnloadContent();
+        }
+
+        protected void RegisterLuaGlue()
+        {
+            ScriptManager.lua.RegisterFunction("TestTest", this, this.GetType().GetMethod("TestTest"));         
+        }
+
+
+        public void TestTest(string s)
+        {
+            Console.WriteLine(">" + s);
         }
 
     }
