@@ -5,7 +5,7 @@ using System.Text;
 using SampleFramework;
 using SlimDX.Direct3D9;
 
-namespace INovelEngine
+namespace INovelEngine.Effector
 {
     public class WindowBase : IComparable, IResource, IGameComponent
     {

@@ -4,7 +4,7 @@ using System.Text;
 using System.Drawing;
 using SlimDX.Direct3D9;
 
-namespace INovelEngine
+namespace INovelEngine.Effector
 {
     public class TextRenderer
     {
