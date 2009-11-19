@@ -3,36 +3,33 @@ using System.Collections.Generic;
 using System.Text;
 using SampleFramework;
 using INovelEngine.Script;
+using INovelEngine.Effector;
 
 namespace INovelEngine.StateManager
 {
 
     // GameState class representing a game state. 
-
-
-    class GameState : IResource, IGameComponent
+    public class GameState : IResource, IGameComponent
     {
-        private String stateScript;
-
-        public GameState(String stateScript)
-        {
-            this.stateScript = stateScript;
-            ScriptManager.lua.DoString(stateScript);
-        }
-
+        public String id;
+        private ResourceCollection resources = new ResourceCollection();
+        private GameComponentCollection components = new GameComponentCollection();
 
         #region IResource Members
 
         void IResource.Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
+            resources.Initialize(graphicsDeviceManager);
         }
 
         void IResource.LoadContent()
         {
+            resources.LoadContent();
         }
 
         void IResource.UnloadContent()
         {
+            resources.UnloadContent();
         }
 
         #endregion
@@ -41,6 +38,7 @@ namespace INovelEngine.StateManager
 
         void IDisposable.Dispose()  
         {
+            resources.Dispose();
         }
 
         #endregion
@@ -49,12 +47,31 @@ namespace INovelEngine.StateManager
 
         public void Draw()
         {
+            foreach (IGameComponent component in components)
+            {
+                component.Draw();
+            }
         }
 
         public void Update(GameTime gameTime)
         {
+            foreach (IGameComponent component in components)
+            {
+                component.Update(gameTime);
+            }
         }
 
         #endregion
+
+        public void AddComponent(IGUIComponent component)
+        {
+            components.Add(component);
+            resources.Add(component);
+        }
+
+        //public void AddComponent()
+        //{
+        //    Console.WriteLine("hello world!");
+        //}
     }
 }

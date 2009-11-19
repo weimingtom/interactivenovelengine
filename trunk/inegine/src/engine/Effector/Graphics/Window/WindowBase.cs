@@ -7,7 +7,7 @@ using SlimDX.Direct3D9;
 
 namespace INovelEngine.Effector
 {
-    public class WindowBase : IComparable, IResource, IGameComponent
+    public class WindowBase : IComparable, IGUIComponent
     {
         public string id;
         public Color color;
@@ -23,9 +23,9 @@ namespace INovelEngine.Effector
         protected GraphicsDeviceManager manager;
         protected Sprite sprite;
 
-        public WindowBase(Color color, int alpha, int x, int y, int width, int height, int layer)
+        public WindowBase(int color, int alpha, int x, int y, int width, int height, int layer)
         {
-            this.color = color;
+            this.color = Color.FromArgb(color);
             this.alpha = alpha;
             this.x = x;
             this.y = y;
