@@ -19,7 +19,7 @@ namespace INovelEngine.Effector
         
         private Texture winParts;
 
-        public ImageWindow(Color color, int alpha, int x, int y, int width, int height, int layer, string text, int margin)
+        public ImageWindow(int color, int alpha, int x, int y, int width, int height, int layer, string text, int margin)
             : base(color, alpha, x, y, width, height, layer, text, margin)
         {
         }

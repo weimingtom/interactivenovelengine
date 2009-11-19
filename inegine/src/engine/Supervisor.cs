@@ -58,10 +58,20 @@ namespace INovelEngine
             */
 
 
-            this.RegisterLuaGlue();
-            GameState teststate = new GameState("TestTest('hello world');");
 
-            Components.Add(teststate);
+            ScriptManager.Init();
+            this.RegisterLuaGlue();
+
+
+
+            LoadState("Resources/Test.lua");
+            //LuaEventHandler test1 = ScriptManager.lua.GetFunction(typeof(LuaEventHandler), "Test") as LuaEventHandler;
+            ////ScriptManager.lua.DoString("Test();");
+            //Components.Add(CreateState("Resources/Test2.lua"));
+            //LuaEventHandler test2 = ScriptManager.lua.GetFunction(typeof(LuaEventHandler), "Test") as LuaEventHandler;
+            ////ScriptManager.lua.DoString("Test();");
+            //test1();
+            //test2();
             //Resources.Add(teststate);
 
             //GraphicsDeviceManager.ChangeDevice(DeviceVersion.Direct3D9, true, InitialWidth, InitialHeight);
@@ -189,12 +199,26 @@ namespace INovelEngine
 
         protected void RegisterLuaGlue()
         {
-            ScriptManager.lua.RegisterFunction("TestTest", this, this.GetType().GetMethod("TestTest"));         
+            ScriptManager.lua.RegisterFunction("TestTest", this, this.GetType().GetMethod("TestTest"));
+            ScriptManager.lua.RegisterFunction("AddState", this, this.GetType().GetMethod("Lua_AddState"));              
+        }
+
+        public void LoadState(String ScriptFile)
+        {
+            ScriptManager.lua.DoFile(ScriptFile);
         }
 
 
-        public void TestTest(string s)
+
+
+        public void Lua_AddState(GameState state)
         {
+            Components.Add(state);
+            Resources.Add(state);
+        }
+
+        public void TestTest(String s)
+        {  
             Console.WriteLine(">" + s);
         }
 

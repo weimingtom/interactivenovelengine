@@ -28,7 +28,7 @@ namespace INovelEngine.Effector
 
         Vector2[] lines = new Vector2[2];
 
-        public TextWindow(Color color, int alpha, int x, int y, int width, int height, int layer, string text, int margin)
+        public TextWindow(int color, int alpha, int x, int y, int width, int height, int layer, string text, int margin)
             : base(color, alpha, x, y, width, height, layer)
         {
             this.margin = margin;
