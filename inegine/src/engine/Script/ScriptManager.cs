@@ -2,10 +2,17 @@
 using System.Collections.Generic;
 using System.Text;
 using LuaInterface;
+using INovelEngine.StateManager;
 
 namespace INovelEngine.Script
 {
-    public delegate void LuaEventHandler();
+    public enum ScriptEvents
+    {
+        MouseClick,
+        KeyPress
+    }
+
+    public delegate void LuaEventHandler(GameState state, ScriptEvents luaevent, Object args);
 
     public static class ScriptManager
     {

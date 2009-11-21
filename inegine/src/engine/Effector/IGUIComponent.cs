@@ -7,5 +7,10 @@ namespace INovelEngine.Effector
 {
     public interface IGUIComponent : IResource, IGameComponent
     {
+        string id
+        {
+            get;
+            set;
+        }
     }
 }

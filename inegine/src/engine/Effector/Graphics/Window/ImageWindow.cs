@@ -250,7 +250,7 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void LoadContent()
         {
-            winParts = Texture.FromFile(manager.Direct3D9.Device, "win.png", 144, 16, 0, Usage.None, Format.A8R8G8B8, Pool.Default,
+            winParts = Texture.FromFile(manager.Direct3D9.Device, "Resources/win.png", 144, 16, 0, Usage.None, Format.A8R8G8B8, Pool.Default,
                                                       Filter.None, Filter.None, Color.FromArgb(255, 0, 255).ToArgb());
             base.LoadContent();
         }

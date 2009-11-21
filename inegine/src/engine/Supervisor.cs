@@ -6,6 +6,7 @@ using SlimDX.Direct3D9;
 using INovelEngine.Core;
 using INovelEngine.StateManager;
 using INovelEngine.Script;
+using System.Collections.Generic;
 
 namespace INovelEngine
 {
@@ -14,6 +15,8 @@ namespace INovelEngine
         const int InitialWidth = 800;
         const int InitialHeight = 600;
 
+        private GameState activeState;
+        Dictionary<String, GameState> states = new Dictionary<string, GameState>();
         //Texture bgImg;
         //Texture charImg;
         //Sprite sprite;
@@ -65,7 +68,9 @@ namespace INovelEngine
 
 
             LoadState("Resources/Test.lua");
-            //LuaEventHandler test1 = ScriptManager.lua.GetFunction(typeof(LuaEventHandler), "Test") as LuaEventHandler;
+            LoadState("Resources/Test2.lua");
+
+
             ////ScriptManager.lua.DoString("Test();");
             //Components.Add(CreateState("Resources/Test2.lua"));
             //LuaEventHandler test2 = ScriptManager.lua.GetFunction(typeof(LuaEventHandler), "Test") as LuaEventHandler;
@@ -95,7 +100,7 @@ namespace INovelEngine
             settings.DeviceVersion = DeviceVersion.Direct3D9;
             settings.Windowed = true;
 #if DEBUG
-            settings.EnableVSync = false;
+            settings.EnableVSync = true;
 #else
             settings.EnableVSync = true;
 #endif
@@ -116,6 +121,11 @@ namespace INovelEngine
 
         void Window_KeyDown(object sender, KeyEventArgs e)
         {
+            Console.WriteLine(e.KeyCode.ToString());
+            activeState.SendEvent(ScriptEvents.KeyPress, e.KeyValue);
+            
+            //eventhandler(ScriptEvents.KeyPress, e.KeyValue);
+            
             //// F1 toggles between full screen and windowed mode
             //// Escape quits the application
             //if (e.KeyCode == Keys.F1)
@@ -135,6 +145,12 @@ namespace INovelEngine
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            if (this.activeState != null)
+            {
+                this.activeState.Update(gameTime);
+            }
+
             Clock.Tick();
         }
 
@@ -159,7 +175,10 @@ namespace INovelEngine
 
             base.Draw(gameTime);
 
-
+            if (this.activeState != null)
+            {
+                this.activeState.Draw();
+            }
 
             //testSprite.Draw();
 
@@ -200,7 +219,8 @@ namespace INovelEngine
         protected void RegisterLuaGlue()
         {
             ScriptManager.lua.RegisterFunction("TestTest", this, this.GetType().GetMethod("TestTest"));
-            ScriptManager.lua.RegisterFunction("AddState", this, this.GetType().GetMethod("Lua_AddState"));              
+            ScriptManager.lua.RegisterFunction("AddState", this, this.GetType().GetMethod("Lua_AddState"));
+            ScriptManager.lua.RegisterFunction("SwitchState", this, this.GetType().GetMethod("Lua_SwitchState"));
         }
 
         public void LoadState(String ScriptFile)
@@ -208,13 +228,27 @@ namespace INovelEngine
             ScriptManager.lua.DoFile(ScriptFile);
         }
 
-
-
+        public void Lua_SwitchState(String id)
+        {
+            if (states.ContainsKey(id))
+            {
+                this.activeState = states[id];
+            }
+        }
 
         public void Lua_AddState(GameState state)
         {
-            Components.Add(state);
+            if (states.ContainsKey(state.id))
+            {
+            }
+            else
+            {
+                states.Add(state.id, state);
+            }
+
+            this.activeState = state;
             Resources.Add(state);
+            state.eventhandler = ScriptManager.lua.GetFunction(typeof(LuaEventHandler), "EventHandler") as LuaEventHandler;
         }
 
         public void TestTest(String s)

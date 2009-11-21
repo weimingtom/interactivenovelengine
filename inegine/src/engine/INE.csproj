@@ -98,7 +98,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Effector\Class1.cs" />
+    <Compile Include="Effector\IGUIComponent.cs" />
     <Compile Include="Effector\Graphics\Window\ImageWindow.cs" />
     <Compile Include="Script\ScriptManager.cs" />
     <Compile Include="StateManager\GameState.cs" />
@@ -143,12 +143,18 @@
     <Compile Include="Effector\Graphics\Window\WindowBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bg.png">
+    <Content Include="Resources\bg.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\testsprite.png" />
-    <Content Include="Resources\win.png" />
-    <Content Include="Resources\win2.png" />
+    <Content Include="Resources\testsprite.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\win.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\win2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

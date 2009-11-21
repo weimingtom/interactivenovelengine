@@ -14,6 +14,8 @@ namespace INovelEngine.StateManager
         public String id;
         private ResourceCollection resources = new ResourceCollection();
         private GameComponentCollection components = new GameComponentCollection();
+        public LuaEventHandler eventhandler;
+
 
         #region IResource Members
 
@@ -69,9 +71,9 @@ namespace INovelEngine.StateManager
             resources.Add(component);
         }
 
-        //public void AddComponent()
-        //{
-        //    Console.WriteLine("hello world!");
-        //}
+        public void SendEvent(ScriptEvents luaevent, Object args)
+        {
+            this.eventhandler(this, luaevent, args);
+        }
     }
 }
