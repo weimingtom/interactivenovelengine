@@ -9,9 +9,14 @@ using INovelEngine.Core;
 
 namespace INovelEngine.Effector
 {
-    public class SpriteBase : IComparable, IResource
+    public class SpriteBase : IComparable, IGUIComponent
     {
-        public string id;
+        public string id
+        {
+            get;
+            set;
+        }
+
         protected GraphicsDeviceManager manager;
         protected Sprite sprite;
         public Texture texture;
@@ -30,13 +35,13 @@ namespace INovelEngine.Effector
         private bool fadeIn;
         private bool inTransition;
 
-        public SpriteBase(string textureFile, int x, int y, int layer, Rectangle sourceArea, bool fadedOut)
+        public SpriteBase(string textureFile, int x, int y, int layer, int sourceX, int sourceY, int sourceWidth, int sourceHeight, bool fadedOut)
         {
             this.textureFile = textureFile;
             this.x = x;
             this.y = y;
             this.layer = layer;
-            this.sourceArea = sourceArea;
+            this.sourceArea = new Rectangle(sourceX, sourceY, sourceWidth, sourceHeight);//sourceArea;
             this.sourceAreaUsed = true;
             this.FadedOut = fadedOut;
         }
@@ -68,6 +73,8 @@ namespace INovelEngine.Effector
             return this.layer.CompareTo(t.layer);
         }
 
+        #region IGameComponent Members
+
         public void Draw()
         {
             if (FadedOut)
@@ -96,6 +103,12 @@ namespace INovelEngine.Effector
                 sprite.End();
             }
         }
+
+        public void Update(GameTime gameTime)
+        {
+        }
+
+        #endregion
 
         /// <summary>
         /// Initializes the resource.
@@ -144,6 +157,7 @@ namespace INovelEngine.Effector
             fadeIn = isFadeingIn;
             FadedOut = false;
         }
+
 
     }
 }

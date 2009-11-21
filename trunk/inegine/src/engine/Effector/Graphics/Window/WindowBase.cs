@@ -9,7 +9,12 @@ namespace INovelEngine.Effector
 {
     public class WindowBase : IComparable, IGUIComponent
     {
-        public string id;
+        public string id
+        {
+            get;
+            set;
+        }
+
         public Color color;
         public int alpha;
 
