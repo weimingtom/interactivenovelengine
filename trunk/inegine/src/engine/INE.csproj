@@ -6,7 +6,7 @@
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F1C6583A-8DAC-453B-AC68-FD2BDD0F4C6A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>INovelEngine</RootNamespace>
     <AssemblyName>INovelEngine</AssemblyName>
@@ -99,7 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Effector\IGUIComponent.cs" />
-    <Compile Include="Effector\Graphics\Window\ImageWindow.cs" />
+    <Compile Include="Effector\Graphics\Components\Window\ImageWindow.cs" />
     <Compile Include="Script\ScriptManager.cs" />
     <Compile Include="StateManager\GameState.cs" />
     <Compile Include="StateManager\StateManager.cs" />
@@ -135,14 +135,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Effector\Graphics\Sprite\SpriteBase.cs" />
+    <Compile Include="Effector\Graphics\Components\Sprite\SpriteBase.cs" />
     <Compile Include="Effector\Graphics\Text\TextRenderer.cs" />
-    <Compile Include="Effector\Graphics\Window\TextWindow.cs" />
+    <Compile Include="Effector\Graphics\Components\Window\TextWindow.cs" />
     <Compile Include="Core\TimeManager.cs" />
     <Compile Include="Effector\Graphics\Effect\Transition.cs" />
-    <Compile Include="Effector\Graphics\Window\WindowBase.cs" />
+    <Compile Include="Effector\Graphics\Components\Window\WindowBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="lib\lua51.dll" />
+    <Content Include="lib\LuaInterface.dll" />
+    <Content Include="lib\SampleFramework.dll" />
     <Content Include="Resources\bg.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

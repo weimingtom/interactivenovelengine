@@ -9,13 +9,18 @@ namespace INovelEngine.StateManager
 {
 
     // GameState class representing a game state. 
-    public class GameState : IResource, IGameComponent
+    public class GameState : AbstractLuaEventHandler, IResource, IGameComponent
     {
-        public String id;
-        private ResourceCollection resources = new ResourceCollection();
-        private GameComponentCollection components = new GameComponentCollection();
-        public LuaEventHandler eventhandler;
+        public string id
+        {
+            get;
+            set;
+        }
 
+        private ResourceCollection resources = new ResourceCollection();
+        private List<AbstractGUIComponent> components = new List<AbstractGUIComponent>();
+        public Dictionary<String, AbstractGUIComponent> guiComponents = 
+            new Dictionary<string, AbstractGUIComponent>();
 
         #region IResource Members
 
@@ -38,7 +43,7 @@ namespace INovelEngine.StateManager
 
         #region IDisposable Members
 
-        void IDisposable.Dispose()  
+        void IDisposable.Dispose()
         {
             resources.Dispose();
         }
@@ -64,16 +69,72 @@ namespace INovelEngine.StateManager
         }
 
         #endregion
-
-        public void AddComponent(IGUIComponent component)
+        
+        public void AddComponent(AbstractGUIComponent component)
         {
+            component.managingState = this;
+
             components.Add(component);
             resources.Add(component);
+            guiComponents.Add(component.id, component);
+
+            InvalidateZOrder();
         }
 
-        public void SendEvent(ScriptEvents luaevent, Object args)
+        public void InvalidateZOrder()
         {
-            this.eventhandler(this, luaevent, args);
+            components.Sort();
         }
+
+        private AbstractLuaEventHandler mouseDownLocked;
+
+        public override AbstractLuaEventHandler GetHandler(ScriptEvents luaevent, params object[] args)
+        {
+            AbstractLuaEventHandler handler = this;
+            switch (luaevent)
+            {
+                case ScriptEvents.KeyPress:
+                    handler = this;
+                    break;
+                case ScriptEvents.MouseMove:
+                    if (mouseDownLocked != null) handler = mouseDownLocked;
+                    else
+                    {
+                        handler = GetCollidingComponent((int)args[0], (int)args[1]);
+                        if (handler == null) handler = this;
+                    }
+                    break;
+                case ScriptEvents.MouseDown:
+                    handler = GetCollidingComponent((int)args[0], (int)args[1]);
+                    if (handler == null) handler = this;
+                    mouseDownLocked = handler;
+                    break;
+                case ScriptEvents.MouseUp:
+                    if (mouseDownLocked != null) handler = mouseDownLocked;
+                    break;
+                case ScriptEvents.MouseClick:
+                    handler = GetCollidingComponent((int)args[0], (int)args[1]);
+                    if (handler == null) handler = this;
+                    break;
+                default:
+                    handler = this;
+                    break;
+            }
+            return handler;
+        }
+
+        public AbstractGUIComponent GetCollidingComponent(int x, int y)
+        {
+            AbstractGUIComponent component;
+            for (int i = components.Count - 1; i >= 0; i--)
+            {
+                component = components[i];
+                if (component.x <= x && component.y <= y &&
+                    component.x + component.width >= x &&
+                    component.y + component.height >= y) return component;
+            }
+            return null;
+        }
+
     }
 }

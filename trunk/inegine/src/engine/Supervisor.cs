@@ -49,7 +49,11 @@ namespace INovelEngine
             
             Window.Text = "SlimDX - Test Project";
 
-            Window.KeyDown += Window_KeyDown;
+            Window.KeyDown += new KeyEventHandler(Window_KeyDown);
+            Window.MouseDown += new MouseEventHandler(Window_MouseDown);
+            Window.MouseUp += new MouseEventHandler(Window_MouseUp);
+            Window.MouseMove += new MouseEventHandler(Window_MouseMove);
+            Window.MouseClick += new MouseEventHandler(Window_MouseClick);
 
             // init device
             InitDevice();
@@ -67,7 +71,7 @@ namespace INovelEngine
 
 
 
-            LoadState("Resources/Test.lua");
+            //LoadState("Resources/Test.lua");
             LoadState("Resources/Test2.lua");
 
 
@@ -92,6 +96,8 @@ namespace INovelEngine
             
         }
 
+
+ 
         private void InitDevice()
         {
             DeviceSettings settings = new DeviceSettings();
@@ -119,28 +125,36 @@ namespace INovelEngine
             //testTransition.LaunchTransition(800, 600, 400, true, Color.White);
         }
 
+        #region Input Events
+
         void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            Console.WriteLine(e.KeyCode.ToString());
             activeState.SendEvent(ScriptEvents.KeyPress, e.KeyValue);
-            
-            //eventhandler(ScriptEvents.KeyPress, e.KeyValue);
-            
-            //// F1 toggles between full screen and windowed mode
-            //// Escape quits the application
-            //if (e.KeyCode == Keys.F1)
-            //    GraphicsDeviceManager.ToggleFullScreen();
-            //else if (e.KeyCode == Keys.Escape)
-            //    Exit();
-            //else if (e.KeyCode == Keys.Space)
-            //{
-            //    lua.DoString("Fade();");
-            //    //testWindow2.BeginNarrate("Test  試験（しけん)\n시험중입니다. Test  試験（しけん) 시험중입니다.", 50);
-            //    //testTransition.LaunchTransition(800, 600, 400, true, Color.White);
-            //    //testTransition.FadeOutIn(InitialWidth, InitialHeight, 3000, Color.White);
-            //    //testSprite.LaunchTransition(200, true, Color.White);
-            //}
         }
+
+        void Window_MouseDown(object sender, MouseEventArgs e)
+        {
+            activeState.SendEvent(ScriptEvents.MouseDown, e.X, e.Y);
+        }
+
+        void Window_MouseUp(object sender, MouseEventArgs e)
+        {
+            activeState.SendEvent(ScriptEvents.MouseUp, e.X, e.Y);
+        }
+
+        void Window_MouseMove(object sender, MouseEventArgs e)
+        {
+            activeState.SendEvent(ScriptEvents.MouseMove, e.X, e.Y);
+        }
+
+        void Window_MouseClick(object sender, MouseEventArgs e)
+        {
+            activeState.SendEvent(ScriptEvents.MouseClick, e.X, e.Y);
+        }
+
+
+        #endregion
+
 
         protected override void Update(GameTime gameTime)
         {
@@ -218,14 +232,27 @@ namespace INovelEngine
 
         protected void RegisterLuaGlue()
         {
-            ScriptManager.lua.RegisterFunction("TestTest", this, this.GetType().GetMethod("TestTest"));
+            ScriptManager.lua.RegisterFunction("Trace", this, this.GetType().GetMethod("Lua_Trace"));
             ScriptManager.lua.RegisterFunction("AddState", this, this.GetType().GetMethod("Lua_AddState"));
             ScriptManager.lua.RegisterFunction("SwitchState", this, this.GetType().GetMethod("Lua_SwitchState"));
+            ScriptManager.lua.RegisterFunction("LoadState", this, this.GetType().GetMethod("Lua_LoadState"));
         }
 
         public void LoadState(String ScriptFile)
         {
-            ScriptManager.lua.DoFile(ScriptFile);
+            try
+            {
+                ScriptManager.lua.DoFile(ScriptFile);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        public void Lua_LoadState(String ScriptFile)
+        {
+            LoadState(ScriptFile);
         }
 
         public void Lua_SwitchState(String id)
@@ -248,10 +275,9 @@ namespace INovelEngine
 
             this.activeState = state;
             Resources.Add(state);
-            state.eventhandler = ScriptManager.lua.GetFunction(typeof(LuaEventHandler), "EventHandler") as LuaEventHandler;
         }
 
-        public void TestTest(String s)
+        public void Lua_Trace(String s)
         {  
             Console.WriteLine(">" + s);
         }
