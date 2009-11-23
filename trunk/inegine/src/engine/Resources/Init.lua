@@ -4,6 +4,7 @@ GameState = luanet.import_type("INovelEngine.StateManager.GameState");
 TextWindow = luanet.import_type("INovelEngine.Effector.TextWindow");
 ImageWindow = luanet.import_type("INovelEngine.Effector.ImageWindow");
 SpriteBase = luanet.import_type("INovelEngine.Effector.SpriteBase");
+AnimatedSprite = luanet.import_type("INovelEngine.Effector.AnimatedSprite")
 ScriptEvents = luanet.import_type("INovelEngine.Script.ScriptEvents");
 
 function InitState(id)

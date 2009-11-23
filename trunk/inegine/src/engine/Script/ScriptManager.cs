@@ -12,7 +12,8 @@ namespace INovelEngine.Script
         MouseUp,
         MouseMove,
         MouseClick,
-        KeyPress
+        KeyPress,
+        AnimationOver
     }
 
     public class AbstractLuaEventHandler

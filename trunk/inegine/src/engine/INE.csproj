@@ -6,7 +6,7 @@
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F1C6583A-8DAC-453B-AC68-FD2BDD0F4C6A}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>INovelEngine</RootNamespace>
     <AssemblyName>INovelEngine</AssemblyName>
@@ -98,6 +98,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Effector\Graphics\Components\Sprite\AnimatedSprite.cs" />
     <Compile Include="Effector\IGUIComponent.cs" />
     <Compile Include="Effector\Graphics\Components\Window\ImageWindow.cs" />
     <Compile Include="Script\ScriptManager.cs" />
@@ -143,10 +144,16 @@
     <Compile Include="Effector\Graphics\Components\Window\WindowBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="lib\D3DX9_41.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="lib\lua51.dll" />
     <Content Include="lib\LuaInterface.dll" />
     <Content Include="lib\SampleFramework.dll" />
     <Content Include="Resources\bg.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\sprite.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\testsprite.png">

@@ -12,6 +12,7 @@ namespace INovelEngine.Effector
 
         static public void DrawText(Sprite sprite, SlimDX.Direct3D9.Font font, string text, int x, int y, int width, int height, Color color)
         {
+            
             //Rectangle rectangle = new Rectangle(x, y, width, height);
             rectangle.X = x;
             rectangle.Y = y;
