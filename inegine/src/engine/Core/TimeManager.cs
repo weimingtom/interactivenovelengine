@@ -12,15 +12,24 @@ namespace INovelEngine.Core
         static private float timeBetweenFrames;
         static private float timeOfLastTick = GetTime();
         static private int frameRate = 0;
+        static private int totalEvents = 0;
 
         static public float GetTime()
         {
             return System.Environment.TickCount;
         }
 
-        static public void AddTimeEvent(TimeEvent timeEvent)   
+        static public int AddTimeEvent(TimeEvent timeEvent)   
         {
+            timeEvent.timeID = totalEvents++;
             timeEventList.Add(timeEvent);
+            timeEventList.Sort();
+            return timeEvent.timeID;
+        }
+
+        static public void RemoveTimeEvent(TimeEvent timeEvent)
+        {
+            timeEventList.Remove(timeEvent);
             timeEventList.Sort();
         }
 
@@ -72,6 +81,7 @@ namespace INovelEngine.Core
                 t = timeEventList[i];
                 if (t.kill)
                 {
+                    t.call();
                     timeEventList.Remove(t);
                     currentListSize--;
                 }
@@ -89,6 +99,7 @@ namespace INovelEngine.Core
 
     public class TimeEvent : IComparable
     {
+        public int timeID;
         public float timeLeft;
         public float birthTime;
 
