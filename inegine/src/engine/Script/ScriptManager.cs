@@ -13,7 +13,8 @@ namespace INovelEngine.Script
         MouseMove,
         MouseClick,
         KeyPress,
-        AnimationOver
+        AnimationOver,
+        Update
     }
 
     public class AbstractLuaEventHandler
@@ -24,6 +25,8 @@ namespace INovelEngine.Script
         public LuaEventHandler mouseMoveEventHandler;
         public LuaEventHandler mouseClickEventHandler;
         public LuaEventHandler keyDownHandler;
+        public LuaEventHandler updateHandler;
+        public LuaEventHandler animationOverHandler;
 
         public object state;
 
@@ -48,6 +51,9 @@ namespace INovelEngine.Script
                         break;
                     case ScriptEvents.MouseClick:
                         if (handler.mouseClickEventHandler != null) handler.mouseClickEventHandler(handler, luaevent, args);
+                        break;
+                    case ScriptEvents.Update:
+                        if (handler.updateHandler != null) handler.updateHandler(handler, luaevent, args);
                         break;
                     default:
                         if (handler.eventHandler != null) handler.eventHandler(handler, luaevent, args);

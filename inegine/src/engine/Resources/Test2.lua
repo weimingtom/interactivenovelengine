@@ -51,6 +51,11 @@ if (state.fading == false) then
 end
 end
 
+function update(state, luaevent, args)
+--    Trace("update event!");
+end
+
+
 --start initiation
 InitState("test2");
 
@@ -59,6 +64,7 @@ state.mouseDownEventHandler = MouseDownHandler;
 state.mouseUpEventHandler = MouseUpHandler;
 state.mouseMoveEventHandler = mouseMove;
 state.keyDownHandler = KeyDownHandler;
+state.updateHandler = update;
 state.state = {"Hello", " ", "World"};
 
 sprite = SpriteBase("sprite1", "Resources/bg.png", 0, 0, 0, 0, 0, 800, 600,
@@ -113,7 +119,7 @@ function spriteclick(state, luaevent, args)
     if (state.inAnimation) then
         state:StopAnimation();
     else
-        state.animationOver = animationOver;
+        state.animationOverHandler = animationOver;
         startAnimation(state);
     end
     Trace("frame: " .. state.frame);
