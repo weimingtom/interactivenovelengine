@@ -20,3 +20,5 @@ end;
 function GetComponent(id)
     return state.guiComponents[id];
 end
+
+

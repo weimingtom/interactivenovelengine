@@ -68,11 +68,7 @@ namespace INovelEngine
 
             ScriptManager.Init();
             this.RegisterLuaGlue();
-
-
-
-            //LoadState("Resources/Test.lua");
-            LoadState("Resources/Test2.lua");
+            LoadState("Resources/start.lua");
 
 
             ////ScriptManager.lua.DoString("Test();");
@@ -129,27 +125,27 @@ namespace INovelEngine
 
         void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            activeState.SendEvent(ScriptEvents.KeyPress, e.KeyValue);
+            if (activeState != null) activeState.SendEvent(ScriptEvents.KeyPress, e.KeyValue);
         }
 
         void Window_MouseDown(object sender, MouseEventArgs e)
         {
-            activeState.SendEvent(ScriptEvents.MouseDown, e.X, e.Y);
+            if (activeState != null) activeState.SendEvent(ScriptEvents.MouseDown, e.X, e.Y);
         }
 
         void Window_MouseUp(object sender, MouseEventArgs e)
         {
-            activeState.SendEvent(ScriptEvents.MouseUp, e.X, e.Y);
+            if (activeState != null) activeState.SendEvent(ScriptEvents.MouseUp, e.X, e.Y);
         }
 
         void Window_MouseMove(object sender, MouseEventArgs e)
         {
-            activeState.SendEvent(ScriptEvents.MouseMove, e.X, e.Y);
+            if (activeState != null) activeState.SendEvent(ScriptEvents.MouseMove, e.X, e.Y);
         }
 
         void Window_MouseClick(object sender, MouseEventArgs e)
         {
-            activeState.SendEvent(ScriptEvents.MouseClick, e.X, e.Y);
+            if (activeState != null) activeState.SendEvent(ScriptEvents.MouseClick, e.X, e.Y);
         }
 
 
@@ -163,6 +159,7 @@ namespace INovelEngine
             if (this.activeState != null)
             {
                 this.activeState.Update(gameTime);
+                this.activeState.SendEvent(ScriptEvents.Update, Clock.GetTime());
             }
 
             Clock.Tick();
