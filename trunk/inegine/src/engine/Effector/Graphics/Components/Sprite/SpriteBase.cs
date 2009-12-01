@@ -83,7 +83,7 @@ namespace INovelEngine.Effector
                 //sprite.Draw(this.texture, new Vector3(), new Vector3(x, y, 0), Color.FromArgb((int)(progress * 255), Color.White));
                 sprite.End();
 
-                if (currentTick == endTick)
+                if (currentTick >= endTick)
                 {
                     inTransition = false;
                     if (fadeIn == false) FadedOut = true;
