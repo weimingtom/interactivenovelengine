@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using LuaInterface;
 
 namespace INovelEngine.Core
 {
@@ -81,7 +82,7 @@ namespace INovelEngine.Core
                 t = timeEventList[i];
                 if (t.kill)
                 {
-                    t.call();
+                    if (t.EndCall != null) t.EndCall();
                     timeEventList.Remove(t);
                     currentListSize--;
                 }
@@ -109,6 +110,16 @@ namespace INovelEngine.Core
 
         public delegate void Call();
         public Call call;
+        public Call EndCall;
+
+        public TimeEvent(int iterationNumber, float delay, Call c, Call e)
+        {
+            this.EndCall = new Call(e);
+            this.call = new Call(c);
+            this.birthTime = Clock.GetTime();
+            this.iterationsLeft = iterationNumber;
+            this.timeLeft = delay;
+        }
 
         public TimeEvent(int iterationNumber, float delay, Call c)
         {
@@ -131,7 +142,6 @@ namespace INovelEngine.Core
             TimeEvent t = (TimeEvent)rhs;
             return this.timeLeft.CompareTo(t.timeLeft);
         }
-
 
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using INovelEngine.Core;
 using INovelEngine.Script;
+using LuaInterface;
 
 namespace INovelEngine.Effector
 {
@@ -24,7 +25,7 @@ namespace INovelEngine.Effector
         protected int endFrame = 0;
         public bool inAnimation = false;
         protected TimeEvent updateEvent;
-
+        
         protected int _frame;
         public int frame
         {
@@ -70,23 +71,19 @@ namespace INovelEngine.Effector
 
         public void UpdateFrame()
         {
-            if (this.updateEvent.kill == false)
-            {
-                this.frame++;
-            }
-            else if (this.updateEvent.kill) // last update frame call
-            {
-                int eventID = updateEvent.timeID;
-                this.updateEvent = null;
-                this.inAnimation = false;
-                if (this.animationOverHandler != null)
-                {
-                    animationOverHandler(this, ScriptEvents.AnimationOver, eventID);
-                }
-            }
+            this.frame++;
         }
 
-        /* to do: add token id */
+        public void EndFrame()
+        {
+            int id = this.updateEvent.timeID;
+            this.updateEvent = null;
+            this.inAnimation = false;
+            if (this.animationOverHandler != null) 
+                this.animationOverHandler(this, ScriptEvents.AnimationOver, id);
+            
+        }
+ 
         public float BeginAnimation(int interval, int startFrame, int endFrame, bool loop)
         {
             if (this.updateEvent != null)
@@ -103,7 +100,7 @@ namespace INovelEngine.Effector
             }
             else
             {
-                this.updateEvent = new TimeEvent(endFrame - startFrame + 1, interval, UpdateFrame);
+                this.updateEvent = new TimeEvent(endFrame - startFrame + 1, interval, UpdateFrame, EndFrame);
             }
             int eventID = Clock.AddTimeEvent(this.updateEvent);
             inAnimation = true;

@@ -106,24 +106,44 @@ AddComponent(textwindow);
 function animationOver(state, luaevent, args)
     Trace("animation " .. args[0] .. " over");
     --state:BeginAnimation(100, 4, 7, false);
-    startAnimation(state);
+    --startAnimation(state);
+    coroutine.resume(co)
 end
 
-function startAnimation(state)
-    startTime = state:BeginAnimation(100, 0, 15, false);
+function startAnimation(sprite)
+    Trace "starting animation!"
+    startTime = sprite:BeginAnimation(100, 0, 15, false);
     Trace("animation " .. startTime .. " started");
 end
 
 function spriteclick(state, luaevent, args)
-    Trace("frame: " .. state.frame);
-    if (state.inAnimation) then
-        state:StopAnimation();
-    else
-        state.animationOverHandler = animationOver;
-        startAnimation(state);
-    end
-    Trace("frame: " .. state.frame);
+    --Trace("frame: " .. state.frame);
+    coroutine.resume(co)
+    --if (state.inAnimation) then
+    --    state:StopAnimation();
+    --else
+    --    state.animationOverHandler = animationOver;
+    --    startAnimation(state);
+    --end
+    --Trace("frame: " .. state.frame);
 end
+
+function foo(sprite)
+    Trace "first ani"
+    startAnimation(sprite);
+    coroutine.yield()
+    Trace "second ani"
+    startAnimation(sprite);
+    coroutine.yield()
+    Trace "third ani"
+    startAnimation(sprite);
+    coroutine.yield()
+    Trace "last ani"
+    startAnimation(sprite);
+end
+
+
+co = coroutine.create(assert(loadfile("Resources/co.lua")))
 
 animatedsprite = AnimatedSprite("sprite2", "Resources/sprite.png", 0, 0, 4, 
                             4, 4, 32, 48, false);
@@ -131,8 +151,11 @@ animatedsprite.mouseClickEventHandler = spriteclick;
 animatedsprite.mouseDownEventHandler = mouseDown;
 animatedsprite.mouseUpEventHandler = mouseUp;
 animatedsprite.mouseMoveEventHandler = mouseMove;
+animatedsprite.animationOverHandler = animationOver;
 animatedsprite.state = {}
 animatedsprite.state.locked = false;
 animatedsprite.state.prevx = 0;
 animatedsprite.state.prevy = 0;
 AddComponent(animatedsprite);
+
+

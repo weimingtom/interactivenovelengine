@@ -24,7 +24,7 @@ namespace INovelEngine.Effector
         private Color color;
         private GraphicsDeviceManager manager;
         
-        public void LaunchTransition(int width, int height, float duration, bool isFadeingIn, Color fadeColor)
+        public void LaunchTransition(int width, int height, float duration, bool isFadingIn, Color fadeColor)
         {
             linePath[0] = new Vector2(0, height / 2);
             linePath[1] = new Vector2(width, height / 2);
@@ -33,7 +33,7 @@ namespace INovelEngine.Effector
             tickLength = duration;
             endTick = beginTick + duration;
             inTransition = true;
-            fadeIn = isFadeingIn;
+            fadeIn = isFadingIn;
             fadedOut = false;
             color = fadeColor;
         }
@@ -70,8 +70,7 @@ namespace INovelEngine.Effector
                 line.Begin();
                 line.Draw(linePath, Color.FromArgb((int)(progress * 255), color));
                 line.End();
-
-                if (currentTick == endTick)
+                if (currentTick >= endTick)
                 {
                     inTransition = false;
                     if (!fadeIn) fadedOut = true;
