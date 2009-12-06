@@ -233,6 +233,7 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("AddState", this, this.GetType().GetMethod("Lua_AddState"));
             ScriptManager.lua.RegisterFunction("SwitchState", this, this.GetType().GetMethod("Lua_SwitchState"));
             ScriptManager.lua.RegisterFunction("LoadState", this, this.GetType().GetMethod("Lua_LoadState"));
+            ScriptManager.lua.RegisterFunction("LoadESS", this, this.GetType().GetMethod("Lua_LoadESS"));
         }
 
         public void LoadState(String ScriptFile)
@@ -277,6 +278,15 @@ namespace INovelEngine
         public void Lua_Trace(String s)
         {  
             Console.WriteLine(">" + s);
+        }
+
+        public string Lua_LoadESS(String path)
+        {
+            string result = ScriptManager.ParseESS(path);
+#if DEBUG
+            Console.WriteLine(result);
+#endif
+            return result;
         }
 
     }

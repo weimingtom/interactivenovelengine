@@ -101,6 +101,9 @@
     <Compile Include="Effector\Graphics\Components\Sprite\AnimatedSprite.cs" />
     <Compile Include="Effector\IGUIComponent.cs" />
     <Compile Include="Effector\Graphics\Components\Window\ImageWindow.cs" />
+    <Compile Include="Script\CodeGen.cs" />
+    <Compile Include="Script\Parser.cs" />
+    <Compile Include="Script\Scanner.cs" />
     <Compile Include="Script\ScriptManager.cs" />
     <Compile Include="StateManager\GameState.cs" />
     <Compile Include="StateManager\StateManager.cs" />
@@ -131,12 +134,16 @@
     <None Include="Resources\Init.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\test.ess">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Test2.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Test.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Script\ine.ATG" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -169,6 +176,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\win2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\딸방.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -207,4 +217,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PreBuildEvent>coco "$(ProjectDir)Script\ine.ATG" -frames "$(ProjectDir)Script" -o "$(ProjectDir)Script"</PreBuildEvent>
+  </PropertyGroup>
 </Project>

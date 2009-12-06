@@ -11,6 +11,11 @@ namespace INovelEngine.StateManager
     // GameState class representing a game state. 
     public class GameState : AbstractLuaEventHandler, IResource, IGameComponent
     {
+        public GameState()
+        {
+            this.handleMyself = true;
+        }
+
         public string id
         {
             get;
