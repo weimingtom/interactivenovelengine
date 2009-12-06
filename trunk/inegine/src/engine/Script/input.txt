@@ -1,0 +1,23 @@
+﻿PROGRAM
+#textout "teasease", 3.141592
+#textout "teasease", 3.141592
+#TEST "t\"es\"t", "test2"
+#TEST "t\"es\"t", "test2"
+#test "test",0xFF
+;comment!
+#test 314 ;comment!
+//comment!
+#test 315 //comment!
+/* comment */
+#test 316+(MUSUMEnum+4+2), 3.14 /*comment!*/
+label1:
+#TEST "test"
+#TEST "test"
+hahaha:
+하하[하]!##
+label2:
+하하하!
+#TEST "test"
+하하하!
+#TEST "test"
+label3:

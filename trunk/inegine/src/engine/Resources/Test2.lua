@@ -35,8 +35,7 @@ end;
 
 function mouseClick(state, luaevent, args)
     Trace(state.id .. " mouse click!")
-    state:BeginNarrate([[Hello world, test
-test test test3]], 100);
+    state:BeginNarrate("Hello world, test\ntest test test3", 100);
 end;
 
 function test(state, luaevent, args)
@@ -55,19 +54,16 @@ function update(state, luaevent, args)
 --    Trace("update event!");
 end
 
+function test(state, luaevent, args)
+	Trace("test!");
+end
+
 
 --start initiation
 InitState("test2");
-
-state.eventHandler = test;--EventHandler;
-state.mouseDownEventHandler = MouseDownHandler;
-state.mouseUpEventHandler = MouseUpHandler;
-state.mouseMoveEventHandler = mouseMove;
-state.keyDownHandler = KeyDownHandler;
-state.updateHandler = update;
 state.state = {"Hello", " ", "World"};
 
-sprite = SpriteBase("sprite1", "Resources/bg.png", 0, 0, 0, 0, 0, 800, 600,
+sprite = SpriteBase("sprite1", "Resources/딸방.png", 0, 0, 0, 0, 0, 800, 600,
                     false);
 sprite.mouseDownEventHandler = mouseDown;
 sprite.mouseUpEventHandler = mouseUp;
@@ -80,7 +76,7 @@ sprite.state.prevy = 0;
 AddComponent(sprite);
 
 imagewindow = ImageWindow("win2", 0x78FF0000, 155, 150, 120, 
-                         200, 50, 1, "테스트입니다...", 10)
+                         200, 50, 1, "테스트입니다...", 10);
 imagewindow.mouseDownEventHandler = mouseDown;
 imagewindow.mouseUpEventHandler = mouseUp;
 imagewindow.mouseMoveEventHandler = mouseMove;
@@ -107,13 +103,14 @@ function animationOver(state, luaevent, args)
     Trace("animation " .. args[0] .. " over");
     --state:BeginAnimation(100, 4, 7, false);
     --startAnimation(state);
-    coroutine.resume(co)
+    --coroutine.resume(co)
 end
 
 function startAnimation(sprite)
     Trace "starting animation!"
     startTime = sprite:BeginAnimation(100, 0, 15, false);
     Trace("animation " .. startTime .. " started");
+    coroutine.yield()
 end
 
 function spriteclick(state, luaevent, args)
@@ -143,7 +140,7 @@ function foo(sprite)
 end
 
 
-co = coroutine.create(assert(loadfile("Resources/co.lua")))
+co = coroutine.create(assert(loadstring(LoadESS("Resources/test.ess"))))
 
 animatedsprite = AnimatedSprite("sprite2", "Resources/sprite.png", 0, 0, 4, 
                             4, 4, 32, 48, false);

@@ -29,12 +29,27 @@ namespace INovelEngine.Script
         public LuaEventHandler animationOverHandler;
 
         public object state;
+        public Boolean handleMyself
+        { get; set; }
 
         public void SendEvent(ScriptEvents luaevent, params object[] args)
         {
             try
             {
                 AbstractLuaEventHandler handler = GetHandler(luaevent, args);
+                SendEvent(handler, luaevent, args);
+                if (handler != this && handleMyself) SendEvent(this, luaevent, args);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        public void SendEvent(AbstractLuaEventHandler handler, ScriptEvents luaevent, params object[] args)
+        {
+            try
+            {
                 switch (luaevent)
                 {
                     case ScriptEvents.KeyPress:
@@ -59,7 +74,7 @@ namespace INovelEngine.Script
                         if (handler.eventHandler != null) handler.eventHandler(handler, luaevent, args);
                         break;
                 }
- 
+
             }
             catch (Exception e)
             {
@@ -83,6 +98,15 @@ namespace INovelEngine.Script
         {
             lua = new Lua();
             lua.DoFile("Resources/Init.lua");
+        }
+
+        public static String ParseESS(String path)
+        {
+            Scanner scanner = new Scanner(path);
+            Parser parser = new Parser(scanner);
+            parser.gen = new CodeGenerator();
+            parser.Parse();
+            return parser.gen.GetScript();
         }
     }
 }
