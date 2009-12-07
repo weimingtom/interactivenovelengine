@@ -56,8 +56,30 @@ namespace INovelEngine.Script
 
         public void StringLit(string content)
         {
+            string temp;
+            int index = content.IndexOf('/');
+            Console.WriteLine(index);
+            if (index > -1)
+            {
+                while (index > -1)
+                {
+                    if (index > 0) temp = content.Substring(0, index);
+                    else temp = "";
+
+                    if (index <= content.Length - 1) content = content.Substring(index + 1);
+                    index = content.IndexOf('/');
+
+                    compiledScript.Append("TextOut(\"");
+                    compiledScript.Append(temp);
+                    compiledScript.Append("\\n\");\n");
+
+                    compiledScript.Append("Clear();\n");
+                }
+
+            }
+            compiledScript.Append("TextOut(\"");
             compiledScript.Append(content);
-            compiledScript.Append("\n");
+            compiledScript.Append("\\n\");\n");
         }
 
     }

@@ -28,7 +28,7 @@ TOKENS
       (litStringFirstChar | "\\#" | "\\\"" | "\\:") 
       { 
       (litStringChar | "\\\"" | "\\:")
-      } CONTEXT(newLine).
+      }.
   string = "\"" 
       (regularStringChar | "\\#" | "\\\"") 
       { 
@@ -38,22 +38,20 @@ TOKENS
   label = newLine letter { letter | digit } ":" CONTEXT(newLine).
   //number = digit {digit} |  ("0x" | "0X") hexDigit {hexDigit}.
 COMMENTS FROM "/*" TO "*/" NESTED
-COMMENTS FROM lf "/" TO lf
 COMMENTS FROM lf ";" TO lf
-COMMENTS FROM "/" TO lf
 COMMENTS FROM ";" TO lf
 IGNORE cr
 //IGNORE eol + cr + tab
-PRODUCTIONS
 
+PRODUCTIONS
 INESCRIPT
-=                                (. gen.StartScript(); .)
+= "PROGRAM"                               (. gen.StartScript(); .)
 Stat { Stat }                             (. gen.EndScript(); .).
 
 Stat                                 (. string val; .)
 = FunctionCall
 | Label<out val>                     (. gen.EndLabel(); gen.StartLabel(val); .)
-| Litstring<out val>                 (. gen.StringLit(">" + val.TrimStart('\n')); .)
+| Litstring<out val>                 (. gen.StringLit(val.TrimStart('\n')); .)
 | ANY.
 
 FunctionCall                         (. string name, val; .)

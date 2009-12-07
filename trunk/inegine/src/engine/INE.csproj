@@ -218,6 +218,6 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>coco "$(ProjectDir)Script\ine.ATG" -frames "$(ProjectDir)Script" -o "$(ProjectDir)Script"</PreBuildEvent>
+    <PreBuildEvent>"$(ProjectDir)Script\compileifnewer.bat" "$(ProjectDir)Script\ine.ATG" "$(ProjectDir)Script\.ine.ATG"</PreBuildEvent>
   </PropertyGroup>
 </Project>
