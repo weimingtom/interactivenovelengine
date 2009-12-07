@@ -44,9 +44,7 @@ namespace INovelEngine
         public Supervisor()
         {
             ClearColor = Color.White;
-
             Window.ClientSize = new Size(InitialWidth, InitialHeight);
-            
             Window.Text = "SlimDX - Test Project";
 
             Window.KeyDown += new KeyEventHandler(Window_KeyDown);

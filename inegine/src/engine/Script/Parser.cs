@@ -13,7 +13,7 @@ public class Parser {
 	public const int _string = 3;
 	public const int _numericstring = 4;
 	public const int _label = 5;
-	public const int maxT = 7;
+	public const int maxT = 8;
 
 	const bool T = true;
 	const bool x = false;
@@ -90,6 +90,7 @@ public enum Op { ADD, SUB, MUL, DIV, EQU, LSS, GTR, NEG };
 
 	
 	void INESCRIPT() {
+		Expect(6);
 		gen.StartScript(); 
 		Stat();
 		while (StartOf(1)) {
@@ -107,10 +108,10 @@ public enum Op { ADD, SUB, MUL, DIV, EQU, LSS, GTR, NEG };
 			gen.EndLabel(); gen.StartLabel(val); 
 		} else if (la.kind == 2) {
 			Litstring(out val);
-			gen.StringLit(">" + val.TrimStart('\n')); 
+			gen.StringLit(val.TrimStart('\n')); 
 		} else if (StartOf(2)) {
 			Get();
-		} else SynErr(8);
+		} else SynErr(9);
 	}
 
 	void FunctionCall() {
@@ -141,7 +142,7 @@ public enum Op { ADD, SUB, MUL, DIV, EQU, LSS, GTR, NEG };
 		ExprType type; 
 		Expr(out val, out type);
 		gen.Parameter(val, true, type); 
-		while (la.kind == 6) {
+		while (la.kind == 7) {
 			Get();
 			Expr(out val, out type);
 			gen.Parameter(val, false, type); 
@@ -156,7 +157,7 @@ public enum Op { ADD, SUB, MUL, DIV, EQU, LSS, GTR, NEG };
 		} else if (la.kind == 3) {
 			String(out val);
 			type = ExprType.String; 
-		} else SynErr(9);
+		} else SynErr(10);
 	}
 
 	void Number(out string val) {
@@ -181,9 +182,9 @@ public enum Op { ADD, SUB, MUL, DIV, EQU, LSS, GTR, NEG };
 	}
 	
 	static readonly bool[,] set = {
-		{T,x,x,x, x,x,x,x, x},
-		{x,T,T,T, T,T,T,T, x},
-		{x,x,x,T, T,x,T,T, x}
+		{T,x,x,x, x,x,x,x, x,x},
+		{x,T,T,T, T,T,T,T, T,x},
+		{x,x,x,T, T,x,T,T, T,x}
 
 	};
 } // end Parser
@@ -203,10 +204,11 @@ public class Errors {
 			case 3: s = "string expected"; break;
 			case 4: s = "numericstring expected"; break;
 			case 5: s = "label expected"; break;
-			case 6: s = "\",\" expected"; break;
-			case 7: s = "??? expected"; break;
-			case 8: s = "invalid Stat"; break;
-			case 9: s = "invalid Expr"; break;
+			case 6: s = "\"PROGRAM\" expected"; break;
+			case 7: s = "\",\" expected"; break;
+			case 8: s = "??? expected"; break;
+			case 9: s = "invalid Stat"; break;
+			case 10: s = "invalid Expr"; break;
 
 			default: s = "error " + n; break;
 		}

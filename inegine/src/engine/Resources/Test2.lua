@@ -11,6 +11,11 @@ function KeyDownHandler(state, luaevent, args)
     Trace(args[0]);
 end
 
+function cursorHandler(state, luaevent, args)
+	animatedsprite.x = args[0] + 1;
+	animatedsprite.y = args[1] + 1;
+end
+
 function mouseMove(state, luaevent, args)
     if state.state.locked == true then
         state.x = state.x + args[0] - state.state.prevx;
@@ -35,7 +40,9 @@ end;
 
 function mouseClick(state, luaevent, args)
     Trace(state.id .. " mouse click!")
-    state:BeginNarrate("Hello world, test\ntest test test3", 100);
+    Trace("advancing!");
+    state:AdvanceText();
+    --state:BeginNarrate("Hello world, test\ntest test test3", 100);
 end;
 
 function test(state, luaevent, args)
@@ -58,9 +65,27 @@ function test(state, luaevent, args)
 	Trace("test!");
 end
 
+function textOver(state, luaevent, args)
+	Trace("textout over!");
+	coroutine.resume(co);
+end
+
+function Clear()
+	textwindow:Clear();
+end
+
+function TextOut(value)
+	Trace(value);
+	if(textwindow:Print(value)) then
+		Trace("yielding!");
+		coroutine.yield();
+	end
+	Trace("yielding over!");
+end
 
 --start initiation
 InitState("test2");
+state.mouseMoveEventHandler = cursorHandler;
 state.state = {"Hello", " ", "World"};
 
 sprite = SpriteBase("sprite1", "Resources/딸방.png", 0, 0, 0, 0, 0, 800, 600,
@@ -75,29 +100,39 @@ sprite.state.prevx = 0;
 sprite.state.prevy = 0;
 AddComponent(sprite);
 
-imagewindow = ImageWindow("win2", 0x78FF0000, 155, 150, 120, 
-                         200, 50, 1, "테스트입니다...", 10);
-imagewindow.mouseDownEventHandler = mouseDown;
-imagewindow.mouseUpEventHandler = mouseUp;
-imagewindow.mouseMoveEventHandler = mouseMove;
-imagewindow.mouseClickEventHandler = mouseClick;
-imagewindow.state = {}
-imagewindow.state.locked = false;
-imagewindow.state.prevx = 0;
-imagewindow.state.prevy = 0;
-AddComponent(imagewindow);
 
-textwindow = TextWindow("win1", 0x780000FF, 155, 200, 200, 
-                        300, 250, 2, "", 10);
+--imagewindow = ImageWindow("win2", 0x78FF0000, 155, 150, 120, 
+--                         200, 50, 1, "테스트입니다...", 10);
+--imagewindow.mouseDownEventHandler = mouseDown;
+--imagewindow.mouseUpEventHandler = mouseUp;
+--imagewindow.mouseMoveEventHandler = mouseMove;
+--imagewindow.mouseClickEventHandler = mouseClick;
+--imagewindow.state = {}
+--imagewindow.state.locked = false;
+--imagewindow.state.prevx = 0;
+--imagewindow.state.prevy = 0;
+--AddComponent(imagewindow);
+
+
+--textwindow = TextWindow("win1", 0x780000FF, 155, 20, 370, 
+--                        760, 210, 2, "", 10);
+                        
+textwindow = ImageWindow("win2", 0x78FF0000, 155, 20, 370, 
+                          760, 210, 2, "", 10);
 textwindow.mouseDownEventHandler = mouseDown;
 textwindow.mouseUpEventHandler = mouseUp;
 textwindow.mouseMoveEventHandler = mouseMove;
 textwindow.mouseClickEventHandler = mouseClick;
+textwindow.printOverHandler = textOver;
 textwindow.state = {}
 textwindow.state.locked = false;
 textwindow.state.prevx = 0;
 textwindow.state.prevy = 0;
+textwindow:TurnOnNarration();
 AddComponent(textwindow);
+
+
+
 
 function animationOver(state, luaevent, args)
     Trace("animation " .. args[0] .. " over");
@@ -141,13 +176,14 @@ end
 
 
 co = coroutine.create(assert(loadstring(LoadESS("Resources/test.ess"))))
+coroutine.resume(co);
 
 animatedsprite = AnimatedSprite("sprite2", "Resources/sprite.png", 0, 0, 4, 
                             4, 4, 32, 48, false);
-animatedsprite.mouseClickEventHandler = spriteclick;
-animatedsprite.mouseDownEventHandler = mouseDown;
-animatedsprite.mouseUpEventHandler = mouseUp;
-animatedsprite.mouseMoveEventHandler = mouseMove;
+--animatedsprite.mouseClickEventHandler = spriteclick;
+--animatedsprite.mouseDownEventHandler = mouseDown;
+--animatedsprite.mouseUpEventHandler = mouseUp;
+--animatedsprite.mouseMoveEventHandler = mouseMove;
 animatedsprite.animationOverHandler = animationOver;
 animatedsprite.state = {}
 animatedsprite.state.locked = false;
