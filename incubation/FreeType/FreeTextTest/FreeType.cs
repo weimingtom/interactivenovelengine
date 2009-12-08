@@ -88,7 +88,7 @@ namespace FreeTypeWrap
 		public short			max_advance_height;
 		public short			underline_position;
 		public short			underline_tickness;
-		public System.IntPtr	glyphrec;
+        public FT_GlyphSlot glyphrec;
 		public System.IntPtr 	size;
 		public System.IntPtr    charmap;
 		public System.IntPtr	driver;
@@ -116,7 +116,7 @@ namespace FreeTypeWrap
 		[DllImport ("freetype.dll")]
 		public static extern void FT_Done_Face( System.IntPtr face );
 		[DllImport ("freetype.dll")]
-		public static extern int FT_Get_Char_Index( System.IntPtr face, char c); 
+		public static extern int FT_Get_Char_Index( System.IntPtr face, int c); 
 		[DllImport ("freetype.dll")]
 		public static extern int FT_Load_Glyph( System.IntPtr face,
 			int index,
@@ -169,11 +169,49 @@ namespace FreeTypeWrap
 		[DllImport ("freetype.dll")]
 		public static extern int FT_Get_Glyph( System.IntPtr glyphrec,
 			out System.IntPtr glyph );
+        [DllImport ("freetype.dll")]
+        public static extern int FT_Render_Glyph(FT_GlyphSlot glyph, FT_RENDER_MODES render_mode);
 		[DllImport ("freetype.dll")]
 		public static extern void FT_Glyph_To_Bitmap( out System.IntPtr glyph,
 			FT_RENDER_MODES render_mode,
 			int origin,
 			int destroy);
 	}
+
+    [StructLayout(LayoutKind.Sequential)]
+    public class FT_GlyphSlot
+    {
+        public System.IntPtr library;
+        public Face face;
+        public FT_GlyphSlot next;
+        public UInt32 reserved; /* retained for binary compatibility */
+        public Generic generic;
+
+        public System.IntPtr metrics;
+        public long linearHoriAdvance;
+        public long linearVertAdvance;
+        public System.IntPtr advance;
+
+        public int format;
+
+        public Bitmap bitmap;
+        public int bitmap_left;
+        public int bitmap_top;
+
+        public System.IntPtr outline;
+
+        public UInt32 num_subglyphs;
+        public System.IntPtr subglyphs;
+
+        public System.IntPtr control_data;
+        public long control_len;
+
+        public int lsb_delta;
+        public int rsb_delta;
+
+        public System.IntPtr other;
+
+        public System.IntPtr internalData;
+    } 
 
 }
