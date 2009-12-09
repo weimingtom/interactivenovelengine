@@ -48,7 +48,7 @@ namespace INovelEngine.Effector
         {
             try
             {
-                return new SlimDX.Direct3D9.Font(device, size, 0, weight, 1, italic, CharacterSet.Default,
+                return new SlimDX.Direct3D9.Font(device, size, 0, weight, 1, italic, CharacterSet.ShiftJIS,
                                                  Precision.Default, FontQuality.ClearType, PitchAndFamily.Default,
                                                  fontName);
             }
