@@ -147,7 +147,9 @@ namespace INovelEngine
 
 
             //dxfont.DrawString(sprite, "가나다\n라마바\n사가나\n다라마\n바사가\n나다라\n마바사\n가나다\n라마바\n사가나\n다라마\n바사", 0, 0, Color.White.ToArgb());
-            Vector2 lastpos = testtext.DrawString(sprite, "가나다\n라마바\n사가나\n다라마\n바사가\n나다라\n마바사\n가나다\n라마바\n사가나\n다라마\n바사", 0, 0);
+            
+            testtext.DrawString(sprite, "가나다\n라마바\n사가나\n다라마\n바사가\n나다라\n마바사\n가나다\n라마바사가나\n다라마바사", 0, 0);
+            Vector2 lastpos = testtext.LastPos;
             lastpos.Y = lastpos.Y - 32;
             sprite.Draw(this.cursor, new Vector3(0, 0, 0), new Vector3(lastpos, 0), Color.White);
 
@@ -177,7 +179,7 @@ namespace INovelEngine
             base.Initialize();
             testtext = new FreeFont(Device, "c:\\windows\\fonts\\gulim.ttc", 32);
             testtext.LineSpacing = 5;
-            testtext.WrapWidth = 300;
+            testtext.WrapWidth = 400;
             testtext.Color = Color.DimGray;
             this.sprite = new Sprite(Device);
             this.bgImg = Texture.FromFile(Device, "bg.png");

@@ -71,12 +71,22 @@ namespace INovelEngine.Effector.Graphics.Text
         public Boolean Wrap = true;
         private int _wrapWidth = 100;
 
+        private Vector2 _lastPos;
+        public Vector2 LastPos
+        {
+            get
+            {
+                return this._lastPos;
+            }
+        }
+
         public FreeFont(SlimDX.Direct3D9.Device device, string fontPath, int size)
         {
             this._device = device;
             this._fontPath = fontPath;
 
             this._size = Math.Min(Maxsize/2, size);
+            this._lastPos = new Vector2();
 
             _glyphCache = new Dictionary<char, Glyph>();
             _displayList = new List<Glyph>();
@@ -183,7 +193,7 @@ namespace INovelEngine.Effector.Graphics.Text
             }
         }
 
-        public Vector2 DrawString(Sprite sprite, String str, int x, int y)
+        public void DrawString(Sprite sprite, String str, int x, int y)
         {
             MeasureText(str);
 
@@ -211,18 +221,21 @@ namespace INovelEngine.Effector.Graphics.Text
                 }
             }
 
-            if (peny > this._wrapWidth)
+            if (penx > this._wrapWidth)
             {
                 penx = 0;
                 peny += this.LineSpacing + this._size;
             }
+
             if (_heightList.Count > 1)
             {
-                return new Vector2(penx, peny);
+                _lastPos.X = penx;
+                _lastPos.Y = peny;
             }
             else
             {
-                return new Vector2(penx, y);
+                _lastPos.X = penx;
+                _lastPos.Y = y;
             }
         }
 
