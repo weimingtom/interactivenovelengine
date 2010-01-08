@@ -64,8 +64,9 @@ namespace INovelEngine.Effector.Graphics.Text
 
         private string _prevString;
 
-        private List<int> _heightList;
-        private List<int> _widthList;
+        private readonly List<int> _heightList;
+        private readonly List<int> _widthList;
+        private Dictionary<int, string> _tokenList;
 
         public Color _color = Color.Black;
         public Boolean Wrap = true;
@@ -92,6 +93,8 @@ namespace INovelEngine.Effector.Graphics.Text
             _displayList = new List<Glyph>();
             _heightList = new List<int>();
             _widthList = new List<int>();
+            
+            _tokenList = new Dictionary<int, string>();
 
             int error;
 
@@ -103,23 +106,57 @@ namespace INovelEngine.Effector.Graphics.Text
         }
 
 
-        private void MeasureText(String str)
+        public void ProcessString(String str)
         {
             if (_prevString == null || _prevString != str)
             {
+#if DEBUG
+                Console.WriteLine(str);
+#endif
+
+                _prevString = str;
+
+                _tokenList.Clear();
+                // first pass: parse markup tags
+
+                int tagPosition = str.IndexOf('[');
+                int tagPositionEnd = str.IndexOf(']');
+                int interval = tagPositionEnd - tagPosition + 1;
+                
+
+                while (tagPosition > -1 && interval > 0)
+                {
+                    _tokenList.Add(tagPosition,str.Substring(tagPosition, interval));
+                    str = str.Remove(tagPosition, interval);
+                    tagPositionEnd -= interval;
+                    tagPosition = str.IndexOf('[', tagPositionEnd);
+                    tagPositionEnd = str.IndexOf(']', tagPosition + 1);
+                    interval = tagPositionEnd - tagPosition + 1;
+                }
+
+                foreach(int i in _tokenList.Keys)
+                {
+                    Console.WriteLine(i + ":" + _tokenList[i]);
+                }
+
+                // second pass: process width/height and get glyphs
+
                 _displayList.Clear();
                 _heightList.Clear();
                 _widthList.Clear();
 
                 Glyph currentGlyph;
+
                 int currentMaximum = this._size / 2;
-                int height = 0;
                 int penx = 0;
+                
                 Boolean wrapping = false;
                 Boolean afterWrapping = false;
 
                 for (int i = 0; i < str.Length; i++)
                 {
+                    int height = 0;
+
                     if (str[i] == '\n' || wrapping)
                     {
                         currentGlyph = new Glyph(Glyph.GlyphType.LineBreak);
@@ -189,14 +226,14 @@ namespace INovelEngine.Effector.Graphics.Text
                     _displayList.Add(currentGlyph);
                     
                 }
-                _prevString = str;
             }
         }
 
         public void DrawString(Sprite sprite, String str, int x, int y)
         {
-            MeasureText(str);
+            ProcessString(str);
 
+            // use _heightList, _widthList, and _displayList to render characters
             int breakCount = 0;
             int penx = 0;
             int peny = _heightList[0];
