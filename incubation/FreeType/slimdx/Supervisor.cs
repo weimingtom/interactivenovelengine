@@ -148,7 +148,7 @@ namespace INovelEngine
 
             //dxfont.DrawString(sprite, "가나다\n라마바\n사가나\n다라마\n바사가\n나다라\n마바사\n가나다\n라마바\n사가나\n다라마\n바사", 0, 0, Color.White.ToArgb());
             
-            testtext.DrawString(sprite, "가나다[라]마바[사아]자[차카타파]하", 0, 0);
+            testtext.DrawString(sprite, "[r]가[/r]나다[col=#444444]마바[/col]자[r=b]하[/r]", 0, 0);
             Vector2 lastpos = testtext.LastPos;
             lastpos.Y = lastpos.Y - 32;
             sprite.Draw(this.cursor, new Vector3(0, 0, 0), new Vector3(lastpos, 0), Color.White);

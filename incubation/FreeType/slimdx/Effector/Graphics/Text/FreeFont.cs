@@ -118,7 +118,6 @@ namespace INovelEngine.Effector.Graphics.Text
 
                 _tokenList.Clear();
                 // first pass: parse markup tags
-
                 int tagPosition = str.IndexOf('[');
                 int tagPositionEnd = str.IndexOf(']');
                 int interval = tagPositionEnd - tagPosition + 1;
@@ -128,8 +127,9 @@ namespace INovelEngine.Effector.Graphics.Text
                 {
                     _tokenList.Add(tagPosition,str.Substring(tagPosition, interval));
                     str = str.Remove(tagPosition, interval);
-                    tagPositionEnd -= interval;
+                    tagPositionEnd -= interval - 1;
                     tagPosition = str.IndexOf('[', tagPositionEnd);
+                    
                     tagPositionEnd = str.IndexOf(']', tagPosition + 1);
                     interval = tagPositionEnd - tagPosition + 1;
                 }
@@ -140,7 +140,6 @@ namespace INovelEngine.Effector.Graphics.Text
                 }
 
                 // second pass: process width/height and get glyphs
-
                 _displayList.Clear();
                 _heightList.Clear();
                 _widthList.Clear();
@@ -240,6 +239,39 @@ namespace INovelEngine.Effector.Graphics.Text
 
             for (int i = 0; i < _displayList.Count; i++)
             {
+                // process tag
+                if (_tokenList.ContainsKey(i))
+                {
+                    Console.WriteLine(i + ":" + _tokenList[i]);
+                    String token = _tokenList[i];
+                    if (token.Length > 2)
+                    {
+                        if (token[1] == '/') // ending tag
+                        {
+                            
+                        }
+                        else
+                        {
+                            int assignPos = token.IndexOf('=');
+                            if (assignPos > -1)
+                            {
+                                // assigning tag
+                                if (assignPos > 2 && token.Length > 5)
+                                {
+                                    String tag = token.Substring(1, assignPos - 1);
+                                    String value = token.Substring(assignPos + 1, token.Length - assignPos - 2);
+                                    Console.WriteLine(tag + "=" + value);
+                                }
+                            }
+                            else
+                            {
+                                // non-assigning tag
+                            }
+                        }
+                    }
+                }
+
+
                 switch (_displayList[i].Type)
                 {
                     case  Glyph.GlyphType.Space:
