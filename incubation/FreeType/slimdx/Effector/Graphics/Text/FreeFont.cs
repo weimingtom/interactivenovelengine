@@ -40,13 +40,72 @@ namespace INovelEngine.Effector.Graphics.Text
         }
     }
 
+    class Tag
+    {
+        public string Name;
+        public TagType Type;
+        public string Value;
+        public Boolean IsEnding = false;
+        
+        public enum TagType
+        {
+            Color, Ruby, Etc
+        };
+
+        public const string Color = "col";
+        public const string Ruby = "r";
+
+        public Tag(string token)
+        {
+            String name = "";
+            if (token[1] == '/') // ending tag
+            {
+                name = token.Substring(2, token.Length - 3);
+                this.IsEnding = true;
+            }
+            else
+            {
+                int assignPos = token.IndexOf('=');
+                if (assignPos > -1)
+                {
+                    // assigning tag
+                    if (assignPos > 1 && token.Length > 4)
+                    {
+                        name = token.Substring(1, assignPos - 1);
+                        this.Value = token.Substring(assignPos + 1, token.Length - assignPos - 2);
+                    }
+                }
+                else
+                {
+                    name = token.Substring(1, token.Length - 2);
+                    // non-assigning tag
+                }
+            }
+
+            switch(name)
+            {
+                case Color:
+                    this.Type = TagType.Color;
+                    break;
+                case Ruby:
+                    this.Type = TagType.Ruby;
+                    break;
+                default:
+                    this.Type = TagType.Etc;
+                    this.Name = name;
+                    break;
+            }
+
+        }
+        
+    }
 
     class FreeFont : IDisposable
     {
         private const int Maxsize = 128;
 
         private string _fontPath;
-        
+
         private readonly IntPtr _library;
         private readonly IntPtr _face;
 
@@ -63,14 +122,17 @@ namespace INovelEngine.Effector.Graphics.Text
         private readonly List<Glyph> _displayList;
 
         private string _prevString;
+        private Boolean _prevWrap;
+        private int _prevWrapWidth;
 
         private readonly List<int> _heightList;
         private readonly List<int> _widthList;
-        private Dictionary<int, string> _tokenList;
+        private Dictionary<int, Tag> _tagList;
 
         public Color _color = Color.Black;
-        public Boolean Wrap = true;
+        public Boolean Wrap = false;
         private int _wrapWidth = 100;
+        
 
         private Vector2 _lastPos;
         public Vector2 LastPos
@@ -86,15 +148,15 @@ namespace INovelEngine.Effector.Graphics.Text
             this._device = device;
             this._fontPath = fontPath;
 
-            this._size = Math.Min(Maxsize/2, size);
+            this._size = Math.Min(Maxsize / 2, size);
             this._lastPos = new Vector2();
 
             _glyphCache = new Dictionary<char, Glyph>();
             _displayList = new List<Glyph>();
             _heightList = new List<int>();
             _widthList = new List<int>();
-            
-            _tokenList = new Dictionary<int, string>();
+
+            _tagList = new Dictionary<int, Tag>();
 
             int error;
 
@@ -108,47 +170,54 @@ namespace INovelEngine.Effector.Graphics.Text
 
         public void ProcessString(String str)
         {
-            if (_prevString == null || _prevString != str)
+            if (_prevString == null || _prevString != str || _prevWrap != Wrap || (Wrap == true && _prevWrapWidth != WrapWidth))
             {
 #if DEBUG
-                Console.WriteLine(str);
+                //Console.WriteLine(str);
 #endif
-
                 _prevString = str;
+                _prevWrap = Wrap;
+                _prevWrapWidth = WrapWidth;
 
-                _tokenList.Clear();
                 // first pass: parse markup tags
+                Dictionary<int, Tag> temptagList = new Dictionary<int, Tag>();
+                
                 int tagPosition = str.IndexOf('[');
                 int tagPositionEnd = str.IndexOf(']');
                 int interval = tagPositionEnd - tagPosition + 1;
-                
+
 
                 while (tagPosition > -1 && interval > 0)
                 {
-                    _tokenList.Add(tagPosition,str.Substring(tagPosition, interval));
+                    String tag = str.Substring(tagPosition, interval);
+                    
+                    if (tag.Length > 2) // tag longer than "[]"
+                    {
+                        temptagList.Add(tagPosition, new Tag(tag));
+                    }
+
                     str = str.Remove(tagPosition, interval);
                     tagPositionEnd -= interval - 1;
                     tagPosition = str.IndexOf('[', tagPositionEnd);
-                    
+
                     tagPositionEnd = str.IndexOf(']', tagPosition + 1);
                     interval = tagPositionEnd - tagPosition + 1;
                 }
 
-                foreach(int i in _tokenList.Keys)
-                {
-                    Console.WriteLine(i + ":" + _tokenList[i]);
-                }
 
                 // second pass: process width/height and get glyphs
                 _displayList.Clear();
                 _heightList.Clear();
                 _widthList.Clear();
 
+                if (Wrap) _tagList.Clear();
+                else _tagList = temptagList;
+
                 Glyph currentGlyph;
 
                 int currentMaximum = this._size / 2;
                 int penx = 0;
-                
+
                 Boolean wrapping = false;
                 Boolean afterWrapping = false;
 
@@ -160,16 +229,16 @@ namespace INovelEngine.Effector.Graphics.Text
                     {
                         currentGlyph = new Glyph(Glyph.GlyphType.LineBreak);
                         height = currentGlyph.Slot.bitmap_top + currentGlyph.Box.yMax;
-                        height = this._size / 2;
+                        height = this._size/2;
 
                         // break line
                         _heightList.Add(currentMaximum);
                         _widthList.Add(penx);
 
-                        currentMaximum = this._size / 2;
+                        currentMaximum = this._size/2;
                         penx = 0;
 
-                        if(wrapping)
+                        if (wrapping)
                         {
                             wrapping = false;
                             afterWrapping = true;
@@ -178,11 +247,11 @@ namespace INovelEngine.Effector.Graphics.Text
                     }
                     else if (str[i] == ' ') // white space
                     {
-                        if (afterWrapping && this.WrapWidth < this._size / 2)
+                        if (afterWrapping && this.WrapWidth < this._size/2)
                         {
                             afterWrapping = false;
                         }
-                        else if (this.Wrap && penx + this._size / 2 > this._wrapWidth)
+                        else if (this.Wrap && penx + this._size/2 > this._wrapWidth)
                         {
                             wrapping = true;
                             i--;
@@ -190,20 +259,20 @@ namespace INovelEngine.Effector.Graphics.Text
                         }
 
                         currentGlyph = new Glyph(Glyph.GlyphType.Space);
-                        height = this._size / 2;
-                        
+                        height = this._size/2;
+
                         _widthList.Add(penx);
-                        penx += this._size / 2;
+                        penx += this._size/2;
                     }
                     else
                     {
                         currentGlyph = GetChar(str[i]);
 
-                        if (afterWrapping && this.WrapWidth < currentGlyph.Slot.advance.x / 64)
+                        if (afterWrapping && this.WrapWidth < currentGlyph.Slot.advance.x/64)
                         {
                             afterWrapping = false;
                         }
-                        else if (this.Wrap && penx + currentGlyph.Slot.advance.x / 64 > this._wrapWidth)
+                        else if (this.Wrap && penx + currentGlyph.Slot.advance.x/64 > this._wrapWidth)
                         {
                             wrapping = true;
                             i--;
@@ -211,9 +280,9 @@ namespace INovelEngine.Effector.Graphics.Text
                         }
 
                         height = currentGlyph.Slot.bitmap_top + currentGlyph.Box.yMax;
-                        
+
                         _widthList.Add(penx + currentGlyph.Slot.bitmap_left);
-                        penx += currentGlyph.Slot.advance.x / 64;
+                        penx += currentGlyph.Slot.advance.x/64;
 
                         if (i == str.Length - 1)
                         {
@@ -223,7 +292,11 @@ namespace INovelEngine.Effector.Graphics.Text
 
                     if (currentMaximum < height) currentMaximum = height;
                     _displayList.Add(currentGlyph);
-                    
+
+                    if (Wrap && temptagList.ContainsKey(i))
+                    {
+                        _tagList.Add(_displayList.Count - 1, temptagList[i]);
+                    }
                 }
             }
         }
@@ -236,45 +309,75 @@ namespace INovelEngine.Effector.Graphics.Text
             int breakCount = 0;
             int penx = 0;
             int peny = _heightList[0];
+            
+            Stack<Color> colorStack = new Stack<Color>();
+            string rubyString = "";
+            int rubyX = penx;
+            int rubyY = peny;
 
             for (int i = 0; i < _displayList.Count; i++)
             {
-                // process tag
-                if (_tokenList.ContainsKey(i))
+                if (_tagList.ContainsKey(i))
                 {
-                    Console.WriteLine(i + ":" + _tokenList[i]);
-                    String token = _tokenList[i];
-                    if (token.Length > 2)
+                    Tag tag = _tagList[i];
+                    //Console.Write("<");
+                    //if (tag.IsEnding) Console.Write("/");
+                    
+                    switch(tag.Type)
                     {
-                        if (token[1] == '/') // ending tag
-                        {
-                            
-                        }
-                        else
-                        {
-                            int assignPos = token.IndexOf('=');
-                            if (assignPos > -1)
+                        case Tag.TagType.Color:
+                            //Console.Write("color");
+                            if (tag.IsEnding && colorStack.Count > 0) this._color = colorStack.Pop();
+                            else if(!tag.IsEnding)
                             {
-                                // assigning tag
-                                if (assignPos > 2 && token.Length > 5)
+                                colorStack.Push(this._color);
+                                try
                                 {
-                                    String tag = token.Substring(1, assignPos - 1);
-                                    String value = token.Substring(assignPos + 1, token.Length - assignPos - 2);
-                                    Console.WriteLine(tag + "=" + value);
+                                    if (tag.Value.Length == 7 && tag.Value[0] == '#')
+                                    {
+                                        // hex color value
+                                        String color = "FF" + tag.Value.Substring(1);
+                                        this._color = System.Drawing.Color.FromArgb(Convert.ToInt32(color, 16));
+                                    }
+                                } 
+                                catch(Exception e)
+                                {
+                                    colorStack.Pop();
+                                }
+                            }
+                            break;
+                        case Tag.TagType.Ruby:
+                            if (tag.IsEnding)
+                            {
+                                if (!String.IsNullOrEmpty(rubyString))
+                                {
+                                    Console.WriteLine(rubyString + "(" + rubyX + "," + rubyY + ")");
                                 }
                             }
                             else
                             {
-                                // non-assigning tag
+                                rubyString = tag.Value;
+                                rubyX = penx;
+                                rubyY = peny;
                             }
-                        }
+                            break;
+                        case Tag.TagType.Etc:
+                            //Console.Write(tag.Name);
+                            break;
+                        default:
+                            break;
                     }
+
+                    //if (!string.IsNullOrEmpty(tag.Value))
+                        //Console.Write("=" + tag.Value);
+                    
+                    //Console.WriteLine(">");
                 }
 
 
                 switch (_displayList[i].Type)
                 {
-                    case  Glyph.GlyphType.Space:
+                    case Glyph.GlyphType.Space:
                         penx += this._size / 2;
                         continue;
                     case Glyph.GlyphType.LineBreak:
@@ -284,13 +387,13 @@ namespace INovelEngine.Effector.Graphics.Text
                     default:
                         _pos.X = x + _widthList[i]; ;
                         _pos.Y = y + peny - _displayList[i].Slot.bitmap_top;
-                        penx += _displayList[i].Slot.advance.x/64;
+                        penx += _displayList[i].Slot.advance.x / 64;
                         sprite.Draw(_displayList[i].Texture, _center, _pos, this._color);
                         break;
                 }
             }
 
-            if (penx > this._wrapWidth)
+            if (this.Wrap && penx > this._wrapWidth)
             {
                 penx = 0;
                 peny += this.LineSpacing + this._size;
@@ -304,7 +407,7 @@ namespace INovelEngine.Effector.Graphics.Text
             else
             {
                 _lastPos.X = penx;
-                _lastPos.Y = y;
+                _lastPos.Y = this._size;
             }
         }
 
@@ -342,12 +445,12 @@ namespace INovelEngine.Effector.Graphics.Text
             if (error != 0) throw new Exception("load glyph error!");
 
             this._fslot = fslot;
-            
+
             Glyph g = new Glyph(Glyph.GlyphType.Default, index, fslot);
 
             RenderBitmap(g, 0, 0);
 
-            this._glyphCache.Add(c,g);
+            this._glyphCache.Add(c, g);
             return g;
         }
 
@@ -445,7 +548,8 @@ namespace INovelEngine.Effector.Graphics.Text
             }
             set
             {
-                this._wrapWidth = Math.Max(0, value);   
+                this._wrapWidth = Math.Max(0, value);
+                this.Wrap = true;
             }
         }
 
@@ -474,3 +578,4 @@ namespace INovelEngine.Effector.Graphics.Text
         #endregion
     }
 }
+
