@@ -15,7 +15,7 @@ namespace INovelEngine
         const int InitialWidth = 800;
         const int InitialHeight = 600;
 
-        private FreeFont testtext;
+        private RubyFont testtext;
 
         Texture bgImg;
         Texture cursor;
@@ -148,14 +148,14 @@ namespace INovelEngine
 
             //dxfont.DrawString(sprite, "가나다\n라마바\n사가나\n다라마\n바사가\n나다라\n마바사\n가나다\n라마바\n사가나\n다라마\n바사", 0, 0, Color.White.ToArgb());
             testtext.Wrap = false;
-            testtext.DrawString(sprite, "가나다[r=test]가[/r]나다[col=#FF0000]마[col=#00FF00]바[/col]자[/col]하[/col]자", 0, 0);
+            testtext.DrawString(sprite, "가나다[r=りよう]利用[/r]나다[col=#FF0000]마[col=#00FF00]바[/col]자[/col]하[/col]자", 0, 100);
             Vector2 lastpos = testtext.LastPos;
-            lastpos.Y = lastpos.Y - 32;
+            lastpos.Y = lastpos.Y - 32 + 100;
             sprite.Draw(this.cursor, new Vector3(0, 0, 0), new Vector3(lastpos, 0), Color.White);
 
 
             testtext.Wrap = true;
-            testtext.DrawString(sprite, "[r]가[/r]나다[col=#FF0000]마[col=#00FF00]바[/col]자[/col]하[/col]자", 0, 200);
+            //testtext.DrawString(sprite, "[r]가[/r]나다[col=#FF0000]마[col=#00FF00]바[/col]자[/col]하[/col]자", 0, 200);
             Vector2 lastpos2 = testtext.LastPos;
             lastpos2.Y = lastpos2.Y - 32 + 200;
             sprite.Draw(this.cursor, new Vector3(0, 0, 0), new Vector3(lastpos2, 0), Color.White);
@@ -184,12 +184,14 @@ namespace INovelEngine
         {
             
             base.Initialize();
-            testtext = new FreeFont(Device, "c:\\windows\\fonts\\gulim.ttc", 32)
+            testtext = new RubyFont(Device, "c:\\windows\\fonts\\gulim.ttc", 32, "c:\\windows\\fonts\\meiryob.ttc", 12)
                            {
                                LineSpacing = 5,
                                WrapWidth = 100,
-                               Color = Color.DimGray
+                               Color = Color.DimGray,
+                               RubyColor = Color.Gray
                            };
+             
             this.sprite = new Sprite(Device);
             this.bgImg = Texture.FromFile(Device, "bg.png");
             this.cursor = Texture.FromFile(Device, "cursor.png");
