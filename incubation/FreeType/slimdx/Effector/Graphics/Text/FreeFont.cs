@@ -131,22 +131,22 @@ namespace INovelEngine.Effector.Graphics.Text
         private Vector3 _pos = new Vector3();
 
         private readonly Dictionary<char, Glyph> _glyphCache;
-        private readonly List<Glyph> _displayList;
-        private readonly List<GlyphHolder> _glyphList;
+        protected readonly List<GlyphHolder> _glyphList;
 
         private string _prevString;
         private Boolean _prevWrap;
         private int _prevWrapWidth;
 
-        protected readonly List<int> _heightList;
-        protected readonly List<int> _widthList;
-        protected Dictionary<int, Tag> _tagList;
         protected readonly Stack<Color> _colorStack;
 
-        public Color _color = Color.Black;
+        private Color _color = Color.Black;
         public Boolean Wrap = false;
         private int _wrapWidth = 100;
-        
+
+        protected Boolean _wrapLock = false;
+        protected int _lockPos = -1;
+        protected int _lockHeight = -1;
+        protected int _lockWidth = -1;
 
         private Vector2 _lastPos;
         public Vector2 LastPos
@@ -163,6 +163,7 @@ namespace INovelEngine.Effector.Graphics.Text
         protected int _prevx;
         protected int _maxWidth;
         protected int _maxHeight;
+        protected int currentMaxHeight;
 
         public FreeFont(SlimDX.Direct3D9.Device device, string fontPath, int size)
         {
@@ -173,12 +174,7 @@ namespace INovelEngine.Effector.Graphics.Text
             this._lastPos = new Vector2();
 
             _glyphCache = new Dictionary<char, Glyph>();
-            _displayList = new List<Glyph>();
             _glyphList = new List<GlyphHolder>();
-            _heightList = new List<int>();
-            _widthList = new List<int>();
-
-            _tagList = new Dictionary<int, Tag>();
             _colorStack = new Stack<Color>();
 
             int error;
@@ -238,138 +234,44 @@ namespace INovelEngine.Effector.Graphics.Text
             return temptagList;
         }
 
-        // process width/height and get glyphs
-        private void MeasureString(String str, Dictionary<int, Tag> tagList)
-        {
-            _displayList.Clear();
-            _heightList.Clear();
-            _widthList.Clear();
-
-            if (tagList != null)
-            {
-                if (Wrap) _tagList.Clear();
-                else _tagList = tagList;
-            }
-
-            Glyph currentGlyph;
-
-            _maxWidth = 0;
-            _maxHeight = 0;
-
-            int currentMaximum = this._size / 2;
-            penx = 0;
-
-            Boolean wrapping = false;
-            Boolean afterWrapping = false;
-
-            for (int i = 0; i < str.Length; i++)
-            {
-                int height = 0;
-
-                if (str[i] == '\n' || wrapping)
-                {
-                    currentGlyph = new Glyph(Glyph.GlyphType.LineBreak);
-                    height = currentGlyph.Slot.bitmap_top + currentGlyph.Box.yMax;
-                    height = this._size / 2;
-
-                    // break line
-                    _heightList.Add(currentMaximum);
-                    _widthList.Add(penx);
-
-                    _maxHeight += currentMaximum + LineSpacing;
-                    
-
-                    currentMaximum = this._size / 2;
-                    penx = 0;
-
-                    if (wrapping)
-                    {
-                        wrapping = false;
-                        afterWrapping = true;
-                        i--;
-                    }
-                }
-                else if (str[i] == ' ') // white space
-                {
-                    if (afterWrapping && this.WrapWidth < this._size / 2)
-                    {
-                        afterWrapping = false;
-                    }
-                    else if (this.Wrap && penx + this._size / 2 > this._wrapWidth)
-                    {
-                        wrapping = true;
-                        i--;
-                        continue;
-                    }
-
-                    currentGlyph = new Glyph(Glyph.GlyphType.Space);
-                    height = this._size / 2;
-
-                    _widthList.Add(penx);
-                    penx += this._size / 2;
-                }
-                else
-                {
-                    currentGlyph = GetChar(str[i]);
-
-                    if (afterWrapping && this.WrapWidth < currentGlyph.Slot.advance.x / 64)
-                    {
-                        afterWrapping = false;
-                    }
-                    else if (this.Wrap && penx + currentGlyph.Slot.advance.x / 64 > this._wrapWidth)
-                    {
-                        wrapping = true;
-                        i--;
-                        continue;
-                    }
-
-                    height = currentGlyph.Slot.bitmap_top + currentGlyph.Box.yMax;
-
-                    _widthList.Add(penx + currentGlyph.Slot.bitmap_left);
-
-                    penx += currentGlyph.Slot.advance.x / 64;
-
-                    if (_maxWidth < penx) _maxWidth = penx;
-
-                    if (i == str.Length - 1)
-                    {
-                        _heightList.Add(currentMaximum);
-                        _maxHeight += currentMaximum;
-                    }
-                }
-
-                if (currentMaximum < height) currentMaximum = height;
-                _displayList.Add(currentGlyph);
-
-                if (tagList != null)
-                {
-                    if (Wrap && tagList.ContainsKey(i))
-                    {
-                        _tagList.Add(_displayList.Count - 1, tagList[i]);
-                    }
-                }
-            }
-        }
-
         private void CreateDisplayList(String str)
         {
             _glyphList.Clear();
 
-            GlyphHolder currentGlyph;
+            GlyphHolder currentGlyph = null;
+            GlyphHolder lastLineBreak = null;
             
             int tagStartPosition = -1;
             Boolean tagStarted = false;
+
+            _maxWidth = 0;
+            _maxHeight = 0;
+
+            currentMaxHeight = this._size / 2;
+            penx = 0;
+
+            currentGlyph = new GlyphHolder { Type = GlyphHolder.GlyphType.LineBreak };
+            lastLineBreak = currentGlyph;
+            _glyphList.Add(currentGlyph);
+
             for (int i = 0; i < str.Length; i++)
             {
-                currentGlyph = new GlyphHolder();
 
                 switch (str[i])
                 {
                     case '\n':
-                        currentGlyph.Type = GlyphHolder.GlyphType.LineBreak;
+                        lastLineBreak.Y = currentMaxHeight; // adjust baseline to max height
+                        _maxHeight += currentMaxHeight + LineSpacing;
+                        currentMaxHeight = this._size / 2; // reset baseline maximum
+                        currentGlyph = new GlyphHolder {Type = GlyphHolder.GlyphType.LineBreak};
+                        lastLineBreak = currentGlyph; // assign new baseline
+                        if (penx > _maxWidth) _maxWidth = penx;
+                        penx = 0;
+                        _glyphList.Add(currentGlyph);
                         break;
                     case ' ':
-                        currentGlyph.Type = GlyphHolder.GlyphType.Space;
+                        currentGlyph = new GlyphHolder { Type = GlyphHolder.GlyphType.Space };
+                        _glyphList.Add(currentGlyph);
                         break;
                     case '[':
                         if (!tagStarted)
@@ -381,30 +283,80 @@ namespace INovelEngine.Effector.Graphics.Text
                     case ']':
                         if (tagStarted)
                         {
-                            currentGlyph.Type = GlyphHolder.GlyphType.Tag;
-                            currentGlyph.Tag = new Tag(str.Substring(tagStartPosition, i - tagStartPosition + 1));
+                            currentGlyph = new GlyphHolder
+                                               {
+                                                   Type = GlyphHolder.GlyphType.Tag,
+                                                   Tag =
+                                                       new Tag(str.Substring(tagStartPosition, i - tagStartPosition + 1))
+                                               };
                             tagStarted = false;
+                            _glyphList.Add(currentGlyph);
+                            ProcessTag(currentGlyph.Tag);
+                        }
+                        else
+                        {
+                            continue;
                         }
                         break;
                     default:
                         if (!tagStarted)
                         {
-                            currentGlyph.Type = GlyphHolder.GlyphType.Char;
-                            currentGlyph.Glyph = GetChar(str[i]);
+                            currentGlyph = new GlyphHolder
+                                               {
+                                                   Type = GlyphHolder.GlyphType.Char,
+                                                   Glyph = GetChar(str[i]),
+                                               };
+
+                            int height = currentGlyph.Glyph.Slot.bitmap_top + currentGlyph.Glyph.Box.yMax;
+                            if (height > currentMaxHeight) currentMaxHeight = height;
                             Console.WriteLine(str[i]);
+                            _glyphList.Add(currentGlyph);
+
+                            penx += currentGlyph.Glyph.Slot.advance.x / 64;
+
+                            if (this.Wrap && penx > this._wrapWidth)
+                            {
+                                //wrap
+                                if (this._wrapLock)
+                                {
+                                    lastLineBreak.Y = _lockHeight; // adjust baseline to max height
+                                    currentGlyph = new GlyphHolder { Type = GlyphHolder.GlyphType.LineBreak };
+                                    lastLineBreak = currentGlyph; // assign new baseline
+                                    _glyphList.Insert(_lockPos, currentGlyph);
+                                    _wrapLock = false;
+                                    if (_lockWidth > _maxWidth) _maxWidth = penx;
+                                    penx -= _lockWidth;
+                                }
+                                else
+                                {
+                                    lastLineBreak.Y = currentMaxHeight; // adjust baseline to max height
+                                    currentMaxHeight = this._size / 2; // reset baseline maximum
+                                    currentGlyph = new GlyphHolder { Type = GlyphHolder.GlyphType.LineBreak };
+                                    lastLineBreak = currentGlyph; // assign new baseline
+                                    if (penx > _maxWidth) _maxWidth = penx;
+                                    penx = 0;
+                                    _glyphList.Add(currentGlyph);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            continue;
                         }
                         break;
                 }
 
-                _glyphList.Add(currentGlyph);
-                //_displayList.Add(currentGlyph);
             }
+
+            lastLineBreak.Y = currentMaxHeight; // adjust baseline to max height
+            if (penx > _maxWidth) _maxWidth = penx;
+            _maxHeight += currentMaxHeight;
         }
 
         public Size Measure(String str)
         {
             Size size = new Size();
-            MeasureString(str, null);
+            CreateDisplayList(str);
             size.Width = _maxWidth;
             size.Height = _maxHeight;
             return size;
@@ -414,15 +366,30 @@ namespace INovelEngine.Effector.Graphics.Text
         {
             ProcessString(str);
 
-
+            penx = x;
+            peny = y;
+            _prevy = y + LineSpacing;
             for (int i = 0; i < _glyphList.Count; i++)
             {
                 switch (_glyphList[i].Type)
                 {
+                    case GlyphHolder.GlyphType.Tag:
+                        ApplyTag(_glyphList[i].Tag, sprite);
+                        break;
                     case GlyphHolder.GlyphType.Space:
                         break;
                     case GlyphHolder.GlyphType.LineBreak:
+                        _prevy = peny + LineSpacing;
+                        peny += _glyphList[i].Y + LineSpacing;
+                        penx = x;
                         break;
+                    case GlyphHolder.GlyphType.Char:
+                        _pos.X = penx + _glyphList[i].Glyph.Slot.bitmap_left; ;
+                        _pos.Y = peny - _glyphList[i].Glyph.Slot.bitmap_top;
+                        _prevx = penx;
+                        penx += _glyphList[i].Glyph.Slot.advance.x / 64;
+                        sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, this._color);
+                        break; 
                     default:
                         break;
                 }
@@ -448,7 +415,7 @@ namespace INovelEngine.Effector.Graphics.Text
         //    {
         //        if (_tagList.ContainsKey(i))
         //        {
-        //            ProcessTag(_tagList[i], sprite);
+        //            ApplyTag(_tagList[i], sprite);
         //        }
 
         //        switch (_displayList[i].Type)
@@ -489,7 +456,12 @@ namespace INovelEngine.Effector.Graphics.Text
         //    }
         //}
 
-        protected virtual void ProcessTag(Tag tag, Sprite sprite)
+        protected virtual void ProcessTag(Tag tag)
+        {
+            
+        }
+       
+        protected virtual void ApplyTag(Tag tag, Sprite sprite)
         {
             if(tag.Type == Tag.TagType.Color)
             {
