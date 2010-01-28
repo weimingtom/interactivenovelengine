@@ -148,8 +148,8 @@ namespace INovelEngine
 
             //dxfont.DrawString(sprite, "가나다\n라마바\n사가나\n다라마\n바사가\n나다라\n마바사\n가나다\n라마바\n사가나\n다라마\n바사", 0, 0, Color.White.ToArgb());
             testtext.Wrap = true;
-            testtext.WrapWidth = 180;
-            testtext.DrawString(sprite, "가나다[r=りよう]利用[/r]나다[col=#FF0000]마[col=#00FF00]바[/col]자[/col]하[/col]자", 0, 100);
+            testtext.WrapWidth = 170;
+            testtext.DrawString(sprite, "가나다[r=りよう]利用[/r]나다[col=#FF0000]마[col=#00FF00]바[/col]자[/col]하[/col]자", 0, 0);
             Vector2 lastpos = testtext.LastPos;
             lastpos.Y = lastpos.Y - 32 + 100;
             //sprite.Draw(this.cursor, new Vector3(0, 0, 0), new Vector3(lastpos, 0), Color.White);
