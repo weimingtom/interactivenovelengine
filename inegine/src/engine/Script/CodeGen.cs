@@ -57,7 +57,7 @@ namespace INovelEngine.Script
         public void StringLit(string content)
         {
             string temp;
-            int index = content.IndexOf('/');
+            int index = content.IndexOf('\\');
             Console.WriteLine(index);
             if (index > -1)
             {

@@ -10,12 +10,121 @@ using System.Drawing;
 
 namespace INovelEngine.Effector.Graphics.Text
 {
-    class FreeFont : IDisposable
+    public class GlyphHolder
     {
-        private static int _maxsize = 128;
+        public enum GlyphType
+        { Tag, BaseLine, Space, LineBreak, Char }
+
+        public GlyphType Type;
+        public Glyph Glyph;
+        public Tag Tag;
+        public int X;
+        public int Y;
+    }
+
+    public class Glyph
+    {
+        public enum GlyphType
+        { Default, Space, LineBreak }
+
+        public GlyphType Type;
+        public uint Index;
+        public FT_GlyphSlotRec Slot;
+        public Texture Texture;
+        public FT_BBox Box;
+
+        public Glyph(GlyphType type, uint index, FT_GlyphSlotRec slot)
+        {
+            this.Type = type;
+            this.Index = index;
+            this.Slot = slot;
+            this.Box = new FT_BBox();
+            this.Box.xMin = this.Box.yMin = 32000;
+            this.Box.xMax = this.Box.xMax = -32000;
+        }
+
+        public Glyph(GlyphType type)
+        {
+            this.Type = type;
+            this.Box = new FT_BBox();
+            this.Box.xMin = this.Box.yMin = 32000;
+            this.Box.xMax = this.Box.xMax = -32000;
+        }
+    }
+
+    public class Tag
+    {
+        public string Name;
+        public TagType Type;
+        public string Value;
+        public Boolean IsEnding = false;
+
+        public enum TagType
+        {
+            Color, Ruby, Etc
+        };
+
+        public const string Color = "col";
+        public const string Ruby = "r";
+
+        public Tag(string token)
+        {
+            String name = "";
+            if (token[1] == '/') // ending tag
+            {
+                name = token.Substring(2, token.Length - 3);
+                this.IsEnding = true;
+            }
+            else
+            {
+                int assignPos = token.IndexOf('=');
+                if (assignPos > -1)
+                {
+                    // assigning tag
+                    if (assignPos > 1 && token.Length > 4)
+                    {
+                        name = token.Substring(1, assignPos - 1);
+                        this.Value = token.Substring(assignPos + 1, token.Length - assignPos - 2);
+                    }
+                }
+                else
+                {
+                    name = token.Substring(1, token.Length - 2);
+                    // non-assigning tag
+                }
+            }
+
+            switch (name)
+            {
+                case Color:
+                    this.Type = TagType.Color;
+                    break;
+                case Ruby:
+                    this.Type = TagType.Ruby;
+                    break;
+                default:
+                    this.Type = TagType.Etc;
+                    this.Name = name;
+                    break;
+            }
+
+        }
+
+    }
+
+    public class FreeFont : IDisposable
+    {
+        public enum Effect
+        {
+            None, Shadow
+        };
+
+        public Effect TextEffect;
+
+        private const int Maxsize = 128;
 
         private string _fontPath;
-        
+
         private readonly IntPtr _library;
         private readonly IntPtr _face;
 
@@ -23,22 +132,67 @@ namespace INovelEngine.Effector.Graphics.Text
         private FT_GlyphSlotRec _fslot;
 
         private int _size;
+        public int Size
+        {
+            get
+            {
+                return _size;   
+            }
+        }
+        private int _lineSpacing;
 
-        private Texture _buffer;
         private Vector3 _center = new Vector3();
         private Vector3 _pos = new Vector3();
 
-        private Dictionary<uint, Texture> _charCache = new Dictionary<uint, Texture>();
-        private Dictionary<uint, Vector3> _marginCache = new Dictionary<uint, Vector3>();
-        private Dictionary<char, uint> _glyphIndexCache = new Dictionary<char, uint>();
-        private Dictionary<uint, FT_GlyphSlotRec> _slotCache = new Dictionary<uint, FT_GlyphSlotRec>();
+        private readonly Dictionary<char, Glyph> _glyphCache;
+        protected readonly List<GlyphHolder> _glyphList;
+
+        private string _prevString;
+        private Boolean _prevWrap;
+        private int _prevWrapWidth;
+
+        protected readonly Stack<Color> _colorStack;
+
+        private Color _color = Color.Black;
+        public Boolean Wrap = false;
+        private int _wrapWidth = 100;
+
+        protected Boolean _wrapLock = false;
+        protected int _lockPos = -1;
+        protected int _lockHeight = -1;
+        protected int _lockWidth = -1;
+
+        private Vector2 _lastPos;
+        public Vector2 LastPos
+        {
+            get
+            {
+                return this._lastPos;
+            }
+        }
+
+        protected int penx;
+        protected int peny;
+        protected int _x;
+        protected int _y;
+        protected int _prevy;
+        protected int _prevx;
+        protected int _maxWidth;
+        protected int _maxHeight;
+        protected int currentMaxHeight;
 
         public FreeFont(SlimDX.Direct3D9.Device device, string fontPath, int size)
         {
+            TextEffect = Effect.None;
             this._device = device;
             this._fontPath = fontPath;
 
-            this._size = Math.Min(_maxsize/2, size);
+            this._size = Math.Min(Maxsize / 2, size);
+            this._lastPos = new Vector2();
+
+            _glyphCache = new Dictionary<char, Glyph>();
+            _glyphList = new List<GlyphHolder>();
+            _colorStack = new Stack<Color>();
 
             int error;
 
@@ -50,66 +204,294 @@ namespace INovelEngine.Effector.Graphics.Text
         }
 
 
-        public void DrawString(Sprite sprite, String str, int x, int y)
+        public void ProcessString(String str)
         {
-            //FT_Vector delta;
-            int penx = 0;
-            int peny = 0;
-        
-            
-            sprite.Begin(SpriteFlags.AlphaBlend);
-            for (int i = 0; i < str.Length; i++)
+            if (_prevString == null || _prevString != str || _prevWrap != Wrap || (Wrap == true && _prevWrapWidth != WrapWidth))
             {
-                if (str[i] == 32) // white space
+#if DEBUG
+                //Console.WriteLine(str);
+#endif
+                _prevString = str;
+                _prevWrap = Wrap;
+                _prevWrapWidth = WrapWidth;
+
+                //Dictionary<int, Tag> temptagList = ParseTags(ref str);
+                //MeasureString(str, temptagList);
+                CreateDisplayList(str);
+            }
+        }
+
+        // parse markup tags - outputs str (without tags) and tag list
+        private Dictionary<int, Tag> ParseTags(ref String str)
+        {
+            Dictionary<int, Tag> temptagList = new Dictionary<int, Tag>();
+
+            int tagPosition = str.IndexOf('[');
+            int tagPositionEnd = str.IndexOf(']');
+            int interval = tagPositionEnd - tagPosition + 1;
+
+
+            while (tagPosition > -1 && interval > 0)
+            {
+                String tag = str.Substring(tagPosition, interval);
+
+                if (tag.Length > 2) // tag longer than "[]"
                 {
-                    penx += this._size/2;
-                    continue;
+                    temptagList.Add(tagPosition, new Tag(tag));
                 }
 
-                uint glyphIndex = GetGlyphIndex(str[i]);
+                str = str.Remove(tagPosition, interval);
+                tagPositionEnd -= interval - 1;
+                tagPosition = str.IndexOf('[', tagPositionEnd);
 
-                GetChar(glyphIndex);
-
-                _pos.X = x + penx + _fslot.bitmap_left;
-                _pos.Y = y + peny + _size - _fslot.bitmap_top;
-                
-                sprite.Draw(this._buffer, _center, _pos, System.Drawing.Color.White);
-
-                penx += _fslot.advance.x / 64;
+                tagPositionEnd = str.IndexOf(']', tagPosition + 1);
+                interval = tagPositionEnd - tagPosition + 1;
             }
-            sprite.End();
+
+            return temptagList;
+        }
+
+        private void CreateDisplayList(String str)
+        {
+            _glyphList.Clear();
+
+            GlyphHolder currentGlyph = null;
+            GlyphHolder lastLineBreak = null;
+
+            int tagStartPosition = -1;
+            Boolean tagStarted = false;
+
+            _maxWidth = 0;
+            _maxHeight = 0;
+
+            currentMaxHeight = this._size / 2;
+            penx = 0;
+
+            currentGlyph = new GlyphHolder { Type = GlyphHolder.GlyphType.LineBreak };
+            lastLineBreak = currentGlyph;
+            _glyphList.Add(currentGlyph);
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                bool wrapThisLine = false;
+
+                switch (str[i])
+                {
+                    case '\n':
+                        lastLineBreak.Y = currentMaxHeight; // adjust baseline to max height
+                        _maxHeight += currentMaxHeight + LineSpacing;
+                        currentMaxHeight = this._size / 2; // reset baseline maximum
+                        currentGlyph = new GlyphHolder { Type = GlyphHolder.GlyphType.LineBreak };
+                        lastLineBreak = currentGlyph; // assign new baseline
+                        if (penx > _maxWidth) _maxWidth = penx;
+                        penx = 0;
+                        break;
+                    case ' ':
+                        currentGlyph = new GlyphHolder { Type = GlyphHolder.GlyphType.Space };
+                        penx += _size;
+                        if (this.Wrap && penx > this._wrapWidth) wrapThisLine = true;
+                        break;
+                    case '[':
+                        if (!tagStarted)
+                        {
+                            tagStartPosition = i;
+                            tagStarted = true;
+                        }
+                        continue;
+                    case ']':
+                        if (tagStarted)
+                        {
+                            currentGlyph = new GlyphHolder
+                            {
+                                Type = GlyphHolder.GlyphType.Tag,
+                                Tag =
+                                    new Tag(str.Substring(tagStartPosition, i - tagStartPosition + 1))
+                            };
+                            tagStarted = false;
+                            ProcessTag(currentGlyph.Tag);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                        break;
+                    default:
+                        if (!tagStarted)
+                        {
+                            currentGlyph = new GlyphHolder
+                            {
+                                Type = GlyphHolder.GlyphType.Char,
+                                Glyph = GetChar(str[i]),
+                            };
+
+                            int height = currentGlyph.Glyph.Slot.bitmap_top + currentGlyph.Glyph.Box.yMax;
+                            if (height > currentMaxHeight) currentMaxHeight = height;
+                            //Console.WriteLine(str[i]);
+
+                            int prevx = penx;
+                            penx += currentGlyph.Glyph.Slot.advance.x / 64;
+
+                            if (this.Wrap && penx > this._wrapWidth) wrapThisLine = true;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                        break;
+                }
+
+                if (wrapThisLine)
+                {
+                    char c = str[i];
+                    //wrap
+                    if (this._wrapLock)
+                    {
+                        lastLineBreak.Y = _lockHeight; // adjust baseline to max height
+                        GlyphHolder lineBreaker = new GlyphHolder { Type = GlyphHolder.GlyphType.LineBreak };
+                        lastLineBreak = lineBreaker; // assign new baseline
+                        _glyphList.Insert(_lockPos, lineBreaker);
+                        _wrapLock = false;
+                        if (_lockWidth > _maxWidth) _maxWidth = penx;
+                        penx -= _lockWidth;
+                    }
+                    else
+                    {
+                        lastLineBreak.Y = currentMaxHeight; // adjust baseline to max height
+                        currentMaxHeight = this._size / 2; // reset baseline maximum
+                        GlyphHolder lineBreaker = new GlyphHolder { Type = GlyphHolder.GlyphType.LineBreak };
+                        lastLineBreak = lineBreaker; // assign new baseline
+                        if (penx > _maxWidth) _maxWidth = penx;
+                        penx = 0;
+                        _glyphList.Add(lineBreaker);
+                    }
+                }
+
+                _glyphList.Add(currentGlyph);
+
+            }
+
+            lastLineBreak.Y = currentMaxHeight; // adjust baseline to max height
+            if (penx > _maxWidth) _maxWidth = penx;
+            _maxHeight += currentMaxHeight;
+        }
+
+        public Size Measure(String str)
+        {
+            Size size = new Size();
+            CreateDisplayList(str);
+            size.Width = _maxWidth;
+            size.Height = _maxHeight;
+            return size;
+        }
+
+        public void DrawString(Sprite sprite, String str, int x, int y)
+        {
+            ProcessString(str);
+            _x = x;
+            _y = y;
+            penx = 0;
+            peny = 0;
+            _prevy = y + LineSpacing;
+            for (int i = 0; i < _glyphList.Count; i++)
+            {
+                switch (_glyphList[i].Type)
+                {
+                    case GlyphHolder.GlyphType.Tag:
+                        ApplyTag(_glyphList[i].Tag, sprite);
+                        break;
+                    case GlyphHolder.GlyphType.Space:
+                        penx += _size;
+                        break;
+                    case GlyphHolder.GlyphType.LineBreak:
+                        _prevy = peny + LineSpacing;
+                        peny += _size + LineSpacing;
+                        penx = 0;
+                        break;
+                    case GlyphHolder.GlyphType.Char:
+                        _pos.X = x + penx + _glyphList[i].Glyph.Slot.bitmap_left; ;
+                        _pos.Y = y + peny - _glyphList[i].Glyph.Slot.bitmap_top;
+                        _prevx = penx;
+                        penx += _glyphList[i].Glyph.Slot.advance.x / 64;
+
+                        if (TextEffect == Effect.Shadow)
+                        {
+                            _pos.X += 2;
+                            _pos.Y += 2;
+                            sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, Color.Black);
+                            _pos.X--;
+                            _pos.Y--;
+                            sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, Color.Black);
+                            _pos.Y--;
+                            _pos.X--;
+                        }
+
+                        sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, this._color);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            _lastPos.X = penx;
+            _lastPos.Y = peny - _size;
         }
 
 
-        private void GetChar(uint index)
+        protected virtual void ProcessTag(Tag tag)
         {
-            if (_charCache.ContainsKey(index))
+
+        }
+
+        protected virtual void ApplyTag(Tag tag, Sprite sprite)
+        {
+            if (tag.Type == Tag.TagType.Color)
             {
-                this._buffer = _charCache[index];
-                this._fslot = _slotCache[index];
+                //Console.Write("color");
+                if (tag.IsEnding && _colorStack.Count > 0) this._color = _colorStack.Pop();
+                else if (!tag.IsEnding)
+                {
+                    _colorStack.Push(this._color);
+                    try
+                    {
+                        if (tag.Value.Length == 7 && tag.Value[0] == '#')
+                        {
+                            // hex color value
+                            String color = "FF" + tag.Value.Substring(1);
+                            this._color = System.Drawing.Color.FromArgb(Convert.ToInt32(color, 16));
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        _colorStack.Pop();
+                    }
+                }
+            }
+        }
+
+        private Glyph GetChar(char c)
+        {
+            //if (_charCache.ContainsKey(index))
+            if (this._glyphCache.ContainsKey(c))
+            {
+                Glyph g = this._glyphCache[c];
+                return g;
             }
             else
             {
-                LoadChar(index);
+                return LoadChar(c);
             }
         }
 
         private uint GetGlyphIndex(char c)
         {
-            if (_glyphIndexCache.ContainsKey(c))
-            {
-                return _glyphIndexCache[c];
-            }
-            else
-            {
-                uint index = FT.FT_Get_Char_Index(_face, Convert.ToUInt32(c));
-                _glyphIndexCache.Add(c, index);
-                return index;
-            }
+            uint index = FT.FT_Get_Char_Index(_face, Convert.ToUInt32(c));
+            return index;
         }
 
-        private void LoadChar(uint index)
+        private Glyph LoadChar(char c)
         {
+            uint index = GetGlyphIndex(c);
+
             int error = FT.FT_Load_Glyph(_face, index, FT.FT_LOAD_DEFAULT);
             if (error != 0) throw new Exception("load glyph error!");
 
@@ -120,18 +502,22 @@ namespace INovelEngine.Effector.Graphics.Text
             if (error != 0) throw new Exception("load glyph error!");
 
             this._fslot = fslot;
-            this._buffer = RenderBitmap(fslot, 0, 0);
 
-            _charCache.Add(index, _buffer);
-            _slotCache.Add(index, fslot);
+            Glyph g = new Glyph(Glyph.GlyphType.Default, index, fslot);
+
+            RenderBitmap(g, 0, 0);
+
+            this._glyphCache.Add(c, g);
+            return g;
         }
 
-        Texture RenderBitmap(FT_GlyphSlotRec fslot, int left, int top)
+        void RenderBitmap(Glyph g, int left, int top)
         {
+            FT_GlyphSlotRec fslot = g.Slot;
             FT_Bitmap bitmap = fslot.bitmap;
-            int width = _fslot.bitmap.width;
-            int height = _fslot.bitmap.rows;
-            this._buffer = new Texture(_device, _maxsize, _maxsize, 0, Usage.Dynamic, Format.A8R8G8B8, Pool.Default);
+            int width = bitmap.width;
+            int height = bitmap.rows;
+            g.Texture = new Texture(_device, Maxsize, Maxsize, 0, Usage.Dynamic, Format.A8R8G8B8, Pool.Default);
 
             bool isMono = false;
 
@@ -148,61 +534,100 @@ namespace INovelEngine.Effector.Graphics.Text
 
             Marshal.Copy(bitmap.buffer, buffer, 0, buffer.Length);
 
-            DataRectangle rect = _buffer.LockRectangle(0, LockFlags.None);
-            
+            DataRectangle rect = g.Texture.LockRectangle(0, LockFlags.None);
+
             int index = 0;
             long offset = 0;
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
-                    byte color = 255;
+                    byte alpha = 0;
+
                     if (isMono)
                     {
-                        offset = _maxsize * y * 4 + x * 4;
+                        offset = Maxsize * y * 4 + x * 4;
                         if ((buffer[y * bitmap.pitch + (x >> 3)] & (0x80 >> (x % 8))) != 0)
                         {
-                            //Console.WriteLine("yes");
-                            color = 0;
-                        }
-                        else
-                        {
-                            //Console.WriteLine("no!");
+                            alpha = 255;
                         }
                     }
                     else
                     {
-                        offset = _maxsize * y * 4 + x * 4;
+                        offset = Maxsize * y * 4 + x * 4;
                         index = y * width + x;
-                        color = (byte)(255 - buffer[index]);
+                        alpha = (byte)(buffer[index]);
                     }
 
-                    //if (color != 255)
-                    //{
+                    if (alpha != 0)
+                    {
                         rect.Data.Seek(offset, SeekOrigin.Begin);
-                        rect.Data.WriteByte(color);
-                        rect.Data.WriteByte(color);
-                        rect.Data.WriteByte(color);
                         rect.Data.WriteByte(255);
-                    //}
+                        rect.Data.WriteByte(255);
+                        rect.Data.WriteByte(255);
+                        rect.Data.WriteByte((byte)(alpha * this._color.A / 255));
+
+                        if (g.Box.xMin > x) g.Box.xMin = x;
+                        if (g.Box.xMax < x) g.Box.xMin = x;
+                        if (g.Box.yMin > y) g.Box.yMin = y;
+                        if (g.Box.yMin < y) g.Box.yMin = y;
+                    }
                 }
 
             }
 
-            _buffer.UnlockRectangle(0);
-
-            return _buffer;
+            g.Texture.UnlockRectangle(0);
         }
 
-        public void SetSize(int size)
+        private void SetSize(int size)
         {
             int error = FT.FT_Set_Char_Size(_face, size * 64, 0, 96, 96);
+        }
+
+        public int LineSpacing
+        {
+            get
+            {
+                return this._lineSpacing;
+            }
+
+            set
+            {
+                this._lineSpacing = Math.Max(0, value);
+            }
+        }
+
+        public int WrapWidth
+        {
+            get
+            {
+                return this._wrapWidth;
+            }
+            set
+            {
+                this._wrapWidth = Math.Max(0, value);
+                this.Wrap = true;
+            }
+        }
+
+        public Color Color
+        {
+            get
+            {
+                return this._color;
+            }
+            set
+            {
+                this._color = value;
+            }
         }
 
         #region IDisposable Members
 
         public void Dispose()
         {
+            /* to do: dispose faces and textures */
+
             FT.FT_Done_Face(_face);
             FT.FT_Done_FreeType(_library);
         }
@@ -210,3 +635,4 @@ namespace INovelEngine.Effector.Graphics.Text
         #endregion
     }
 }
+

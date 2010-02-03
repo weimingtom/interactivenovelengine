@@ -2,11 +2,13 @@
 using System.Drawing;
 using System.Collections.Generic;
 using System.Text;
+using INovelEngine.Effector.Graphics.Text;
 using SampleFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
 using INovelEngine.Core;
 using INovelEngine.Script;
+using Font=SlimDX.Direct3D9.Font;
 
 namespace INovelEngine.Effector
 {
@@ -22,15 +24,20 @@ namespace INovelEngine.Effector
             Narration, Static
         }
 
-        private State printState = State.Idle;
-        private List<int> breaks = new List<int>();
-        int index = 0;
+
+        private AnimatedSprite cursorSprite = new AnimatedSprite("cursor", "Resources/sprite.png", 0, 0, 4,
+                                                                 4, 4, 32, 48, false);
+
+        private State _printState = State.Idle;
+        private readonly List<int> breaks = new List<int>();
+        int _breakIndex = 0;
         
         string sourceText = "";
         private string viewText = "";
         string scrollBuffer = "";
         public LuaEventHandler printOverHandler;
 
+        private bool narrationHalted = false;
         public Mode narrationMode = Mode.Static;
         private int narrationIndex = 0;
         public int narrationSpeed
@@ -40,14 +47,16 @@ namespace INovelEngine.Effector
 
         int margin = 10;
         private TimeEvent narrationEvent;
-        private bool InNarration = false;
+        private bool narrationOver = true;
 
         public Line line;
-        SlimDX.Direct3D9.Font font;
+        //SlimDX.Direct3D9.Font font;
+        private RubyFont font;
 
         private bool wrapFlag = false;
 
         Vector2[] lines = new Vector2[2];
+        private bool _cancelFlag = false; // flag for indicating whether to skip when beginning a new textout
 
         public TextWindow(String id, int color, int alpha, int x, int y, int width, int height, int layer, string text, int margin)
             : base(id, color, alpha, x, y, width, height, layer)
@@ -96,6 +105,24 @@ namespace INovelEngine.Effector
         {
             this.sprite.Begin(SpriteFlags.AlphaBlend);
             TextRenderer.DrawText(this.sprite, this.font, scrollBuffer, this.x + margin, this.y + margin, width - margin * 2, height - margin * 2, Color.White);
+
+            if (_printState == State.Waiting)
+            {
+                cursorSprite.x = (int)TextRenderer.cursorPosition.X;
+                cursorSprite.y = (int)TextRenderer.cursorPosition.Y;
+                if (cursorSprite.x + cursorSprite.width > this.width)
+                {
+                    cursorSprite.x = 0;
+                    cursorSprite.y = cursorSprite.y + this.font.Size + this.font.LineSpacing;
+                }
+                cursorSprite.x += this.x + this.margin;
+
+                if (cursorSprite.y + cursorSprite.height <= this.height)
+                {
+                    cursorSprite.y += this.y + this.margin;
+                    cursorSprite.Draw();
+                }
+            }
             this.sprite.End();
             
             //textRenderer.DrawText(sourceText, this.x + margin, this.y + margin, width - margin * 2, height - margin * 2, Color.White);
@@ -105,9 +132,12 @@ namespace INovelEngine.Effector
         {
  	        base.Initialize(graphicsDeviceManager);
             this.line = new Line(graphicsDeviceManager.Direct3D9.Device);
+            this.cursorSprite.Initialize(graphicsDeviceManager);
+            this.cursorSprite.BeginAnimation(100, 0, 2, true);
+            this.font = TextRenderer.LoadFont(graphicsDeviceManager.Direct3D9.Device, "Resources\\meiryo.ttc", 25, FontWeight.UltraBold, false);
+            this.font.LineSpacing = 20;
+            this.font.TextEffect = FreeFont.Effect.Shadow;
 
-            this.font = TextRenderer.LoadFont(graphicsDeviceManager.Direct3D9.Device, "Meiryo", 30, FontWeight.UltraBold, false);
-            
             if (wrapFlag)
             {
                 this.WrapText();
@@ -126,36 +156,39 @@ namespace INovelEngine.Effector
 
             wrapFlag = false;
 
-            int index = 0;
-            bool EOL = false;
-            String testBuffer;
-            Rectangle measureRect;
-            int expectedWidth, expectedHeight;
-            for (int i = 0; i <= this.sourceText.Length; i++)
-            {
-                testBuffer = sourceText.Substring(0, index);
-                measureRect = TextRenderer.MeasureText(this.font, testBuffer, Color.White);
-                expectedWidth = measureRect.Width;
-                expectedHeight = measureRect.Height;
+            viewText = sourceText;
+            //scrollBuffer = viewText;
 
-                if (expectedWidth > width - this.margin * 2)
-                {
-                    sourceText = sourceText.Insert(index - 1, "\n");
-                    if (!EOL) viewText = sourceText;
-                    //index++;
-                }
+            //int _breakIndex = 0;
+            //bool EOL = false;
+            //String testBuffer;
+            //Rectangle measureRect;
+            //int expectedWidth, expectedHeight;
+            //for (int i = 0; i <= this.sourceText.Length; i++)
+            //{
+            //    testBuffer = sourceText.Substring(0, _breakIndex);
+            //    measureRect = TextRenderer.MeasureText(this.font, testBuffer, Color.White);
+            //    expectedWidth = measureRect.Width;
+            //    expectedHeight = measureRect.Height;
 
-                if (!EOL) viewText = sourceText.Substring(0, index);
+            //    if (expectedWidth > width - this.margin * 2)
+            //    {
+            //        sourceText = sourceText.Insert(_breakIndex - 1, "\n");
+            //        if (!EOL) viewText = sourceText;
+            //        //_breakIndex++;
+            //    }
 
-                if (expectedHeight > height - this.margin * 2 && !EOL)
-                {
-                    viewText = sourceText.Substring(0, index - 1);
-                    EOL = true;
-                    //return;
-                }
+            //    if (!EOL) viewText = sourceText.Substring(0, _breakIndex);
 
-                index++;
-            }
+            //    if (expectedHeight > height - this.margin * 2 && !EOL)
+            //    {
+            //        viewText = sourceText.Substring(0, _breakIndex - 1);
+            //        EOL = true;
+            //        //return;
+            //    }
+
+            //    _breakIndex++;
+            //}
             //scrollBuffer = viewText;
         }
 
@@ -176,155 +209,162 @@ namespace INovelEngine.Effector
                         break;
                 }
             }
-            //index = 0;
+            //_breakIndex = 0;
         }
 
         private void CountText()
         {
+            if (narrationIndex > 0 && viewText[narrationIndex - 1] == '[')
+            {
+                int tagEnd = viewText.IndexOf(']', narrationIndex - 1);
+                if (tagEnd > -1)
+                {
+                    narrationIndex = tagEnd + 1;
+                }
+                else
+                {
+                    _printState = State.Waiting;
+                    return;
+                }
+            }
+ 
             scrollBuffer = viewText.Substring(0, narrationIndex);
-            if (narrationIndex + 1 >= viewText.Length) this.InNarration = false;
-            else narrationIndex++;
+            if (narrationIndex + 1 < viewText.Length)
+            {
+                narrationIndex++;
+            }
+            else
+            {
+                _printState = State.Idle;
+            }
         }
 
         private void EndText()
         {
-            this.InNarration = false;
+            this._printState = State.Waiting;
         }
 
-        private void PrintOverEnd()
+        private void PrintOverEnd() // what to do when everything is printed
         {
-            this.InNarration = false;
             this.narrationEvent = null;
-            this.printState = State.Idle;
+            this._printState = State.Idle;
             if (this.printOverHandler != null) printOverHandler(this, ScriptEvents.Etc, null);
         }
 
-        private void CancelNarration()
+        private void SkipToNextBreak()
         {
             Console.WriteLine("cancelling!");
             Clock.RemoveTimeEvent(this.narrationEvent);
-            this.InNarration = false;
+            this.narrationOver = false;
 
             if (this.breaks.Count == 0)
             {
                 this.scrollBuffer = viewText;
                 this.narrationIndex = this.viewText.Length - 1;
+                this._cancelFlag = true;
                 PrintOverEnd();
             }
             else
             {
-                Console.WriteLine(index);
-                if (index > this.breaks.Count) // last index
+                Console.WriteLine(_breakIndex);
+                if (!_cancelFlag && (_breakIndex >= this.breaks.Count || _breakIndex == 1 && this.breaks.Count == 1)) // last _breakIndex
                 {
                     this.scrollBuffer = viewText;
                     this.narrationIndex = this.viewText.Length - 1;
+                    this._cancelFlag = true;
                     PrintOverEnd();
                 }
                 else
                 {
-                    this.scrollBuffer = this.viewText.Substring(0, breaks[index - 1]);
-                    this.narrationIndex = breaks[index - 1];
+                    if (_cancelFlag) _cancelFlag = false;
+                    this.scrollBuffer = this.viewText.Substring(0, breaks[_breakIndex - 1]);
+                    this.narrationIndex = breaks[_breakIndex - 1];
+                    this._printState = State.Waiting;
                 }
             }    
         }
 
         public void AdvanceText()
         {
-            if (InNarration)
+            if (this._printState == State.Narrating) // if in narration, skip to next stop
             {
-                CancelNarration();
+                SkipToNextBreak();
                 return;
             }
-            if (this.printState == State.Idle)
+            else if (this._printState == State.Idle) // if in idle mode, do nothing
             {
                 return;
             }
-            if (this.viewText.Length > 0)
+            else if (this._printState == State.Waiting || this._printState == State.Started)
             {
-                if (this.breaks.Count == 0)
+                if (this.viewText.Length == 0) return; // do nothing if viewtext length is zero
+                
+                if (this.breaks.Count == 0 || _breakIndex >= this.breaks.Count) // if there is no more text stop
                 {
                     if (this.narrationMode == Mode.Narration)
                     {
-                        this.InNarration = true;
-                        this.narrationEvent = new TimeEvent(viewText.Length, narrationSpeed, CountText, PrintOverEnd);
+                        this.narrationOver = true;
+                        int lengthToCount = 0;
+                        lengthToCount = this.viewText.Length - narrationIndex;
+                        this.narrationEvent = new TimeEvent(lengthToCount, narrationSpeed, CountText, PrintOverEnd);
                         Clock.AddTimeEvent(narrationEvent);
-                        Console.WriteLine("adding event!");
-                        this.printState = State.Narrating;
+                        this._printState = State.Narrating;
                     }
                     else
                     {
                         this.scrollBuffer = viewText;
-                        this.printState = State.Idle;
+                        this._printState = State.Idle; 
+                        if (this.printOverHandler != null)
+                        {
+                            printOverHandler(this, ScriptEvents.Etc, null);
+                        }
                     }
                 }
-                else
+                else // if there is next text stop
                 {
-                    if (index < this.breaks.Count)
+                    Console.WriteLine("_breakIndex < this.breaks.Count");
+                    if (this.narrationMode == Mode.Narration)
                     {
-                        if (this.narrationMode == Mode.Narration)
-                        {
-                            this.InNarration = true;
-                            int countCount = 0;
-                            countCount = this.breaks[index] + 1 - narrationIndex;
-                            this.narrationEvent = new TimeEvent(countCount, narrationSpeed, CountText, EndText);
-                            Clock.AddTimeEvent(narrationEvent);
-
-                            Console.WriteLine("adding event!");
-                            this.printState = State.Narrating;
-                        }
-                        else {
-                            this.scrollBuffer = viewText.Substring(0, this.breaks[index]);
-                            this.printState = State.Waiting;                            
-                        }
-                        index++;
+                        this.narrationOver = true;
+                        int lengthToCount = 0;
+                        lengthToCount = this.breaks[_breakIndex] + 1 - narrationIndex;
+                        this.narrationEvent = new TimeEvent(lengthToCount, narrationSpeed, CountText, EndText);
+                        Clock.AddTimeEvent(narrationEvent);
+                        this._printState = State.Narrating;
                     }
                     else
                     {
-                        if (this.narrationMode == Mode.Narration)
-                        {
-                            this.InNarration = true;
-                            int countCount = 0;
-                            countCount = this.viewText.Length - narrationIndex;
-                            this.narrationEvent = new TimeEvent(countCount, narrationSpeed, CountText, PrintOverEnd);
-                            Clock.AddTimeEvent(narrationEvent);
-                            Console.WriteLine("adding event!");
-                            this.printState = State.Narrating;
-                        }
-                        else {
-                            this.scrollBuffer = viewText;
-                            this.printState = State.Idle;
-                            if (this.printOverHandler != null)
-                            {
-                                printOverHandler(this, ScriptEvents.Etc, null);
-                            }
-                        }
+                        this.scrollBuffer = viewText.Substring(0, this.breaks[_breakIndex]);
+                        this._printState = State.Waiting;
                     }
+                    Console.WriteLine("increasting _breakIndex! = " + _breakIndex);
+                    _breakIndex++;
                 }
             }
-            else
+
+            if (_cancelFlag)
             {
-                this.scrollBuffer = "";
-                this.printState = State.Idle;
+                SkipToNextBreak();
             }
-            
         }
 
         public void Clear()
         {
             this.Text = "";
-            this.index = 0;
+            this._breakIndex = 0;
             this.narrationIndex = 0;
-            this.AdvanceText();
+            //this.AdvanceText();
         }
 
         public Boolean Print(string value)
         {
+            Console.WriteLine("started another line!:" + value);
             this.Text += value;
-            this.printState = State.Started;
+            this._printState = State.Started;
             AdvanceText();
-            if (this.printState == State.Waiting) return true;
-            else if(this.printState == State.Narrating) return true;
-            else if(this.printState == State.Idle) return false;
+            if (this._printState == State.Waiting) return true;
+            else if(this._printState == State.Narrating) return true;
+            else if(this._printState == State.Idle) return false;
             else return false;
         }
 
@@ -345,7 +385,8 @@ namespace INovelEngine.Effector
         public override void LoadContent()
         {
             this.line.OnResetDevice();
-            this.font.OnResetDevice();
+            //this.font.OnResetDevice();
+            cursorSprite.LoadContent();
             base.LoadContent();
         }
 
@@ -355,7 +396,8 @@ namespace INovelEngine.Effector
         public override void UnloadContent()
         {
             this.line.OnLostDevice();
-            this.font.OnLostDevice();
+            //this.font.OnLostDevice();
+            cursorSprite.UnloadContent();
             base.UnloadContent();
         }
 

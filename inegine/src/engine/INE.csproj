@@ -99,6 +99,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Effector\Graphics\Components\Sprite\AnimatedSprite.cs" />
+    <Compile Include="Effector\Graphics\Text\FreeFont.cs" />
+    <Compile Include="Effector\Graphics\Text\FreeType.cs" />
+    <Compile Include="Effector\Graphics\Text\RubyFont.cs" />
     <Compile Include="Effector\IGUIComponent.cs" />
     <Compile Include="Effector\Graphics\Components\Window\ImageWindow.cs" />
     <Compile Include="Script\CodeGen.cs" />
@@ -126,6 +129,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Resources\co.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\meiryo.ttc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\start.lua">
@@ -157,12 +163,18 @@
     <Compile Include="Effector\Graphics\Components\Window\WindowBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="lib\D3DX9_41.dll">
+    <Content Include="D3DX9_41.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="freetype6.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="lib\lua51.dll" />
     <Content Include="lib\LuaInterface.dll" />
     <Content Include="lib\SampleFramework.dll" />
+    <Content Include="zlib1.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\bg.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -178,7 +190,7 @@
     <Content Include="Resources\win2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\딸방.png">
+    <Content Include="Resources\daughterroom.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
