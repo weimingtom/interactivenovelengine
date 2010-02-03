@@ -18,8 +18,8 @@ end
 
 function mouseMove(state, luaevent, args)
     if state.state.locked == true then
-        state.x = state.x + args[0] - state.state.prevx;
-        state.y = state.y + args[1] - state.state.prevy;
+        --state.x = state.x + args[0] - state.state.prevx;
+        --state.y = state.y + args[1] - state.state.prevy;
 
         state.state.prevx = args[0];
         state.state.prevy = args[1];
@@ -88,7 +88,7 @@ InitState("test2");
 state.mouseMoveEventHandler = cursorHandler;
 state.state = {"Hello", " ", "World"};
 
-sprite = SpriteBase("sprite1", "Resources/µþ¹æ.png", 0, 0, 0, 0, 0, 800, 600,
+sprite = SpriteBase("sprite1", "Resources/daughterroom.png", 0, 0, 0, 0, 0, 800, 600,
                     false);
 sprite.mouseDownEventHandler = mouseDown;
 sprite.mouseUpEventHandler = mouseUp;
