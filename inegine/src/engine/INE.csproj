@@ -102,15 +102,15 @@
     <Compile Include="Effector\Graphics\Text\FreeFont.cs" />
     <Compile Include="Effector\Graphics\Text\FreeType.cs" />
     <Compile Include="Effector\Graphics\Text\RubyFont.cs" />
-    <Compile Include="Effector\IGUIComponent.cs" />
+    <Compile Include="Effector\Graphics\Components\AbstractGUI.cs" />
     <Compile Include="Effector\Graphics\Components\Window\ImageWindow.cs" />
-    <Compile Include="Script\CodeGen.cs" />
-    <Compile Include="Script\Parser.cs" />
-    <Compile Include="Script\Scanner.cs" />
-    <Compile Include="Script\ScriptManager.cs" />
+    <Compile Include="ScriptManager\CodeGen.cs" />
+    <Compile Include="ScriptManager\Parser.cs" />
+    <Compile Include="ScriptManager\Scanner.cs" />
+    <Compile Include="ScriptManager\ScriptManager.cs" />
     <Compile Include="StateManager\GameState.cs" />
     <Compile Include="StateManager\StateManager.cs" />
-    <Compile Include="Supervisor.cs" />
+    <Compile Include="Core\Supervisor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -137,7 +137,7 @@
     <None Include="Resources\start.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Init.lua">
+    <None Include="BaseScripts\Init.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\test.ess">
@@ -149,7 +149,7 @@
     <None Include="Resources\Test.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Script\ine.ATG" />
+    <None Include="ScriptManager\ine.ATG" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
@@ -169,9 +169,9 @@
     <Content Include="freetype6.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="lib\lua51.dll" />
-    <Content Include="lib\LuaInterface.dll" />
-    <Content Include="lib\SampleFramework.dll" />
+    <Content Include="lua51.dll" />
+    <Content Include="LuaInterface.dll" />
+    <Content Include="SampleFramework.dll" />
     <Content Include="zlib1.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -221,6 +221,10 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Effector\Audio\" />
+    <Folder Include="Effector\Input\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -230,6 +234,6 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>"$(ProjectDir)Script\compileifnewer.bat" "$(ProjectDir)Script\ine.ATG" "$(ProjectDir)Script\.ine.ATG"</PreBuildEvent>
+    <PreBuildEvent>"$(ProjectDir)ScriptManager\compileifnewer.bat" "$(ProjectDir)ScriptManager\ine.ATG" "$(ProjectDir)ScriptManager\.ine.ATG"</PreBuildEvent>
   </PropertyGroup>
 </Project>

@@ -223,8 +223,8 @@ namespace INovelEngine.Effector
                 }
                 else
                 {
-                    _printState = State.Waiting;
-                    return;
+                    //_printState = State.Waiting;
+                    //return;
                 }
             }
  

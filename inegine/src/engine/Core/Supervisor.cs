@@ -232,6 +232,7 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("SwitchState", this, this.GetType().GetMethod("Lua_SwitchState"));
             ScriptManager.lua.RegisterFunction("LoadState", this, this.GetType().GetMethod("Lua_LoadState"));
             ScriptManager.lua.RegisterFunction("LoadESS", this, this.GetType().GetMethod("Lua_LoadESS"));
+            ScriptManager.lua.RegisterFunction("SetTitle", this, this.GetType().GetMethod("Lua_SetTitle"));
         }
 
         public void LoadState(String ScriptFile)
@@ -285,6 +286,11 @@ namespace INovelEngine
             Console.WriteLine(result);
 #endif
             return result;
+        }
+
+        public void Lua_SetTitle(String s)
+        {
+            Window.Text = s;
         }
 
     }

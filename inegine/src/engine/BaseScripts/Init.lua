@@ -21,3 +21,8 @@ end;
 function GetComponent(id)
     return state.guiComponents[id];
 end
+
+function BeginESS(script)
+	co = coroutine.create(assert(loadstring(LoadESS(script))))
+	coroutine.resume(co);
+end
