@@ -174,9 +174,10 @@ function foo(sprite)
     startAnimation(sprite);
 end
 
+BeginESS("Resources/test.ess");
 
-co = coroutine.create(assert(loadstring(LoadESS("Resources/test.ess"))))
-coroutine.resume(co);
+--co = coroutine.create(assert(loadstring(LoadESS("Resources/test.ess"))))
+--coroutine.resume(co);
 
 animatedsprite = AnimatedSprite("sprite2", "Resources/sprite.png", 0, 0, 4, 
                             4, 4, 32, 48, false);
