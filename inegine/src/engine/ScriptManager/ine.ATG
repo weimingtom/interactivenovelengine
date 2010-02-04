@@ -1,0 +1,93 @@
+using System.Text;
+
+COMPILER INESCRIPT
+
+    public enum Op { ADD, SUB, MUL, DIV, EQU, LSS, GTR, NEG };
+    public enum ExprType { String, Numeric };
+    public INovelEngine.Script.CodeGenerator gen;
+
+CHARACTERS
+  letter             = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".
+  digit              = "0123456789".
+  hexDigit           = digit + "ABCDEFabcdef".
+  operators          = "+-/*()%.".
+  numericletters     = hexDigit + operators.
+  lf  = '\n'.
+  tab = '\t'.
+  eol                = '\u000a'. /* 10 = line feed */
+  cr                 = '\u000d'. /* 13 = carriage return */
+  newLine            = cr + eol.
+  notNewLine         = ANY - newLine. 
+  litStringChar = ANY - newLine - ':'.
+  litStringFirstChar = litStringChar - '#'.
+  regularStringChar = ANY - newLine - '"'.
+  ws                 = " " + tab + '\u000b' + '\u000c'. 
+TOKENS
+  ident  = newLine '#' letter {letter | digit}.
+  litstring = newLine 
+      (litStringFirstChar | "\\#" | "\\\"" | "\\:") 
+      { 
+      (litStringChar | "\\\"" | "\\:")
+      }.
+  string = "\"" 
+      (regularStringChar | "\\#" | "\\\"") 
+      { 
+      (regularStringChar | "\\#" | "\\\"")
+      } "\"".
+  numericstring = (letter | numericletters) {letter | numericletters}.
+  label = newLine letter { letter | digit } ":" CONTEXT(newLine).
+  //number = digit {digit} |  ("0x" | "0X") hexDigit {hexDigit}.
+COMMENTS FROM "/*" TO "*/" NESTED
+COMMENTS FROM lf ";" TO lf
+COMMENTS FROM ";" TO lf
+IGNORE cr
+//IGNORE eol + cr + tab
+
+PRODUCTIONS
+INESCRIPT
+= "PROGRAM"                               (. gen.StartScript(); .)
+Stat { Stat }                             (. gen.EndScript(); .).
+
+Stat                                 (. string val; .)
+= FunctionCall
+| Label<out val>                     (. gen.EndLabel(); gen.StartLabel(val); .)
+| Litstring<out val>                 (. gen.StringLit(val.TrimStart('\n')); .)
+| ANY.
+
+FunctionCall                         (. string name, val; .)
+= Ident<out name>                    (. gen.StartFunction(name); .)
+  Parameters<out val>                (. gen.EndFunction(); .).
+
+Parameters<out string val>              (. ExprType type; .)
+= Expr<out val, out type>               (. gen.Parameter(val, true, type); .)
+  {
+  ','
+  Expr<out val, out type>           (. gen.Parameter(val, false, type); .)
+  }.                             
+
+Expr<out string val, out ExprType type>
+=                                       (. val = ""; type = ExprType.Numeric; .)
+
+( Number<out val>                       (. type = ExprType.Numeric; .)          
+| String<out val>                       (. type = ExprType.String; .)
+).
+
+Ident<out string val>
+= ident                                 (. val = 
+                                            t.val.TrimStart('\n').TrimStart('#'); .).
+
+Number<out string val>
+= numericstring                                (. val = t.val; .).
+
+String<out string val>         
+= string                         (. val = t.val; .).
+
+Litstring<out string val>
+= litstring                                  (. val = t.val; .).
+
+Label<out string val>
+= label                                 (. val = t.val.TrimEnd(':').TrimStart('\n'); .).
+
+
+
+END INESCRIPT.
