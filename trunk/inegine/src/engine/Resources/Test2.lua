@@ -42,6 +42,7 @@ function mouseClick(state, luaevent, args)
     Trace(state.id .. " mouse click!")
     Trace("advancing!");
     state:AdvanceText();
+    PlaySound("click", false);
     --state:BeginNarrate("Hello world, test\ntest test test3", 100);
 end;
 
@@ -192,4 +193,9 @@ animatedsprite.state.prevx = 0;
 animatedsprite.state.prevy = 0;
 AddComponent(animatedsprite);
 
+--LoadSound("sound1", "Resources/MusicMono.wav");
+LoadSound("sound1", "Resources/Track02.mp3");
 
+LoadSound("click", "Resources/click.wav");
+PlaySound("sound1", true);
+--PlaySound("click", true);

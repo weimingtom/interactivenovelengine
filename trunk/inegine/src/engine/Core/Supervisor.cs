@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using INovelEngine.Effector.Audio;
 using SampleFramework;
 using SlimDX.Direct3D9;
 using INovelEngine.Core;
@@ -17,6 +18,9 @@ namespace INovelEngine
 
         private GameState activeState;
         Dictionary<String, GameState> states = new Dictionary<string, GameState>();
+
+        private SoundManager _soundManager;
+
         //Texture bgImg;
         //Texture charImg;
         //Sprite sprite;
@@ -62,9 +66,9 @@ namespace INovelEngine
             Resources.Add(testSprite);
             */
 
-
-
+            SoundManager.Init();
             ScriptManager.Init();
+
             this.RegisterLuaGlue();
             LoadState("Resources/start.lua");
 
@@ -205,34 +209,33 @@ namespace INovelEngine
         protected override void Initialize()
         {
             base.Initialize();
-            
-            
-            //this.sprite = new Sprite(Device);
-            //this.bgImg = Texture.FromFile(Device, "bg.png");
-            //this.charImg = Texture.FromFile(Device, "testsprite.png");
-            
         }
 
         protected override void LoadContent()
         {
-            //this.sprite = new Sprite(Device);
             base.LoadContent();
         }
 
         protected override void UnloadContent()
         {
-            //this.sprite.Dispose();
+            SoundManager.Unload();
             base.UnloadContent();
         }
 
         protected void RegisterLuaGlue()
         {
+            ScriptManager.lua.RegisterFunction("SetTitle", this, this.GetType().GetMethod("Lua_SetTitle"));
             ScriptManager.lua.RegisterFunction("Trace", this, this.GetType().GetMethod("Lua_Trace"));
+
             ScriptManager.lua.RegisterFunction("AddState", this, this.GetType().GetMethod("Lua_AddState"));
             ScriptManager.lua.RegisterFunction("SwitchState", this, this.GetType().GetMethod("Lua_SwitchState"));
             ScriptManager.lua.RegisterFunction("LoadState", this, this.GetType().GetMethod("Lua_LoadState"));
             ScriptManager.lua.RegisterFunction("LoadESS", this, this.GetType().GetMethod("Lua_LoadESS"));
-            ScriptManager.lua.RegisterFunction("SetTitle", this, this.GetType().GetMethod("Lua_SetTitle"));
+
+            ScriptManager.lua.RegisterFunction("LoadSound", this, this.GetType().GetMethod("Lua_LoadSound"));
+            ScriptManager.lua.RegisterFunction("PlaySound", this, this.GetType().GetMethod("Lua_PlaySound"));
+            ScriptManager.lua.RegisterFunction("StopSound", this, this.GetType().GetMethod("Lua_StopSound"));
+        
         }
 
         public void LoadState(String ScriptFile)
@@ -291,6 +294,21 @@ namespace INovelEngine
         public void Lua_SetTitle(String s)
         {
             Window.Text = s;
+        }
+
+        public void Lua_LoadSound(String id, String s)
+        {
+            SoundManager.LoadSound(id, s);
+        }
+
+        public void Lua_PlaySound(String id, Boolean loop)
+        {
+            SoundManager.PlaySound(id, loop);
+        }
+
+        public void Lua_StopSound(String id)
+        {
+            SoundManager.StopSound(id);
         }
 
     }
