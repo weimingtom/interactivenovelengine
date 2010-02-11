@@ -158,39 +158,6 @@ namespace INovelEngine.Effector
             wrapFlag = false;
 
             viewText = sourceText;
-            //scrollBuffer = viewText;
-
-            //int _breakIndex = 0;
-            //bool EOL = false;
-            //String testBuffer;
-            //Rectangle measureRect;
-            //int expectedWidth, expectedHeight;
-            //for (int i = 0; i <= this.sourceText.Length; i++)
-            //{
-            //    testBuffer = sourceText.Substring(0, _breakIndex);
-            //    measureRect = TextRenderer.MeasureText(this.font, testBuffer, Color.White);
-            //    expectedWidth = measureRect.Width;
-            //    expectedHeight = measureRect.Height;
-
-            //    if (expectedWidth > width - this.margin * 2)
-            //    {
-            //        sourceText = sourceText.Insert(_breakIndex - 1, "\n");
-            //        if (!EOL) viewText = sourceText;
-            //        //_breakIndex++;
-            //    }
-
-            //    if (!EOL) viewText = sourceText.Substring(0, _breakIndex);
-
-            //    if (expectedHeight > height - this.margin * 2 && !EOL)
-            //    {
-            //        viewText = sourceText.Substring(0, _breakIndex - 1);
-            //        EOL = true;
-            //        //return;
-            //    }
-
-            //    _breakIndex++;
-            //}
-            //scrollBuffer = viewText;
         }
 
 
