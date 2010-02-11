@@ -23,6 +23,7 @@ namespace INovelEngine.StateManager
         }
 
         private ResourceCollection resources = new ResourceCollection();
+        /* components sorted in z-order */
         private List<AbstractGUIComponent> components = new List<AbstractGUIComponent>();
         public Dictionary<String, AbstractGUIComponent> guiComponents = 
             new Dictionary<string, AbstractGUIComponent>();
@@ -88,7 +89,7 @@ namespace INovelEngine.StateManager
 
         public void InvalidateZOrder()
         {
-            components.Sort();
+            components.Sort(); // sort them according to z-order (higher, higher)
         }
 
         private AbstractLuaEventHandler mouseDownLocked;
@@ -131,6 +132,7 @@ namespace INovelEngine.StateManager
         public AbstractGUIComponent GetCollidingComponent(int x, int y)
         {
             AbstractGUIComponent component;
+            // do it in reverse order because components sorted in z order...
             for (int i = components.Count - 1; i >= 0; i--)
             {
                 component = components[i];

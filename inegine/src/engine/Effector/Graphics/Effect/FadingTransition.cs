@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using INovelEngine.Effector.Graphics.Effect;
 using SampleFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
@@ -9,33 +10,23 @@ using INovelEngine.Core;
 
 namespace INovelEngine.Effector
 {
-    class Transition : IResource
+    class FadingTransition : AbstractTransition
     {
         private Line line;
         private Vector2[] linePath = new Vector2[2];
-        private int thichkness;
-        private float beginTick;
-        private float endTick;
-        private float currentTick;
-        private float tickLength;
-        private bool inTransition;
-        private bool fadeIn;
-        private bool fadedOut = false;
-        private Color color;
-        private GraphicsDeviceManager manager;
+
         
-        public void LaunchTransition(int width, int height, float duration, bool isFadingIn, Color fadeColor)
+        public FadingTransition()
+            : base()
         {
+        }
+
+        public override void LaunchTransition(int width, int height, float duration, bool isFadingIn, Color fadeColor)
+        {
+            base.LaunchTransition(width, height, duration, isFadingIn, fadeColor);
             linePath[0] = new Vector2(0, height / 2);
             linePath[1] = new Vector2(width, height / 2);
             thichkness = height;
-            beginTick = Clock.GetTime();
-            tickLength = duration;
-            endTick = beginTick + duration;
-            inTransition = true;
-            fadeIn = isFadingIn;
-            fadedOut = false;
-            color = fadeColor;
         }
 
         public void FadeOutIn(int width, int height, float duration, Color fadeColor)
@@ -58,25 +49,22 @@ namespace INovelEngine.Effector
             color = fadeColor;
         }
 
-        public void Draw()
+        public override void Draw()
         {
+            base.Draw();
+
             if (inTransition || fadedOut)
             {
-                currentTick = Clock.GetTime();
-
-                float progress = Math.Min(1.0f, (currentTick - beginTick) / tickLength);
-                if (fadeIn) progress = 1.0f - progress;
                 line.Width = thichkness;
                 line.Begin();
                 line.Draw(linePath, Color.FromArgb((int)(progress * 255), color));
                 line.End();
-                if (currentTick >= endTick)
-                {
-                    inTransition = false;
-                    if (!fadeIn) fadedOut = true;
-                }
-
             }
+        }
+
+        public override void Update()
+        {
+            base.Update();
         }
 
 
@@ -84,25 +72,27 @@ namespace INovelEngine.Effector
         /// Initializes the resource.
         /// </summary>
         /// <param name="graphicsDeviceManager">The graphics device manager.</param>
-        public virtual void Initialize(GraphicsDeviceManager graphicsDeviceManager)
+        public override void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
-            manager = graphicsDeviceManager;
+            base.Initialize(graphicsDeviceManager);
             this.line = new Line(manager.Direct3D9.Device);
         }
 
         /// <summary>
         /// Allows the resource to load any short-term graphical content.
         /// </summary>
-        public virtual void LoadContent()
+        public override void LoadContent()
         {
+            base.LoadContent();
             line.OnResetDevice();
         }
 
         /// <summary>
         /// Allows the resource to unload any short-term graphical content.
         /// </summary>
-        public virtual void UnloadContent()
+        public override void UnloadContent()
         {
+            base.UnloadContent();
             line.OnLostDevice();
         }
 
@@ -110,11 +100,10 @@ namespace INovelEngine.Effector
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public virtual void Dispose()
+        public override void Dispose()
         {
+            base.Dispose();
             line.Dispose();
-
-            GC.SuppressFinalize(this);
         }
 
 

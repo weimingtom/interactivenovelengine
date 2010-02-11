@@ -84,56 +84,6 @@ function TextOut(value)
 	Trace("yielding over!");
 end
 
---start initiation
-InitState("test2");
-state.mouseMoveEventHandler = cursorHandler;
-state.state = {"Hello", " ", "World"};
-
-sprite = SpriteBase("sprite1", "Resources/daughterroom.png", 0, 0, 0, 0, 0, 800, 600,
-                    false);
-sprite.mouseDownEventHandler = mouseDown;
-sprite.mouseUpEventHandler = mouseUp;
-sprite.mouseMoveEventHandler = mouseMove
-sprite.mouseClickEventHandler = test;
-sprite.state = {}
-sprite.state.locked = false;
-sprite.state.prevx = 0;
-sprite.state.prevy = 0;
-AddComponent(sprite);
-
-
---imagewindow = ImageWindow("win2", 0x78FF0000, 155, 150, 120, 
---                         200, 50, 1, "테스트입니다...", 10);
---imagewindow.mouseDownEventHandler = mouseDown;
---imagewindow.mouseUpEventHandler = mouseUp;
---imagewindow.mouseMoveEventHandler = mouseMove;
---imagewindow.mouseClickEventHandler = mouseClick;
---imagewindow.state = {}
---imagewindow.state.locked = false;
---imagewindow.state.prevx = 0;
---imagewindow.state.prevy = 0;
---AddComponent(imagewindow);
-
-
---textwindow = TextWindow("win1", 0x780000FF, 155, 20, 370, 
---                        760, 210, 2, "", 10);
-                        
-textwindow = ImageWindow("win2", 0x78FF0000, 155, 20, 370, 
-                          760, 210, 2, "", 10);
-textwindow.mouseDownEventHandler = mouseDown;
-textwindow.mouseUpEventHandler = mouseUp;
-textwindow.mouseMoveEventHandler = mouseMove;
-textwindow.mouseClickEventHandler = mouseClick;
-textwindow.printOverHandler = textOver;
-textwindow.state = {}
-textwindow.state.locked = false;
-textwindow.state.prevx = 0;
-textwindow.state.prevy = 0;
-textwindow:TurnOnNarration();
-AddComponent(textwindow);
-
-
-
 
 function animationOver(state, luaevent, args)
     Trace("animation " .. args[0] .. " over");
@@ -174,6 +124,57 @@ function foo(sprite)
     Trace "last ani"
     startAnimation(sprite);
 end
+
+--start initiation
+InitState("test2");
+state.mouseMoveEventHandler = cursorHandler;
+state.state = {"Hello", " ", "World"};
+
+sprite = SpriteBase("sprite1", "Resources/daughterroom.png", 0, 0, 0, false);
+sprite.mouseDownEventHandler = mouseDown;
+sprite.mouseUpEventHandler = mouseUp;
+sprite.mouseMoveEventHandler = mouseMove
+sprite.mouseClickEventHandler = test;
+sprite.state = {}
+sprite.state.locked = false;
+sprite.state.prevx = 0;
+sprite.state.prevy = 0;
+AddComponent(sprite);
+
+
+daughter = SpriteBase("daughtersprite", "Resources/testsprite.png", (800-512)/2, (600-512), 1, true);
+AddComponent(daughter);
+daughter:LaunchTransition(500, true);
+
+--imagewindow = ImageWindow("win2", 0x78FF0000, 155, 150, 120, 
+--                         200, 50, 1, "테스트입니다...", 10);
+--imagewindow.mouseDownEventHandler = mouseDown;
+--imagewindow.mouseUpEventHandler = mouseUp;
+--imagewindow.mouseMoveEventHandler = mouseMove;
+--imagewindow.mouseClickEventHandler = mouseClick;
+--imagewindow.state = {}
+--imagewindow.state.locked = false;
+--imagewindow.state.prevx = 0;
+--imagewindow.state.prevy = 0;
+--AddComponent(imagewindow);
+
+
+--textwindow = TextWindow("win1", 0x780000FF, 155, 20, 370, 
+--                        760, 210, 2, "", 10);
+                        
+textwindow = TextWindow("win2", 0x00000000, 55, 20, 370, 
+                          760, 210, 2, "", 10);
+textwindow.mouseDownEventHandler = mouseDown;
+textwindow.mouseUpEventHandler = mouseUp;
+textwindow.mouseMoveEventHandler = mouseMove;
+textwindow.mouseClickEventHandler = mouseClick;
+textwindow.printOverHandler = textOver;
+textwindow.state = {}
+textwindow.state.locked = false;
+textwindow.state.prevx = 0;
+textwindow.state.prevy = 0;
+textwindow:TurnOnNarration();
+AddComponent(textwindow);
 
 BeginESS("Resources/test.ess");
 

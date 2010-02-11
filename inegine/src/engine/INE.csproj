@@ -104,17 +104,19 @@
   <ItemGroup>
     <Compile Include="Effector\Audio\SoundManager.cs" />
     <Compile Include="Effector\Graphics\Components\Sprite\AnimatedSprite.cs" />
+    <Compile Include="Effector\Graphics\Effect\AbstractTransition.cs" />
+    <Compile Include="Effector\Graphics\Effect\TransitionManager.cs" />
     <Compile Include="Effector\Graphics\Text\FreeFont.cs" />
     <Compile Include="Effector\Graphics\Text\FreeType.cs" />
     <Compile Include="Effector\Graphics\Text\RubyFont.cs" />
     <Compile Include="Effector\Graphics\Components\AbstractGUI.cs" />
     <Compile Include="Effector\Graphics\Components\Window\ImageWindow.cs" />
+    <Compile Include="ResourceManager\TextureManager.cs" />
     <Compile Include="ScriptManager\CodeGen.cs" />
     <Compile Include="ScriptManager\Parser.cs" />
     <Compile Include="ScriptManager\Scanner.cs" />
     <Compile Include="ScriptManager\ScriptManager.cs" />
     <Compile Include="StateManager\GameState.cs" />
-    <Compile Include="StateManager\StateManager.cs" />
     <Compile Include="Core\Supervisor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -164,7 +166,7 @@
     <Compile Include="Effector\Graphics\Text\TextRenderer.cs" />
     <Compile Include="Effector\Graphics\Components\Window\TextWindow.cs" />
     <Compile Include="Core\TimeManager.cs" />
-    <Compile Include="Effector\Graphics\Effect\Transition.cs" />
+    <Compile Include="Effector\Graphics\Effect\FadingTransition.cs" />
     <Compile Include="Effector\Graphics\Components\Window\WindowBase.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +182,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\MusicMono.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\test.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Track02.mp3">

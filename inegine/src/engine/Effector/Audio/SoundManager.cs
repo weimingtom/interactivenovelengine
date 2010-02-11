@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Media;
 using NAudio.Wave;
-using NAudio.CoreAudioApi;
 
 namespace INovelEngine.Effector.Audio
 {
@@ -260,7 +258,7 @@ namespace INovelEngine.Effector.Audio
             }
         }
 
-        public static void Unload()
+        public static void Dispose()
         {
             waveOutDevice.Stop();
             
@@ -271,7 +269,6 @@ namespace INovelEngine.Effector.Audio
             mixer.Dispose();
             waveOutDevice.Dispose();
         }
-
     }
 
 }

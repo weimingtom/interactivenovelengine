@@ -288,7 +288,7 @@ namespace INovelEngine.Effector.Graphics.Text
                         break;
                     case ' ':
                         currentGlyph = new GlyphHolder { Type = GlyphHolder.GlyphType.Space };
-                        penx += _size;
+                        penx += _size / 2;
                         if (this.Wrap && penx > this._wrapWidth) wrapThisLine = true;
                         break;
                     case '[':
@@ -400,7 +400,7 @@ namespace INovelEngine.Effector.Graphics.Text
                         ApplyTag(_glyphList[i].Tag, sprite);
                         break;
                     case GlyphHolder.GlyphType.Space:
-                        penx += _size;
+                        penx += _size / 2;
                         break;
                     case GlyphHolder.GlyphType.LineBreak:
                         _prevy = peny + LineSpacing;
