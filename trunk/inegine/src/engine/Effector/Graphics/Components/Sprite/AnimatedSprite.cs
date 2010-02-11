@@ -21,6 +21,22 @@ namespace INovelEngine.Effector
             set;
         }
 
+        public override int width
+        {
+            get
+            {
+                return this.tileWidth;
+            }
+        }
+
+        public override int height
+        {
+            get
+            {
+                return this.tileHeight;
+            }
+        }
+
         protected int startFrame = 0;
         protected int endFrame = 0;
         public bool inAnimation = false;
@@ -53,8 +69,8 @@ namespace INovelEngine.Effector
 
                 int rownum = this._frame / colcnt;
                 int colnum = this._frame % colcnt;
-                this.sourceArea.Y = rownum * tileWidth;
-                this.sourceArea.X = colnum * tileHeight;
+                this.sourceArea.Y = rownum * tileHeight;
+                this.sourceArea.X = colnum * tileWidth;
             }
         }
 

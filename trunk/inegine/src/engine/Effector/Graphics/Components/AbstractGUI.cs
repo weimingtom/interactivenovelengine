@@ -52,13 +52,13 @@ namespace INovelEngine.Effector
             set;
         }
 
-        public int width
+        public virtual int width
         {
             get;
             set;
         }
 
-        public int height
+        public virtual int height
         {
             get;
             set;
