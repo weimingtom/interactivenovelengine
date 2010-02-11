@@ -25,6 +25,9 @@ namespace INovelEngine.Effector
         protected int endFrame = 0;
         public bool inAnimation = false;
         protected TimeEvent updateEvent;
+
+        protected int tileWidth;
+        protected int tileHeight;
         
         protected int _frame;
         public int frame
@@ -50,14 +53,18 @@ namespace INovelEngine.Effector
 
                 int rownum = this._frame / colcnt;
                 int colnum = this._frame % colcnt;
-                this.sourceArea.Y = rownum * sourceArea.Height;
-                this.sourceArea.X = colnum * sourceArea.Width;
+                this.sourceArea.Y = rownum * tileWidth;
+                this.sourceArea.X = colnum * tileHeight;
             }
         }
 
-        public AnimatedSprite(String id, string textureFile, int x, int y, int layer, int rowcnt, int colcnt, int sourceWidth, int sourceHeight, bool fadedOut)
-            : base(id, textureFile, x, y, layer, 0, 0, sourceWidth, sourceHeight, fadedOut)
+        public AnimatedSprite(String id, string textureFile, int x, int y, int layer, int rowcnt, int colcnt, int tileWidth, int tileHeight, bool fadedOut)
+            : base(id, textureFile, x, y, layer, fadedOut)
         {
+            this.tileWidth = tileWidth;
+            this.tileHeight = tileHeight;
+            this.sourceArea.Width = tileWidth;
+            this.sourceArea.Height = tileHeight;
             this.rowcnt = rowcnt;
             this.colcnt = colcnt;
             this.frame = 0;

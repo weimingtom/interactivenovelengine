@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using INovelEngine.Effector;
 using INovelEngine.Effector.Audio;
 using SampleFramework;
 using SlimDX.Direct3D9;
@@ -28,8 +29,10 @@ namespace INovelEngine
         /*
         TextWindow testWindow = null;
         ImageWindow testWindow2 = new ImageWindow(Color.MediumBlue, 200, 10, 390, 780, 200, 0, "Test2", 20);
-        Transition testTransition = new Transition();
+        
         */
+
+        //FadingTransition testTransition = new FadingTransition();
 
         //SpriteBase testSprite = new SpriteBase("testsprite.png", 100, 100, 0, false);
 
@@ -50,7 +53,6 @@ namespace INovelEngine
             ClearColor = Color.White;
             Window.ClientSize = new Size(InitialWidth, InitialHeight);
             Window.Text = "SlimDX - Test Project";
-
             Window.KeyDown += new KeyEventHandler(Window_KeyDown);
             Window.MouseDown += new MouseEventHandler(Window_MouseDown);
             Window.MouseUp += new MouseEventHandler(Window_MouseUp);
@@ -60,9 +62,11 @@ namespace INovelEngine
             // init device
             InitDevice();
 
+
+            //Resources.Add(testTransition);
+
             /*
             Resources.Add(testWindow2);
-            Resources.Add(testTransition);
             Resources.Add(testSprite);
             */
 
@@ -94,7 +98,11 @@ namespace INovelEngine
             
         }
 
-
+        protected override void OnExiting(EventArgs e)
+        {
+            SoundManager.Dispose();
+            base.OnExiting(e);
+        }
  
         private void InitDevice()
         {
@@ -112,15 +120,6 @@ namespace INovelEngine
             settings.MultisampleType = MultisampleType.None;
 
             GraphicsDeviceManager.ChangeDevice(settings);
-        }
-
-        public void Test()
-        {
-            //ImageWindow testWindow2 = new ImageWindow(Color.MediumBlue, 200, 10, 390, 780, 200, 0, "Test2", 20);
-            //Resources.Add(testWindow2);
-            //Components.Add(testWindow2);
-            // testWindow2.BeginNarrate("Test  試験（しけん)\n시험중입니다. Test  試験（しけん) 시험중입니다.", 50);
-            //testTransition.LaunchTransition(800, 600, 400, true, Color.White);
         }
 
         #region Input Events
@@ -206,6 +205,8 @@ namespace INovelEngine
 
         }
 
+
+
         protected override void Initialize()
         {
             base.Initialize();
@@ -218,12 +219,13 @@ namespace INovelEngine
 
         protected override void UnloadContent()
         {
-            SoundManager.Unload();
             base.UnloadContent();
         }
 
         protected void RegisterLuaGlue()
         {
+
+            ScriptManager.lua.RegisterFunction("SetIcon", this, this.GetType().GetMethod("Lua_SetIcon"));
             ScriptManager.lua.RegisterFunction("SetTitle", this, this.GetType().GetMethod("Lua_SetTitle"));
             ScriptManager.lua.RegisterFunction("Trace", this, this.GetType().GetMethod("Lua_Trace"));
 
@@ -285,15 +287,17 @@ namespace INovelEngine
         public string Lua_LoadESS(String path)
         {
             string result = ScriptManager.ParseESS(path);
-#if DEBUG
-            Console.WriteLine(result);
-#endif
             return result;
         }
 
         public void Lua_SetTitle(String s)
         {
             Window.Text = s;
+        }
+
+        public void Lua_SetIcon(String s)
+        {
+            Window.Icon = new System.Drawing.Icon(s);
         }
 
         public void Lua_LoadSound(String id, String s)

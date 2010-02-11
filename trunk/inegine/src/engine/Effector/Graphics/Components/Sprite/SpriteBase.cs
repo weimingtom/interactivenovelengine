@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Text;
+using INovelEngine.ResourceManager;
 using SampleFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
@@ -13,6 +16,8 @@ namespace INovelEngine.Effector
     {
         protected GraphicsDeviceManager manager;
         protected Sprite sprite;
+
+        public INETexture sourceImage;
         public Texture texture;
         public string textureFile;
         protected int alpha;
@@ -25,28 +30,32 @@ namespace INovelEngine.Effector
         private float tickLength;
         private bool fadeIn;
         private bool inTransition = false;
-        public bool fading
+
+        public bool Fading
         {
             get
             {
                 return this.inTransition;
             }
-            set
-            {
-            }
-
         }
 
-        public SpriteBase(String id, string textureFile, int x, int y, int layer, int sourceX, int sourceY, int sourceWidth, int sourceHeight, bool fadedOut)
+        public SpriteBase(String id, string textureFile, int x, int y, int layer, bool fadedOut)
         {
             this.id = id;
             this.textureFile = textureFile;
+
+            this.sourceImage = new INETexture(textureFile);
+
+            this.sourceArea.Width = sourceImage.width;
+            this.sourceArea.Height = sourceImage.height;
+            this.width = sourceImage.width;
+            this.height = sourceImage.height;
+
             this.x = x;
             this.y = y;
-            this.width = sourceWidth;
-            this.height = sourceHeight;
+
             this.layer = layer;
-            this.sourceArea = new Rectangle(sourceX, sourceY, sourceWidth, sourceHeight);//sourceArea;
+            this.sourceArea = new Rectangle(0, 0, width, height);//sourceArea;
             this.sourceAreaUsed = true;
             this.FadedOut = fadedOut;
         }
@@ -113,6 +122,7 @@ namespace INovelEngine.Effector
         {
             manager = graphicsDeviceManager;
             sprite = new Sprite(manager.Direct3D9.Device);
+            this.sourceImage.Initialize(graphicsDeviceManager);
         }
 
         /// <summary>
@@ -121,7 +131,10 @@ namespace INovelEngine.Effector
         public override void LoadContent()
         {
             sprite.OnResetDevice();
-            this.texture = Texture.FromFile(Device, this.textureFile);
+
+            this.sourceImage.LoadContent();
+            this.texture = sourceImage.texture;
+
         }
 
         /// <summary>
