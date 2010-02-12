@@ -1,8 +1,7 @@
 #summary 앞으로 할 일들
 
-= 단기 =
+= Short-term =
 
-= 중기 =
+= Mid-term =
 
-= 장기 =
-
+= Long-term =
