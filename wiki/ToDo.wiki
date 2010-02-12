@@ -4,6 +4,10 @@
     * Goto
     * Conditional branching
 
+  * Sound
+    * Channel management
+    * Loading & unloading
+
   * Transition
     * Dissolve
     * Pixellate
