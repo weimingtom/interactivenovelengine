@@ -1,7 +1,5 @@
 #summary 앞으로 할 일들
 
-= Short-term =
-
-= Mid-term =
-
-= Long-term =
+  * Script
+    * Goto
+    * Conditional branching
