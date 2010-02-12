@@ -8,6 +8,9 @@
     * Channel management
     * Loading & unloading
 
+  * Input
+    * Keyboard/Mouse support
+
   * Transition
     * Dissolve
     * Pixellate
