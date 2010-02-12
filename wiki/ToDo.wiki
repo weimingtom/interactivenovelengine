@@ -3,3 +3,8 @@
   * Script
     * Goto
     * Conditional branching
+
+  * Transition
+    * Dissolve
+    * Pixellate
+    * Move/Zoom
