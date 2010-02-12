@@ -68,6 +68,7 @@ end
 
 function textOver(state, luaevent, args)
 	Trace("textout over!");
+	Trace("attempting to load more ess");
 	coroutine.resume(co);
 end
 
@@ -142,9 +143,11 @@ sprite.state.prevy = 0;
 AddComponent(sprite);
 
 
-daughter = SpriteBase("daughtersprite", "Resources/testsprite.png", (800-512)/2, (600-512), 1, true);
-AddComponent(daughter);
-daughter:LaunchTransition(500, true);
+--LoadCharacter("daughtersprite", "Resources/testsprite.png");
+--ShowCharacter("daughtersprite", 500);
+--daughter = SpriteBase("daughtersprite", "Resources/testsprite.png", (800-512)/2, (600-512), 1, true);
+--AddComponent(daughter);
+--daughter:LaunchTransition(500, true);
 
 --imagewindow = ImageWindow("win2", 0x78FF0000, 155, 150, 120, 
 --                         200, 50, 1, "테스트입니다...", 10);
@@ -176,7 +179,6 @@ textwindow.state.prevy = 0;
 textwindow:TurnOnNarration();
 AddComponent(textwindow);
 
-BeginESS("Resources/test.ess");
 
 --co = coroutine.create(assert(loadstring(LoadESS("Resources/test.ess"))))
 --coroutine.resume(co);
@@ -200,3 +202,5 @@ LoadSound("sound1", "Resources/Track02.mp3");
 LoadSound("click", "Resources/click.wav");
 PlaySound("sound1", true);
 --PlaySound("click", true);
+
+BeginESS("Resources/test.ess");

@@ -23,6 +23,24 @@ function GetComponent(id)
 end
 
 function BeginESS(script)
+	Trace(script)
+	Trace "trying to load another script..."
 	co = coroutine.create(assert(loadstring(LoadESS(script))))
+	Trace "resuming!..."
 	coroutine.resume(co);
+end
+
+function LoadCharacter(id, image)
+	local newCharacter = SpriteBase(id, image, 0, 0, 1, true);
+	newCharacter.x = (800 - newCharacter.width)/2;
+	newCharacter.y = (600 - newCharacter.height);
+	AddComponent(newCharacter);
+end
+
+function ShowCharacter(id, delay)
+	GetComponent(id):LaunchTransition(delay, true);
+end
+
+function HideCharacter(id, delay)
+	GetComponent(id):LaunchTransition(delay, false);
 end

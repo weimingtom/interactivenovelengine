@@ -8,6 +8,14 @@ namespace INovelEngine.Script
     public class CodeGenerator
     {
         private StringBuilder compiledScript = new StringBuilder("");
+        
+        
+        private enum FunctionType
+        {
+            Function, Goto, Load
+        }
+
+        private FunctionType callType = FunctionType.Function;
 
         public string GetScript()
         {
@@ -21,18 +29,39 @@ namespace INovelEngine.Script
 
         public void EndScript()
         {
-            compiledScript.Append("end\ninit();");
+            compiledScript.Append("end\nreturn init();");
         }
 
         public void StartFunction(string name)
         {
-            compiledScript.Append(name);
-            compiledScript.Append("(");
+            if (name.Equals("goto"))
+            {
+                callType = FunctionType.Goto;
+                compiledScript.Append("return ");
+            }
+            else if(name.Equals("load"))
+            {
+                callType = FunctionType.Load;
+                compiledScript.Append("return ");
+            }
+            else
+            {
+                callType = FunctionType.Function;
+                compiledScript.Append(name);
+                compiledScript.Append("(");
+            }
         }
 
         public void EndFunction()
         {
-            compiledScript.Append(");\n");
+            if (callType == FunctionType.Goto || callType == FunctionType.Load)
+            {
+                compiledScript.Append(";\n");
+            }
+            else
+            {
+                compiledScript.Append(");\n");
+            }
         }
 
         public void StartLabel(string name)
@@ -49,9 +78,22 @@ namespace INovelEngine.Script
 
         public void Parameter(string content, bool first, Parser.ExprType type)
         {
-            if (!first) compiledScript.Append(",");
-            compiledScript.Append(content);
-            
+            if (callType == FunctionType.Goto)
+            {
+                compiledScript.Append(content);
+                compiledScript.Append("()");
+            }
+            else if (callType == FunctionType.Load)
+            {
+                compiledScript.Append("BeginESS(");
+                compiledScript.Append(content);
+                compiledScript.Append(")");
+            }
+            else
+            {
+                if (!first) compiledScript.Append(",");
+                compiledScript.Append(content);
+            }
         }
 
         public void StringLit(string content)

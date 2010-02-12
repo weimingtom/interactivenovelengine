@@ -286,7 +286,16 @@ namespace INovelEngine
 
         public string Lua_LoadESS(String path)
         {
-            string result = ScriptManager.ParseESS(path);
+            string result = null;
+            try
+            {
+
+                result = ScriptManager.ParseESS(path);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             return result;
         }
 

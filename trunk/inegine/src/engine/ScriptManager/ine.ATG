@@ -67,7 +67,6 @@ Parameters<out string val>              (. ExprType type; .)
 
 Expr<out string val, out ExprType type>
 =                                       (. val = ""; type = ExprType.Numeric; .)
-
 ( Number<out val>                       (. type = ExprType.Numeric; .)          
 | String<out val>                       (. type = ExprType.String; .)
 ).
@@ -87,7 +86,5 @@ Litstring<out string val>
 
 Label<out string val>
 = label                                 (. val = t.val.TrimEnd(':').TrimStart('\n'); .).
-
-
 
 END INESCRIPT.
