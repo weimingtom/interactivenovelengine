@@ -14,7 +14,6 @@ namespace INovelEngine.Effector
 {
     public class SpriteBase : AbstractGUIComponent, IComparable
     {
-        protected GraphicsDeviceManager manager;
         protected Sprite sprite;
 
         public INETexture sourceImage;
@@ -23,21 +22,6 @@ namespace INovelEngine.Effector
         protected int alpha;
         protected Rectangle sourceArea;
         protected bool sourceAreaUsed = false;
-
-        private float beginTick;
-        private float endTick;
-        private float currentTick;
-        private float tickLength;
-        private bool fadeIn;
-        private bool inTransition = false;
-
-        public bool Fading
-        {
-            get
-            {
-                return this.inTransition;
-            }
-        }
 
         public SpriteBase(String id, string textureFile, int x, int y, int layer, bool fadedOut)
         {
@@ -60,56 +44,18 @@ namespace INovelEngine.Effector
             this.FadedOut = fadedOut;
         }
 
-        Device Device
-        {
-            get { return manager.Direct3D9.Device; }
-        }
-
-        public bool FadedOut
-        {
-            get;
-            set;
-        }
-
         #region IGameComponent Members
 
         protected override void DrawInternal()
         {
-            if (FadedOut)
-            {
-
-            }
-            else if (inTransition)
-            {
-                currentTick = Clock.GetTime();
-
-                float progress = Math.Min(1.0f, (currentTick - beginTick) / tickLength);
-
-                if (fadeIn == false) progress = 1.0f - progress;
-
-                sprite.Begin(SpriteFlags.AlphaBlend);
-                sprite.Draw(this.texture, this.sourceArea, new Vector3(), new Vector3(x, y, 0), Color.FromArgb((int)(progress * 255), Color.White));
-                //sprite.Draw(this.texture, new Vector3(), new Vector3(x, y, 0), Color.FromArgb((int)(progress * 255), Color.White));
-                sprite.End();
-
-                if (currentTick >= endTick)
-                {
-                    inTransition = false;
-                    if (fadeIn == false) FadedOut = true;
-                    else FadedOut = false;
-                }
-            }
-            else
-            {
-                sprite.Begin(SpriteFlags.AlphaBlend);
-                sprite.Draw(this.texture, this.sourceArea, new Vector3(), new Vector3(x, y, 0), Color.White);
-                //sprite.Draw(this.texture, new Vector3(), new Vector3(x, y, 0), Color.White);
-                sprite.End();
-            }
+            sprite.Begin(SpriteFlags.AlphaBlend);
+            sprite.Draw(this.texture, this.sourceArea, new Vector3(), new Vector3(x, y, 0), renderColor);
+            sprite.End();
         }
 
         public override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
         }
 
         #endregion
@@ -120,7 +66,7 @@ namespace INovelEngine.Effector
         /// <param name="graphicsDeviceManager">The graphics device manager.</param>
         public override void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
-            manager = graphicsDeviceManager;
+            base.Initialize(graphicsDeviceManager);
             sprite = new Sprite(manager.Direct3D9.Device);
             this.sourceImage.Initialize(graphicsDeviceManager);
         }
@@ -131,7 +77,6 @@ namespace INovelEngine.Effector
         public override void LoadContent()
         {
             sprite.OnResetDevice();
-
             this.sourceImage.LoadContent();
             this.texture = sourceImage.texture;
 
@@ -155,17 +100,5 @@ namespace INovelEngine.Effector
 
             GC.SuppressFinalize(this);
         }
-
-        public void LaunchTransition(float duration, bool isFadingIn)
-        {
-            beginTick = Clock.GetTime();
-            tickLength = duration;
-            endTick = beginTick + duration;
-            inTransition = true;
-            fadeIn = isFadingIn;
-            FadedOut = false;
-        }
-
-
     }
 }

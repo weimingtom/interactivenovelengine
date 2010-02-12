@@ -11,7 +11,6 @@ namespace INovelEngine.Effector
 {
     public class TextRenderer
     {
-        private static Rectangle rectangle = new Rectangle();
         public static Vector2 cursorPosition;
 
         static public void DrawText(Sprite sprite, RubyFont font, string text, int x, int y, int width, int height, Color color)
