@@ -37,7 +37,6 @@ namespace INovelEngine.Effector
         string scrollBuffer = "";
         public LuaEventHandler printOverHandler;
 
-        private bool narrationHalted = false;
         public Mode narrationMode = Mode.Static;
         private int narrationIndex = 0;
         public int narrationSpeed
@@ -47,7 +46,6 @@ namespace INovelEngine.Effector
 
         int margin = 10;
         private TimeEvent narrationEvent;
-        private bool narrationOver = true;
 
         public Line line;
         //SlimDX.Direct3D9.Font font;
@@ -221,9 +219,7 @@ namespace INovelEngine.Effector
 
         private void SkipToNextBreak()
         {
-            Console.WriteLine("cancelling!");
             Clock.RemoveTimeEvent(this.narrationEvent);
-            this.narrationOver = false;
 
             if (this.breaks.Count == 0)
             {
@@ -234,7 +230,6 @@ namespace INovelEngine.Effector
             }
             else
             {
-                Console.WriteLine(_breakIndex);
                 if (!_cancelFlag && (_breakIndex >= this.breaks.Count || _breakIndex == 1 && this.breaks.Count == 1)) // last _breakIndex
                 {
                     this.scrollBuffer = viewText;
@@ -271,7 +266,6 @@ namespace INovelEngine.Effector
                 {
                     if (this.narrationMode == Mode.Narration)
                     {
-                        this.narrationOver = true;
                         int lengthToCount = 0;
                         lengthToCount = this.viewText.Length - narrationIndex;
                         this.narrationEvent = new TimeEvent(lengthToCount, narrationSpeed, CountText, PrintOverEnd);
@@ -290,10 +284,8 @@ namespace INovelEngine.Effector
                 }
                 else // if there is next text stop
                 {
-                    Console.WriteLine("_breakIndex < this.breaks.Count");
                     if (this.narrationMode == Mode.Narration)
                     {
-                        this.narrationOver = true;
                         int lengthToCount = 0;
                         lengthToCount = this.breaks[_breakIndex] + 1 - narrationIndex;
                         this.narrationEvent = new TimeEvent(lengthToCount, narrationSpeed, CountText, EndText);
@@ -305,7 +297,6 @@ namespace INovelEngine.Effector
                         this.scrollBuffer = viewText.Substring(0, this.breaks[_breakIndex]);
                         this._printState = State.Waiting;
                     }
-                    Console.WriteLine("increasting _breakIndex! = " + _breakIndex);
                     _breakIndex++;
                 }
             }
@@ -326,7 +317,6 @@ namespace INovelEngine.Effector
 
         public Boolean Print(string value)
         {
-            Console.WriteLine("started another line!:" + value);
             this.Text += value;
             this._printState = State.Started;
             AdvanceText();

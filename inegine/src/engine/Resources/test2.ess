@@ -1,5 +1,7 @@
 ﻿PROGRAM
 \다른 스크립트가 로드되었습니다.@
-#HideCharacter "daughtersprite", 500
+#HideCharacter "daughtersprite", 2000
 사라졌죠?@
 끝입니다.@
+
+#load "Resources/test.ess"

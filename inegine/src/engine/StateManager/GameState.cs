@@ -78,6 +78,8 @@ namespace INovelEngine.StateManager
         
         public void AddComponent(AbstractGUIComponent component)
         {
+            if (guiComponents.ContainsKey(component.id)) return;
+
             component.managingState = this;
 
             components.Add(component);

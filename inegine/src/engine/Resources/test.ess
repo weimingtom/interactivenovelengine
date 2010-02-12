@@ -2,7 +2,7 @@
 \안녕하세요^^@ 테스트입니다.@
 딸이 등장합니다.@
 #LoadCharacter "daughtersprite", "Resources/testsprite.png"
-#ShowCharacter "daughtersprite", 500
+#ShowCharacter "daughtersprite", 2000
 나왔죠?@
 #goto test
 test:

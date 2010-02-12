@@ -14,8 +14,8 @@ namespace INovelEngine
 {
     class Supervisor : Game
     {
-        const int InitialWidth = 800;
-        const int InitialHeight = 600;
+        static int InitialWidth = 800;
+        static int InitialHeight = 600;
 
         private GameState activeState;
         Dictionary<String, GameState> states = new Dictionary<string, GameState>();
@@ -52,7 +52,7 @@ namespace INovelEngine
         {
             ClearColor = Color.White;
             Window.ClientSize = new Size(InitialWidth, InitialHeight);
-            Window.Text = "SlimDX - Test Project";
+            //Window.Text = "SlimDX - Test Project";
             Window.KeyDown += new KeyEventHandler(Window_KeyDown);
             Window.MouseDown += new MouseEventHandler(Window_MouseDown);
             Window.MouseUp += new MouseEventHandler(Window_MouseUp);
@@ -227,6 +227,12 @@ namespace INovelEngine
 
             ScriptManager.lua.RegisterFunction("SetIcon", this, this.GetType().GetMethod("Lua_SetIcon"));
             ScriptManager.lua.RegisterFunction("SetTitle", this, this.GetType().GetMethod("Lua_SetTitle"));
+
+
+            ScriptManager.lua.RegisterFunction("SetSize", this, this.GetType().GetMethod("Lua_SetSize"));
+            ScriptManager.lua.RegisterFunction("GetWidth", this, this.GetType().GetMethod("Lua_GetWidth"));
+            ScriptManager.lua.RegisterFunction("GetHeight", this, this.GetType().GetMethod("Lua_GetHeight"));
+
             ScriptManager.lua.RegisterFunction("Trace", this, this.GetType().GetMethod("Lua_Trace"));
 
             ScriptManager.lua.RegisterFunction("AddState", this, this.GetType().GetMethod("Lua_AddState"));
@@ -307,6 +313,23 @@ namespace INovelEngine
         public void Lua_SetIcon(String s)
         {
             Window.Icon = new System.Drawing.Icon(s);
+        }
+
+        public void Lua_SetSize(int width, int height)
+        {
+            InitialWidth = width;
+            InitialHeight = height;
+            Window.ClientSize = new Size(width, height);
+        }
+
+        public int Lua_GetWidth()
+        {
+            return Window.ClientSize.Width;
+        }
+
+        public int Lua_GetHeight()
+        {
+            return Window.ClientSize.Height;
         }
 
         public void Lua_LoadSound(String id, String s)

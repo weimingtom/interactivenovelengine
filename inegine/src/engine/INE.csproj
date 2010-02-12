@@ -150,7 +150,7 @@
     <None Include="Resources\test.ess">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\test2.es">
+    <None Include="Resources\test2.ess">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\Test2.lua">

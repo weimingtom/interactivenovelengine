@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
+using INovelEngine.Core;
 using SampleFramework;
 using INovelEngine.StateManager;
 using INovelEngine.Script;
+using SlimDX.Direct3D9;
 
 namespace INovelEngine.Effector
 {
@@ -21,6 +24,22 @@ namespace INovelEngine.Effector
     public abstract class AbstractGUIComponent : AbstractLuaEventHandler, IGUIComponent
     {
         public bool enabled = true;
+        protected GraphicsDeviceManager manager;
+
+        protected float beginTick;
+        protected float endTick;
+        protected float currentTick;
+        protected float tickLength;
+        protected bool fadeIn;
+        protected bool inTransition = false;
+
+        protected Color renderColor = Color.White;
+        protected float progress = 0;
+
+        public Device Device
+        {
+            get { return manager.Direct3D9.Device; }
+        }
 
         public GameState managingState
         {
@@ -79,21 +98,84 @@ namespace INovelEngine.Effector
             }
         }
 
+        public bool Fading
+        {
+            set
+            {
+                this.inTransition = value;
+                if (!inTransition) this.renderColor = Color.White;
+            }
+
+            get
+            {
+                return this.inTransition;
+            }
+        }
+
+        public bool FadedOut
+        {
+            get;
+            set;
+        }
+
         #region IGameComponent Members
 
         public virtual void Draw()
         {
-            if (this.enabled) this.DrawInternal();
+            if (this.enabled)
+                if (!this.FadedOut)
+                {
+                    if (this.Fading)
+                    {
+                        renderColor = Color.FromArgb((int)(progress * 255), Color.White); ;
+                    }
+                    else
+                    {
+                        renderColor = Color.White;
+                    }
+                    this.DrawInternal();
+                }
         }
         protected abstract void DrawInternal();
 
-        public abstract void Update(GameTime gameTime);
+        public virtual void Update(GameTime gameTime)
+        {
+            if (Fading)
+            {
+                currentTick = Clock.GetTime();
+
+                if (currentTick >= endTick)
+                {
+                    Fading = false;
+                    FadedOut = fadeIn == false;
+                }
+                else
+                {
+                    progress = fadeIn
+                                   ? Math.Min(1.0f, (currentTick - beginTick)/tickLength)
+                                   : 1.0f - Math.Min(1.0f, (currentTick - beginTick) / tickLength);
+                }
+            }
+        }
+
+        public void LaunchTransition(float duration, bool isFadingIn)
+        {
+            beginTick = Clock.GetTime();
+            tickLength = duration;
+            endTick = beginTick + duration;
+            fadeIn = isFadingIn;
+            Fading = true;
+            FadedOut = false;
+        }
 
         #endregion
 
         #region IResource Members
 
-        public abstract void Initialize(GraphicsDeviceManager graphicsDeviceManager);
+        public virtual void Initialize(GraphicsDeviceManager graphicsDeviceManager)
+        {
+            manager = graphicsDeviceManager;
+        }
 
         public abstract void LoadContent();
 
