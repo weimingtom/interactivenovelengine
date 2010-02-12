@@ -20,3 +20,7 @@
     * Tachie system
     * Scheduling/Simulation part
     * Character animation
+
+  * Framework
+    * Error handling
+    * Log framework
