@@ -12,3 +12,8 @@
     * Dissolve
     * Pixellate
     * Move/Zoom
+
+  * Game States
+    * Tachie system
+    * Scheduling/Simulation part
+    * Character animation
