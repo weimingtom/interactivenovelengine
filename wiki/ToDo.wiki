@@ -6,6 +6,10 @@
      * Conditional branching
 
   * Graphics
+    * More components
+     * Button
+     * Text label
+     * Composite
     * Effect
      * Transition
       * Dissolve
