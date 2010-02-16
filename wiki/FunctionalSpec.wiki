@@ -1,0 +1,26 @@
+#summary 지금까지 된 기능들
+
+  * Script
+    * Goto
+    * Conditional branching
+
+  * Sound
+    * Channel management
+    * Loading & unloading
+
+  * Input
+    * Keyboard/Mouse support
+
+  * Transition
+    * Dissolve
+    * Pixellate
+    * Move/Zoom
+
+  * Game States
+    * Tachie system
+    * Scheduling/Simulation part
+    * Character animation
+
+  * Framework
+    * Error handling
+    * Log framework
