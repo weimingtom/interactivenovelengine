@@ -20,8 +20,12 @@
   * Input
     * Mouse input
 
-  * Transition
-    * Fading in/out
+  * Effect
+    * Transition
+     * Fading in/out
+
+  * Resource management
+    * Texture manager
 
   * Framework
     * Game state system
