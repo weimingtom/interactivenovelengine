@@ -17,18 +17,16 @@
   * Input
     * Keyboard/Mouse support
 
- 
-
   * Resource management
     * Sound manager
-
-  * Game States
-    * Tachie system
-    * Scheduling/Simulation part
-    * Character animation
 
   * Framework
     * Error handling
     * Log framework
     * State manager
      * Loading/unloading states
+
+  * Game States
+    * Tachie system
+    * Scheduling/Simulation part
+    * Character animation
