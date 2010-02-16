@@ -1,20 +1,30 @@
 #summary 앞으로 할 일들
 
   * Script
-    * Goto
-    * Conditional branching
+    * Lua
+    * ESS
+     * Goto
+     * Conditional branching
+
+  * Graphics
+    * Sprite/animated sprite
+    * Text rendering
+     * Ruby/formatting
 
   * Sound
     * Channel management
-    * Loading & unloading
 
   * Input
     * Keyboard/Mouse support
 
-  * Transition
+  * Effect
+   * Transition
     * Dissolve
     * Pixellate
     * Move/Zoom
+
+  * Resource management
+    * Sound manager
 
   * Game States
     * Tachie system
@@ -24,3 +34,5 @@
   * Framework
     * Error handling
     * Log framework
+    * State manager
+     * Loading/unloading states
