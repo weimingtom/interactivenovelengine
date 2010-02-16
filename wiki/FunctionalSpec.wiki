@@ -2,7 +2,6 @@
 
   * Script
     * Lua
-     * Event handling
      * Text script (ESS)
     * ESS
      * Loading script
@@ -27,6 +26,7 @@
     * Texture manager
 
   * Framework
+    * Event handling
     * Game state system
     * GUI system
 
