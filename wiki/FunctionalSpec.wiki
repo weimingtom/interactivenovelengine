@@ -12,6 +12,9 @@
     * Sprite/animated sprite
     * Text rendering
      * Ruby/formatting
+    * Effect
+     * Transition
+     * Fading in/out
 
   * Sound
     * Multi-channel support
@@ -19,10 +22,6 @@
 
   * Input
     * Mouse input
-
-  * Effect
-    * Transition
-     * Fading in/out
 
   * Resource management
     * Texture manager
