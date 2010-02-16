@@ -1,26 +1,32 @@
 #summary 지금까지 된 기능들
 
   * Script
-    * Goto
-    * Conditional branching
+    * Lua
+     * Event handling
+     * Text script (ESS)
+    * ESS
+     * Loading script
+     * Displaying text
+
+  * Graphics
+    * Sprite/Animated sprite
+    * Text rendering
 
   * Sound
-    * Channel management
-    * Loading & unloading
+    * Multi-channel support
+    * MP3/WAV playback
 
   * Input
-    * Keyboard/Mouse support
+    * Mouse input
 
   * Transition
-    * Dissolve
-    * Pixellate
-    * Move/Zoom
+    * Fading in/out
+
+  * Framework
+    * Game states
+    * Log framework
 
   * Game States
     * Tachie system
     * Scheduling/Simulation part
     * Character animation
-
-  * Framework
-    * Error handling
-    * Log framework
