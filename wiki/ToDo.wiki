@@ -7,6 +7,7 @@
 
   * Graphics
     * More components
+     * Tachie
      * Button
      * Text label
      * Composite
@@ -31,6 +32,5 @@
      * Loading/unloading states
 
   * Game States
-    * Tachie system
     * Scheduling/Simulation part
     * Character animation
