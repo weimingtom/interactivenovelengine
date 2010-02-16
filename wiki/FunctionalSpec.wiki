@@ -9,8 +9,9 @@
      * Displaying text
 
   * Graphics
-    * Sprite/Animated sprite
+    * Sprite/animated sprite
     * Text rendering
+     * Ruby/formatting
 
   * Sound
     * Multi-channel support
