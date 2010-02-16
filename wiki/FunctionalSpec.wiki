@@ -14,7 +14,7 @@
      * Ruby/formatting
     * Effect
      * Transition
-     * Fading in/out
+      * Fading in/out
 
   * Sound
     * Multi-channel support
