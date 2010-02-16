@@ -1,27 +1,23 @@
 #summary 앞으로 할 일들
 
   * Script
-    * Lua
     * ESS
      * Goto
      * Conditional branching
 
   * Graphics
-    * Sprite/animated sprite
-    * Text rendering
-     * Ruby/formatting
-
+    * Effect
+     * Transition
+      * Dissolve
+      * Pixellate
+      * Move/Zoom
   * Sound
     * Channel management
 
   * Input
     * Keyboard/Mouse support
 
-  * Effect
-   * Transition
-    * Dissolve
-    * Pixellate
-    * Move/Zoom
+ 
 
   * Resource management
     * Sound manager
