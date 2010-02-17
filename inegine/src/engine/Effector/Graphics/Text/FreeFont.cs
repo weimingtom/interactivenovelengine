@@ -462,6 +462,7 @@ namespace INovelEngine.Effector.Graphics.Text
                     }
                     catch (Exception e)
                     {
+                        Console.WriteLine(e.Message);
                         _colorStack.Pop();
                     }
                 }

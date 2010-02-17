@@ -1,13 +1,24 @@
 ﻿PROGRAM
-\안녕하세요^^@ 테스트입니다.@
-딸이 등장합니다.@
-#LoadCharacter "daughtersprite", "Resources/testsprite.png"
-#ShowCharacter "daughtersprite", 500
-나왔죠?@
-#if month[3] == 'TEST' and day == 2
+#LoadCharacter "musume1", "Resources/before.png"
+#LoadCharacter "musume2", "Resources/after.png" 
+#goto girl
+$test = 4; test2 = 5; test3 = "테스트";
+girl:
+#if 4/2 == 2 and 1!=2
+테스트는 <test> 입니다.
+<test>가 보이나요?
+4/2는 2입니다 ^^@
+#elseif test = "테스트"
+\테스트입니다 ㅎㅎ
+#else
+\마지막 테스트에요.
 #end
-#Clear
+\안녕하세요^^@ 테스트입니다.@
+캐릭터가 등장합니다.@
+#ShowCharacter "musume1", 2000 
+나왔죠?@
 #goto test
 test:
 시험입니다^^;@
-#load "test"
+#load "Resources/test2.ess"
+

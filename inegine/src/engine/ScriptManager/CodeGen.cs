@@ -128,6 +128,7 @@ namespace INovelEngine.Script
 
         public void StringLit(string content)
         {
+            content = ReplaceString(content);
             string temp;
             int index = content.IndexOf('\\');
             Console.WriteLine(index);
@@ -152,6 +153,29 @@ namespace INovelEngine.Script
             compiledScript.Append("TextOut(\"");
             compiledScript.Append(content);
             compiledScript.Append("\\n\");\n");
+        }
+
+        public string ReplaceString(string content)
+        {
+            StringBuilder output = new StringBuilder();
+            int index = content.IndexOf('<');
+            int endindex = content.IndexOf('>');
+            if (index > -1)
+            {
+                while (index > -1 && endindex > -1 && index < endindex)
+                {
+                    output.Append(content.Substring(0, index));
+                    output.Append("\" .. ");
+                    output.Append(content.Substring(index + 1, endindex - index - 1));
+                    output.Append(" .. \"");
+                    if (index <= content.Length - 1) content = content.Substring(endindex + 1);
+                    index = content.IndexOf('<');
+                    endindex = content.IndexOf('>');
+                }
+
+            }
+            output.Append(content);
+            return output.ToString();
         }
 
         public void AddText(string val)
