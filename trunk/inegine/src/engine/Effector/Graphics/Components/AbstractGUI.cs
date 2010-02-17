@@ -25,6 +25,8 @@ namespace INovelEngine.Effector
     {
         public bool enabled = true;
         protected GraphicsDeviceManager manager;
+        public Dictionary<String, AbstractGUIComponent> guiComponents =
+            new Dictionary<string, AbstractGUIComponent>();
 
         protected float beginTick;
         protected float endTick;
@@ -51,6 +53,18 @@ namespace INovelEngine.Effector
         {
             get;
             set;
+        }
+
+        public bool Enabled
+        {
+            get
+            {
+                return enabled;
+            }
+            set
+            {
+                enabled = value;
+            }
         }
 
         public string id

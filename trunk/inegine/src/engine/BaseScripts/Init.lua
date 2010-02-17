@@ -19,7 +19,8 @@ function AddComponent(component)
 end;
 
 function GetComponent(id)
-    return state.guiComponents[id];
+    return state:GetComponent(id)
+    --return state.guiComponents[id];
 end
 
 function BeginESS(script)
@@ -31,16 +32,28 @@ function BeginESS(script)
 end
 
 function LoadCharacter(id, image)
+	Trace(id);
 	local newCharacter = SpriteBase(id, image, 0, 0, 1, true);
-	newCharacter.x = (800 - newCharacter.width)/2;
-	newCharacter.y = (600 - newCharacter.height);
+	newCharacter.x = (GetWidth() - newCharacter.width)/2;
+	newCharacter.y = (GetHeight() - newCharacter.height);
 	AddComponent(newCharacter);
 end
 
+function MoveCharacter(id, x)
+	GetComponent(id).x = x;
+end
+ 
 function ShowCharacter(id, delay)
-	GetComponent(id):LaunchTransition(delay, true);
+	local component = GetComponent(id)
+	component:LaunchTransition(delay, true)
 end
 
 function HideCharacter(id, delay)
-	GetComponent(id):LaunchTransition(delay, false);
+	local component = GetComponent(id)
+	component:LaunchTransition(delay, false)
+end
+
+function Dissolve(id1, id2)
+	ShowCharacter(id2, 0)
+	HideCharacter(id1, 500)
 end

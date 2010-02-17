@@ -1,0 +1,13 @@
+﻿PROGRAM
+\안녕하세요^^@ 테스트입니다.@
+딸이 등장합니다.@
+#LoadCharacter "daughtersprite", "Resources/testsprite.png"
+#ShowCharacter "daughtersprite", 500
+나왔죠?@
+#if month[3] == 'TEST' and day == 2
+#end
+#Clear
+#goto test
+test:
+시험입니다^^;@
+#load "test"

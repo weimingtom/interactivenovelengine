@@ -1,7 +1,11 @@
 ﻿PROGRAM
 \다른 스크립트가 로드되었습니다.@
-#HideCharacter "daughtersprite", 2000
+#Dissolve "musume1", "musume2"
 사라졌죠?@
 끝입니다.@
-
+#HideCharacter "musume2", 0
+#goto unload
+unload:
+;unloading musume1 and musume2...
+#Trace "unloading"
 #load "Resources/test.ess"
