@@ -89,6 +89,18 @@ namespace INovelEngine.StateManager
             InvalidateZOrder();
         }
 
+        public AbstractGUIComponent GetComponent(string id)
+        {
+            if (guiComponents.ContainsKey(id))
+            {
+                return guiComponents[id];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public void InvalidateZOrder()
         {
             components.Sort(); // sort them according to z-order (higher, higher)
@@ -144,6 +156,5 @@ namespace INovelEngine.StateManager
             }
             return null;
         }
-
     }
 }

@@ -295,8 +295,8 @@ namespace INovelEngine
             string result = null;
             try
             {
-
                 result = ScriptManager.ParseESS(path);
+                Console.WriteLine(result);
             }
             catch (Exception e)
             {

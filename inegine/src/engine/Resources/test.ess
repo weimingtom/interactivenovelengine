@@ -1,8 +1,15 @@
 ﻿PROGRAM
+#LoadCharacter "musume1", "Resources/before.png"
+#LoadCharacter "musume2", "Resources/after.png" 
+#goto girl
+girl:
+#
+#if (4/2 == 2)
+\4/2는 2입니다 ^^@
+#end
 \안녕하세요^^@ 테스트입니다.@
-딸이 등장합니다.@
-#LoadCharacter "daughtersprite", "Resources/testsprite.png"
-#ShowCharacter "daughtersprite", 2000
+캐릭터가 등장합니다.@
+#ShowCharacter "musume1", 2000 
 나왔죠?@
 #goto test
 test:

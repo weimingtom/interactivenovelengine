@@ -10,7 +10,7 @@ CHARACTERS
   letter             = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".
   digit              = "0123456789".
   hexDigit           = digit + "ABCDEFabcdef".
-  operators          = "+-/*()%.".
+  operators          = "[]<>=+-/*()%.\' ".
   numericletters     = hexDigit + operators.
   lf  = '\n'.
   tab = '\t'.
@@ -56,8 +56,9 @@ Stat                                 (. string val; .)
 
 FunctionCall                         (. string name, val; .)
 = Ident<out name>                    (. gen.StartFunction(name); .)
-  Parameters<out val>                (. gen.EndFunction(); .).
-
+  {
+  Parameters<out val>               
+  }                                   (. gen.EndFunction(); .).
 Parameters<out string val>              (. ExprType type; .)
 = Expr<out val, out type>               (. gen.Parameter(val, true, type); .)
   {

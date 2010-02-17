@@ -118,7 +118,9 @@ public enum Op { ADD, SUB, MUL, DIV, EQU, LSS, GTR, NEG };
 		string name, val; 
 		Ident(out name);
 		gen.StartFunction(name); 
-		Parameters(out val);
+		while (la.kind == 3 || la.kind == 4) {
+			Parameters(out val);
+		}
 		gen.EndFunction(); 
 	}
 

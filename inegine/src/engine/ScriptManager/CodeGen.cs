@@ -12,7 +12,7 @@ namespace INovelEngine.Script
         
         private enum FunctionType
         {
-            Function, Goto, Load
+            Function, Goto, Load, If, Elseif, Else, Ifend
         }
 
         private FunctionType callType = FunctionType.Function;
@@ -44,6 +44,25 @@ namespace INovelEngine.Script
                 callType = FunctionType.Load;
                 compiledScript.Append("return ");
             }
+            else if(name.Equals("if"))
+            {
+                callType = FunctionType.If;
+                compiledScript.Append("if (");
+            }
+            else if (name.Equals("elseif"))
+            {
+                callType = FunctionType.Elseif;
+                compiledScript.Append("elseif (");
+            }
+            else if (name.Equals("else"))
+            {
+                callType = FunctionType.Else;
+                compiledScript.Append("else\n");
+            }
+            else if (name.Equals("end"))
+            {
+                callType = FunctionType.Ifend;
+            }
             else
             {
                 callType = FunctionType.Function;
@@ -57,6 +76,17 @@ namespace INovelEngine.Script
             if (callType == FunctionType.Goto || callType == FunctionType.Load)
             {
                 compiledScript.Append(";\n");
+            }
+            else if(callType == FunctionType.If || callType == FunctionType.Elseif)
+            {
+                compiledScript.Append(") then\n");
+            }
+            else if(callType == FunctionType.Else)
+            {
+            }
+            else if(callType == FunctionType.Ifend)
+            {
+                compiledScript.Append("end;\n");
             }
             else
             {
@@ -122,6 +152,12 @@ namespace INovelEngine.Script
             compiledScript.Append("TextOut(\"");
             compiledScript.Append(content);
             compiledScript.Append("\\n\");\n");
+        }
+
+        public void AddText(string val)
+        {
+            compiledScript.Append(val);
+            compiledScript.Append("\n");
         }
 
     }

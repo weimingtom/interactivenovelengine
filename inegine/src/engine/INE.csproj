@@ -181,6 +181,12 @@
     </Content>
     <Content Include="lua51.dll" />
     <Content Include="LuaInterface.dll" />
+    <Content Include="Resources\after.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\before.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\click.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -224,10 +224,13 @@ public class Scanner {
 		start = new Hashtable(128);
 		for (int i = 10; i <= 10; ++i) start[i] = 10;
 		for (int i = 13; i <= 13; ++i) start[i] = 10;
+		for (int i = 32; i <= 32; ++i) start[i] = 7;
 		for (int i = 37; i <= 37; ++i) start[i] = 7;
-		for (int i = 40; i <= 43; ++i) start[i] = 7;
+		for (int i = 39; i <= 43; ++i) start[i] = 7;
 		for (int i = 45; i <= 57; ++i) start[i] = 7;
-		for (int i = 65; i <= 90; ++i) start[i] = 7;
+		for (int i = 60; i <= 62; ++i) start[i] = 7;
+		for (int i = 65; i <= 91; ++i) start[i] = 7;
+		for (int i = 93; i <= 93; ++i) start[i] = 7;
 		for (int i = 97; i <= 122; ++i) start[i] = 7;
 		start[34] = 4; 
 		start[44] = 17; 
@@ -398,7 +401,7 @@ public class Scanner {
 			case 6:
 				{t.kind = 3; break;}
 			case 7:
-				if (ch == '%' || ch >= '(' && ch <= '+' || ch >= '-' && ch <= '9' || ch >= 'A' && ch <= 'Z' || ch >= 'a' && ch <= 'z') {AddCh(); goto case 7;}
+				if (ch == ' ' || ch == '%' || ch >= 39 && ch <= '+' || ch >= '-' && ch <= '9' || ch >= '<' && ch <= '>' || ch >= 'A' && ch <= '[' || ch == ']' || ch >= 'a' && ch <= 'z') {AddCh(); goto case 7;}
 				else {t.kind = 4; t.val = new String(tval, 0, tlen); CheckLiteral(); return t;}
 			case 8:
 				if (ch == 10 || ch == 13) {apx++; AddCh(); goto case 9;}
