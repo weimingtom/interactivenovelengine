@@ -9,11 +9,11 @@ using System;
 public class Parser {
 	public const int _EOF = 0;
 	public const int _ident = 1;
-	public const int _litstring = 2;
-	public const int _string = 3;
+	public const int _luaident = 2;
+	public const int _litstring = 3;
 	public const int _numericstring = 4;
 	public const int _label = 5;
-	public const int maxT = 8;
+	public const int maxT = 7;
 
 	const bool T = true;
 	const bool x = false;
@@ -101,24 +101,35 @@ public enum Op { ADD, SUB, MUL, DIV, EQU, LSS, GTR, NEG };
 
 	void Stat() {
 		string val; 
-		if (la.kind == 1) {
+		if (la.kind == 2) {
+			LuaCall();
+		} else if (la.kind == 1) {
 			FunctionCall();
 		} else if (la.kind == 5) {
 			Label(out val);
 			gen.EndLabel(); gen.StartLabel(val); 
-		} else if (la.kind == 2) {
+		} else if (la.kind == 3) {
 			Litstring(out val);
 			gen.StringLit(val.TrimStart('\n')); 
-		} else if (StartOf(2)) {
+		} else if (la.kind == 4 || la.kind == 6 || la.kind == 7) {
 			Get();
-		} else SynErr(9);
+		} else SynErr(8);
+	}
+
+	void LuaCall() {
+		string val = ""; 
+		LuaIdent();
+		while (la.kind == 4) {
+			String(out val);
+		}
+		gen.AddText(val); 
 	}
 
 	void FunctionCall() {
 		string name, val; 
 		Ident(out name);
 		gen.StartFunction(name); 
-		while (la.kind == 3 || la.kind == 4) {
+		while (la.kind == 4) {
 			Parameters(out val);
 		}
 		gen.EndFunction(); 
@@ -130,7 +141,7 @@ public enum Op { ADD, SUB, MUL, DIV, EQU, LSS, GTR, NEG };
 	}
 
 	void Litstring(out string val) {
-		Expect(2);
+		Expect(3);
 		val = t.val; 
 	}
 
@@ -144,32 +155,21 @@ public enum Op { ADD, SUB, MUL, DIV, EQU, LSS, GTR, NEG };
 		ExprType type; 
 		Expr(out val, out type);
 		gen.Parameter(val, true, type); 
-		while (la.kind == 7) {
-			Get();
-			Expr(out val, out type);
-			gen.Parameter(val, false, type); 
-		}
 	}
 
 	void Expr(out string val, out ExprType type) {
 		val = ""; type = ExprType.Numeric; 
-		if (la.kind == 4) {
-			Number(out val);
-			type = ExprType.Numeric; 
-		} else if (la.kind == 3) {
-			String(out val);
-			type = ExprType.String; 
-		} else SynErr(10);
+		String(out val);
+		type = ExprType.String; 
 	}
 
-	void Number(out string val) {
+	void String(out string val) {
 		Expect(4);
 		val = t.val; 
 	}
 
-	void String(out string val) {
-		Expect(3);
-		val = t.val; 
+	void LuaIdent() {
+		Expect(2);
 	}
 
 
@@ -184,9 +184,8 @@ public enum Op { ADD, SUB, MUL, DIV, EQU, LSS, GTR, NEG };
 	}
 	
 	static readonly bool[,] set = {
-		{T,x,x,x, x,x,x,x, x,x},
-		{x,T,T,T, T,T,T,T, T,x},
-		{x,x,x,T, T,x,T,T, T,x}
+		{T,x,x,x, x,x,x,x, x},
+		{x,T,T,T, T,T,T,T, x}
 
 	};
 } // end Parser
@@ -202,15 +201,13 @@ public class Errors {
 		switch (n) {
 			case 0: s = "EOF expected"; break;
 			case 1: s = "ident expected"; break;
-			case 2: s = "litstring expected"; break;
-			case 3: s = "string expected"; break;
+			case 2: s = "luaident expected"; break;
+			case 3: s = "litstring expected"; break;
 			case 4: s = "numericstring expected"; break;
 			case 5: s = "label expected"; break;
 			case 6: s = "\"PROGRAM\" expected"; break;
-			case 7: s = "\",\" expected"; break;
-			case 8: s = "??? expected"; break;
-			case 9: s = "invalid Stat"; break;
-			case 10: s = "invalid Expr"; break;
+			case 7: s = "??? expected"; break;
+			case 8: s = "invalid Stat"; break;
 
 			default: s = "error " + n; break;
 		}

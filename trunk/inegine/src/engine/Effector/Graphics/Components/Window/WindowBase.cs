@@ -24,8 +24,6 @@ namespace INovelEngine.Effector
 
         protected Color _color;
         public int alpha;
-
-        protected GraphicsDeviceManager manager;
         protected Sprite sprite;
 
         public WindowBase(String id, int color, int alpha, int x, int y, int width, int height, int layer)

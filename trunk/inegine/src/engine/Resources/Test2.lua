@@ -203,4 +203,6 @@ LoadSound("click", "Resources/click.wav");
 PlaySound("sound1", true);
 --PlaySound("click", true);
 
+counter = 0;
+
 BeginESS("Resources/test.ess");
