@@ -3,7 +3,7 @@
 ===단기===
  * Script
    * Lua
-     * Fix globarl variables (i.e. state = GameState; sprite = SpriteBase)
+     * Fix globarl variables (i.e. state, sprite)
 
 ===중장기===
   * Script
