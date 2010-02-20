@@ -1,5 +1,8 @@
 #summary 앞으로 할 일들
 
+=단기=
+
+=중장기=
   * Script
     * ESS
      * Goto
