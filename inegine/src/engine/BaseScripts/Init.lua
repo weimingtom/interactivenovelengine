@@ -32,25 +32,42 @@ function BeginESS(script)
 end
 
 function LoadCharacter(id, image)
-	Trace(id);
-	local newCharacter = SpriteBase(id, image, 0, 0, 1, true);
-	newCharacter.x = (GetWidth() - newCharacter.width)/2;
-	newCharacter.y = (GetHeight() - newCharacter.height);
-	AddComponent(newCharacter);
+	local status, newCharacter = pcall(SpriteBase, id, image, 0, 0, 1, true);
+	if (status) then
+		newCharacter.x = (GetWidth() - newCharacter.width)/2;
+		newCharacter.y = (GetHeight() - newCharacter.height);
+		AddComponent(newCharacter);
+		Trace("loading " .. id .. " done");
+	else
+		Trace("loading " .. id .. " failed");
+	end
 end
 
 function MoveCharacter(id, x)
-	GetComponent(id).x = x;
+	local component = GetComponent(id)
+	if (component ~= nil) then
+		component.x = x;
+	else
+		Trace("invalid id: " .. id);
+	end
 end
  
 function ShowCharacter(id, delay)
 	local component = GetComponent(id)
-	component:LaunchTransition(delay, true)
+	if (component ~= nil) then
+		component:LaunchTransition(delay, true) 
+	else
+		Trace("invalid id: " .. id);
+	end
 end
 
 function HideCharacter(id, delay)
 	local component = GetComponent(id)
-	component:LaunchTransition(delay, false)
+	if (component ~= nil) then
+		component:LaunchTransition(delay, false)	
+	else
+		Trace("invalid id: " .. id);
+	end
 end
 
 function Dissolve(id1, id2)

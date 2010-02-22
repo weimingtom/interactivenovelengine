@@ -1,7 +1,7 @@
 ﻿PROGRAM
 $counter = counter + 1;
 #Trace counter
-$LoadCharacter("musume1", "Resources/before.png")
+$LoadCharacter("musume1", "Resources/before.pn")
 #LoadCharacter "musume2", "Resources/after.png" 
 #goto girl
 girl:

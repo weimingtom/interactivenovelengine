@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
+using INovelEngine.Core;
 using SampleFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
@@ -21,22 +22,30 @@ namespace INovelEngine.ResourceManager
 
         public INETexture (string fileName)
         {
-            Bitmap bitmap = new Bitmap(fileName);
-            scaledBitmap = bitmap;
-            this.width = bitmap.Width;
-            this.height = bitmap.Height;
-
-            int newWidth = ClosestPower2(bitmap.Width);
-            int newHeight = ClosestPower2(bitmap.Height);
-
-            if (!(bitmap.Width == newWidth && bitmap.Height == newHeight))
+            try
             {
-                scaledBitmap = new Bitmap(newWidth, newHeight);
+                Bitmap bitmap = new Bitmap(fileName);
+                scaledBitmap = bitmap;
+                this.width = bitmap.Width;
+                this.height = bitmap.Height;
 
-                using (Graphics g = Graphics.FromImage((Image)scaledBitmap))
-                    g.DrawImage(bitmap, 0, 0, bitmap.Width, bitmap.Height);
-                bitmap.Dispose();
-            }   
+                int newWidth = ClosestPower2(bitmap.Width);
+                int newHeight = ClosestPower2(bitmap.Height);
+
+                if (!(bitmap.Width == newWidth && bitmap.Height == newHeight))
+                {
+                    scaledBitmap = new Bitmap(newWidth, newHeight);
+
+                    using (Graphics g = Graphics.FromImage((Image)scaledBitmap))
+                        g.DrawImage(bitmap, 0, 0, bitmap.Width, bitmap.Height);
+                    bitmap.Dispose();
+                }   
+            }
+            catch (Exception e)
+            {
+                throw new TextureLoadError(fileName);
+            }
+
         }
         #region IResource Members
 
