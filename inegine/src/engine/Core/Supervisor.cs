@@ -238,6 +238,8 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("AddState", this, this.GetType().GetMethod("Lua_AddState"));
             ScriptManager.lua.RegisterFunction("SwitchState", this, this.GetType().GetMethod("Lua_SwitchState"));
             ScriptManager.lua.RegisterFunction("LoadState", this, this.GetType().GetMethod("Lua_LoadState"));
+            ScriptManager.lua.RegisterFunction("CurrentState", this, this.GetType().GetMethod("Lua_CurrentState"));
+
             ScriptManager.lua.RegisterFunction("LoadESS", this, this.GetType().GetMethod("Lua_LoadESS"));
 
             ScriptManager.lua.RegisterFunction("LoadSound", this, this.GetType().GetMethod("Lua_LoadSound"));
@@ -283,6 +285,11 @@ namespace INovelEngine
 
             this.activeState = state;
             Resources.Add(state);
+        }
+
+        public GameState Lua_CurrentState()
+        {
+            return this.activeState;
         }
 
         public void Lua_Trace(String s)
