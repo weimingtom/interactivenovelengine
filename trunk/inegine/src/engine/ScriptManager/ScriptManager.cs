@@ -97,8 +97,15 @@ namespace INovelEngine.Script
             
         public static void Init()
         {
-            lua = new Lua();
-            lua.DoFile("BaseScripts/Init.lua");
+            try
+            {
+                lua = new Lua();
+                lua.DoFile("BaseScripts/Init.lua");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         public static String ParseESS(String path)

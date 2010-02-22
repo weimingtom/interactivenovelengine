@@ -102,6 +102,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Exceptions.cs" />
     <Compile Include="Effector\Audio\SoundManager.cs" />
     <Compile Include="Effector\Graphics\Components\Sprite\AnimatedSprite.cs" />
     <Compile Include="Effector\Graphics\Effect\AbstractTransition.cs" />

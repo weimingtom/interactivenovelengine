@@ -25,23 +25,29 @@ namespace INovelEngine.Effector
 
         public SpriteBase(String id, string textureFile, int x, int y, int layer, bool fadedOut)
         {
-            this.id = id;
-            this.textureFile = textureFile;
+            try
+            {
+                this.id = id;
+                this.textureFile = textureFile;
 
-            this.sourceImage = new INETexture(textureFile);
+                this.sourceImage = new INETexture(textureFile);
+                this.sourceArea.Width = sourceImage.width;
+                this.sourceArea.Height = sourceImage.height;
+                this.width = sourceImage.width;
+                this.height = sourceImage.height;
 
-            this.sourceArea.Width = sourceImage.width;
-            this.sourceArea.Height = sourceImage.height;
-            this.width = sourceImage.width;
-            this.height = sourceImage.height;
+                this.x = x;
+                this.y = y;
 
-            this.x = x;
-            this.y = y;
-
-            this.layer = layer;
-            this.sourceArea = new Rectangle(0, 0, width, height);//sourceArea;
-            this.sourceAreaUsed = true;
-            this.FadedOut = fadedOut;
+                this.layer = layer;
+                this.sourceArea = new Rectangle(0, 0, width, height);//sourceArea;
+                this.sourceAreaUsed = true;
+                this.FadedOut = fadedOut;
+            }
+            catch (TextureLoadError e)
+            {
+                throw e;
+            }
         }
 
         #region IGameComponent Members

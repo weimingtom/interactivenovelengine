@@ -197,12 +197,16 @@ animatedsprite.state.prevy = 0;
 AddComponent(animatedsprite);
 
 --LoadSound("sound1", "Resources/MusicMono.wav");
-LoadSound("sound1", "Resources/Track02.mp3");
+--LoadSound("sound1", "Resources/Track02.mp3");
 
-LoadSound("click", "Resources/click.wav");
-PlaySound("sound1", true);
+--LoadSound("click", "Resources/click.wav");
+--PlaySound("sound1", true);
 --PlaySound("click", true);
 
 counter = 0;
+
+
+--LoadCharacter("musume1", "Resources/before.pn");
+--ShowCharacter("musume", 100);
 
 BeginESS("Resources/test.ess");
