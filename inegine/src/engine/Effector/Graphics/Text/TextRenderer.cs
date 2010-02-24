@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using INovelEngine.Effector.Graphics.Text;
+using SampleFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
 using Font=SlimDX.Direct3D9.Font;
@@ -29,11 +30,11 @@ namespace INovelEngine.Effector
 
         }
 
-        static public RubyFont LoadFont(SlimDX.Direct3D9.Device device, string fontName, int size, FontWeight weight, Boolean italic)
+        static public RubyFont LoadFont(GraphicsDeviceManager manager, string fontName, int size, FontWeight weight, Boolean italic)
         {
             try
             {
-                return new RubyFont(device, fontName, size, fontName, size/4);
+                return new RubyFont(manager, fontName, size, fontName, size/4);
 
             }
             catch (Exception e)

@@ -86,6 +86,7 @@ namespace INovelEngine
             //Resources.Add(teststate);
 
             //GraphicsDeviceManager.ChangeDevice(DeviceVersion.Direct3D9, true, InitialWidth, InitialHeight);
+            
 
             this.Window.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.Window.MaximizeBox = false;
@@ -118,7 +119,6 @@ namespace INovelEngine
 #endif
             //settings.MultisampleType = MultisampleType.EightSamples;
             settings.MultisampleType = MultisampleType.None;
-
             GraphicsDeviceManager.ChangeDevice(settings);
         }
 

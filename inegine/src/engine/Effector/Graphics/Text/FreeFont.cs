@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using SampleFramework;
 using SlimDX.Direct3D9;
 using Tao.FreeType;
 using SlimDX;
 using System.Drawing;
+using SampleFramework;
+using System.Drawing.Imaging;
 
 namespace INovelEngine.Effector.Graphics.Text
 {
@@ -128,6 +131,7 @@ namespace INovelEngine.Effector.Graphics.Text
         private readonly IntPtr _library;
         private readonly IntPtr _face;
 
+        private GraphicsDeviceManager _manager;
         private SlimDX.Direct3D9.Device _device;
         private FT_GlyphSlotRec _fslot;
 
@@ -181,10 +185,14 @@ namespace INovelEngine.Effector.Graphics.Text
         protected int _maxHeight;
         protected int currentMaxHeight;
 
-        public FreeFont(SlimDX.Direct3D9.Device device, string fontPath, int size)
+        protected Bitmap glyphBuffer;
+        protected byte[] textureBuffer;
+
+        public FreeFont(GraphicsDeviceManager _manager, string fontPath, int size)
         {
             TextEffect = Effect.None;
-            this._device = device;
+            this._manager = _manager;
+            this._device = _manager.Direct3D9.Device;
             this._fontPath = fontPath;
 
             this._size = Math.Min(Maxsize / 2, size);
@@ -194,13 +202,15 @@ namespace INovelEngine.Effector.Graphics.Text
             _glyphList = new List<GlyphHolder>();
             _colorStack = new Stack<Color>();
 
-            int error;
+            glyphBuffer = new Bitmap(Maxsize, Maxsize);
+            textureBuffer = new byte[Maxsize * Maxsize * 4];
 
-            error = FT.FT_Init_FreeType(out _library);
+            int error = FT.FT_Init_FreeType(out _library);
             if (error != 0) throw new Exception("freetype library init error!");
             error = FT.FT_New_Face(_library, fontPath, 2, out _face);
             if (error != 0) throw new Exception("face init error!");
             this.SetSize(_size);
+
         }
 
 
@@ -511,14 +521,101 @@ namespace INovelEngine.Effector.Graphics.Text
             this._glyphCache.Add(c, g);
             return g;
         }
+        //void RenderBitmap(Glyph g, int left, int top)
+        //{
+        //    FT_GlyphSlotRec fslot = g.Slot;
+        //    FT_Bitmap bitmap = fslot.bitmap;
+        //    int width = bitmap.width;
+        //    int height = bitmap.rows;
 
+        //    //Format format;
+        //    //format = _device.GetDisplayMode(0).Format;
+        //    //Console.WriteLine(format);
+
+
+        //    //g.Texture = _manager.Direct3D9.CreateRenderTarget(Maxsize, Maxsize);
+
+        //    try
+        //    {
+        //        g.Texture = new Texture(_device, Maxsize, Maxsize, 0, Usage.Dynamic,
+        //                                Format.A8R8G8B8, Pool.Default);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e.Message);
+        //        throw e;
+        //    }
+
+
+        //    bool isMono = false;
+
+        //    byte[] buffer;
+        //    if (bitmap.pixel_mode == 1)
+        //    {
+        //        isMono = true;
+        //        buffer = new byte[bitmap.pitch * height];
+        //    }
+        //    else
+        //    {
+        //        buffer = new byte[width * height];
+        //    }
+
+        //    Marshal.Copy(bitmap.buffer, buffer, 0, buffer.Length);
+
+        //    DataRectangle rect = g.Texture.LockRectangle(0, LockFlags.Discard);
+
+        //    int index = 0;
+        //    long offset = 0;
+        //    int unitLength = 4;
+        //    for (int y = 0; y < height; y++)
+        //    {
+        //        for (int x = 0; x < width; x++)
+        //        {
+        //            byte alpha = 0;
+
+        //            if (isMono)
+        //            {
+        //                offset = Maxsize * y * unitLength + x * unitLength;
+        //                if ((buffer[y * bitmap.pitch + (x >> 3)] & (0x80 >> (x % 8))) != 0)
+        //                {
+        //                    alpha = 255;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                offset = Maxsize * y * unitLength + x * unitLength;
+        //                index = y * width + x;
+        //                alpha = (byte)(buffer[index]);
+        //            }
+
+        //            if (alpha != 0)
+        //            {
+        //                rect.Data.Seek(offset, SeekOrigin.Begin);
+        //                rect.Data.WriteByte(255);
+        //                rect.Data.WriteByte(255);
+        //                rect.Data.WriteByte(255);
+        //                rect.Data.WriteByte((byte)(alpha * this._color.A / 255));
+
+        //                if (g.Box.xMin > x) g.Box.xMin = x;
+        //                if (g.Box.xMax < x) g.Box.xMin = x;
+        //                if (g.Box.yMin > y) g.Box.yMin = y;
+        //                if (g.Box.yMin < y) g.Box.yMin = y;
+        //            }
+        //        }
+
+        //    }
+
+        //    g.Texture.UnlockRectangle(0);
+        //}
+
+        // a version using image as medium...
         void RenderBitmap(Glyph g, int left, int top)
         {
             FT_GlyphSlotRec fslot = g.Slot;
             FT_Bitmap bitmap = fslot.bitmap;
             int width = bitmap.width;
             int height = bitmap.rows;
-            g.Texture = new Texture(_device, Maxsize, Maxsize, 0, Usage.Dynamic, Format.A8R8G8B8, Pool.Default);
+
 
             bool isMono = false;
 
@@ -526,47 +623,47 @@ namespace INovelEngine.Effector.Graphics.Text
             if (bitmap.pixel_mode == 1)
             {
                 isMono = true;
-                buffer = new byte[bitmap.pitch * height];
+                buffer = new byte[bitmap.pitch*height];
             }
             else
             {
-                buffer = new byte[width * height];
+                buffer = new byte[width*height];
             }
 
+            // copy freetype glyph bitmap to C# memory...
             Marshal.Copy(bitmap.buffer, buffer, 0, buffer.Length);
 
-            DataRectangle rect = g.Texture.LockRectangle(0, LockFlags.None);
-
-            int index = 0;
-            long offset = 0;
+            const int unitLength = 4;
+            // loop through glyph bitmap bytes to generate pixel bitmap
+            Array.Clear(textureBuffer, 0, textureBuffer.Length);
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
                     byte alpha = 0;
+                    long offset = 0;
 
                     if (isMono)
                     {
-                        offset = Maxsize * y * 4 + x * 4;
-                        if ((buffer[y * bitmap.pitch + (x >> 3)] & (0x80 >> (x % 8))) != 0)
+                        offset = Maxsize*y*unitLength + x*unitLength;
+                        if ((buffer[y*bitmap.pitch + (x >> 3)] & (0x80 >> (x%8))) != 0)
                         {
                             alpha = 255;
                         }
                     }
                     else
                     {
-                        offset = Maxsize * y * 4 + x * 4;
-                        index = y * width + x;
-                        alpha = (byte)(buffer[index]);
+                        offset = Maxsize*y*unitLength + x*unitLength;
+                        int index = y*width + x;
+                        alpha = (byte) (buffer[index]);
                     }
 
                     if (alpha != 0)
                     {
-                        rect.Data.Seek(offset, SeekOrigin.Begin);
-                        rect.Data.WriteByte(255);
-                        rect.Data.WriteByte(255);
-                        rect.Data.WriteByte(255);
-                        rect.Data.WriteByte((byte)(alpha * this._color.A / 255));
+                        textureBuffer[offset] = 255;
+                        textureBuffer[offset + 1] = 255;
+                        textureBuffer[offset + 2] = 255;
+                        textureBuffer[offset + 3] = (byte) (alpha*this._color.A/255);
 
                         if (g.Box.xMin > x) g.Box.xMin = x;
                         if (g.Box.xMax < x) g.Box.xMin = x;
@@ -577,7 +674,20 @@ namespace INovelEngine.Effector.Graphics.Text
 
             }
 
-            g.Texture.UnlockRectangle(0);
+            // lock buffer image to copy from pixel bitmap
+            BitmapData bData = glyphBuffer.LockBits(new Rectangle(0, 0, glyphBuffer.Width, glyphBuffer.Height),
+                                                    ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            Marshal.Copy(textureBuffer, 0, bData.Scan0, textureBuffer.Length);
+            glyphBuffer.UnlockBits(bData);
+
+            // generate texture from buffer image...
+            using (MemoryStream ms = new MemoryStream())
+            {
+                glyphBuffer.Save(ms, ImageFormat.Png);
+                byte[] bitmapData = ms.ToArray();
+                g.Texture = Texture.FromMemory(_device, bitmapData);
+            }
         }
 
         private void SetSize(int size)
@@ -628,6 +738,8 @@ namespace INovelEngine.Effector.Graphics.Text
         public void Dispose()
         {
             /* to do: dispose faces and textures */
+
+            glyphBuffer.Dispose();
 
             FT.FT_Done_Face(_face);
             FT.FT_Done_FreeType(_library);
