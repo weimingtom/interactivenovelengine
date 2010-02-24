@@ -85,7 +85,7 @@ namespace INovelEngine.Effector
             sprite.OnResetDevice();
             this.sourceImage.LoadContent();
             this.texture = sourceImage.texture;
-
+            Console.WriteLine(this.id + " = " + texture.GetLevelDescription(0).Format);
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
+using SampleFramework;
 using SlimDX.Direct3D9;
 
 namespace INovelEngine.Effector.Graphics.Text
@@ -33,11 +34,11 @@ namespace INovelEngine.Effector.Graphics.Text
             }
         }
 
-        public RubyFont(SlimDX.Direct3D9.Device device, string fontPath, int size, string rubyFontPath, int rubysize)
-            : base(device, fontPath, size)
+        public RubyFont(GraphicsDeviceManager manager, string fontPath, int size, string rubyFontPath, int rubysize)
+            : base(manager, fontPath, size)
         {
             _rubySize = rubysize;
-            _rubyFont = new FreeFont(device, rubyFontPath, rubysize);
+            _rubyFont = new FreeFont(manager, rubyFontPath, rubysize);
         }
 
         protected override void ProcessTag(Tag tag)

@@ -132,8 +132,8 @@ namespace INovelEngine.Effector
             this.line = new Line(graphicsDeviceManager.Direct3D9.Device);
             this.cursorSprite.Initialize(graphicsDeviceManager);
             this.cursorSprite.BeginAnimation(100, 0, 2, true);
-            //this.font = TextRenderer.LoadFont(graphicsDeviceManager.Direct3D9.Device, "Resources\\meiryo.ttc", 25, FontWeight.UltraBold, false);
-            this.font = TextRenderer.LoadFont(graphicsDeviceManager.Direct3D9.Device, "c:\\windows\\fonts\\gulim.ttc", 25, FontWeight.UltraBold, false);
+            //this.font = TextRenderer.LoadFont(graphicsDeviceManager, "Resources\\meiryo.ttc", 25, FontWeight.UltraBold, false);
+            this.font = TextRenderer.LoadFont(graphicsDeviceManager, "c:\\windows\\fonts\\gulim.ttc", 25, FontWeight.UltraBold, false);
             this.font.LineSpacing = 20;
             this.font.TextEffect = FreeFont.Effect.Shadow;
 
