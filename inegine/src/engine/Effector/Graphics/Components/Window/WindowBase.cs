@@ -44,6 +44,7 @@ namespace INovelEngine.Effector
         /// <param name="graphicsDeviceManager">The graphics device manager.</param>
         public override void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
+            base.Initialize(graphicsDeviceManager);
             manager = graphicsDeviceManager;
             sprite = new Sprite(manager.Direct3D9.Device);
         }
@@ -53,6 +54,7 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void LoadContent()
         {
+            base.LoadContent();
             sprite.OnResetDevice();
         }
 
@@ -61,6 +63,7 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void UnloadContent()
         {
+            base.UnloadContent();
             sprite.OnLostDevice();
         }
 

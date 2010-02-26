@@ -1,3 +1,66 @@
+function BeginESS(script)
+	Trace(script)
+	Trace "trying to load another script..."
+	local co = coroutine.create(assert(loadstring(LoadESS(script))))
+	Trace "resuming!..."
+	CurrentState().state["ess"] = co;
+	ResumeEss();
+end
+
+function ResumeEss()
+	if (CurrentState().state["ess"] ~= nul) then
+	coroutine.resume(CurrentState().state["ess"]);
+	end
+end
+
+function YieldESS()
+	coroutine.yield();
+end
+
+function LoadCharacter(id, image)
+	local status, newCharacter = pcall(SpriteBase, id, image, 0, 0, 1, true);
+	if (status) then
+		newCharacter.x = (GetWidth() - newCharacter.width)/2;
+		newCharacter.y = (GetHeight() - newCharacter.height);
+		AddComponent(newCharacter);
+		Trace("loading " .. id .. " done");
+	else
+		Trace("loading " .. id .. " failed");
+	end
+end
+
+function MoveCharacter(id, x)
+	local component = GetComponent(id)
+	if (component ~= nil) then
+		component.x = x;
+	else
+		Trace("invalid id: " .. id);
+	end
+end
+ 
+function ShowCharacter(id, delay)
+	local component = GetComponent(id)
+	if (component ~= nil) then
+		component:LaunchTransition(delay, true) 
+	else
+		Trace("invalid id: " .. id);
+	end
+end
+
+function HideCharacter(id, delay)
+	local component = GetComponent(id)
+	if (component ~= nil) then
+		component:LaunchTransition(delay, false)	
+	else
+		Trace("invalid id: " .. id);
+	end
+end
+
+function Dissolve(id1, id2)
+	ShowCharacter(id2, 0)
+	HideCharacter(id1, 500)
+end
+
 function MouseDownHandler(state, luaevent, args)
     Trace("mouse down!");
 end
@@ -69,7 +132,7 @@ end
 function textOver(state, luaevent, args)
 	Trace("textout over!");
 	Trace("attempting to load more ess");
-	coroutine.resume(co);
+	ResumeEss();
 end
 
 function Clear()
@@ -77,12 +140,10 @@ function Clear()
 end
 
 function TextOut(value)
-	Trace(value);
 	if(textwindow:Print(value)) then
-		Trace("yielding!");
-		coroutine.yield();
+		YieldESS();
+		--coroutine.yield();
 	end
-	Trace("yielding over!");
 end
 
 
@@ -97,12 +158,12 @@ function startAnimation(sprite)
     Trace "starting animation!"
     startTime = sprite:BeginAnimation(100, 0, 15, false);
     Trace("animation " .. startTime .. " started");
-    coroutine.yield()
+    YieldEss();
 end
 
 function spriteclick(state, luaevent, args)
     --Trace("frame: " .. state.frame);
-    coroutine.resume(co)
+    ResumeEss();
     --if (state.inAnimation) then
     --    state:StopAnimation();
     --else
@@ -115,19 +176,20 @@ end
 function foo(sprite)
     Trace "first ani"
     startAnimation(sprite);
-    coroutine.yield()
+    YieldEss();
     Trace "second ani"
     startAnimation(sprite);
-    coroutine.yield()
+    YieldEss();
     Trace "third ani"
     startAnimation(sprite);
-    coroutine.yield()
+    YieldEss();
     Trace "last ani"
     startAnimation(sprite);
 end
 
 --start initiation
 InitState("test2");
+state = CurrentState();
 state.mouseMoveEventHandler = cursorHandler;
 state.state = {"Hello", " ", "World"};
 
@@ -165,8 +227,8 @@ AddComponent(sprite);
 --textwindow = TextWindow("win1", 0x780000FF, 155, 20, 370, 
 --                        760, 210, 2, "", 10);
                         
-textwindow = TextWindow("win2", 0x00000000, 55, 20, 370, 
-                          760, 210, 2, "", 10);
+textwindow = TextWindow("win2", 0x000000, 55, 20, 370, 
+                          760, 210, 2, "", 25, true, 10);
 textwindow.mouseDownEventHandler = mouseDown;
 textwindow.mouseUpEventHandler = mouseUp;
 textwindow.mouseMoveEventHandler = mouseMove;
@@ -176,8 +238,44 @@ textwindow.state = {}
 textwindow.state.locked = false;
 textwindow.state.prevx = 0;
 textwindow.state.prevy = 0;
-textwindow:TurnOnNarration();
 AddComponent(textwindow);
+
+
+function selectResult(caller, luaevent, args)
+	--testwindow.enabled = false;
+	result = caller.state.number;
+	Trace("Selected: " .. result)
+end
+
+result = -1;
+
+testwindow = TextWindow("testwin", 0x000000, 15, 20, 20, 
+                          200, 200, 2, "", 25, false, 10);
+testwindow.isStatic = true;
+testwindow.lineSpacing = 10;
+AddComponent(testwindow);
+
+childwindow = ImageWindow("testwin2", 0xFF0000, 25, 45, 45, 
+                          150, 75, 3, "선택지1", 18, false, 15);
+childwindow.isStatic = true;
+childwindow.lineSpacing = 10;
+childwindow.centerText = true;
+childwindow.state = {}
+childwindow.state.number = 1;
+childwindow.mouseClickEventHandler = selectResult;
+--testwindow:AddComponent(childwindow);
+AddComponent(childwindow);
+childwindow = ImageWindow("testwin3", 0xFF0000, 25, 45, 130, 
+                          150, 75, 3, "선택지2", 18, false, 15);
+childwindow.isStatic = true;
+childwindow.lineSpacing = 10;
+childwindow.centerText = true;
+childwindow.state = {}
+childwindow.state.number = 2;
+childwindow.mouseClickEventHandler = selectResult;
+--testwindow:AddComponent(childwindow);
+AddComponent(childwindow);
+
 
 
 --co = coroutine.create(assert(loadstring(LoadESS("Resources/test.ess"))))
@@ -208,5 +306,6 @@ counter = 0;
 
 --LoadCharacter("musume1", "Resources/before.pn");
 --ShowCharacter("musume", 100);
+
 
 BeginESS("Resources/test.ess");

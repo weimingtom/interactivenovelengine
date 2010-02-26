@@ -25,8 +25,10 @@ namespace INovelEngine.Effector
     {
         public bool enabled = true;
         protected GraphicsDeviceManager manager;
-        public Dictionary<String, AbstractGUIComponent> guiComponents =
-            new Dictionary<string, AbstractGUIComponent>();
+
+        //private List<AbstractGUIComponent> components = new List<AbstractGUIComponent>();
+        //public Dictionary<String, AbstractGUIComponent> guiComponents =
+        //    new Dictionary<string, AbstractGUIComponent>();
 
         protected float beginTick;
         protected float endTick;
@@ -37,7 +39,7 @@ namespace INovelEngine.Effector
 
         protected Color renderColor = Color.White;
         protected float progress = 0;
-
+       
         public Device Device
         {
             get { return manager.Direct3D9.Device; }
@@ -54,6 +56,35 @@ namespace INovelEngine.Effector
             get;
             set;
         }
+
+        //public void AddComponent(AbstractGUIComponent component)
+        //{
+        //    if (guiComponents.ContainsKey(component.id)) return;
+
+        //    component.ParentComponent = this;
+
+        //    components.Add(component);
+        //    guiComponents.Add(component.id, component);
+
+        //    InvalidateZOrder();
+        //}
+
+        //public AbstractGUIComponent GetComponent(string id)
+        //{
+        //    if (guiComponents.ContainsKey(id))
+        //    {
+        //        return guiComponents[id];
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
+
+        //public void InvalidateZOrder()
+        //{
+        //    components.Sort(); // sort them according to z-order (higher, higher)
+        //}
 
         public bool Enabled
         {
@@ -132,23 +163,36 @@ namespace INovelEngine.Effector
             set;
         }
 
+        public AbstractGUIComponent ParentComponent
+        {
+            get; set;
+        }
+
         #region IGameComponent Members
 
         public virtual void Draw()
         {
             if (this.enabled)
+            {
                 if (!this.FadedOut)
                 {
                     if (this.Fading)
                     {
-                        renderColor = Color.FromArgb((int)(progress * 255), Color.White); ;
+                        renderColor = Color.FromArgb((int) (progress*255), Color.White);
+                        ;
                     }
                     else
                     {
                         renderColor = Color.White;
                     }
                     this.DrawInternal();
+
+                    //foreach (AbstractGUIComponent component in this.components)
+                    //{
+                    //    component.Draw();
+                    //}
                 }
+            }
         }
         protected abstract void DrawInternal();
 
@@ -189,17 +233,40 @@ namespace INovelEngine.Effector
         public virtual void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
             manager = graphicsDeviceManager;
+
+            //foreach (AbstractGUIComponent component in this.components)
+            //{
+            //    component.Initialize(graphicsDeviceManager);
+            //}
         }
 
-        public abstract void LoadContent();
+        public virtual void LoadContent()
+        {
+            //foreach (AbstractGUIComponent component in this.components)
+            //{
+            //    component.LoadContent();
+            //}        
+        }
 
-        public abstract void UnloadContent();
+        public virtual void UnloadContent()
+        {
+            //foreach (AbstractGUIComponent component in this.components)
+            //{
+            //    component.UnloadContent();
+            //}       
+        }
 
         #endregion
 
         #region IDisposable Members
 
-        public abstract void Dispose();
+        public virtual void Dispose()
+        {
+            //foreach (AbstractGUIComponent component in this.components)
+            //{
+            //    component.Dispose();
+            //}  
+        }
 
         #endregion
 
@@ -212,6 +279,73 @@ namespace INovelEngine.Effector
         }
 
         #endregion
+
+
+        //public override void SendEvent(ScriptEvents luaevent, params object[] args)
+        //{
+        //    try
+        //    {
+        //        if (!enabled) return;
+        //        AbstractLuaEventHandler handler = GetHandler(luaevent, args);
+        //        SendEvent(handler, luaevent, args);
+        //        if (handler != this) SendEvent(this, luaevent, args);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e.ToString());
+        //    }
+        //}
+
+        //private AbstractLuaEventHandler mouseDownLocked;
+
+        //public override AbstractLuaEventHandler GetHandler(ScriptEvents luaevent, params object[] args)
+        //{
+        //    AbstractLuaEventHandler handler = this;
+        //    switch (luaevent)
+        //    {
+        //        case ScriptEvents.KeyPress:
+        //            handler = this;
+        //            break;
+        //        case ScriptEvents.MouseMove:
+        //            if (mouseDownLocked != null) handler = mouseDownLocked;
+        //            else
+        //            {
+        //                handler = GetCollidingComponent((int)args[0], (int)args[1]);
+        //                if (handler == null) handler = this;
+        //            }
+        //            break;
+        //        case ScriptEvents.MouseDown:
+        //            handler = GetCollidingComponent((int)args[0], (int)args[1]);
+        //            if (handler == null) handler = this;
+        //            mouseDownLocked = handler;
+        //            break;
+        //        case ScriptEvents.MouseUp:
+        //            if (mouseDownLocked != null) handler = mouseDownLocked;
+        //            break;
+        //        case ScriptEvents.MouseClick:
+        //            handler = GetCollidingComponent((int)args[0], (int)args[1]);
+        //            if (handler == null) handler = this;
+        //            break;
+        //        default:
+        //            handler = this;
+        //            break;
+        //    }
+        //    return handler;
+        //}
+
+        //public AbstractGUIComponent GetCollidingComponent(int x, int y)
+        //{
+        //    AbstractGUIComponent component;
+        //    // do it in reverse order because components sorted in z order...
+        //    for (int i = this.components.Count - 1; i >= 0; i--)
+        //    {
+        //        component = this.components[i];
+        //        if (component.x <= x && component.y <= y &&
+        //            component.x + component.width >= x &&
+        //            component.y + component.height >= y) return component;
+        //    }
+        //    return null;
+        //}
     }
 
 }
