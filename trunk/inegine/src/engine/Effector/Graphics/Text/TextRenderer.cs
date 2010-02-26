@@ -14,28 +14,34 @@ namespace INovelEngine.Effector
     {
         public static Vector2 cursorPosition;
 
-        static public void DrawText(Sprite sprite, RubyFont font, string text, int x, int y, int width, int height, Color color)
+        static public void DrawText(Sprite sprite, FreeFont font, string text, int x, int y, int width, int height, Color color)
         {
             font.WrapWidth = width;
             font.Wrap = true;
             PutText(sprite, font, text, x, y, color);   
         }
 
-        static public void PutText(Sprite sprite, RubyFont font, string text, int x, int y, Color color)
+        static public void PutText(Sprite sprite, FreeFont font, string text, int x, int y, Color color)
         {
             font.Color = color;
-            font.RubyColor = color;
+            //font.RubyColor = color;
             font.DrawString(sprite, text, x, y);
             cursorPosition = font.LastPos;
 
         }
 
-        static public RubyFont LoadFont(GraphicsDeviceManager manager, string fontName, int size, FontWeight weight, Boolean italic)
+        static public FreeFont LoadFont(GraphicsDeviceManager manager, string fontName, bool rubyOn, int size, FontWeight weight, Boolean italic)
         {
             try
             {
-                return new RubyFont(manager, fontName, size, fontName, size/4);
-
+                if (rubyOn)
+                {
+                    return new RubyFont(manager, fontName, size, fontName, size/4);
+                }
+                else
+                {
+                    return new FreeFont(manager, fontName, size);
+                }
             }
             catch (Exception e)
             {

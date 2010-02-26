@@ -20,8 +20,8 @@ namespace INovelEngine.Effector
         private Texture winParts;
         private string textureFile = "Resources/win.png";
 
-        public ImageWindow(String id, int color, int alpha, int x, int y, int width, int height, int layer, string text, int margin)
-            : base(id, color, alpha, x, y, width, height, layer, text, margin)
+        public ImageWindow(String id, int color, int alpha, int x, int y, int width, int height, int layer, string text, int fontSize, bool rubyOn, int margin)
+            : base(id, color, alpha, x, y, width, height, layer, text, fontSize, rubyOn, margin)
         {
         }
 

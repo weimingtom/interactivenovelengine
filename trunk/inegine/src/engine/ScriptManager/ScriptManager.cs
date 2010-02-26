@@ -33,7 +33,7 @@ namespace INovelEngine.Script
         public Boolean handleMyself
         { get; set; }
 
-        public void SendEvent(ScriptEvents luaevent, params object[] args)
+        public virtual void SendEvent(ScriptEvents luaevent, params object[] args)
         {
             try
             {
@@ -47,33 +47,37 @@ namespace INovelEngine.Script
             }
         }
 
-        public void SendEvent(AbstractLuaEventHandler handler, ScriptEvents luaevent, params object[] args)
+        public virtual void SendEvent(AbstractLuaEventHandler handler, ScriptEvents luaevent, params object[] args)
         {
             try
             {
-                switch (luaevent)
+                if (handler != this) handler.SendEvent(luaevent, args);
+                else
                 {
-                    case ScriptEvents.KeyPress:
-                        if (handler.keyDownHandler != null) handler.keyDownHandler(handler, luaevent, args);
-                        break;
-                    case ScriptEvents.MouseDown:
-                        if (handler.mouseDownEventHandler != null) handler.mouseDownEventHandler(handler, luaevent, args);
-                        break;
-                    case ScriptEvents.MouseUp:
-                        if (handler.mouseUpEventHandler != null) handler.mouseUpEventHandler(handler, luaevent, args);
-                        break;
-                    case ScriptEvents.MouseMove:
-                        if (handler.mouseMoveEventHandler != null) handler.mouseMoveEventHandler(handler, luaevent, args);
-                        break;
-                    case ScriptEvents.MouseClick:
-                        if (handler.mouseClickEventHandler != null) handler.mouseClickEventHandler(handler, luaevent, args);
-                        break;
-                    case ScriptEvents.Update:
-                        if (handler.updateHandler != null) handler.updateHandler(handler, luaevent, args);
-                        break;
-                    default:
-                        if (handler.eventHandler != null) handler.eventHandler(handler, luaevent, args);
-                        break;
+                    switch (luaevent)
+                    {
+                        case ScriptEvents.KeyPress:
+                            if (handler.keyDownHandler != null) handler.keyDownHandler(handler, luaevent, args);
+                            break;
+                        case ScriptEvents.MouseDown:
+                            if (handler.mouseDownEventHandler != null) handler.mouseDownEventHandler(handler, luaevent, args);
+                            break;
+                        case ScriptEvents.MouseUp:
+                            if (handler.mouseUpEventHandler != null) handler.mouseUpEventHandler(handler, luaevent, args);
+                            break;
+                        case ScriptEvents.MouseMove:
+                            if (handler.mouseMoveEventHandler != null) handler.mouseMoveEventHandler(handler, luaevent, args);
+                            break;
+                        case ScriptEvents.MouseClick:
+                            if (handler.mouseClickEventHandler != null) handler.mouseClickEventHandler(handler, luaevent, args);
+                            break;
+                        case ScriptEvents.Update:
+                            if (handler.updateHandler != null) handler.updateHandler(handler, luaevent, args);
+                            break;
+                        default:
+                            if (handler.eventHandler != null) handler.eventHandler(handler, luaevent, args);
+                            break;
+                    }
                 }
 
             }

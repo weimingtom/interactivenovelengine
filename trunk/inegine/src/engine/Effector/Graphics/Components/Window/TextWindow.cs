@@ -21,7 +21,7 @@ namespace INovelEngine.Effector
 
         public enum Mode
         {
-            Narration, Static
+            Narration, Skipping
         }
 
 
@@ -30,39 +30,63 @@ namespace INovelEngine.Effector
 
         private State _printState = State.Idle;
         private readonly List<int> breaks = new List<int>();
-        int _breakIndex = 0;
+        private int _breakIndex = 0;
         
-        string sourceText = "";
+        private string sourceText = "";
         private string viewText = "";
-        string scrollBuffer = "";
+        private string scrollBuffer = "";
         public LuaEventHandler printOverHandler;
 
-        public Mode narrationMode = Mode.Static;
+        public bool isStatic = false;
+        public bool centerText = false;
+        private Mode narrationMode = Mode.Narration;
         private int narrationIndex = 0;
+
         public int narrationSpeed
         {
             get; set;
         }
 
-        int margin = 10;
+        private int _lineSpacing;
+
+        public int lineSpacing
+        {
+            get
+            {
+                return this._lineSpacing;
+            }
+            set
+            {
+                this._lineSpacing = value;
+                if (this.font != null) this.font.LineSpacing = _lineSpacing;
+            }
+        }
+
+        public int margin = 10;
         private TimeEvent narrationEvent;
 
         public Line line;
         //SlimDX.Direct3D9.Font font;
-        private RubyFont font;
+        private FreeFont font;
 
         private bool wrapFlag = false;
 
         Vector2[] lines = new Vector2[2];
         private bool _cancelFlag = false; // flag for indicating whether to skip when beginning a new textout
 
-        public TextWindow(String id, int color, int alpha, int x, int y, int width, int height, int layer, string text, int margin)
+        private bool _rubyOn;
+        private int _fontSize;
+
+        public TextWindow(String id, int color, int alpha, int x, int y, int width, int height, int layer, string text, int fontSize, bool rubyOn, int margin)
             : base(id, color, alpha, x, y, width, height, layer)
         {
             this.type = ComponentType.TextWindow;
+            this._fontSize = fontSize;
+            this._rubyOn = rubyOn;
             this.margin = margin;
             this.Text = text;
             this.narrationSpeed = 50;
+            this.lineSpacing = 20;
         }
 
         public string Text
@@ -70,6 +94,7 @@ namespace INovelEngine.Effector
             get { return this.sourceText; }
             set
             {
+                Console.WriteLine(value);
                 this.sourceText = value;
                 this.WrapText();
                 this.ParseText();
@@ -102,7 +127,21 @@ namespace INovelEngine.Effector
         public override void DrawText()
         {
             this.sprite.Begin(SpriteFlags.AlphaBlend);
-            TextRenderer.DrawText(this.sprite, this.font, scrollBuffer, this.x + margin, this.y + margin, width - margin * 2, height - margin * 2, Color.White);
+
+            if (isStatic)
+            {
+                Size dim = this.font.Measure(viewText);
+                int leftMargin;
+                if (this.centerText) leftMargin = (this.width - dim.Width)/2;
+                else leftMargin = margin;
+                TextRenderer.DrawText(this.sprite, this.font, viewText, this.x + leftMargin,
+                                      this.y + margin, width - margin * 2, height - margin * 2, Color.White);
+            }
+            else
+            {
+                TextRenderer.DrawText(this.sprite, this.font, scrollBuffer, this.x + margin,
+                                      this.y + margin, width - margin * 2, height - margin * 2, Color.White);
+            }
 
             if (_printState == State.Waiting)
             {
@@ -133,8 +172,8 @@ namespace INovelEngine.Effector
             this.cursorSprite.Initialize(graphicsDeviceManager);
             this.cursorSprite.BeginAnimation(100, 0, 2, true);
             //this.font = TextRenderer.LoadFont(graphicsDeviceManager, "Resources\\meiryo.ttc", 25, FontWeight.UltraBold, false);
-            this.font = TextRenderer.LoadFont(graphicsDeviceManager, "c:\\windows\\fonts\\gulim.ttc", 25, FontWeight.UltraBold, false);
-            this.font.LineSpacing = 20;
+            this.font = TextRenderer.LoadFont(graphicsDeviceManager, "c:\\windows\\fonts\\gulim.ttc", _rubyOn, _fontSize, FontWeight.UltraBold, false);
+            this.font.LineSpacing = lineSpacing;
             this.font.TextEffect = FreeFont.Effect.Shadow;
 
             if (wrapFlag)
@@ -143,7 +182,6 @@ namespace INovelEngine.Effector
                 this.ParseText();
             }
         }
-
 
         private void WrapText()
         {
@@ -327,14 +365,14 @@ namespace INovelEngine.Effector
         }
 
 
-        public void TurnOnNarration()
+        public void TurnOffSkip()
         {
             this.narrationMode = Mode.Narration;
         }
 
-        public void TurnOffNarration()
+        public void TurnOnSkip()
         {
-            this.narrationMode = Mode.Static;
+            this.narrationMode = Mode.Skipping;
         }
 
         /// <summary>
