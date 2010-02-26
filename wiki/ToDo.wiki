@@ -4,6 +4,7 @@
  * Script
    * Lua
      * Fix globarl variables (i.e. state, sprite)
+     * Fix GUI system API
 
 ===중장기===
   * Script
