@@ -10,7 +10,7 @@ ScriptManager = luanet.import_type("INovelEngine.Script.ScriptManager");
 
 function InitState(id)
     local state = GameState();
-    state.id = id;
+    state.Name = id;
     AddState(state);
 end;
 

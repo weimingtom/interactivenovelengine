@@ -275,12 +275,12 @@ namespace INovelEngine
 
         public void Lua_AddState(GameState state)
         {
-            if (states.ContainsKey(state.id))
+            if (states.ContainsKey(state.Name))
             {
             }
             else
             {
-                states.Add(state.id, state);
+                states.Add(state.Name, state);
             }
 
             this.activeState = state;

@@ -28,14 +28,14 @@ namespace INovelEngine.Effector
 
         public WindowBase(String id, int color, int alpha, int x, int y, int width, int height, int layer)
         {
-            this.id = id;
+            this.Name = id;
             this.color = color;
             this.alpha = alpha;
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-            this.layer = layer;
+            this.X = x;
+            this.Y = y;
+            this.Width = width;
+            this.Height = height;
+            this.Layer = layer;
         }
 
         /// <summary>

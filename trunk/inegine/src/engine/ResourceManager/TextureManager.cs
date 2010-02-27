@@ -19,8 +19,32 @@ namespace INovelEngine.ResourceManager
         private Device device;
 
         private Bitmap scaledBitmap;
+        private string fileName;
+
+        public INETexture ()
+        {
+            
+        }
 
         public INETexture (string fileName)
+        {
+        }
+
+        public string TextureFile
+        {
+            get
+            {
+                return fileName;
+            }
+            set
+            {
+                fileName = value;
+                LoadTextureFile(fileName);
+                if (device != null) LoadContent();
+            }
+        }
+
+        public void LoadTextureFile(string fileName)
         {
             try
             {
@@ -39,14 +63,14 @@ namespace INovelEngine.ResourceManager
                     using (Graphics g = Graphics.FromImage((Image)scaledBitmap))
                         g.DrawImage(bitmap, 0, 0, bitmap.Width, bitmap.Height);
                     bitmap.Dispose();
-                }   
+                }
             }
             catch (Exception e)
             {
                 throw new TextureLoadError(fileName);
             }
-
         }
+
         #region IResource Members
 
         public void Initialize(GraphicsDeviceManager graphicsDeviceManager)
@@ -56,11 +80,16 @@ namespace INovelEngine.ResourceManager
 
         public void LoadContent()
         {
-            using (MemoryStream ms = new MemoryStream())
+            if (this.scaledBitmap != null)
             {
-                scaledBitmap.Save(ms, ImageFormat.Bmp);
-                byte[] bitmapData = ms.ToArray();
-                this.texture = Texture.FromMemory(device, bitmapData);
+                if (this.texture != null) this.texture.Dispose();
+
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    scaledBitmap.Save(ms, ImageFormat.Bmp);
+                    byte[] bitmapData = ms.ToArray();
+                    this.texture = Texture.FromMemory(device, bitmapData);
+                }
             }
         }
 

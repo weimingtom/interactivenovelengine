@@ -9,31 +9,41 @@ namespace INovelEngine.Effector
 {
     class AnimatedSprite : SpriteBase
     {
-        protected int colcnt
+        public int Cols
         {
             get;
             set;
         }
 
-        protected int rowcnt
+        public int Rows
         {
             get;
             set;
         }
 
-        public override int width
+        public override int Width
         {
             get
             {
                 return this.tileWidth;
             }
+            set
+            {
+                tileWidth = Math.Max(0, value);
+                sourceArea.Width = tileWidth;
+            }
         }
 
-        public override int height
+        public override int Height
         {
             get
             {
                 return this.tileHeight;
+            }
+            set
+            {
+                tileHeight = Math.Max(0, value);
+                sourceArea.Height = tileHeight;
             }
         }
 
@@ -46,7 +56,8 @@ namespace INovelEngine.Effector
         protected int tileHeight;
         
         protected int _frame;
-        public int frame
+        
+        public int Frame
         {
             get
             {
@@ -67,24 +78,22 @@ namespace INovelEngine.Effector
                     this._frame = value;
                 }
 
-                int rownum = this._frame / colcnt;
-                int colnum = this._frame % colcnt;
+                int rownum = this._frame / Cols;
+                int colnum = this._frame % Cols;
                 this.sourceArea.Y = rownum * tileHeight;
                 this.sourceArea.X = colnum * tileWidth;
             }
         }
 
-        public AnimatedSprite(String id, string textureFile, int x, int y, int layer, int rowcnt, int colcnt, int tileWidth, int tileHeight, bool fadedOut)
-            : base(id, textureFile, x, y, layer, fadedOut)
+        public AnimatedSprite()
+            : base()
         {
-            this.tileWidth = tileWidth;
-            this.tileHeight = tileHeight;
-            this.sourceArea.Width = tileWidth;
-            this.sourceArea.Height = tileHeight;
-            this.rowcnt = rowcnt;
-            this.colcnt = colcnt;
-            this.frame = 0;
-            this.endFrame = this.rowcnt * this.colcnt;
+            Rows = 0;
+            Cols = 0;
+        }
+
+        protected override void SetDimensions()
+        {
         }
 
         public override void Update(SampleFramework.GameTime gameTime)
@@ -94,7 +103,7 @@ namespace INovelEngine.Effector
 
         public void UpdateFrame()
         {
-            this.frame++;
+            this.Frame++;
         }
 
         public void EndFrame()
@@ -102,21 +111,26 @@ namespace INovelEngine.Effector
             int id = this.updateEvent.timeID;
             this.updateEvent = null;
             this.inAnimation = false;
-            if (this.animationOverHandler != null) 
-                this.animationOverHandler(this, ScriptEvents.AnimationOver, id);
+            if (this.AnimationOver != null) 
+                this.AnimationOver(this, ScriptEvents.AnimationOver, id);
             
         }
  
-        public float BeginAnimation(int interval, int startFrame, int endFrame, bool loop)
+        public void Begin(int interval, int startFrame, int endFrame)
+        {
+            Begin(interval, startFrame, endFrame, false);   
+        }
+
+        public void Begin(int interval, int startFrame, int endFrame, bool loop)
         {
             if (this.updateEvent != null)
             {
                 Clock.RemoveTimeEvent(this.updateEvent);
             }
             
-            this.startFrame = startFrame;
-            this.endFrame = endFrame;
-            this.frame = startFrame;
+            this.startFrame = Math.Max(0, startFrame);
+            this.endFrame = Math.Max(0, endFrame);
+            this.Frame = startFrame;
             if (loop)
             {
                 this.updateEvent = new TimeEvent(interval, UpdateFrame);
@@ -127,7 +141,6 @@ namespace INovelEngine.Effector
             }
             int eventID = Clock.AddTimeEvent(this.updateEvent);
             inAnimation = true;
-            return eventID;
         }
 
         public void StopAnimation()
