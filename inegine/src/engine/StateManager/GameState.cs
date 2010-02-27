@@ -16,16 +16,16 @@ namespace INovelEngine.StateManager
             this.handleMyself = true;
         }
 
-        public string id
+        public string Name
         {
             get;
             set;
         }
 
-        private ResourceCollection resources = new ResourceCollection();
+        protected ResourceCollection resources = new ResourceCollection();
         /* components sorted in z-order */
-        private List<AbstractGUIComponent> components = new List<AbstractGUIComponent>();
-        public Dictionary<String, AbstractGUIComponent> guiComponents = 
+        protected List<AbstractGUIComponent> componentList = new List<AbstractGUIComponent>();
+        protected Dictionary<String, AbstractGUIComponent> componentMap = 
             new Dictionary<string, AbstractGUIComponent>();
 
         #region IResource Members
@@ -60,7 +60,7 @@ namespace INovelEngine.StateManager
 
         public void Draw()
         {
-            foreach (IGameComponent component in components)
+            foreach (IGameComponent component in componentList)
             {
                 component.Draw();
             }
@@ -68,7 +68,7 @@ namespace INovelEngine.StateManager
 
         public void Update(GameTime gameTime)
         {
-            foreach (IGameComponent component in components)
+            foreach (IGameComponent component in componentList)
             {
                 component.Update(gameTime);
             }
@@ -78,22 +78,22 @@ namespace INovelEngine.StateManager
         
         public void AddComponent(AbstractGUIComponent component)
         {
-            if (guiComponents.ContainsKey(component.id)) return;
+            if (componentMap.ContainsKey(component.Name)) return;
 
-            component.managingState = this;
+            component.ManagingState = this;
 
-            components.Add(component);
+            componentList.Add(component);
             resources.Add(component);
-            guiComponents.Add(component.id, component);
+            componentMap.Add(component.Name, component);
 
             InvalidateZOrder();
         }
 
         public AbstractGUIComponent GetComponent(string id)
         {
-            if (guiComponents.ContainsKey(id))
+            if (componentMap.ContainsKey(id))
             {
-                return guiComponents[id];
+                return componentMap[id];
             }
             else
             {
@@ -101,14 +101,23 @@ namespace INovelEngine.StateManager
             }
         }
 
+        public void RemoveComponent(string id)
+        {
+            if (componentMap.ContainsKey(id))
+            {
+                componentList.Remove(componentMap[id]);
+                componentMap.Remove(id);
+            }
+        }
+
         public void InvalidateZOrder()
         {
-            components.Sort(); // sort them according to z-order (higher, higher)
+            componentList.Sort(); // sort them according to z-order (higher, higher)
         }
 
         private AbstractLuaEventHandler mouseDownLocked;
 
-        public override AbstractLuaEventHandler GetHandler(ScriptEvents luaevent, params object[] args)
+        public override AbstractLuaEventHandler FindEventHandler(ScriptEvents luaevent, params object[] args)
         {
             AbstractLuaEventHandler handler = this;
             switch (luaevent)
@@ -147,12 +156,12 @@ namespace INovelEngine.StateManager
         {
             AbstractGUIComponent component;
             // do it in reverse order because components sorted in z order...
-            for (int i = components.Count - 1; i >= 0; i--)
+            for (int i = componentList.Count - 1; i >= 0; i--)
             {
-                component = components[i];
-                if (component.x <= x && component.y <= y &&
-                    component.x + component.width >= x &&
-                    component.y + component.height >= y) return component;
+                component = componentList[i];
+                if (component.X <= x && component.Y <= y &&
+                    component.X + component.Width >= x &&
+                    component.Y + component.Height >= y) return component;
             }
             return null;
         }

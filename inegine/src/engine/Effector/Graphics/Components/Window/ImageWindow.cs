@@ -66,11 +66,11 @@ namespace INovelEngine.Effector
             rect.Width = 16;
             rect.Height = 16;
 
-            position.X = this.x;
-            position.Y = this.y;
+            position.X = this.X;
+            position.Y = this.Y;
 
-            int numHorizontalTiles = this.width / 16 - 2;
-            int numVerticalTiles = this.height / 16 - 2;
+            int numHorizontalTiles = this.Width / 16 - 2;
+            int numVerticalTiles = this.Height / 16 - 2;
 
 
             int widthDrawn = 0;
@@ -95,7 +95,7 @@ namespace INovelEngine.Effector
             }
 
             // draw last tile
-            int lastWidth = this.width - widthDrawn - 16;
+            int lastWidth = this.Width - widthDrawn - 16;
             rect.Width = lastWidth;
 
             sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this.alpha, this._color));
@@ -113,7 +113,7 @@ namespace INovelEngine.Effector
             // draw rows
             for (int j = 0; j < numVerticalTiles; j++)
             {
-                position.X = this.x;
+                position.X = this.X;
                 widthDrawn = 0;
                 // left side
                 rect.X = (int)TilePositions.CENTERLEFT;
@@ -135,7 +135,7 @@ namespace INovelEngine.Effector
                 }
 
                 // draw last tile
-                lastWidth = this.width - widthDrawn - 16;
+                lastWidth = this.Width - widthDrawn - 16;
                 rect.Width = lastWidth;
 
                 sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this.alpha, this._color));
@@ -152,11 +152,11 @@ namespace INovelEngine.Effector
             }
             
             /* draw last row tiles */
-            int lastHeight = this.height - heightDrawn - 16;
+            int lastHeight = this.Height - heightDrawn - 16;
 
             rect.Height = lastHeight;
             
-            position.X = this.x;
+            position.X = this.X;
             widthDrawn = 0;
             // left side
             rect.X = (int)TilePositions.CENTERLEFT;
@@ -178,7 +178,7 @@ namespace INovelEngine.Effector
             }
 
             // draw last tile
-            lastWidth = this.width - widthDrawn - 16;
+            lastWidth = this.Width - widthDrawn - 16;
             rect.Width = lastWidth;
 
             sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this.alpha, this._color));
@@ -197,7 +197,7 @@ namespace INovelEngine.Effector
             // draw lower part
 
             rect.Height = 16;
-            position.X = this.x;
+            position.X = this.X;
             widthDrawn = 0;
             // left side
             rect.X = (int)TilePositions.DOWNLEFT;
@@ -219,7 +219,7 @@ namespace INovelEngine.Effector
             }
 
             // draw last tile
-            lastWidth = this.width - widthDrawn - 16;
+            lastWidth = this.Width - widthDrawn - 16;
             rect.Width = lastWidth;
 
             sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this.alpha, this._color));

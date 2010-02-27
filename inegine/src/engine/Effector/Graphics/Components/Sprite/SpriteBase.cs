@@ -16,46 +16,44 @@ namespace INovelEngine.Effector
     {
         protected Sprite sprite;
 
-        public INETexture sourceImage;
-        public Texture texture;
-        public string textureFile;
+        public INETexture textureManager;
         protected int alpha;
         protected Rectangle sourceArea;
-        protected bool sourceAreaUsed = false;
 
-        public SpriteBase(String id, string textureFile, int x, int y, int layer, bool fadedOut)
+        public SpriteBase()
         {
-            try
+            textureManager = new INETexture();
+            sourceArea = new Rectangle();
+        }
+
+        public string Texture
+        {
+            get
             {
-                this.id = id;
-                this.textureFile = textureFile;
-
-                this.sourceImage = new INETexture(textureFile);
-                this.sourceArea.Width = sourceImage.width;
-                this.sourceArea.Height = sourceImage.height;
-                this.width = sourceImage.width;
-                this.height = sourceImage.height;
-
-                this.x = x;
-                this.y = y;
-
-                this.layer = layer;
-                this.sourceArea = new Rectangle(0, 0, width, height);//sourceArea;
-                this.sourceAreaUsed = true;
-                this.FadedOut = fadedOut;
+                return textureManager.TextureFile;
             }
-            catch (TextureLoadError e)
+            set
             {
-                throw e;
+                textureManager.TextureFile = value;
+                SetDimensions();
             }
+        }
+
+        protected virtual void SetDimensions()
+        {
+            sourceArea.Width = textureManager.width;
+            sourceArea.Height = textureManager.height;
+            Width = textureManager.width;
+            Height = textureManager.height;
         }
 
         #region IGameComponent Members
 
         protected override void DrawInternal()
         {
+            if (this.textureManager.texture == null) return;
             sprite.Begin(SpriteFlags.AlphaBlend);
-            sprite.Draw(this.texture, this.sourceArea, new Vector3(), new Vector3(x, y, 0), renderColor);
+            sprite.Draw(this.textureManager.texture, this.sourceArea, new Vector3(), new Vector3(X, Y, 0), renderColor);
             sprite.End();
         }
 
@@ -74,7 +72,7 @@ namespace INovelEngine.Effector
         {
             base.Initialize(graphicsDeviceManager);
             sprite = new Sprite(manager.Direct3D9.Device);
-            this.sourceImage.Initialize(graphicsDeviceManager);
+            this.textureManager.Initialize(graphicsDeviceManager);
         }
 
         /// <summary>
@@ -82,10 +80,9 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void LoadContent()
         {
+            base.LoadContent();
             sprite.OnResetDevice();
-            this.sourceImage.LoadContent();
-            this.texture = sourceImage.texture;
-            Console.WriteLine(this.id + " = " + texture.GetLevelDescription(0).Format);
+            this.textureManager.LoadContent();
         }
 
         /// <summary>
@@ -93,6 +90,7 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void UnloadContent()
         {
+            base.UnloadContent();
             sprite.OnLostDevice();
         }
 
@@ -102,6 +100,7 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void Dispose()
         {
+            base.Dispose();
             sprite.Dispose();
 
             GC.SuppressFinalize(this);

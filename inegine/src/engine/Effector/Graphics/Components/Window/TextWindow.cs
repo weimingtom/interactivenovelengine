@@ -25,8 +25,7 @@ namespace INovelEngine.Effector
         }
 
 
-        private AnimatedSprite cursorSprite = new AnimatedSprite("cursor", "Resources/sprite.png", 0, 0, 4,
-                                                                 4, 4, 32, 48, false);
+        private AnimatedSprite cursorSprite = new AnimatedSprite();
 
         private State _printState = State.Idle;
         private readonly List<int> breaks = new List<int>();
@@ -80,7 +79,7 @@ namespace INovelEngine.Effector
         public TextWindow(String id, int color, int alpha, int x, int y, int width, int height, int layer, string text, int fontSize, bool rubyOn, int margin)
             : base(id, color, alpha, x, y, width, height, layer)
         {
-            this.type = ComponentType.TextWindow;
+            this.Type = ComponentType.TextWindow;
             this._fontSize = fontSize;
             this._rubyOn = rubyOn;
             this.margin = margin;
@@ -113,12 +112,12 @@ namespace INovelEngine.Effector
 
         public override void DrawWindow()
         {
-            lines[0].X = x;
-            lines[0].Y = y + height / 2;
-            lines[1].X = x + width;
-            lines[1].Y = y + height / 2;
+            lines[0].X = X;
+            lines[0].Y = Y + Height / 2;
+            lines[1].X = X + Width;
+            lines[1].Y = Y + Height / 2;
 
-            line.Width = height;
+            line.Width = Height;
             line.Begin();
             line.Draw(this.lines, Color.FromArgb(alpha, _color));
             line.End();
@@ -132,31 +131,31 @@ namespace INovelEngine.Effector
             {
                 Size dim = this.font.Measure(viewText);
                 int leftMargin;
-                if (this.centerText) leftMargin = (this.width - dim.Width)/2;
+                if (this.centerText) leftMargin = (this.Width - dim.Width)/2;
                 else leftMargin = margin;
-                TextRenderer.DrawText(this.sprite, this.font, viewText, this.x + leftMargin,
-                                      this.y + margin, width - margin * 2, height - margin * 2, Color.White);
+                TextRenderer.DrawText(this.sprite, this.font, viewText, this.X + leftMargin,
+                                      this.Y + margin, Width - margin * 2, Height - margin * 2, Color.White);
             }
             else
             {
-                TextRenderer.DrawText(this.sprite, this.font, scrollBuffer, this.x + margin,
-                                      this.y + margin, width - margin * 2, height - margin * 2, Color.White);
+                TextRenderer.DrawText(this.sprite, this.font, scrollBuffer, this.X + margin,
+                                      this.Y + margin, Width - margin * 2, Height - margin * 2, Color.White);
             }
 
             if (_printState == State.Waiting)
             {
-                cursorSprite.x = (int)TextRenderer.cursorPosition.X;
-                cursorSprite.y = (int)TextRenderer.cursorPosition.Y;
-                if (cursorSprite.x + cursorSprite.width > this.width)
+                cursorSprite.X = (int)TextRenderer.cursorPosition.X;
+                cursorSprite.Y = (int)TextRenderer.cursorPosition.Y;
+                if (cursorSprite.X + cursorSprite.Width > this.Width)
                 {
-                    cursorSprite.x = 0;
-                    cursorSprite.y = cursorSprite.y + this.font.Size + this.font.LineSpacing;
+                    cursorSprite.X = 0;
+                    cursorSprite.Y = cursorSprite.Y + this.font.Size + this.font.LineSpacing;
                 }
-                cursorSprite.x += this.x + this.margin;
+                cursorSprite.X += this.X + this.margin;
 
-                if (cursorSprite.y + cursorSprite.height <= this.height)
+                if (cursorSprite.Y + cursorSprite.Height <= this.Height)
                 {
-                    cursorSprite.y += this.y + this.margin;
+                    cursorSprite.Y += this.Y + this.margin;
                     cursorSprite.Draw();
                 }
             }
@@ -170,7 +169,7 @@ namespace INovelEngine.Effector
  	        base.Initialize(graphicsDeviceManager);
             this.line = new Line(graphicsDeviceManager.Direct3D9.Device);
             this.cursorSprite.Initialize(graphicsDeviceManager);
-            this.cursorSprite.BeginAnimation(100, 0, 2, true);
+            this.cursorSprite.Begin(100, 0, 2, true);
             //this.font = TextRenderer.LoadFont(graphicsDeviceManager, "Resources\\meiryo.ttc", 25, FontWeight.UltraBold, false);
             this.font = TextRenderer.LoadFont(graphicsDeviceManager, "c:\\windows\\fonts\\gulim.ttc", _rubyOn, _fontSize, FontWeight.UltraBold, false);
             this.font.LineSpacing = lineSpacing;
