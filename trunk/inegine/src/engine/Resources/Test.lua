@@ -1,27 +1,9 @@
-function InitComponents()
-	local gamestate = CurrentState();
-	LoadScene("bgimg", "Resources/daughterroom.png");
-	LoadCharacter("musume", "Resources/after.png");
-	ShowCharacter("musume", 1000);
-	
-	local anis = AnimatedSprite();
-	anis.Name = "cursor"
-	anis.Texture = "Resources/sprite.png"
-	anis.Width = 32;
-	anis.Height = 48;
-	anis.Rows = 4;
-	anis.Cols = 4;
-	anis.Layer = 3;
-	AddComponent(anis);	
-	
-	anis:Begin(100, 0, 4, true)
-end
-
 function LoadScene(id, image)
+	local gameState = CurrentState();
 	local status, bgimg = pcall(SpriteBase);
 	bgimg.Name = id
 	bgimg.Texture = image
-	bgimg.Visible = true;
+	bgimg.Visible = false;
 	bgimg.Layer = 0;
 	AddComponent(bgimg);
 end
@@ -42,7 +24,7 @@ function LoadCharacter(id, image)
 	end
 end
 
-function ShowCharacter(id, delay)
+function Show(id, delay)
 	local component = GetComponent(id)
 	if (component ~= nil) then
 		component:LaunchTransition(delay, true) 
@@ -51,7 +33,7 @@ function ShowCharacter(id, delay)
 	end
 end
 
-function HideCharacter(id, delay)
+function Hide(id, delay)
 	local component = GetComponent(id)
 	if (component ~= nil) then
 		component:LaunchTransition(delay, false)	
@@ -61,9 +43,90 @@ function HideCharacter(id, delay)
 end
 
 function Dissolve(id1, id2)
-	ShowCharacter(id2, 0)
-	HideCharacter(id1, 500)
+	local first = GetComponent(id1)
+	local second = GetComponent(id2)
+	
+	if (second.Layer > first.Layer) then
+		local swap = first.Layer
+		first.Layer = second.Layer
+		second.Layer = swap
+	elseif(second.Layer == first.Layer) then
+		first.Layer = first.Layer + 1
+	end
+	--Trace(first.Layer .. " vs " .. second.Layer)
+	Show(id2, 0)
+	Hide(id1, 500)
 end
 
-InitState("test");
+function PrintOver(state, luaevent, args)
+	Trace "print over!"
+	ResumeEss();
+end
+
+function TextOut(value)
+	Trace("printing [" .. value .. "]");
+	if(GetComponent("testwindow"):Print(value)) then
+		Trace "yielding because not over "
+		YieldESS();
+	else
+		Trace "not yielding because over"
+	end
+end
+
+function Clear()
+	GetComponent("testwindow"):Clear();
+end
+
+function MouseClick(window, luaevent, args)	
+	Trace("click!")
+    window:AdvanceText();
+    --PlaySound("click", false);
+    --state:BeginNarrate("Hello world, test\ntest test test3", 100);
+end;
+
+function CursorHandler(state, luaevent, args)
+	local cursorSprite = GetComponent("cursor")
+	cursorSprite.x = args[0] + 1;
+	cursorSprite.y = args[1] + 1;
+end
+
+function InitComponents()
+	local gamestate = CurrentState();
+	
+	gamestate.MouseMove = CursorHandler;
+	
+	local anis = AnimatedSprite();
+	anis.Name = "cursor"
+	anis.Texture = "Resources/sprite.png"
+	anis.Width = 32;
+	anis.Height = 48;
+	anis.Rows = 4;
+	anis.Cols = 4;
+	anis.Layer = 3;
+	AddComponent(anis);	
+	
+	local win = ImageWindow()
+	win.Name = "testwindow"
+	win.Alpha = 155
+	win.Width = 780
+	win.Height = 200
+	win.x = (GetWidth() - win.Width) / 2;
+	win.y = GetHeight() - win.Height - 10;
+	win.Layer = 100
+	win.LineSpacing = 20
+	win.PrintOver = PrintOver
+	win.MouseClick = MouseClick
+	win.Visible = true
+	AddComponent(win)
+	
+	anis:Begin(100, 0, 4, true)
+end
+
 InitComponents();
+counter = 0
+
+--LoadCharacter("musume1", "Resources/before.png") 
+--LoadCharacter("musume2", "Resources/after.png")
+--Show("musume1", 0)
+--flag = true;
+BeginESS("Resources/test.ess");

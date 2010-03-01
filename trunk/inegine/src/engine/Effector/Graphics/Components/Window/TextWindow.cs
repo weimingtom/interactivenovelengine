@@ -25,7 +25,19 @@ namespace INovelEngine.Effector
         }
 
 
-        private AnimatedSprite cursorSprite = new AnimatedSprite();
+        private AnimatedSprite cursorSprite;
+
+        public AnimatedSprite Cursor
+        {
+            get
+            {
+                return cursorSprite;
+            }
+            set
+            {
+                cursorSprite = value;
+            }
+        }
 
         private State _printState = State.Idle;
         private readonly List<int> breaks = new List<int>();
@@ -34,12 +46,26 @@ namespace INovelEngine.Effector
         private string sourceText = "";
         private string viewText = "";
         private string scrollBuffer = "";
-        public LuaEventHandler printOverHandler;
 
-        public bool isStatic = false;
+        public LuaEventHandler PrintOver;
+
+        protected bool isStatic = false;
+
+        public bool IsStatic
+        {
+            get
+            {
+                return isStatic;
+            }
+            set
+            {
+                isStatic = value;
+            }
+        }
+
         public bool centerText = false;
-        private Mode narrationMode = Mode.Narration;
-        private int narrationIndex = 0;
+        protected Mode narrationMode = Mode.Narration;
+        protected int narrationIndex = 0;
 
         public int narrationSpeed
         {
@@ -48,7 +74,7 @@ namespace INovelEngine.Effector
 
         private int _lineSpacing;
 
-        public int lineSpacing
+        public int LineSpacing
         {
             get
             {
@@ -61,13 +87,11 @@ namespace INovelEngine.Effector
             }
         }
 
-        public int margin = 10;
+        protected int _margin = 10;
         private TimeEvent narrationEvent;
 
         public Line line;
-        //SlimDX.Direct3D9.Font font;
         private FreeFont font;
-
         private bool wrapFlag = false;
 
         Vector2[] lines = new Vector2[2];
@@ -76,16 +100,17 @@ namespace INovelEngine.Effector
         private bool _rubyOn;
         private int _fontSize;
 
-        public TextWindow(String id, int color, int alpha, int x, int y, int width, int height, int layer, string text, int fontSize, bool rubyOn, int margin)
-            : base(id, color, alpha, x, y, width, height, layer)
+
+        public TextWindow()
+            : base()
         {
             this.Type = ComponentType.TextWindow;
-            this._fontSize = fontSize;
-            this._rubyOn = rubyOn;
-            this.margin = margin;
-            this.Text = text;
-            this.narrationSpeed = 50;
-            this.lineSpacing = 20;
+            narrationSpeed = 50;
+            LineSpacing = 20;
+            IsStatic = true;
+            _fontSize = 20;
+            _rubyOn = false;
+            _margin = 10;
         }
 
         public string Text
@@ -93,7 +118,7 @@ namespace INovelEngine.Effector
             get { return this.sourceText; }
             set
             {
-                Console.WriteLine(value);
+                this.isStatic = true;
                 this.sourceText = value;
                 this.WrapText();
                 this.ParseText();
@@ -119,7 +144,7 @@ namespace INovelEngine.Effector
 
             line.Width = Height;
             line.Begin();
-            line.Draw(this.lines, Color.FromArgb(alpha, _color));
+            line.Draw(this.lines, Color.FromArgb(_alpha, _backgroundColor));
             line.End();
         }
 
@@ -132,31 +157,34 @@ namespace INovelEngine.Effector
                 Size dim = this.font.Measure(viewText);
                 int leftMargin;
                 if (this.centerText) leftMargin = (this.Width - dim.Width)/2;
-                else leftMargin = margin;
+                else leftMargin = _margin;
                 TextRenderer.DrawText(this.sprite, this.font, viewText, this.X + leftMargin,
-                                      this.Y + margin, Width - margin * 2, Height - margin * 2, Color.White);
+                                      this.Y + _margin, Width - _margin * 2, Height - _margin * 2, Color.White);
             }
             else
             {
-                TextRenderer.DrawText(this.sprite, this.font, scrollBuffer, this.X + margin,
-                                      this.Y + margin, Width - margin * 2, Height - margin * 2, Color.White);
+                TextRenderer.DrawText(this.sprite, this.font, scrollBuffer, this.X + _margin,
+                                      this.Y + _margin, Width - _margin * 2, Height - _margin * 2, Color.White);
             }
 
             if (_printState == State.Waiting)
             {
-                cursorSprite.X = (int)TextRenderer.cursorPosition.X;
-                cursorSprite.Y = (int)TextRenderer.cursorPosition.Y;
-                if (cursorSprite.X + cursorSprite.Width > this.Width)
+                if (cursorSprite != null)
                 {
-                    cursorSprite.X = 0;
-                    cursorSprite.Y = cursorSprite.Y + this.font.Size + this.font.LineSpacing;
-                }
-                cursorSprite.X += this.X + this.margin;
+                    cursorSprite.X = (int)TextRenderer.cursorPosition.X;
+                    cursorSprite.Y = (int)TextRenderer.cursorPosition.Y;
+                    if (cursorSprite.X + cursorSprite.Width > this.Width)
+                    {
+                        cursorSprite.X = 0;
+                        cursorSprite.Y = cursorSprite.Y + this.font.Size + this.font.LineSpacing;
+                    }
+                    cursorSprite.X += this.X + this._margin;
 
-                if (cursorSprite.Y + cursorSprite.Height <= this.Height)
-                {
-                    cursorSprite.Y += this.Y + this.margin;
-                    cursorSprite.Draw();
+                    if (cursorSprite.Y + cursorSprite.Height <= this.Height)
+                    {
+                        cursorSprite.Y += this.Y + this._margin;
+                        cursorSprite.Draw();
+                    }
                 }
             }
             this.sprite.End();
@@ -168,11 +196,16 @@ namespace INovelEngine.Effector
         {
  	        base.Initialize(graphicsDeviceManager);
             this.line = new Line(graphicsDeviceManager.Direct3D9.Device);
-            this.cursorSprite.Initialize(graphicsDeviceManager);
-            this.cursorSprite.Begin(100, 0, 2, true);
-            //this.font = TextRenderer.LoadFont(graphicsDeviceManager, "Resources\\meiryo.ttc", 25, FontWeight.UltraBold, false);
+            if (cursorSprite != null)
+            {
+                this.cursorSprite.Initialize(graphicsDeviceManager);
+                this.cursorSprite.Begin(100, 0, 2, true);
+            }
+
+            /* todo: fix font loading mechanism */
+            //this.font = TextRenderer.LoadFont(graphicsDeviceManager, "Resources\\meiryo.ttc", true, 25, FontWeight.UltraBold, false);
             this.font = TextRenderer.LoadFont(graphicsDeviceManager, "c:\\windows\\fonts\\gulim.ttc", _rubyOn, _fontSize, FontWeight.UltraBold, false);
-            this.font.LineSpacing = lineSpacing;
+            this.font.LineSpacing = LineSpacing;
             this.font.TextEffect = FreeFont.Effect.Shadow;
 
             if (wrapFlag)
@@ -251,7 +284,7 @@ namespace INovelEngine.Effector
         {
             this.narrationEvent = null;
             this._printState = State.Idle;
-            if (this.printOverHandler != null) printOverHandler(this, ScriptEvents.Etc, null);
+            if (this.PrintOver != null) PrintOver(this, ScriptEvents.Etc, null);
         }
 
         private void SkipToNextBreak()
@@ -313,9 +346,9 @@ namespace INovelEngine.Effector
                     {
                         this.scrollBuffer = viewText;
                         this._printState = State.Idle; 
-                        if (this.printOverHandler != null)
+                        if (this.PrintOver != null)
                         {
-                            printOverHandler(this, ScriptEvents.Etc, null);
+                            PrintOver(this, ScriptEvents.Etc, null);
                         }
                     }
                 }
@@ -346,7 +379,9 @@ namespace INovelEngine.Effector
 
         public void Clear()
         {
-            this.Text = "";
+            this.sourceText = "";
+            this.WrapText();
+            this.ParseText();
             this._breakIndex = 0;
             this.narrationIndex = 0;
             //this.AdvanceText();
@@ -354,7 +389,10 @@ namespace INovelEngine.Effector
 
         public Boolean Print(string value)
         {
-            this.Text += value;
+            this.isStatic = false;
+            this.sourceText += value;
+            this.WrapText();
+            this.ParseText();
             this._printState = State.Started;
             AdvanceText();
             if (this._printState == State.Waiting) return true;
@@ -381,7 +419,7 @@ namespace INovelEngine.Effector
         {
             this.line.OnResetDevice();
             //this.font.OnResetDevice();
-            cursorSprite.LoadContent();
+            if (cursorSprite != null) cursorSprite.LoadContent();
             base.LoadContent();
         }
 
@@ -391,8 +429,7 @@ namespace INovelEngine.Effector
         public override void UnloadContent()
         {
             this.line.OnLostDevice();
-            //this.font.OnLostDevice();
-            cursorSprite.UnloadContent();
+            if (cursorSprite != null) cursorSprite.UnloadContent();
             base.UnloadContent();
         }
 

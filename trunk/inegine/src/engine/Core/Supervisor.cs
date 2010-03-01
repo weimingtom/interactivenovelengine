@@ -62,41 +62,18 @@ namespace INovelEngine
             // init device
             InitDevice();
 
-
-            //Resources.Add(testTransition);
-
-            /*
-            Resources.Add(testWindow2);
-            Resources.Add(testSprite);
-            */
-
             SoundManager.Init();
             ScriptManager.Init();
 
             this.RegisterLuaGlue();
             LoadState("Resources/start.lua");
 
-
-            ////ScriptManager.lua.DoString("Test();");
-            //Components.Add(CreateState("Resources/Test2.lua"));
-            //LuaEventHandler test2 = ScriptManager.lua.GetFunction(typeof(LuaEventHandler), "Test") as LuaEventHandler;
-            ////ScriptManager.lua.DoString("Test();");
-            //test1();
-            //test2();
-            //Resources.Add(teststate);
-
-            //GraphicsDeviceManager.ChangeDevice(DeviceVersion.Direct3D9, true, InitialWidth, InitialHeight);
             
 
             this.Window.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.Window.MaximizeBox = false;
 
-            Clock.AddTimeEvent(new TimeEvent(1000f, getFPS));
-            //testTransition.FadeOutIn(800, 600, 1000, Color.Black);
-
-            //lua.RegisterFunction("Fade", this, this.GetType().GetMethod("Test"));
-
-            
+            Clock.AddTimeEvent(new TimeEvent(1000f, getFPS));          
         }
 
         protected override void OnExiting(EventArgs e)
@@ -179,12 +156,6 @@ namespace INovelEngine
 
             Device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, ClearColor, 1.0f, 0);
 
-            //sprite.Begin(SpriteFlags.AlphaBlend);
-
-            //sprite.Draw(this.bgImg, Color.White);
-            
-            //sprite.End();
-
             base.Draw(gameTime);
 
             if (this.activeState != null)
@@ -192,20 +163,8 @@ namespace INovelEngine
                 this.activeState.Draw();
             }
 
-            //testSprite.Draw();
-
-            //if (testWindow != null) testWindow.Draw();
-            //testWindow2.Draw();
-
-            //testTransition.Draw();
-
-
             Device.EndScene();
-
-
         }
-
-
 
         protected override void Initialize()
         {
@@ -240,6 +199,8 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("LoadState", this, this.GetType().GetMethod("Lua_LoadState"));
             ScriptManager.lua.RegisterFunction("CurrentState", this, this.GetType().GetMethod("Lua_CurrentState"));
 
+
+            ScriptManager.lua.RegisterFunction("Delay", this, this.GetType().GetMethod("Lua_DelayedCall"));
             ScriptManager.lua.RegisterFunction("LoadESS", this, this.GetType().GetMethod("Lua_LoadESS"));
 
             ScriptManager.lua.RegisterFunction("LoadSound", this, this.GetType().GetMethod("Lua_LoadSound"));
@@ -260,8 +221,11 @@ namespace INovelEngine
             }
         }
 
-        public void Lua_LoadState(String ScriptFile)
+        public void Lua_LoadState(String stateName, String ScriptFile)
         {
+            GameState newState = new GameState();
+            newState.Name = stateName;
+            Lua_AddState(newState);
             LoadState(ScriptFile);
         }
 
@@ -277,12 +241,10 @@ namespace INovelEngine
         {
             if (states.ContainsKey(state.Name))
             {
-            }
-            else
-            {
-                states.Add(state.Name, state);
+                throw new Exception("duplicate state name exists!");
             }
 
+            states.Add(state.Name, state);
             this.activeState = state;
             Resources.Add(state);
         }
@@ -352,6 +314,11 @@ namespace INovelEngine
         public void Lua_StopSound(String id)
         {
             SoundManager.StopSound(id);
+        }
+
+        public void Lua_DelayedCall(float delay, LuaEventHandler Do)
+        {
+            ScriptManager.WaitDo(delay, Do);
         }
 
     }

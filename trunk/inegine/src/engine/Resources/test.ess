@@ -1,18 +1,23 @@
 ﻿PROGRAM
 $counter = counter + 1;
 #Trace counter
-$LoadCharacter("musume1", "Resources/before.png")
+#LoadScene "bgimg1", "Resources/daughterroom.png"
+#LoadScene "bgimg2", "Resources/cwd.jpg"
+#LoadCharacter "musume1", "Resources/before.png" 
 #LoadCharacter "musume2", "Resources/after.png" 
 #goto girl
 girl:
+#Show "bgimg1", 0
 #if (4/2 == 2)
-\카운터는 <counter>입니다.@
+\카운터는 <counter>입니다.
 #end
-\test...
-\안녕하세요^^@ 테스트입니다.@
-캐릭터가 등장합니다.@
-#ShowCharacter "musume1", 2000 
+\안녕하세요^^@ 테스트입니다.
+캐릭터가 등장합니다.
+#Show "musume1", 0
 나왔죠?@
+#Dissolve "musume1", "musume2"
+돌아갑니다@
+#Dissolve "musume2", "musume1"
 #goto test
 test:
 시험입니다^^;@
