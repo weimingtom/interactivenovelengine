@@ -8,16 +8,56 @@ AnimatedSprite = luanet.import_type("INovelEngine.Effector.AnimatedSprite")
 ScriptEvents = luanet.import_type("INovelEngine.Script.ScriptEvents");
 ScriptManager = luanet.import_type("INovelEngine.Script.ScriptManager");
 
-function InitState(id)
-    local state = GameState();
-    state.Name = id;
-    AddState(state);
-end;
-
 function AddComponent(component)
+	if (component.name == nil) then
+		Trace "Component name undefined!"
+		return
+	end	
     CurrentState():AddComponent(component);
 end;
 
+function RemoveComponent(id)
+    return CurrentState():RemoveComponent(id);
+end
+
 function GetComponent(id)
     return CurrentState():GetComponent(id);
+end
+
+function BeginESS(script)
+	if (TextOut == nil or Clear == nil) then
+		Trace "ESS interface undefined!"
+		return
+	end
+	Trace(script)
+	Trace "trying to load another script..."
+	local co = coroutine.create(assert(loadstring(LoadESS(script))))
+	Trace "resuming!..."
+	if (CurrentState().state == nil) then
+		CurrentState().state = {};
+	end
+	CurrentState().state["ess"] = co;
+	ResumeEss();
+end
+
+-- todo: need more elaborate error tracking system...
+function ResumeEss()
+	if (CurrentState().state["ess"] ~= nil) then
+		--Trace "resuming!..."
+		local success, msg = coroutine.resume(CurrentState().state["ess"])
+		if (success == false) then
+			Trace "error in ESS - terminating!"
+			Trace(msg);
+		end
+	end
+end
+
+function YieldESS()
+	Trace "yielding..."
+	coroutine.yield();
+end
+
+function Wait(delay)
+	Delay(delay, function() ResumeEss() end)
+	coroutine.yield();
 end

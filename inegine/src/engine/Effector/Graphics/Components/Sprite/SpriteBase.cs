@@ -16,8 +16,7 @@ namespace INovelEngine.Effector
     {
         protected Sprite sprite;
 
-        public INETexture textureManager;
-        protected int alpha;
+        protected INETexture textureManager;
         protected Rectangle sourceArea;
 
         public SpriteBase()
@@ -102,7 +101,7 @@ namespace INovelEngine.Effector
         {
             base.Dispose();
             sprite.Dispose();
-
+            textureManager.Dispose();
             GC.SuppressFinalize(this);
         }
     }

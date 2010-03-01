@@ -1,9 +1,11 @@
 ﻿PROGRAM
-\다른 스크립트가 로드되었습니다.@
-#Dissolve "musume1", "musume2"
+\다른 스크립트가 로드되었습니다.
+#Dissolve "bgimg1", "bgimg2"
+#Wait 1000
 사라졌죠?@
+#Dissolve "musume1", "musume2"
 끝입니다.@
-#HideCharacter "musume2", 0
+#Hide "musume2", 500
 #goto unload
 unload:
 ;unloading musume1 and musume2...

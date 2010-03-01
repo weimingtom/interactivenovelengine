@@ -9,33 +9,26 @@ namespace INovelEngine.Effector
 {
     public class WindowBase : AbstractGUIComponent
     {
-        public int color
+        protected Color _backgroundColor;
+        public int BackgroundColor
         {
             get
             {
-                return this._color.ToArgb();
+                return this._backgroundColor.ToArgb();
             }
 
             set
             {
-                this._color = Color.FromArgb(value);
+                this._backgroundColor = Color.FromArgb(value);
             }
         }
 
-        protected Color _color;
-        public int alpha;
         protected Sprite sprite;
 
-        public WindowBase(String id, int color, int alpha, int x, int y, int width, int height, int layer)
+        public WindowBase()
         {
-            this.Name = id;
-            this.color = color;
-            this.alpha = alpha;
-            this.X = x;
-            this.Y = y;
-            this.Width = width;
-            this.Height = height;
-            this.Layer = layer;
+            Alpha = 255;
+            BackgroundColor = 0x000000;
         }
 
         /// <summary>

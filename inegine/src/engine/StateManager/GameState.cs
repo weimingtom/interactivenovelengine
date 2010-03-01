@@ -22,8 +22,14 @@ namespace INovelEngine.StateManager
             set;
         }
 
+        /* resources managed by state */
+        
         protected ResourceCollection resources = new ResourceCollection();
-        /* components sorted in z-order */
+        protected Dictionary<String, AbstractResource> resourcesMap = new Dictionary<string, AbstractResource>();
+
+        /* components (objects to draw) managed by state */
+
+        // componentList sorted by z-order (higher, higher)
         protected List<AbstractGUIComponent> componentList = new List<AbstractGUIComponent>();
         protected Dictionary<String, AbstractGUIComponent> componentMap = 
             new Dictionary<string, AbstractGUIComponent>();
@@ -76,6 +82,37 @@ namespace INovelEngine.StateManager
 
         #endregion
         
+        public void AddResource(AbstractResource resource)
+        {
+            if (resourcesMap.ContainsKey(resource.Name)) return;
+
+            resources.Add(resource);
+            resourcesMap[resource.Name] = resource;
+        }
+
+        public AbstractResource GetResource(string id)
+        {
+            if (resourcesMap.ContainsKey(id))
+            {
+                return resourcesMap[id];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void RemoveResource(string id)
+        {
+            if (resourcesMap.ContainsKey(id))
+            {
+                AbstractResource resource = resourcesMap[id];
+                resources.Remove(resource);
+                resourcesMap.Remove(id);
+                resource.Dispose();
+            }
+        }
+
         public void AddComponent(AbstractGUIComponent component)
         {
             if (componentMap.ContainsKey(component.Name)) return;
@@ -105,8 +142,11 @@ namespace INovelEngine.StateManager
         {
             if (componentMap.ContainsKey(id))
             {
-                componentList.Remove(componentMap[id]);
+                AbstractGUIComponent component = componentMap[id];
+                componentList.Remove(component);
                 componentMap.Remove(id);
+                resources.Remove(component);
+                component.Dispose();
             }
         }
 

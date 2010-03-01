@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using INovelEngine.Core;
 using LuaInterface;
 using INovelEngine.StateManager;
 
@@ -119,6 +120,13 @@ namespace INovelEngine.Script
             parser.gen = new CodeGenerator();
             parser.Parse();
             return parser.gen.GetScript();
+        }
+
+        public static void WaitDo(float delay, LuaEventHandler Do)
+        {
+            TimeEvent eventToDo = new TimeEvent(1, delay, delegate() { },
+                                                delegate() { Do(null, ScriptEvents.Etc, null); });
+            Clock.AddTimeEvent(eventToDo);
         }
     }
 }

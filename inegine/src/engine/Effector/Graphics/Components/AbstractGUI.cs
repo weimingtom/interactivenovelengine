@@ -127,10 +127,19 @@ namespace INovelEngine.Effector
         }
 
         private bool _visible = true;
+
         public bool Visible
         {
             get { return _visible; }
             set { _visible = value; }
+        }
+
+        protected int _alpha;
+
+        public int Alpha
+        {
+            get { return _alpha; }
+            set { _alpha = value; }
         }
 
         public void FadeIn(float duration)
@@ -159,6 +168,8 @@ namespace INovelEngine.Effector
         {
             if (this.Enalbed)
             {
+                UpdateFadeRate();
+
                 if (this.Visible)
                 {
                     if (this.Fading)
@@ -179,6 +190,10 @@ namespace INovelEngine.Effector
 
         public virtual void Update(GameTime gameTime)
         {
+        }
+
+        protected virtual void UpdateFadeRate()
+        {
             if (Fading)
             {
                 currentTick = Clock.GetTime();
@@ -191,12 +206,12 @@ namespace INovelEngine.Effector
                 else
                 {
                     progress = fadeIn
-                                   ? Math.Min(1.0f, (currentTick - beginTick)/tickLength)
+                                   ? Math.Min(1.0f, (currentTick - beginTick) / tickLength)
                                    : 1.0f - Math.Min(1.0f, (currentTick - beginTick) / tickLength);
+
                 }
             }
         }
-
         #endregion
 
         #region IResource Members

@@ -37,6 +37,7 @@ namespace INovelEngine.Effector.Graphics.Text
         public RubyFont(GraphicsDeviceManager manager, string fontPath, int size, string rubyFontPath, int rubysize)
             : base(manager, fontPath, size)
         {
+            _spaceFirstLine = true;
             _rubySize = rubysize;
             _rubyFont = new FreeFont(manager, rubyFontPath, rubysize);
         }

@@ -154,6 +154,7 @@ namespace INovelEngine.Effector.Graphics.Text
         private string _prevString;
         private Boolean _prevWrap;
         private int _prevWrapWidth;
+        protected bool _spaceFirstLine;
 
         protected readonly Stack<Color> _colorStack;
 
@@ -190,6 +191,7 @@ namespace INovelEngine.Effector.Graphics.Text
 
         public FreeFont(GraphicsDeviceManager _manager, string fontPath, int size)
         {
+            _spaceFirstLine = false;
             TextEffect = Effect.None;
             this._manager = _manager;
             this._device = _manager.Direct3D9.Device;
@@ -402,6 +404,9 @@ namespace INovelEngine.Effector.Graphics.Text
             penx = 0;
             peny = 0;
             _prevy = y + LineSpacing;
+
+            if (!_spaceFirstLine) peny -= LineSpacing;
+
             for (int i = 0; i < _glyphList.Count; i++)
             {
                 switch (_glyphList[i].Type)

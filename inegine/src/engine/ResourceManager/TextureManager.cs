@@ -103,6 +103,7 @@ namespace INovelEngine.ResourceManager
 
         public void Dispose()
         {
+            texture.Dispose();
             scaledBitmap.Dispose();
         }
 

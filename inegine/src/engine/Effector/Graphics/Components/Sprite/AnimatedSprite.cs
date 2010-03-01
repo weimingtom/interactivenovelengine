@@ -7,7 +7,7 @@ using LuaInterface;
 
 namespace INovelEngine.Effector
 {
-    class AnimatedSprite : SpriteBase
+    public class AnimatedSprite : SpriteBase
     {
         public int Cols
         {

@@ -126,6 +126,7 @@
     <Compile Include="Effector\Graphics\Text\RubyFont.cs" />
     <Compile Include="Effector\Graphics\Components\AbstractGUI.cs" />
     <Compile Include="Effector\Graphics\Components\Window\ImageWindow.cs" />
+    <Compile Include="ResourceManager\AbstractResource.cs" />
     <Compile Include="ResourceManager\TextureManager.cs" />
     <Compile Include="ScriptManager\CodeGen.cs" />
     <Compile Include="ScriptManager\Parser.cs" />
@@ -272,6 +273,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Effector\Graphics\Components\Button\" />
     <Folder Include="Effector\Input\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
