@@ -98,13 +98,12 @@ namespace INovelEngine.Script
 
     public static class ScriptManager
     {
-        public static Lua lua;
+        public static Lua lua = new Lua();
             
         public static void Init()
         {
             try
             {
-                lua = new Lua();
                 lua.DoFile("BaseScripts/Init.lua");
             }
             catch (Exception e)

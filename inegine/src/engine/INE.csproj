@@ -117,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Exceptions.cs" />
+    <Compile Include="Core\LogManager.cs" />
     <Compile Include="Effector\Audio\SoundManager.cs" />
     <Compile Include="Effector\Graphics\Components\Sprite\AnimatedSprite.cs" />
     <Compile Include="Effector\Graphics\Effect\AbstractTransition.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Effector\Graphics\Components\AbstractGUI.cs" />
     <Compile Include="Effector\Graphics\Components\Window\ImageWindow.cs" />
     <Compile Include="ResourceManager\AbstractResource.cs" />
+    <Compile Include="ResourceManager\FontManager.cs" />
     <Compile Include="ResourceManager\TextureManager.cs" />
     <Compile Include="ScriptManager\CodeGen.cs" />
     <Compile Include="ScriptManager\Parser.cs" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Text;
+using INovelEngine.ResourceManager;
 using SampleFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
@@ -16,9 +17,28 @@ namespace INovelEngine.Effector
         Rectangle rect = new Rectangle(0, 0, 16, 16);
 
         Vector2[] lines = new Vector2[2];
+
         
-        private Texture winParts;
-        private string textureFile = "Resources/win.png";
+        protected INETexture _windowTexture;
+
+        public string WindowTexture
+        {
+            get
+            {
+                if (this._windowTexture != null)
+                {
+                    return this._windowTexture.TextureFile;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            set
+            {
+                this._windowTexture = new INETexture(value);
+            }
+        }
 
         public ImageWindow()
             : base()
@@ -32,6 +52,11 @@ namespace INovelEngine.Effector
 
         public override void DrawWindow()
         {
+            if (_windowTexture == null || _windowTexture.Texture == null)
+            {
+                return;
+            }
+
             sprite.Begin(SpriteFlags.AlphaBlend);
             rect.X = 0;
             rect.Y = 0;
@@ -50,7 +75,7 @@ namespace INovelEngine.Effector
             // left side
             rect.X =  (int)TilePositions.UPLEFT;
 
-            sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
+            sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
             
             position.X += 16;
             widthDrawn += 16;
@@ -60,7 +85,7 @@ namespace INovelEngine.Effector
             
             for (int i = 0; i < numHorizontalTiles; i++)
             {
-                sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
+                sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
                 position.X += 16;
                 widthDrawn += 16;
@@ -70,14 +95,14 @@ namespace INovelEngine.Effector
             int lastWidth = this.Width - widthDrawn - 16;
             rect.Width = lastWidth;
 
-            sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
+            sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
             position.X += lastWidth;
 
             // right side
             rect.Width = 16;
             rect.X = (int)TilePositions.UPRIGHT;
-            sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
+            sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
             heightDrawn += 16;
             position.Y += 16;
@@ -90,7 +115,7 @@ namespace INovelEngine.Effector
                 // left side
                 rect.X = (int)TilePositions.CENTERLEFT;
 
-                sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
+                sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
                 position.X += 16;
                 widthDrawn += 16;
@@ -100,7 +125,7 @@ namespace INovelEngine.Effector
 
                 for (int i = 0; i < numHorizontalTiles; i++)
                 {
-                    sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
+                    sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
                     position.X += 16;
                     widthDrawn += 16;
@@ -110,14 +135,14 @@ namespace INovelEngine.Effector
                 lastWidth = this.Width - widthDrawn - 16;
                 rect.Width = lastWidth;
 
-                sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
+                sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
                 position.X += lastWidth;
 
                 // right side
                 rect.Width = 16;
                 rect.X = (int)TilePositions.CENTERRIGHT;
-                sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
+                sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
                 heightDrawn += 16;
                 position.Y += 16;
@@ -133,7 +158,7 @@ namespace INovelEngine.Effector
             // left side
             rect.X = (int)TilePositions.CENTERLEFT;
 
-            sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
+            sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
             position.X += 16;
             widthDrawn += 16;
@@ -143,7 +168,7 @@ namespace INovelEngine.Effector
 
             for (int i = 0; i < numHorizontalTiles; i++)
             {
-                sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
+                sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
                 position.X += 16;
                 widthDrawn += 16;
@@ -153,14 +178,14 @@ namespace INovelEngine.Effector
             lastWidth = this.Width - widthDrawn - 16;
             rect.Width = lastWidth;
 
-            sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
+            sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
             position.X += lastWidth;
 
             // right side
             rect.Width = 16;
             rect.X = (int)TilePositions.CENTERRIGHT;
-            sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
+            sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
             heightDrawn += 16;
             position.Y += lastHeight;
@@ -174,7 +199,7 @@ namespace INovelEngine.Effector
             // left side
             rect.X = (int)TilePositions.DOWNLEFT;
 
-            sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
+            sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
             position.X += 16;
             widthDrawn += 16;
@@ -184,7 +209,7 @@ namespace INovelEngine.Effector
 
             for (int i = 0; i < numHorizontalTiles; i++)
             {
-                sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
+                sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
                 position.X += 16;
                 widthDrawn += 16;
@@ -194,27 +219,23 @@ namespace INovelEngine.Effector
             lastWidth = this.Width - widthDrawn - 16;
             rect.Width = lastWidth;
 
-            sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
+            sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
             position.X += lastWidth;
 
             // right side
             rect.Width = 16;
             rect.X = (int)TilePositions.DOWNRIGHT;
-            sprite.Draw(this.winParts, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
+            sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
             sprite.End();
-
 
         }
 
         public override void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
             base.Initialize(graphicsDeviceManager);
-
-            //winParts = Texture.FromFile(graphicsDeviceManager.Direct3D9.Device, "win.png", 144, 16, 0, Usage.None, Format.A8R8G8B8, Pool.Default,
-            //                                                      Filter.None, Filter.None, Color.FromArgb(255, 0, 255).ToArgb());
-
+            _windowTexture.Initialize(graphicsDeviceManager);
         }
 
         
@@ -223,8 +244,7 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void LoadContent()
         {
-            winParts = Texture.FromFile(manager.Direct3D9.Device, textureFile, 144, 16, 0, Usage.None, Format.A8R8G8B8, Pool.Default,
-                                                      Filter.None, Filter.None, Color.FromArgb(255, 0, 255).ToArgb());
+            _windowTexture.LoadContent();
             base.LoadContent();
         }
 
@@ -233,7 +253,7 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void UnloadContent()
         {
-            winParts.Dispose();
+            _windowTexture.UnloadContent();
             base.UnloadContent();
         }
         

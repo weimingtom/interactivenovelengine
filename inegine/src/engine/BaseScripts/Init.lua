@@ -7,6 +7,24 @@ SpriteBase = luanet.import_type("INovelEngine.Effector.SpriteBase");
 AnimatedSprite = luanet.import_type("INovelEngine.Effector.AnimatedSprite")
 ScriptEvents = luanet.import_type("INovelEngine.Script.ScriptEvents");
 ScriptManager = luanet.import_type("INovelEngine.Script.ScriptManager");
+Texture = luanet.import_type("INovelEngine.ResourceManager.INETexture");
+Font = luanet.import_type("INovelEngine.ResourceManager.INEFont");
+
+function AddResource(resource)
+	if (resource.name == nil) then
+		Trace "Resource name undefined!"
+		return
+	end	
+    CurrentState():AddResource(resource);
+end;
+
+function RemoveResource(id)
+    return CurrentState():RemoveResource(id);
+end
+
+function GetResource(id)
+    return CurrentState():GetResource(id);
+end
 
 function AddComponent(component)
 	if (component.name == nil) then
