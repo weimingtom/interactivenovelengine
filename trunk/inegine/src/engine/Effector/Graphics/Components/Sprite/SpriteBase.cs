@@ -40,19 +40,19 @@ namespace INovelEngine.Effector
 
         protected virtual void SetDimensions()
         {
-            sourceArea.Width = textureManager.width;
-            sourceArea.Height = textureManager.height;
-            Width = textureManager.width;
-            Height = textureManager.height;
+            sourceArea.Width = textureManager.Width;
+            sourceArea.Height = textureManager.Height;
+            Width = textureManager.Width;
+            Height = textureManager.Height;
         }
 
         #region IGameComponent Members
 
         protected override void DrawInternal()
         {
-            if (this.textureManager.texture == null) return;
+            if (this.textureManager.Texture == null) return;
             sprite.Begin(SpriteFlags.AlphaBlend);
-            sprite.Draw(this.textureManager.texture, this.sourceArea, new Vector3(), new Vector3(X, Y, 0), renderColor);
+            sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(), new Vector3(X, Y, 0), renderColor);
             sprite.End();
         }
 

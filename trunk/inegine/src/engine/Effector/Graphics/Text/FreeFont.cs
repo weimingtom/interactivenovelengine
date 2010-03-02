@@ -8,7 +8,6 @@ using SlimDX.Direct3D9;
 using Tao.FreeType;
 using SlimDX;
 using System.Drawing;
-using SampleFramework;
 using System.Drawing.Imaging;
 
 namespace INovelEngine.Effector.Graphics.Text
@@ -117,12 +116,12 @@ namespace INovelEngine.Effector.Graphics.Text
 
     public class FreeFont : IDisposable
     {
-        public enum Effect
+        public enum TextEffect
         {
             None, Shadow
         };
 
-        public Effect TextEffect;
+        public TextEffect Effect;
 
         private const int Maxsize = 128;
 
@@ -192,7 +191,7 @@ namespace INovelEngine.Effector.Graphics.Text
         public FreeFont(GraphicsDeviceManager _manager, string fontPath, int size)
         {
             _spaceFirstLine = false;
-            TextEffect = Effect.None;
+            Effect = TextEffect.None;
             this._manager = _manager;
             this._device = _manager.Direct3D9.Device;
             this._fontPath = fontPath;
@@ -428,7 +427,7 @@ namespace INovelEngine.Effector.Graphics.Text
                         _prevx = penx;
                         penx += _glyphList[i].Glyph.Slot.advance.x / 64;
 
-                        if (TextEffect == Effect.Shadow)
+                        if (Effect == TextEffect.Shadow)
                         {
                             _pos.X += 2;
                             _pos.Y += 2;

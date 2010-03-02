@@ -5,29 +5,32 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
 using INovelEngine.Core;
+using INovelEngine.Effector;
 using SampleFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
 
 namespace INovelEngine.ResourceManager
 {
-    public class INETexture : IResource
+    public class INETexture : AbstractResource
     {
-        public Texture texture;
-        public int width;
-        public int height;
+        public Texture Texture;
+        public int Width;
+        public int Height;
+
         private Device device;
 
         private Bitmap scaledBitmap;
         private string fileName;
 
         public INETexture ()
-        {
-            
+        {       
         }
 
         public INETexture (string fileName)
         {
+            this.TextureFile = fileName;
+            this.Name = fileName;
         }
 
         public string TextureFile
@@ -50,8 +53,8 @@ namespace INovelEngine.ResourceManager
             {
                 Bitmap bitmap = new Bitmap(fileName);
                 scaledBitmap = bitmap;
-                this.width = bitmap.Width;
-                this.height = bitmap.Height;
+                this.Width = bitmap.Width;
+                this.Height = bitmap.Height;
 
                 int newWidth = ClosestPower2(bitmap.Width);
                 int newHeight = ClosestPower2(bitmap.Height);
@@ -73,37 +76,40 @@ namespace INovelEngine.ResourceManager
 
         #region IResource Members
 
-        public void Initialize(GraphicsDeviceManager graphicsDeviceManager)
+        public override void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
+            base.Initialize(graphicsDeviceManager);
             this.device = graphicsDeviceManager.Direct3D9.Device;
         }
 
-        public void LoadContent()
+        public override void LoadContent()
         {
+            base.LoadContent();
             if (this.scaledBitmap != null)
             {
-                if (this.texture != null) this.texture.Dispose();
+                if (this.Texture != null) this.Texture.Dispose();
 
                 using (MemoryStream ms = new MemoryStream())
                 {
                     scaledBitmap.Save(ms, ImageFormat.Bmp);
                     byte[] bitmapData = ms.ToArray();
-                    this.texture = Texture.FromMemory(device, bitmapData);
+                    this.Texture = Texture.FromMemory(device, bitmapData);
                 }
             }
         }
 
-        public void UnloadContent()
+        public override void UnloadContent()
         {
+            base.UnloadContent();
         }
 
         #endregion
 
         #region IDisposable Members
 
-        public void Dispose()
+        public override void Dispose()
         {
-            texture.Dispose();
+            Texture.Dispose();
             scaledBitmap.Dispose();
         }
 

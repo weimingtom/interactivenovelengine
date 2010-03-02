@@ -20,8 +20,6 @@ namespace INovelEngine
         private GameState activeState;
         Dictionary<String, GameState> states = new Dictionary<string, GameState>();
 
-        private SoundManager _soundManager;
-
         //Texture bgImg;
         //Texture charImg;
         //Sprite sprite;
@@ -62,10 +60,12 @@ namespace INovelEngine
             // init device
             InitDevice();
 
+            this.RegisterLuaGlue();
+
             SoundManager.Init();
+            
             ScriptManager.Init();
 
-            this.RegisterLuaGlue();
             LoadState("Resources/start.lua");
 
             
@@ -199,7 +199,8 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("LoadState", this, this.GetType().GetMethod("Lua_LoadState"));
             ScriptManager.lua.RegisterFunction("CurrentState", this, this.GetType().GetMethod("Lua_CurrentState"));
 
-
+            ScriptManager.lua.RegisterFunction("Supervisor", this, this.GetType().GetMethod("Lua_Supervisor"));
+            
             ScriptManager.lua.RegisterFunction("Delay", this, this.GetType().GetMethod("Lua_DelayedCall"));
             ScriptManager.lua.RegisterFunction("LoadESS", this, this.GetType().GetMethod("Lua_LoadESS"));
 
@@ -320,6 +321,12 @@ namespace INovelEngine
         {
             ScriptManager.WaitDo(delay, Do);
         }
+
+        public Supervisor Lua_Supervisor()
+        {
+            return this;
+        }
+
 
     }
 }

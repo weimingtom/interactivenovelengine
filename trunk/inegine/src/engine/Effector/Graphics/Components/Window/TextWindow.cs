@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Collections.Generic;
 using System.Text;
 using INovelEngine.Effector.Graphics.Text;
+using INovelEngine.ResourceManager;
 using SampleFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
@@ -83,7 +84,7 @@ namespace INovelEngine.Effector
             set
             {
                 this._lineSpacing = value;
-                if (this.font != null) this.font.LineSpacing = _lineSpacing;
+                if (this.freeFont != null) this.freeFont.LineSpacing = _lineSpacing;
             }
         }
 
@@ -91,14 +92,39 @@ namespace INovelEngine.Effector
         private TimeEvent narrationEvent;
 
         public Line line;
-        private FreeFont font;
+
+        private INEFont fontManager;
+
+        public INEFont Font
+        {
+            get
+            {
+                return fontManager;
+            }
+            set
+            {
+                fontManager = value;
+            }
+        }
+
+        private FreeFont freeFont
+        {
+            get
+            {
+                if (fontManager != null)
+                {
+                    return fontManager.Font;
+                }
+                else
+                {
+                    return null;   
+                }
+            }
+        }
         private bool wrapFlag = false;
 
         Vector2[] lines = new Vector2[2];
         private bool _cancelFlag = false; // flag for indicating whether to skip when beginning a new textout
-
-        private bool _rubyOn;
-        private int _fontSize;
 
 
         public TextWindow()
@@ -108,8 +134,6 @@ namespace INovelEngine.Effector
             narrationSpeed = 50;
             LineSpacing = 20;
             IsStatic = true;
-            _fontSize = 20;
-            _rubyOn = false;
             _margin = 10;
         }
 
@@ -150,20 +174,22 @@ namespace INovelEngine.Effector
 
         public override void DrawText()
         {
+            if (freeFont == null) throw new Exception("Font not loaded!");
+
             this.sprite.Begin(SpriteFlags.AlphaBlend);
 
             if (isStatic)
             {
-                Size dim = this.font.Measure(viewText);
+                Size dim = this.freeFont.Measure(viewText);
                 int leftMargin;
                 if (this.centerText) leftMargin = (this.Width - dim.Width)/2;
                 else leftMargin = _margin;
-                TextRenderer.DrawText(this.sprite, this.font, viewText, this.X + leftMargin,
+                TextRenderer.DrawText(this.sprite, this.freeFont, viewText, this.X + leftMargin,
                                       this.Y + _margin, Width - _margin * 2, Height - _margin * 2, Color.White);
             }
             else
             {
-                TextRenderer.DrawText(this.sprite, this.font, scrollBuffer, this.X + _margin,
+                TextRenderer.DrawText(this.sprite, this.freeFont, scrollBuffer, this.X + _margin,
                                       this.Y + _margin, Width - _margin * 2, Height - _margin * 2, Color.White);
             }
 
@@ -176,7 +202,7 @@ namespace INovelEngine.Effector
                     if (cursorSprite.X + cursorSprite.Width > this.Width)
                     {
                         cursorSprite.X = 0;
-                        cursorSprite.Y = cursorSprite.Y + this.font.Size + this.font.LineSpacing;
+                        cursorSprite.Y = cursorSprite.Y + this.freeFont.Size + this.freeFont.LineSpacing;
                     }
                     cursorSprite.X += this.X + this._margin;
 
@@ -202,11 +228,20 @@ namespace INovelEngine.Effector
                 this.cursorSprite.Begin(100, 0, 2, true);
             }
 
-            /* todo: fix font loading mechanism */
-            //this.font = TextRenderer.LoadFont(graphicsDeviceManager, "Resources\\meiryo.ttc", true, 25, FontWeight.UltraBold, false);
-            this.font = TextRenderer.LoadFont(graphicsDeviceManager, "c:\\windows\\fonts\\gulim.ttc", _rubyOn, _fontSize, FontWeight.UltraBold, false);
-            this.font.LineSpacing = LineSpacing;
-            this.font.TextEffect = FreeFont.Effect.Shadow;
+
+            if (freeFont == null)
+            {
+                fontManager = new INEFont("c:\\windows\\fonts\\gulim.ttc")
+                                  {
+                                      Size = 20,
+                                      RubyOn = false,
+                                      LineSpacing = LineSpacing,
+                                      TextEffect = 1
+                                  };
+            }
+
+
+            fontManager.Initialize(graphicsDeviceManager);
 
             if (wrapFlag)
             {
@@ -217,7 +252,7 @@ namespace INovelEngine.Effector
 
         private void WrapText()
         {
-            if (this.font == null)
+            if (this.freeFont == null)
             {
                 wrapFlag = true;
                 return;
@@ -418,7 +453,7 @@ namespace INovelEngine.Effector
         public override void LoadContent()
         {
             this.line.OnResetDevice();
-            //this.font.OnResetDevice();
+            fontManager.LoadContent();
             if (cursorSprite != null) cursorSprite.LoadContent();
             base.LoadContent();
         }
@@ -430,6 +465,7 @@ namespace INovelEngine.Effector
         {
             this.line.OnLostDevice();
             if (cursorSprite != null) cursorSprite.UnloadContent();
+            fontManager.UnloadContent();
             base.UnloadContent();
         }
 

@@ -59,12 +59,10 @@ function Dissolve(id1, id2)
 end
 
 function PrintOver(state, luaevent, args)
-	Trace "print over!"
 	ResumeEss();
 end
 
 function TextOut(value)
-	Trace("printing [" .. value .. "]");
 	if(GetComponent("testwindow"):Print(value)) then
 		Trace "yielding because not over "
 		YieldESS();
@@ -117,6 +115,12 @@ function InitComponents()
 	win.PrintOver = PrintOver
 	win.MouseClick = MouseClick
 	win.Visible = true
+	win.WindowTexture = "Resources/win.png"
+	win.Font = Font("c:\\windows\\fonts\\gulim.ttc")
+	win.Font.Size = 20;
+	win.Font.LineSpacing = 10;
+	win.Font.TextEffect = 0;
+	AddResource(win.Font);	
 	AddComponent(win)
 	
 	anis:Begin(100, 0, 4, true)
@@ -125,8 +129,6 @@ end
 InitComponents();
 counter = 0
 
---LoadCharacter("musume1", "Resources/before.png") 
---LoadCharacter("musume2", "Resources/after.png")
---Show("musume1", 0)
---flag = true;
+Trace(GameTable["daughtet_name"]);
+
 BeginESS("Resources/test.ess");
