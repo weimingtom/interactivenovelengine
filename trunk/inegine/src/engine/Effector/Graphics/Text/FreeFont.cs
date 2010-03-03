@@ -386,6 +386,19 @@ namespace INovelEngine.Effector.Graphics.Text
             _maxHeight += currentMaxHeight;
         }
 
+        public Size Measure(String str, int wrapWidth)
+        {
+            bool tempWrap = Wrap;
+            Wrap = true;
+            WrapWidth = wrapWidth;
+            Size size = new Size();
+            CreateDisplayList(str);
+            size.Width = _maxWidth;
+            size.Height = _maxHeight;
+            Wrap = tempWrap;
+            return size;
+        }
+
         public Size Measure(String str)
         {
             Size size = new Size();
