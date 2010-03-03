@@ -64,7 +64,20 @@ namespace INovelEngine.Effector
             }
         }
 
-        public bool centerText = false;
+        protected bool centerText = false;
+        
+        public bool CenterText
+        {
+            get
+            {
+                return centerText;
+            }
+            set
+            {
+                centerText = value;
+            }
+        }
+
         protected Mode narrationMode = Mode.Narration;
         protected int narrationIndex = 0;
 
@@ -218,38 +231,7 @@ namespace INovelEngine.Effector
             //textRenderer.DrawText(sourceText, this.x + margin, this.y + margin, width - margin * 2, height - margin * 2, Color.White);
         }
 
-        public override void Initialize(GraphicsDeviceManager graphicsDeviceManager)
-        {
- 	        base.Initialize(graphicsDeviceManager);
-            this.line = new Line(graphicsDeviceManager.Direct3D9.Device);
-            if (cursorSprite != null)
-            {
-                this.cursorSprite.Initialize(graphicsDeviceManager);
-                this.cursorSprite.Begin(100, 0, 2, true);
-            }
-
-
-            if (freeFont == null)
-            {
-                fontManager = new INEFont("c:\\windows\\fonts\\gulim.ttc")
-                                  {
-                                      Size = 20,
-                                      RubyOn = false,
-                                      LineSpacing = LineSpacing,
-                                      TextEffect = 1
-                                  };
-            }
-
-
-            fontManager.Initialize(graphicsDeviceManager);
-
-            if (wrapFlag)
-            {
-                this.WrapText();
-                this.ParseText();
-            }
-        }
-
+        
         private void WrapText()
         {
             if (this.freeFont == null)
@@ -447,13 +429,46 @@ namespace INovelEngine.Effector
             this.narrationMode = Mode.Skipping;
         }
 
+        public override void Initialize(GraphicsDeviceManager graphicsDeviceManager)
+        {
+            base.Initialize(graphicsDeviceManager);
+            this.line = new Line(graphicsDeviceManager.Direct3D9.Device);
+            if (cursorSprite != null)
+            {
+                this.cursorSprite.Initialize(graphicsDeviceManager);
+                this.cursorSprite.Begin(100, 0, 2, true);
+            }
+
+
+            //if (freeFont == null)
+            //{
+            //    fontManager = new INEFont("c:\\windows\\fonts\\gulim.ttc")
+            //    {
+            //        Size = 20,
+            //        RubyOn = false,
+            //        LineSpacing = LineSpacing,
+            //        TextEffect = 1
+            //    };
+            //}
+
+
+            //fontManager.Initialize(graphicsDeviceManager);
+
+            if (wrapFlag)
+            {
+                this.WrapText();
+                this.ParseText();
+            }
+        }
+
+
         /// <summary>
         /// Allows the resource to load any short-term graphical content.
         /// </summary>
         public override void LoadContent()
         {
             this.line.OnResetDevice();
-            fontManager.LoadContent();
+            //fontManager.LoadContent();
             if (cursorSprite != null) cursorSprite.LoadContent();
             base.LoadContent();
         }
@@ -465,7 +480,7 @@ namespace INovelEngine.Effector
         {
             this.line.OnLostDevice();
             if (cursorSprite != null) cursorSprite.UnloadContent();
-            fontManager.UnloadContent();
+            //fontManager.UnloadContent();
             base.UnloadContent();
         }
 

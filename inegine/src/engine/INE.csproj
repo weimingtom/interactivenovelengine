@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F1C6583A-8DAC-453B-AC68-FD2BDD0F4C6A}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -119,6 +119,7 @@
     <Compile Include="Core\Exceptions.cs" />
     <Compile Include="Core\LogManager.cs" />
     <Compile Include="Effector\Audio\SoundManager.cs" />
+    <Compile Include="Effector\Graphics\Components\Button\Button.cs" />
     <Compile Include="Effector\Graphics\Components\Sprite\AnimatedSprite.cs" />
     <Compile Include="Effector\Graphics\Effect\AbstractTransition.cs" />
     <Compile Include="Effector\Graphics\Effect\TransitionManager.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Effector\Graphics\Text\RubyFont.cs" />
     <Compile Include="Effector\Graphics\Components\AbstractGUI.cs" />
     <Compile Include="Effector\Graphics\Components\Window\ImageWindow.cs" />
+    <Compile Include="Effector\Graphics\Text\TextRenderer.cs" />
     <Compile Include="ResourceManager\AbstractResource.cs" />
     <Compile Include="ResourceManager\FontManager.cs" />
     <Compile Include="ResourceManager\TextureManager.cs" />
@@ -184,7 +186,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Effector\Graphics\Components\Sprite\SpriteBase.cs" />
-    <Compile Include="Effector\Graphics\Text\TextRenderer.cs" />
     <Compile Include="Effector\Graphics\Components\Window\TextWindow.cs" />
     <Compile Include="Core\TimeManager.cs" />
     <Compile Include="Effector\Graphics\Effect\FadingTransition.cs" />
@@ -275,7 +276,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Effector\Graphics\Components\Button\" />
     <Folder Include="Effector\Input\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -27,27 +27,6 @@ namespace INovelEngine.Effector
             //font.RubyColor = color;
             font.DrawString(sprite, text, x, y);
             cursorPosition = font.LastPos;
-
-        }
-
-        static public FreeFont LoadFont(GraphicsDeviceManager manager, string fontName, bool rubyOn, int size, FontWeight weight, Boolean italic)
-        {
-            try
-            {
-                if (rubyOn)
-                {
-                    return new RubyFont(manager, fontName, size, fontName, size/4);
-                }
-                else
-                {
-                    return new FreeFont(manager, fontName, size);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return null;
-            }
         }
     }
 }
