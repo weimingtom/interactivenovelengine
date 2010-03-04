@@ -31,6 +31,7 @@
 
   * Resource management
     * Sound manager
+    * ESS resources management
 
   * Framework
     * Error handling
@@ -38,6 +39,6 @@
     * State manager
      * Loading/unloading states
 
-  * Game States
+  * Game States (GUIs)
     * Scheduling/Simulation part
     * Character animation
