@@ -1,6 +1,6 @@
 #summary 참조하는 다른 프로젝트들
 
   * SlimDX
-  * LuaInterface
+  * !LuaInterface
+  * !CoCo compiler
   * NAudio
-  * CoCo compiler
