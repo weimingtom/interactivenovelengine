@@ -23,7 +23,10 @@
     * Mouse input
 
   * Resource management
-    * Texture manager
+    * Resource loading in Lua
+      * Font
+      * Texture
+      * Sound
 
   * Framework
     * Event handling
