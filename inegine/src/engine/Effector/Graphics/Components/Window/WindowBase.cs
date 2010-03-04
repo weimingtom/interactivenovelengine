@@ -20,6 +20,7 @@ namespace INovelEngine.Effector
             set
             {
                 this._backgroundColor = Color.FromArgb(value);
+                this._backgroundColor = Color.FromArgb(255, _backgroundColor); 
             }
         }
 
@@ -58,6 +59,7 @@ namespace INovelEngine.Effector
         {
             base.UnloadContent();
             sprite.OnLostDevice();
+            base.Dispose();
         }
 
 
@@ -67,7 +69,6 @@ namespace INovelEngine.Effector
         public override void Dispose()
         {
             sprite.Dispose();
-
             GC.SuppressFinalize(this);
         }
 

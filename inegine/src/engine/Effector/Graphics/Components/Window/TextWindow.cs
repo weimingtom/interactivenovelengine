@@ -64,6 +64,19 @@ namespace INovelEngine.Effector
             }
         }
 
+        protected bool centerTextVertically = false;
+
+        public bool CenterTextVertically
+        {
+            get
+            {
+                return centerTextVertically;
+            }
+            set
+            {
+                centerTextVertically = value;
+            }
+        }
         protected bool centerText = false;
         
         public bool CenterText
@@ -174,10 +187,10 @@ namespace INovelEngine.Effector
 
         public override void DrawWindow()
         {
-            lines[0].X = X;
-            lines[0].Y = Y + Height / 2;
-            lines[1].X = X + Width;
-            lines[1].Y = Y + Height / 2;
+            lines[0].X = RealX;
+            lines[0].Y = RealY + Height / 2;
+            lines[1].X = RealX + Width;
+            lines[1].Y = RealY + Height / 2;
 
             line.Width = Height;
             line.Begin();
@@ -187,7 +200,7 @@ namespace INovelEngine.Effector
 
         public override void DrawText()
         {
-            if (freeFont == null) throw new Exception("Font not loaded!");
+            if (freeFont == null) return; //throw new Exception("Font not loaded!");
 
             this.sprite.Begin(SpriteFlags.AlphaBlend);
 
@@ -195,15 +208,18 @@ namespace INovelEngine.Effector
             {
                 Size dim = this.freeFont.Measure(viewText);
                 int leftMargin;
+                int topMargin;
                 if (this.centerText) leftMargin = (this.Width - dim.Width)/2;
                 else leftMargin = _margin;
-                TextRenderer.DrawText(this.sprite, this.freeFont, viewText, this.X + leftMargin,
-                                      this.Y + _margin, Width - _margin * 2, Height - _margin * 2, Color.White);
+                if (this.centerTextVertically) topMargin = (this.Height - dim.Height) / 2;
+                else topMargin = _margin;
+                TextRenderer.DrawText(this.sprite, this.freeFont, viewText, this.RealX + leftMargin,
+                                      this.RealY + topMargin, Width - _margin * 2, Height - _margin * 2, Color.White);
             }
             else
             {
-                TextRenderer.DrawText(this.sprite, this.freeFont, scrollBuffer, this.X + _margin,
-                                      this.Y + _margin, Width - _margin * 2, Height - _margin * 2, Color.White);
+                TextRenderer.DrawText(this.sprite, this.freeFont, scrollBuffer, this.RealX + _margin,
+                                      this.RealY + _margin, Width - _margin * 2, Height - _margin * 2, Color.White);
             }
 
             if (_printState == State.Waiting)
@@ -212,16 +228,16 @@ namespace INovelEngine.Effector
                 {
                     cursorSprite.X = (int)TextRenderer.cursorPosition.X;
                     cursorSprite.Y = (int)TextRenderer.cursorPosition.Y;
-                    if (cursorSprite.X + cursorSprite.Width > this.Width)
+                    if (cursorSprite.RealX + cursorSprite.Width > this.Width)
                     {
                         cursorSprite.X = 0;
-                        cursorSprite.Y = cursorSprite.Y + this.freeFont.Size + this.freeFont.LineSpacing;
+                        cursorSprite.Y = cursorSprite.RealY + this.freeFont.Size + this.freeFont.LineSpacing;
                     }
-                    cursorSprite.X += this.X + this._margin;
+                    cursorSprite.X += this.RealX + this._margin;
 
-                    if (cursorSprite.Y + cursorSprite.Height <= this.Height)
+                    if (cursorSprite.RealY + cursorSprite.Height <= this.Height)
                     {
-                        cursorSprite.Y += this.Y + this._margin;
+                        cursorSprite.Y += this.RealY + this._margin;
                         cursorSprite.Draw();
                     }
                 }
@@ -439,21 +455,6 @@ namespace INovelEngine.Effector
                 this.cursorSprite.Begin(100, 0, 2, true);
             }
 
-
-            //if (freeFont == null)
-            //{
-            //    fontManager = new INEFont("c:\\windows\\fonts\\gulim.ttc")
-            //    {
-            //        Size = 20,
-            //        RubyOn = false,
-            //        LineSpacing = LineSpacing,
-            //        TextEffect = 1
-            //    };
-            //}
-
-
-            //fontManager.Initialize(graphicsDeviceManager);
-
             if (wrapFlag)
             {
                 this.WrapText();
@@ -468,7 +469,6 @@ namespace INovelEngine.Effector
         public override void LoadContent()
         {
             this.line.OnResetDevice();
-            //fontManager.LoadContent();
             if (cursorSprite != null) cursorSprite.LoadContent();
             base.LoadContent();
         }
@@ -480,8 +480,13 @@ namespace INovelEngine.Effector
         {
             this.line.OnLostDevice();
             if (cursorSprite != null) cursorSprite.UnloadContent();
-            //fontManager.UnloadContent();
             base.UnloadContent();
+        }
+
+        public override void Dispose()
+        {
+            line.Dispose();
+            base.Dispose();
         }
 
     }

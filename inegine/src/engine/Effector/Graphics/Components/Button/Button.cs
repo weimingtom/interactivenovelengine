@@ -4,14 +4,42 @@ using System.Drawing;
 using System.Text;
 using INovelEngine.Effector.Graphics.Text;
 using INovelEngine.ResourceManager;
+using SlimDX;
 using SlimDX.Direct3D9;
 
-namespace INovelEngine.Effector.Graphics.Components.Button
+namespace INovelEngine.Effector
 {
     class Button : SpriteBase
     {
-        protected INEFont fontManager;
+        protected Color _textColor = Color.Black;
+        public int TextColor
+        {
+            get
+            {
+                return this._textColor.ToArgb();
+            }
 
+            set
+            {
+                _textColor = Color.FromArgb(value);
+                _textColor = Color.FromArgb(255, _textColor);
+            }
+        }
+
+        protected bool pushed = false;
+        public bool Pushed
+        {
+            get
+            {
+                return pushed;
+            }
+            set
+            {
+                pushed = value;
+            }
+        }
+
+        protected INEFont fontManager;
         public INEFont Font
         {
             get
@@ -47,18 +75,49 @@ namespace INovelEngine.Effector.Graphics.Components.Button
         public void DrawText()
         {
             if (freeFont == null) throw new Exception("Font not loaded!");
-
-            this.sprite.Begin(SpriteFlags.AlphaBlend);
             
             Size dim = this.freeFont.Measure(Text, Width);
             
             int leftMargin = (Width - dim.Width)/2;
             int topMargin = (Height - dim.Height)/2;
-            
-            TextRenderer.DrawText(this.sprite, this.freeFont, Text, this.X + leftMargin,
-                                  this.Y + topMargin, Width - leftMargin * 2, Height - topMargin * 2, Color.White);
-       
-            this.sprite.End();
+
+
+            if (pushed)
+            {
+                TextRenderer.DrawText(this.sprite, this.freeFont, Text, this.RealX + leftMargin + 2,
+                                      this.RealY + topMargin + 2, Width - leftMargin * 2, Height - topMargin * 2, _textColor);
+            }
+            else
+            {
+                TextRenderer.DrawText(this.sprite, this.freeFont, Text, this.RealX + leftMargin,
+                                       this.RealY + topMargin, Width - leftMargin * 2, Height - topMargin * 2, _textColor);
+            }
+        }
+
+        protected override void DrawInternal()
+        {
+            if (this.textureManager.Texture == null) return;
+            sprite.Begin(SpriteFlags.AlphaBlend);
+
+
+            if (!Enabled)
+            {
+                sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(),
+                            new Vector3(RealX + 2, RealY + 2, 0), Color.DimGray);
+            }
+            else if (pushed)
+            {
+                sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(), 
+                            new Vector3(RealX+2, RealY+2, 0), Color.LightSlateGray);
+            }
+            else
+            {
+                sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(), new Vector3(RealX, RealY, 0), renderColor);
+            }
+
+            DrawText();
+
+            sprite.End();
         }
     }
 }

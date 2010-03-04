@@ -5,10 +5,19 @@ TextWindow = luanet.import_type("INovelEngine.Effector.TextWindow");
 ImageWindow = luanet.import_type("INovelEngine.Effector.ImageWindow");
 SpriteBase = luanet.import_type("INovelEngine.Effector.SpriteBase");
 AnimatedSprite = luanet.import_type("INovelEngine.Effector.AnimatedSprite")
+Button = luanet.import_type("INovelEngine.Effector.Button")
+
 ScriptEvents = luanet.import_type("INovelEngine.Script.ScriptEvents");
 ScriptManager = luanet.import_type("INovelEngine.Script.ScriptManager");
+
 Texture = luanet.import_type("INovelEngine.ResourceManager.INETexture");
 Font = luanet.import_type("INovelEngine.ResourceManager.INEFont");
+Sound = luanet.import_type("INovelEngine.ResourceManager.INESound");
+
+function dofile (filename)
+	local f = assert(loadfile(filename))
+	return f()
+end
 
 function AddResource(resource)
 	if (resource.name == nil) then
@@ -75,7 +84,25 @@ function YieldESS()
 	coroutine.yield();
 end
 
+
+--whether to supress ESS over event...
+SupressESSOver = false;
+function ESSOver()
+	Trace("ESSOver called");
+	if (SupressESSOver) then
+		Trace("...ignoring ESSOver");
+		SupressESSOver = false;
+		return
+	end
+	if (ESSOverHandler ~= nil) then
+		Trace("...ESSOver!");
+		return ESSOverHandler()
+	end
+end
+
 function Wait(delay)
 	Delay(delay, function() ResumeEss() end)
 	coroutine.yield();
 end
+
+dofile "BaseScripts/Selector.lua"

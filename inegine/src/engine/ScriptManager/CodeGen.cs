@@ -29,7 +29,7 @@ namespace INovelEngine.Script
 
         public void EndScript()
         {
-            compiledScript.Append("end\nreturn init();");
+            compiledScript.Append("end\ninit();\nreturn ESSOver();");
         }
 
         public void StartFunction(string name)
@@ -42,6 +42,7 @@ namespace INovelEngine.Script
             else if(name.Equals("load"))
             {
                 callType = FunctionType.Load;
+                compiledScript.Append("SupressESSOver = true;\n");
                 compiledScript.Append("return ");
             }
             else if(name.Equals("if"))

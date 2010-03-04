@@ -6,8 +6,10 @@
 #Dissolve "musume1", "musume2"
 끝입니다.@
 #Hide "musume2", 500
+#Hide "bgimg2", 1000
+#Hide "testwindow", 500
 #goto unload
 unload:
 ;unloading musume1 and musume2...
-#Trace "unloading"
-#load "Resources/test.ess"
+;#Trace "unloading"
+;#load "Resources/test.ess"

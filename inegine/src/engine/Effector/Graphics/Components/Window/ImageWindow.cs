@@ -36,7 +36,13 @@ namespace INovelEngine.Effector
             }
             set
             {
-                this._windowTexture = new INETexture(value);
+                _windowTexture = new INETexture(value);
+                resources.Add(_windowTexture);
+                if (this.loaded)
+                {
+                    _windowTexture.Initialize(manager);
+                    _windowTexture.LoadContent();
+                }
             }
         }
 
@@ -63,8 +69,8 @@ namespace INovelEngine.Effector
             rect.Width = 16;
             rect.Height = 16;
 
-            position.X = this.X;
-            position.Y = this.Y;
+            position.X = this.RealX;
+            position.Y = this.RealY;
 
             int numHorizontalTiles = this.Width / 16 - 2;
             int numVerticalTiles = this.Height / 16 - 2;
@@ -110,7 +116,7 @@ namespace INovelEngine.Effector
             // draw rows
             for (int j = 0; j < numVerticalTiles; j++)
             {
-                position.X = this.X;
+                position.X = this.RealX;
                 widthDrawn = 0;
                 // left side
                 rect.X = (int)TilePositions.CENTERLEFT;
@@ -153,7 +159,7 @@ namespace INovelEngine.Effector
 
             rect.Height = lastHeight;
             
-            position.X = this.X;
+            position.X = this.RealX;
             widthDrawn = 0;
             // left side
             rect.X = (int)TilePositions.CENTERLEFT;
@@ -194,7 +200,7 @@ namespace INovelEngine.Effector
             // draw lower part
 
             rect.Height = 16;
-            position.X = this.X;
+            position.X = this.RealX;
             widthDrawn = 0;
             // left side
             rect.X = (int)TilePositions.DOWNLEFT;
@@ -256,7 +262,11 @@ namespace INovelEngine.Effector
             _windowTexture.UnloadContent();
             base.UnloadContent();
         }
-        
+
+        public override void Dispose()
+        {
+            base.Dispose();
+        }
 
         enum TilePositions : int
         {

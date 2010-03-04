@@ -13,6 +13,7 @@ namespace INovelEngine.Script
         MouseUp,
         MouseMove,
         MouseClick,
+        MouseLeave,
         KeyPress,
         AnimationOver,
         Update,
@@ -26,6 +27,7 @@ namespace INovelEngine.Script
         public LuaEventHandler MouseUp;
         public LuaEventHandler MouseMove;
         public LuaEventHandler MouseClick;
+        public LuaEventHandler MouseLeave;
         public LuaEventHandler KeyDown;
         public LuaEventHandler StateUpdate;
         public LuaEventHandler AnimationOver;
@@ -34,10 +36,27 @@ namespace INovelEngine.Script
         public Boolean handleMyself
         { get; set; }
 
+        protected bool _enabled = true;
+
+        public bool Enabled
+        {
+            get
+            {
+                return _enabled;
+            }
+            set
+            {
+                _enabled = value;
+            }
+        }
+
+        /* todo: simplify & get rid of unneeded logic... */
         public virtual void SendEvent(ScriptEvents luaevent, params object[] args)
         {
             try
             {
+                if (!Enabled) return; // since not enabled...
+
                 AbstractLuaEventHandler handler = FindEventHandler(luaevent, args);
                 SendEvent(handler, luaevent, args);
                 if (handler != this && handleMyself) SendEvent(this, luaevent, args);
@@ -71,6 +90,9 @@ namespace INovelEngine.Script
                             break;
                         case ScriptEvents.MouseClick:
                             if (handler.MouseClick != null) handler.MouseClick(handler, luaevent, args);
+                            break;
+                        case ScriptEvents.MouseLeave:
+                            if (handler.MouseLeave != null) handler.MouseLeave(handler, luaevent, args);
                             break;
                         case ScriptEvents.Update:
                             if (handler.StateUpdate != null) handler.StateUpdate(handler, luaevent, args);

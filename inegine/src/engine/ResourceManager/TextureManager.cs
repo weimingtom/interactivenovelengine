@@ -68,7 +68,7 @@ namespace INovelEngine.ResourceManager
                     bitmap.Dispose();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new TextureLoadError(fileName);
             }
@@ -85,6 +85,7 @@ namespace INovelEngine.ResourceManager
         public override void LoadContent()
         {
             base.LoadContent();
+            //this.Texture = Texture.FromFile(device, this.fileName);
             if (this.scaledBitmap != null)
             {
                 if (this.Texture != null) this.Texture.Dispose();
