@@ -21,7 +21,6 @@ namespace INovelEngine.Effector
 
         public SpriteBase()
         {
-            textureManager = new INETexture();
             sourceArea = new Rectangle();
         }
 
@@ -29,10 +28,13 @@ namespace INovelEngine.Effector
         {
             get
             {
-                return textureManager.TextureFile;
+                if (textureManager != null) return textureManager.TextureFile;
+                else return null;
             }
             set
             {
+                textureManager = new INETexture();
+                resources.Add(textureManager);
                 textureManager.TextureFile = value;
                 SetDimensions();
             }
@@ -52,7 +54,8 @@ namespace INovelEngine.Effector
         {
             if (this.textureManager.Texture == null) return;
             sprite.Begin(SpriteFlags.AlphaBlend);
-            sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(), new Vector3(X, Y, 0), renderColor);
+  
+            sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(), new Vector3(RealX, RealY, 0), renderColor);
             sprite.End();
         }
 
@@ -81,7 +84,7 @@ namespace INovelEngine.Effector
         {
             base.LoadContent();
             sprite.OnResetDevice();
-            this.textureManager.LoadContent();
+            textureManager.LoadContent();
         }
 
         /// <summary>
@@ -101,7 +104,6 @@ namespace INovelEngine.Effector
         {
             base.Dispose();
             sprite.Dispose();
-            textureManager.Dispose();
             GC.SuppressFinalize(this);
         }
     }

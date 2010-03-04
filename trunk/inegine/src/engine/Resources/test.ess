@@ -7,7 +7,8 @@ $counter = counter + 1;
 #LoadCharacter "musume2", "Resources/after.png" 
 #goto girl
 girl:
-#Show "bgimg1", 0
+#Show "testwindow", 500
+#Show "bgimg1", 1000
 #if (4/2 == 2)
 \카운터는 <counter>입니다.
 #end

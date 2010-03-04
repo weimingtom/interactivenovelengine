@@ -93,6 +93,12 @@ function InitComponents()
 	
 	gamestate.MouseMove = CursorHandler;
 	
+	local defaultFont = Font("c:\\windows\\fonts\\gulim.ttc")
+	defaultFont.Size = 20;
+	defaultFont.LineSpacing = 10;
+	defaultFont.TextEffect = 1;
+	AddResource(defaultFont);	
+	
 	local anis = AnimatedSprite();
 	anis.Name = "cursor"
 	anis.Texture = "Resources/sprite.png"
@@ -100,8 +106,100 @@ function InitComponents()
 	anis.Height = 48;
 	anis.Rows = 4;
 	anis.Cols = 4;
-	anis.Layer = 3;
-	AddComponent(anis);	
+	anis.Layer = 10;
+	AddComponent(anis);
+	
+	local button = Button();
+	button.Name = "testButton"
+	button.Texture = "Resources/button.png"	
+	button.Layer = 3
+	button.X = 10;
+	button.Y = 10;
+	button.State = {}
+	button.MouseDown = 
+		function (button, luaevent, args)
+			button.State["mouseDown"] = true
+			button.Pushed = true
+		end
+	button.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				Trace("button click!")
+				button.Pushed = false
+				button.Enabled = false
+				BeginESS("Resources/test.ess");
+			end
+		end
+	button.Text = "스크립트";
+	button.Font = defaultFont
+	button.TextColor = 0xEEEEEE
+	
+	AddComponent(button)
+	
+	button = Button();
+	button.Name = "testButton2"
+	button.Texture = "Resources/button.png"	
+	button.Layer = 3
+	button.X = 10;
+	button.Y = 65;
+	button.State = {}
+	button.MouseDown = 
+		function (button, luaevent, args)
+			button.State["mouseDown"] = true
+			button.Pushed = true
+		end
+	button.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				Trace("button click!")
+				button.Pushed = false
+				if (SoundStarted) then
+					SoundStarted = false
+					GetResource("testsound"):Stop()
+					button.Text = "OFF";
+				else
+					SoundStarted = true
+					GetResource("testsound"):Play()
+					button.Text = "ON";
+				end
+			end
+		end
+	button.Text = "OFF";
+	button.Font = defaultFont
+	button.TextColor = 0xEEEEEE
+	
+	AddComponent(button)
+	
+	button = Button();
+	button.Name = "testButton3"
+	button.Texture = "Resources/button.png"	
+	button.Layer = 3
+	button.X = 10;
+	button.Y = 120;
+	button.State = {}
+	button.MouseDown = 
+		function (button, luaevent, args)
+			button.State["mouseDown"] = true
+			button.Pushed = true
+		end
+	button.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				Trace("button click!")
+				button.Pushed = false
+				selectionMenu:Clear()
+				selectionMenu.Width = 640
+				selectionMenu.SelectionHeight = 70
+				selectionMenu:Add("1. 집에 간다")
+				selectionMenu:Add("2. 학교에 간다")
+				selectionMenu:Add("3. 일본을 공격한다")
+			end
+		end
+	button.Text = "ADD";
+	button.Font = defaultFont
+	button.TextColor = 0xEEEEEE
+	
+	AddComponent(button)
 	
 	local win = ImageWindow()
 	win.Name = "testwindow"
@@ -110,25 +208,37 @@ function InitComponents()
 	win.Height = 200
 	win.x = (GetWidth() - win.Width) / 2;
 	win.y = GetHeight() - win.Height - 10;
-	win.Layer = 100
+	win.Layer = 5
 	win.LineSpacing = 20
 	win.PrintOver = PrintOver
 	win.MouseClick = MouseClick
-	win.Visible = true
-	win.WindowTexture = "Resources/win.png"
-	win.Font = Font("c:\\windows\\fonts\\gulim.ttc")
-	win.Font.Size = 20;
-	win.Font.LineSpacing = 10;
-	win.Font.TextEffect = 0;
-	AddResource(win.Font);	
+	win.Visible = false
+	win.WindowTexture = "Resources/win3.png"
+	win.Font = defaultFont
 	AddComponent(win)
 	
 	anis:Begin(100, 0, 4, true)
+	
+	local sound = Sound("Resources/Track02.mp3")
+	sound.Name = "testsound"
+	sound.Volume = 0.1
+	AddResource(sound)
+	
+	selectionMenu = Selector:New("selector", defaultFont)
+	selectionMenu.SelectionOver	= 
+		function()
+			Trace("selected: " .. selectionMenu.SelectedIndex)
+		end
+end
+
+function ESSOverHandler()
+	Trace("ESS Over!!!!")
+	local gamestate = CurrentState();
+	GetComponent("testButton").Enabled = true;
 end
 
 InitComponents();
 counter = 0
+SoundStarted = false
 
 Trace(GameTable["daughtet_name"]);
-
-BeginESS("Resources/test.ess");

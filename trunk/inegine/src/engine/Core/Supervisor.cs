@@ -62,11 +62,11 @@ namespace INovelEngine
 
             this.RegisterLuaGlue();
 
-            SoundManager.Init();
+            AudioManager.Init();
             
             ScriptManager.Init();
 
-            LoadState("Resources/start.lua");
+            Lua_LoadScript("Resources/start.lua");
 
             
 
@@ -76,11 +76,14 @@ namespace INovelEngine
             Clock.AddTimeEvent(new TimeEvent(1000f, getFPS));          
         }
 
-        protected override void OnExiting(EventArgs e)
+        protected override void Dispose(bool disposing)
         {
-            SoundManager.Dispose();
-            base.OnExiting(e);
-        }
+            base.Dispose(disposing);
+
+            /* dispose audiomanager after base cause sound files need to be */
+            /* disposed first */
+            AudioManager.Dispose(); 
+        }  
  
         private void InitDevice()
         {
@@ -194,6 +197,8 @@ namespace INovelEngine
 
             ScriptManager.lua.RegisterFunction("Trace", this, this.GetType().GetMethod("Lua_Trace"));
 
+
+            ScriptManager.lua.RegisterFunction("LoadScript", this, this.GetType().GetMethod("Lua_LoadScript"));
             ScriptManager.lua.RegisterFunction("AddState", this, this.GetType().GetMethod("Lua_AddState"));
             ScriptManager.lua.RegisterFunction("SwitchState", this, this.GetType().GetMethod("Lua_SwitchState"));
             ScriptManager.lua.RegisterFunction("LoadState", this, this.GetType().GetMethod("Lua_LoadState"));
@@ -203,14 +208,9 @@ namespace INovelEngine
             
             ScriptManager.lua.RegisterFunction("Delay", this, this.GetType().GetMethod("Lua_DelayedCall"));
             ScriptManager.lua.RegisterFunction("LoadESS", this, this.GetType().GetMethod("Lua_LoadESS"));
-
-            ScriptManager.lua.RegisterFunction("LoadSound", this, this.GetType().GetMethod("Lua_LoadSound"));
-            ScriptManager.lua.RegisterFunction("PlaySound", this, this.GetType().GetMethod("Lua_PlaySound"));
-            ScriptManager.lua.RegisterFunction("StopSound", this, this.GetType().GetMethod("Lua_StopSound"));
-        
         }
 
-        public void LoadState(String ScriptFile)
+        public void Lua_LoadScript(String ScriptFile)
         {
             try
             {
@@ -227,7 +227,7 @@ namespace INovelEngine
             GameState newState = new GameState();
             newState.Name = stateName;
             Lua_AddState(newState);
-            LoadState(ScriptFile);
+            Lua_LoadScript(ScriptFile);
         }
 
         public void Lua_SwitchState(String id)
@@ -300,21 +300,6 @@ namespace INovelEngine
         public int Lua_GetHeight()
         {
             return Window.ClientSize.Height;
-        }
-
-        public void Lua_LoadSound(String id, String s)
-        {
-            SoundManager.LoadSound(id, s);
-        }
-
-        public void Lua_PlaySound(String id, Boolean loop)
-        {
-            SoundManager.PlaySound(id, loop);
-        }
-
-        public void Lua_StopSound(String id)
-        {
-            SoundManager.StopSound(id);
         }
 
         public void Lua_DelayedCall(float delay, LuaEventHandler Do)

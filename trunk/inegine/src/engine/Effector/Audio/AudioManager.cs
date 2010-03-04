@@ -19,7 +19,7 @@ namespace INovelEngine.Effector.Audio
 
         public PlayingStatus status = PlayingStatus.Stopped;
 
-        WaveStream sourceStream;
+        public WaveChannel32 sourceStream;
 
         private WaveStream mp3Reader;
         private WaveStream pcmStream;
@@ -124,7 +124,7 @@ namespace INovelEngine.Effector.Audio
     }
 
 
-    class Sound : IDisposable
+    public class Sound : IDisposable
     {
         private WaveMixerStream32 mixer;
         private LoopStream sample;
@@ -150,6 +150,18 @@ namespace INovelEngine.Effector.Audio
             sample.status = PlayingStatus.Stopped;
             sample.EnableLooping = false;
             sample.Position = sample.Length;
+        }
+
+        public float Volume
+        {
+            get
+            {
+                return sample.sourceStream.Volume;
+            }
+            set
+            {
+                sample.sourceStream.Volume = value;
+            }
         }
 
         private WaveStream CreateInputStream(string fileName)
@@ -201,9 +213,8 @@ namespace INovelEngine.Effector.Audio
         #endregion
     }
 
-    class SoundManager
+    class AudioManager
     {
-        private static Dictionary<string, Sound> _soundList;
         private static IWavePlayer waveOutDevice;
         private static WaveMixerStream32 mixer;
 
@@ -213,59 +224,29 @@ namespace INovelEngine.Effector.Audio
             mixer = new WaveMixerStream32();
             mixer.AutoStop = false;
             waveOutDevice.Init(mixer);
+            waveOutDevice.Play();    
+        }
+
+        public static Sound LoadSound(string file)
+        {
+            return new Sound(mixer, file);
+        }
+
+        public static void PlaySound(Sound sound, Boolean loop)
+        {
+            sound.Play(loop);
             waveOutDevice.Play();
-
-            _soundList = new Dictionary<string, Sound>();        
-        }
-
-        public static void LoadSound(string id, string file)
-        {
-            if (_soundList.ContainsKey(id))
-            {
-
-            }
-            else
-            {
-                _soundList.Add(id, new Sound(mixer, file));
-            }
-        }
-
-        public static void UnloadSound(string id)
-        {
-            if (_soundList.ContainsKey(id))
-            {
-                Sound sound = _soundList[id];
-                sound.Dispose();
-                _soundList.Remove(id);
-            }           
-        }
-
-        public static void PlaySound(string id, Boolean loop)
-        {
-            if (_soundList.ContainsKey(id))
-            {
-                _soundList[id].Play(loop);
-                waveOutDevice.Play();
-            }
         }
 
 
-        public static void StopSound(string id)
+        public static void StopSound(Sound sound)
         {
-            if (_soundList.ContainsKey(id))
-            {
-                _soundList[id].Stop();
-            }
+            sound.Stop();  
         }
 
         public static void Dispose()
         {
             waveOutDevice.Stop();
-            
-            foreach (Sound sound in _soundList.Values)
-            {
-                sound.Dispose();
-            }
             mixer.Dispose();
             waveOutDevice.Dispose();
         }

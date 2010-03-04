@@ -24,7 +24,7 @@ namespace INovelEngine.Effector.Graphics.Text
         public int Y;
     }
 
-    public class Glyph
+    public class Glyph : IDisposable
     {
         public enum GlyphType
         { Default, Space, LineBreak }
@@ -52,6 +52,15 @@ namespace INovelEngine.Effector.Graphics.Text
             this.Box.xMin = this.Box.yMin = 32000;
             this.Box.xMax = this.Box.xMax = -32000;
         }
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            if (Texture != null) Texture.Dispose();
+        }
+
+        #endregion
     }
 
     public class Tag
@@ -754,12 +763,17 @@ namespace INovelEngine.Effector.Graphics.Text
 
         public void Dispose()
         {
-            /* to do: dispose faces and textures */
 
             glyphBuffer.Dispose();
 
-            FT.FT_Done_Face(_face);
-            FT.FT_Done_FreeType(_library);
+            foreach (Glyph glyph in _glyphCache.Values)
+            {
+                glyph.Dispose();
+
+            }
+            /* to do: fix error in face & library freeing.. */
+            //FT.FT_Done_Face(_face);
+            //FT.FT_Done_FreeType(_library);
         }
 
         #endregion

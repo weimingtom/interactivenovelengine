@@ -23,7 +23,6 @@ namespace INovelEngine.Effector
 
     public abstract class AbstractGUIComponent : AbstractLuaEventHandler, IGUIComponent
     {
-        protected bool _enabled = true;
         protected GraphicsDeviceManager manager;
 
         protected float beginTick;
@@ -38,6 +37,14 @@ namespace INovelEngine.Effector
         protected bool loaded = false;
         protected bool initialized = false;
 
+
+        protected ResourceCollection resources = new ResourceCollection();
+
+        // componentList sorted by z-order (higher, higher)
+        protected List<AbstractGUIComponent> componentList = new List<AbstractGUIComponent>();
+        protected Dictionary<String, AbstractGUIComponent> componentMap =
+            new Dictionary<string, AbstractGUIComponent>();
+
         public Device Device
         {
             get { return manager.Direct3D9.Device; }
@@ -49,22 +56,16 @@ namespace INovelEngine.Effector
             set;
         }
 
-        public ComponentType Type
+        public AbstractGUIComponent Parent
         {
             get;
             set;
         }
 
-        public bool Enalbed
+        public ComponentType Type
         {
-            get
-            {
-                return _enabled;
-            }
-            set
-            {
-                _enabled = value;
-            }
+            get;
+            set;
         }
 
         public string Name
@@ -73,16 +74,49 @@ namespace INovelEngine.Effector
             set;
         }
 
+        public bool Relative
+        {
+            get; set;
+        }
+
         public int X
         {
-            get;
-            set;
+            get; set;
         }
 
         public int Y
         {
-            get;
-            set;
+            get; set;
+        }
+
+        public int RealX
+        {
+            get
+            {
+                if (Relative && Parent != null)
+                {
+                    return Parent.RealX + X;
+                }
+                else
+                {
+                    return X;
+                }
+            }
+        }
+
+        public int RealY
+        {
+            get
+            {
+                if (Relative && Parent != null)
+                {
+                    return Parent.RealY + Y;
+                }
+                else
+                {
+                    return Y;
+                }
+            }
         }
 
         public virtual int Width
@@ -166,22 +200,24 @@ namespace INovelEngine.Effector
 
         public virtual void Draw()
         {
-            if (this.Enalbed)
-            {
-                UpdateFadeRate();
+            UpdateFadeRate();
 
-                if (this.Visible)
+            if (this.Visible)
+            {
+                if (this.Fading)
                 {
-                    if (this.Fading)
-                    {
-                        renderColor = Color.FromArgb((int) (progress*255), Color.White);
-                        ;
-                    }
-                    else
-                    {
-                        renderColor = Color.White;
-                    }
-                    this.DrawInternal();
+                    renderColor = Color.FromArgb((int) (progress*255), Color.White);
+                    ;
+                }
+                else
+                {
+                    renderColor = Color.White;
+                }
+                this.DrawInternal();
+
+                foreach (IGameComponent component in componentList)
+                {
+                    component.Draw();
                 }
             }
         }
@@ -190,7 +226,15 @@ namespace INovelEngine.Effector
 
         public virtual void Update(GameTime gameTime)
         {
+            /* check for mouse hover */
+
+            foreach (IGameComponent component in componentList)
+            {
+                component.Update(gameTime);
+            }
         }
+
+        #endregion
 
         protected virtual void UpdateFadeRate()
         {
@@ -212,7 +256,124 @@ namespace INovelEngine.Effector
                 }
             }
         }
+
+        #region Subcomponent Management
+
+        public void AddComponent(AbstractGUIComponent component)
+        {
+            if (componentMap.ContainsKey(component.Name)) return;
+
+            component.Parent = this;
+
+            componentList.Add(component);
+            resources.Add(component);
+            componentMap.Add(component.Name, component);
+
+            InvalidateZOrder();
+        }
+
+        public AbstractGUIComponent GetComponent(string id)
+        {
+            if (componentMap.ContainsKey(id))
+            {
+                return componentMap[id];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void RemoveComponent(string id)
+        {
+            if (componentMap.ContainsKey(id))
+            {
+                AbstractGUIComponent component = componentMap[id];
+                componentList.Remove(component);
+                componentMap.Remove(id);
+                resources.Remove(component);
+                component.Dispose();
+            }
+        }
+
+        public void InvalidateZOrder()
+        {
+            componentList.Sort(); // sort them according to z-order (higher, higher)
+        }
+
         #endregion
+
+        #region lua event handling
+
+        private AbstractLuaEventHandler mouseDownLocked;
+        private AbstractLuaEventHandler mouseMoveLocked;
+
+        public override AbstractLuaEventHandler FindEventHandler(ScriptEvents luaevent, params object[] args)
+        {
+            AbstractLuaEventHandler handler = this;
+            switch (luaevent)
+            {
+                case ScriptEvents.KeyPress:
+                    handler = this;
+                    break;
+                case ScriptEvents.MouseMove:
+                    if (mouseDownLocked != null && mouseDownLocked.Enabled) handler = mouseDownLocked;
+                    else
+                    {
+                        handler = GetCollidingComponent((int)args[0], (int)args[1]);
+
+                        if (handler == null) handler = this;
+
+                        if (mouseMoveLocked != null && mouseMoveLocked.Enabled)
+                        {
+                            if (mouseMoveLocked != handler)
+                            {
+                                SendEvent(mouseMoveLocked, ScriptEvents.MouseLeave, null);
+                                mouseMoveLocked = null;
+                            }
+                        }
+                        else if (handler != this)
+                        {
+                            mouseMoveLocked = handler;
+                        }
+                    }
+                    break;
+                case ScriptEvents.MouseDown:
+                    handler = GetCollidingComponent((int)args[0], (int)args[1]);
+                    if (handler == null) handler = this;
+                    mouseDownLocked = handler;
+                    break;
+                case ScriptEvents.MouseUp:
+                    if (mouseDownLocked != null) handler = mouseDownLocked;
+                    mouseDownLocked = null;
+                    break;
+                case ScriptEvents.MouseClick:
+                    handler = GetCollidingComponent((int)args[0], (int)args[1]);
+                    if (handler == null) handler = this;
+                    break;
+                default:
+                    handler = this;
+                    break;
+            }
+            return handler;
+        }
+
+        public AbstractGUIComponent GetCollidingComponent(int x, int y)
+        {
+            AbstractGUIComponent component;
+            // do it in reverse order because components sorted in z order...
+            for (int i = componentList.Count - 1; i >= 0; i--)
+            {
+                component = componentList[i];
+                if (component.RealX <= x && component.RealY <= y &&
+                    component.RealX + component.Width >= x &&
+                    component.RealY + component.Height >= y) return component;
+            }
+            return null;
+        }
+
+        #endregion
+
 
         #region IResource Members
 
@@ -220,15 +381,18 @@ namespace INovelEngine.Effector
         {
             initialized = true;
             manager = graphicsDeviceManager;
+            resources.Initialize(graphicsDeviceManager);
         }
 
         public virtual void LoadContent()
         {
+            resources.LoadContent();
             loaded = true;
         }
 
         public virtual void UnloadContent()
         {
+            resources.UnloadContent();
             loaded = false;
         }
 
@@ -238,6 +402,9 @@ namespace INovelEngine.Effector
 
         public virtual void Dispose()
         {
+            Enabled = false;
+            Visible = false;
+            resources.Dispose();
         }
 
         #endregion

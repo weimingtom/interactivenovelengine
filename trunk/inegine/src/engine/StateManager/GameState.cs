@@ -36,17 +36,17 @@ namespace INovelEngine.StateManager
 
         #region IResource Members
 
-        void IResource.Initialize(GraphicsDeviceManager graphicsDeviceManager)
+        public void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
             resources.Initialize(graphicsDeviceManager);
         }
 
-        void IResource.LoadContent()
+        public void LoadContent()
         {
             resources.LoadContent();
         }
 
-        void IResource.UnloadContent()
+        public void UnloadContent()
         {
             resources.UnloadContent();
         }
@@ -55,7 +55,7 @@ namespace INovelEngine.StateManager
 
         #region IDisposable Members
 
-        void IDisposable.Dispose()
+        public void Dispose()
         {
             resources.Dispose();
         }
@@ -140,7 +140,7 @@ namespace INovelEngine.StateManager
 
         public void RemoveComponent(string id)
         {
-            if (componentMap.ContainsKey(id))
+            if (id != null && componentMap.ContainsKey(id))
             {
                 AbstractGUIComponent component = componentMap[id];
                 componentList.Remove(component);
@@ -156,7 +156,7 @@ namespace INovelEngine.StateManager
         }
 
         private AbstractLuaEventHandler mouseDownLocked;
-
+        private AbstractLuaEventHandler mouseMoveLocked;
         public override AbstractLuaEventHandler FindEventHandler(ScriptEvents luaevent, params object[] args)
         {
             AbstractLuaEventHandler handler = this;
@@ -166,11 +166,25 @@ namespace INovelEngine.StateManager
                     handler = this;
                     break;
                 case ScriptEvents.MouseMove:
-                    if (mouseDownLocked != null) handler = mouseDownLocked;
+                    if (mouseDownLocked != null && mouseDownLocked.Enabled) handler = mouseDownLocked;
                     else
                     {
                         handler = GetCollidingComponent((int)args[0], (int)args[1]);
+
                         if (handler == null) handler = this;
+
+                        if (mouseMoveLocked != null && mouseMoveLocked.Enabled)
+                        {
+                            if (mouseMoveLocked != handler)
+                            {
+                                SendEvent(mouseMoveLocked, ScriptEvents.MouseLeave, null);
+                                mouseMoveLocked = null;
+                            }
+                        }
+                        else if (handler != this)
+                        {
+                            mouseMoveLocked = handler;
+                        }
                     }
                     break;
                 case ScriptEvents.MouseDown:
@@ -180,6 +194,7 @@ namespace INovelEngine.StateManager
                     break;
                 case ScriptEvents.MouseUp:
                     if (mouseDownLocked != null) handler = mouseDownLocked;
+                    mouseDownLocked = null;
                     break;
                 case ScriptEvents.MouseClick:
                     handler = GetCollidingComponent((int)args[0], (int)args[1]);
@@ -199,9 +214,9 @@ namespace INovelEngine.StateManager
             for (int i = componentList.Count - 1; i >= 0; i--)
             {
                 component = componentList[i];
-                if (component.X <= x && component.Y <= y &&
-                    component.X + component.Width >= x &&
-                    component.Y + component.Height >= y) return component;
+                if (component.RealX <= x && component.RealY <= y &&
+                    component.RealX + component.Width >= x &&
+                    component.RealY + component.Height >= y) return component;
             }
             return null;
         }
