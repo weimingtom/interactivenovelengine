@@ -317,14 +317,14 @@ namespace INovelEngine.Effector
                     handler = this;
                     break;
                 case ScriptEvents.MouseMove:
-                    if (mouseDownLocked != null && mouseDownLocked.Enabled) handler = mouseDownLocked;
+                    if (mouseDownLocked != null && !mouseDownLocked.Removed) handler = mouseDownLocked;
                     else
                     {
                         handler = GetCollidingComponent((int)args[0], (int)args[1]);
 
                         if (handler == null) handler = this;
 
-                        if (mouseMoveLocked != null && mouseMoveLocked.Enabled)
+                        if (mouseMoveLocked != null && !mouseMoveLocked.Removed)
                         {
                             if (mouseMoveLocked != handler)
                             {
@@ -388,6 +388,7 @@ namespace INovelEngine.Effector
         {
             resources.LoadContent();
             loaded = true;
+            Removed = false;
         }
 
         public virtual void UnloadContent()
@@ -402,8 +403,7 @@ namespace INovelEngine.Effector
 
         public virtual void Dispose()
         {
-            Enabled = false;
-            Visible = false;
+            Removed = true;
             resources.Dispose();
         }
 

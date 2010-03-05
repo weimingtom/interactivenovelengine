@@ -48,8 +48,8 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void LoadContent()
         {
-            base.LoadContent();
             sprite.OnResetDevice();
+            base.LoadContent();
         }
 
         /// <summary>
@@ -70,6 +70,7 @@ namespace INovelEngine.Effector
         {
             sprite.Dispose();
             GC.SuppressFinalize(this);
+            base.Dispose();
         }
 
 

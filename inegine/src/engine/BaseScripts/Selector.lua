@@ -25,7 +25,7 @@ function Selector:New (name, font)
 	self.frame.Visible = false
 	self.frame.Enabled = false
 	self.frame.Font = font
-	self.frame.WindowTexture = "Resources/win3.png"
+	self.frame.WindowTexture = "Resources/win.png"
 	self.frame.MouseLeave =
 		function(selectionWindow, event, args)
 			Trace("mouse leave: " .. selectionWindow.Name)	

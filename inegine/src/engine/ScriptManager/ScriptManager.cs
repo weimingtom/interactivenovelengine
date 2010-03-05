@@ -50,6 +50,22 @@ namespace INovelEngine.Script
             }
         }
 
+        protected bool _removed = false;
+
+        public bool Removed
+        {
+            get
+            {
+                return _removed;
+            }
+            set
+            {
+                _removed = value;
+            }
+        }
+
+
+
         /* todo: simplify & get rid of unneeded logic... */
         public virtual void SendEvent(ScriptEvents luaevent, params object[] args)
         {
