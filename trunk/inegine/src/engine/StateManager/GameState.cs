@@ -166,14 +166,14 @@ namespace INovelEngine.StateManager
                     handler = this;
                     break;
                 case ScriptEvents.MouseMove:
-                    if (mouseDownLocked != null && mouseDownLocked.Enabled) handler = mouseDownLocked;
+                    if (mouseDownLocked != null && !mouseDownLocked.Removed) handler = mouseDownLocked;
                     else
                     {
                         handler = GetCollidingComponent((int)args[0], (int)args[1]);
 
                         if (handler == null) handler = this;
 
-                        if (mouseMoveLocked != null && mouseMoveLocked.Enabled)
+                        if (mouseMoveLocked != null && !mouseMoveLocked.Removed)
                         {
                             if (mouseMoveLocked != handler)
                             {

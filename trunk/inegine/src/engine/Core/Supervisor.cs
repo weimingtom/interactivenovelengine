@@ -79,7 +79,6 @@ namespace INovelEngine
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-
             /* dispose audiomanager after base cause sound files need to be */
             /* disposed first */
             AudioManager.Dispose(); 

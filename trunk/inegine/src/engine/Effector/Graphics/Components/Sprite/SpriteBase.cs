@@ -74,7 +74,6 @@ namespace INovelEngine.Effector
         {
             base.Initialize(graphicsDeviceManager);
             sprite = new Sprite(manager.Direct3D9.Device);
-            this.textureManager.Initialize(graphicsDeviceManager);
         }
 
         /// <summary>
@@ -84,7 +83,6 @@ namespace INovelEngine.Effector
         {
             base.LoadContent();
             sprite.OnResetDevice();
-            textureManager.LoadContent();
         }
 
         /// <summary>

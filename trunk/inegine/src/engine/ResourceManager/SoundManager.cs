@@ -70,9 +70,10 @@ namespace INovelEngine.ResourceManager
 
         public override void LoadContent()
         {
-            base.LoadContent();
+            if (Sound != null) return;
             Sound = AudioManager.LoadSound(FileName);
             Sound.Volume = _volume;
+            base.LoadContent();
         }
 
         public override void UnloadContent()

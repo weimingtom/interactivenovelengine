@@ -241,7 +241,6 @@ namespace INovelEngine.Effector
         public override void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
             base.Initialize(graphicsDeviceManager);
-            _windowTexture.Initialize(graphicsDeviceManager);
         }
 
         
@@ -250,7 +249,6 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void LoadContent()
         {
-            _windowTexture.LoadContent();
             base.LoadContent();
         }
 
@@ -259,7 +257,6 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void UnloadContent()
         {
-            _windowTexture.UnloadContent();
             base.UnloadContent();
         }
 

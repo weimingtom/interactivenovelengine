@@ -84,19 +84,31 @@ namespace INovelEngine.ResourceManager
 
         public override void LoadContent()
         {
-            base.LoadContent();
+            if (this.scaledBitmap == null) LoadTextureFile(fileName);
+
+            Console.WriteLine("loading : " + this.fileName);
+
             //this.Texture = Texture.FromFile(device, this.fileName);
             if (this.scaledBitmap != null)
             {
                 if (this.Texture != null) this.Texture.Dispose();
 
+
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    scaledBitmap.Save(ms, ImageFormat.Bmp);
+                    scaledBitmap.Save(ms, ImageFormat.Png);
                     byte[] bitmapData = ms.ToArray();
                     this.Texture = Texture.FromMemory(device, bitmapData);
+                    Console.WriteLine("...loaded " + this.fileName);
                 }
+
+                scaledBitmap.Dispose();
+                scaledBitmap = null;
             }
+
+
+
+            base.LoadContent();
         }
 
         public override void UnloadContent()
@@ -111,7 +123,6 @@ namespace INovelEngine.ResourceManager
         public override void Dispose()
         {
             Texture.Dispose();
-            scaledBitmap.Dispose();
         }
 
         #endregion

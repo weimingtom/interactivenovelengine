@@ -213,7 +213,7 @@ function InitComponents()
 	win.PrintOver = PrintOver
 	win.MouseClick = MouseClick
 	win.Visible = false
-	win.WindowTexture = "Resources/win3.png"
+	win.WindowTexture = "Resources/win.png"
 	win.Font = defaultFont
 	AddComponent(win)
 	
@@ -222,7 +222,7 @@ function InitComponents()
 	local sound = Sound("Resources/Track02.mp3")
 	sound.Name = "testsound"
 	sound.Volume = 0.1
-	AddResource(sound)
+	--AddResource(sound)
 	
 	selectionMenu = Selector:New("selector", defaultFont)
 	selectionMenu.SelectionOver	= 
