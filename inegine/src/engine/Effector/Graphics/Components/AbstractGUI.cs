@@ -141,8 +141,11 @@ namespace INovelEngine.Effector
             }
             set
             {
-                if (this.ManagingState != null) this.ManagingState.InvalidateZOrder();
                 this._layer = value;
+                if (this.ManagingState != null)
+                {
+                    ManagingState.InvalidateZOrder();
+                }
             }
         }
 
@@ -317,6 +320,10 @@ namespace INovelEngine.Effector
                     handler = this;
                     break;
                 case ScriptEvents.MouseMove:
+                    if (this.Name == "selector")
+                    {
+                        Console.WriteLine("selection!");
+                    }
                     if (mouseDownLocked != null && !mouseDownLocked.Removed) handler = mouseDownLocked;
                     else
                     {
@@ -367,13 +374,12 @@ namespace INovelEngine.Effector
                 component = componentList[i];
                 if (component.RealX <= x && component.RealY <= y &&
                     component.RealX + component.Width >= x &&
-                    component.RealY + component.Height >= y) return component;
+                    component.RealY + component.Height >= y && component.Enabled) return component;
             }
             return null;
         }
 
         #endregion
-
 
         #region IResource Members
 

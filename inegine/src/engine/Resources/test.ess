@@ -9,6 +9,9 @@ $counter = counter + 1;
 girl:
 #Show "testwindow", 500
 #Show "bgimg1", 1000
+#AddSelection "test"
+#AddSelection "test2"
+#ShowSelection
 #if (4/2 == 2)
 \카운터는 <counter>입니다.
 #end
