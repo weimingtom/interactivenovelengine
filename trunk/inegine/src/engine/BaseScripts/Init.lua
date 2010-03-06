@@ -74,7 +74,8 @@ function ResumeEss()
 		local success, msg = coroutine.resume(CurrentState().state["ess"])
 		if (success == false) then
 			Trace "error in ESS - terminating!"
-			Trace(msg);
+			Trace(msg)
+			ESSOver()
 		end
 	end
 end

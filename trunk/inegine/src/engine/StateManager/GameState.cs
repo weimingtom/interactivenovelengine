@@ -216,7 +216,7 @@ namespace INovelEngine.StateManager
                 component = componentList[i];
                 if (component.RealX <= x && component.RealY <= y &&
                     component.RealX + component.Width >= x &&
-                    component.RealY + component.Height >= y) return component;
+                    component.RealY + component.Height >= y && component.Enabled) return component;
             }
             return null;
         }

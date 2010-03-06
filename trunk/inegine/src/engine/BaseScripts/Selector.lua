@@ -10,6 +10,7 @@ function Selector:New (name, font)
 	self.SelectionHeight = 50
 	self.Margin = 10
 	self.SelectedIndex = -1
+	self.Layer = 0
 	local gamestate = CurrentState();
 	
 	--self.frame = TextWindow()
@@ -20,7 +21,7 @@ function Selector:New (name, font)
 	self.frame.Height = 240
 	self.frame.X = (GetWidth() - self.frame.Width) / 2;
 	self.frame.Y = (GetHeight() - self.frame.Height) / 2;
-	self.frame.Layer = 5
+	self.frame.Layer = 0
 	self.frame.LineSpacing = 20
 	self.frame.Visible = false
 	self.frame.Enabled = false
@@ -38,6 +39,21 @@ function Selector:New (name, font)
 	
 	return o
 end
+
+function Selector:Show()
+	Trace("showing selector!")
+	self.frame.Layer = self.Layer
+	self.frame.Visible = true
+	self.frame.Enabled = true
+	Trace("layer: " .. self.Layer)
+end
+
+
+function Selector:Hide()
+	self.frame.Visible = false
+	self.frame.Enabled = false
+end
+
 
 function Selector:Add(text)
 	
@@ -61,11 +77,10 @@ function Selector:Add(text)
 	local index = self.selectionCount;
 	newSelection.MouseClick =
 		function(selectionWindow, event, args)
-			if (self.SelectionOver ~= nil) then 
-				self.SelectedIndex = index;
-				self.frame.Enabled = false
-				self.frame.Visible = false
-				self:SelectionOver()
+			self.SelectedIndex = index;
+			if (self.MouseClick ~= nil) then
+				self:Hide()
+				self:MouseClick()
 			end
 		end
 	newSelection.MouseUp =
@@ -80,13 +95,10 @@ function Selector:Add(text)
 		function(selectionWindow, event, args)
 			selectionWindow.Alpha = 155
 		end
-	self.frame.Visible = true
-	self.frame.Enabled = true
 	self.frame:AddComponent(newSelection)
 	
 	table.insert(self.selectionList, newSelection.Name)
 	self.selectionCount = self.selectionCount + 1
-	
 	self.nexty = self.nexty + newSelection.Height + self.Margin
 	self:SetDimensions()
 end

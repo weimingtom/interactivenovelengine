@@ -1,3 +1,6 @@
+
+--Scene & character managing functions
+
 function LoadScene(id, image)
 	local gameState = CurrentState();
 	local status, bgimg = pcall(SpriteBase);
@@ -58,6 +61,9 @@ function Dissolve(id1, id2)
 	Hide(id1, 500)
 end
 
+
+--Text handling functions
+
 function PrintOver(state, luaevent, args)
 	ResumeEss();
 end
@@ -87,6 +93,24 @@ function CursorHandler(state, luaevent, args)
 	cursorSprite.x = args[0] + 1;
 	cursorSprite.y = args[1] + 1;
 end
+
+--Selection handling
+
+function AddSelection(text)
+	selectionMenu:Add(text)
+end
+
+function ShowSelection()
+	selectionMenu:Show()
+	YieldESS()
+end
+
+function SelectionOver(index)
+	selectionMenu:Clear()
+	ResumeEss()
+end
+
+--GUI initialization
 
 function InitComponents()
 	local gamestate = CurrentState();
@@ -188,11 +212,10 @@ function InitComponents()
 				Trace("button click!")
 				button.Pushed = false
 				selectionMenu:Clear()
-				selectionMenu.Width = 640
-				selectionMenu.SelectionHeight = 70
 				selectionMenu:Add("1. 집에 간다")
 				selectionMenu:Add("2. 학교에 간다")
 				selectionMenu:Add("3. 일본을 공격한다")
+				selectionMenu:Show()
 			end
 		end
 	button.Text = "ADD";
@@ -225,9 +248,13 @@ function InitComponents()
 	--AddResource(sound)
 	
 	selectionMenu = Selector:New("selector", defaultFont)
-	selectionMenu.SelectionOver	= 
+	selectionMenu.Layer = 6
+	selectionMenu.Width = 640
+	selectionMenu.SelectionHeight = 70
+	selectionMenu.MouseClick = 
 		function()
 			Trace("selected: " .. selectionMenu.SelectedIndex)
+			SelectionOver(selectionMenu.SelectedIndex)
 		end
 end
 
@@ -237,7 +264,7 @@ function ESSOverHandler()
 	GetComponent("testButton").Enabled = true;
 end
 
-InitComponents();
+InitComponents()
 counter = 0
 SoundStarted = false
 
