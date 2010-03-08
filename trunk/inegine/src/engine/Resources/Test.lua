@@ -90,6 +90,7 @@ end;
 
 function CursorHandler(state, luaevent, args)
 	local cursorSprite = GetComponent("cursor")
+	if (cursorSprite.Visible == false) then cursorSprite.Visible = true end
 	cursorSprite.x = args[0] + 1;
 	cursorSprite.y = args[1] + 1;
 end
@@ -106,6 +107,7 @@ function ShowSelection()
 end
 
 function SelectionOver(index)
+	selected = selectionMenu.SelectedIndex
 	selectionMenu:Clear()
 	ResumeEss()
 end
@@ -131,6 +133,7 @@ function InitComponents()
 	anis.Rows = 4;
 	anis.Cols = 4;
 	anis.Layer = 10;
+	anis.Visible = false
 	AddComponent(anis);
 	
 	local button = Button();
@@ -238,6 +241,16 @@ function InitComponents()
 	win.Visible = false
 	win.WindowTexture = "Resources/win.png"
 	win.Font = defaultFont
+	win.Cursor = AnimatedSprite();
+	win.Cursor.Name = "cursor"
+	win.Cursor.Texture = "Resources/sprite.png"
+	win.Cursor.Width = 32;
+	win.Cursor.Height = 48;
+	win.Cursor.Rows = 4;
+	win.Cursor.Cols = 4;
+	win.Cursor.Layer = 10;
+	win.Cursor.Visible = true
+	AddComponent(anis);
 	AddComponent(win)
 	
 	anis:Begin(100, 0, 4, true)
@@ -265,6 +278,9 @@ function ESSOverHandler()
 end
 
 InitComponents()
+
+--state global variables
+selected = -1
 counter = 0
 SoundStarted = false
 
