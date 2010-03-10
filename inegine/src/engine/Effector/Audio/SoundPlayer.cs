@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Text;
 using NAudio.Wave;
 
 namespace INovelEngine.Effector.Audio
 {
+    /* todo: reimplement using MCI! */
+
     public enum PlayingStatus
     {
         Playing,
@@ -192,7 +196,7 @@ namespace INovelEngine.Effector.Audio
                 blockAlignedStream.Dispose();
                 pcmStream.Dispose();
                 mp3Reader.Dispose();
-            }
+            } 
             else
             {
                 throw new InvalidOperationException("Unsupported extension");
@@ -213,8 +217,45 @@ namespace INovelEngine.Effector.Audio
         #endregion
     }
 
-    class AudioManager
+    class SoundPlayer
     {
+
+        #region MCI based test code
+
+        [DllImport("winmm.dll")]
+        private static extern long mciSendString(string strCommand, StringBuilder strReturn, int iReturnLength, IntPtr hwndCallback);
+
+        [DllImport("winmm.dll")]
+        public static extern int waveOutGetVolume(IntPtr hwo, out uint dwVolume);
+        [DllImport("winmm.dll")]
+        public static extern int waveOutSetVolume(IntPtr hwo, uint dwVolume);
+
+        System.Media.SoundPlayer myPlayer = new System.Media.SoundPlayer();
+
+        public void Play(string strFileName, string name)
+        {
+            mciSendString("open \"" + strFileName + "\" type mpegvideo alias " + name, null, 0, IntPtr.Zero);
+            //mciSendString("setaudio " + name + " volume to 50", null, 0, IntPtr.Zero);
+            mciSendString("play " + name + " repeat", null, 0, IntPtr.Zero);
+        }
+
+        public void PlayWav(string fileName)
+        {
+            myPlayer.SoundLocation = fileName;
+            myPlayer.Play();
+        }
+
+        public void SetVolume(int newVolumePercentage)
+        {
+            // Set the same volume for both the left and the right channels
+            uint NewVolumeAllChannels = ((uint)(0x0000ffff * newVolumePercentage / 100f));
+            // Set the volume
+            waveOutSetVolume(IntPtr.Zero, NewVolumeAllChannels);
+        }
+        #endregion
+
+
+
         private static IWavePlayer waveOutDevice;
         private static WaveMixerStream32 mixer;
 
@@ -250,6 +291,9 @@ namespace INovelEngine.Effector.Audio
             mixer.Dispose();
             waveOutDevice.Dispose();
         }
+
+ 
+
     }
 
 }

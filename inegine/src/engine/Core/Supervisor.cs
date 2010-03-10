@@ -62,7 +62,7 @@ namespace INovelEngine
 
             this.RegisterLuaGlue();
 
-            AudioManager.Init();
+            SoundPlayer.Init();
             
             ScriptManager.Init();
 
@@ -81,7 +81,7 @@ namespace INovelEngine
             base.Dispose(disposing);
             /* dispose audiomanager after base cause sound files need to be */
             /* disposed first */
-            AudioManager.Dispose(); 
+            SoundPlayer.Dispose(); 
         }  
  
         private void InitDevice()
