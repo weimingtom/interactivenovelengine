@@ -44,12 +44,12 @@ namespace INovelEngine.ResourceManager
 
         public void Play()
         {
-            AudioManager.PlaySound(this.Sound, Loop);
+            SoundPlayer.PlaySound(this.Sound, Loop);
         }
 
         public void Stop()
         {
-            AudioManager.StopSound(this.Sound);
+            SoundPlayer.StopSound(this.Sound);
         }
 
         private float _volume;
@@ -71,7 +71,7 @@ namespace INovelEngine.ResourceManager
         public override void LoadContent()
         {
             if (Sound != null) return;
-            Sound = AudioManager.LoadSound(FileName);
+            Sound = SoundPlayer.LoadSound(FileName);
             Sound.Volume = _volume;
             base.LoadContent();
         }
