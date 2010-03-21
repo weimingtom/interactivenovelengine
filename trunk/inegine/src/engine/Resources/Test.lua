@@ -255,10 +255,10 @@ function InitComponents()
 	
 	anis:Begin(100, 0, 4, true)
 	
-	local sound = Sound("Resources/Track02.mp3")
+	local sound = Sound("Resources/MusicMono.wav")
 	sound.Name = "testsound"
 	sound.Volume = 0.1
-	--AddResource(sound)
+	AddResource(sound)
 	
 	selectionMenu = Selector:New("selector", defaultFont)
 	selectionMenu.Layer = 6
