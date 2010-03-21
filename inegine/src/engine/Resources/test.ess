@@ -18,7 +18,7 @@ girl:
 #else
 \일본을 공격하지 않습니다.@
 #end
-#Show "musume1", 0
+#Show "musume1", 500
 나왔죠?@
 #Dissolve "musume1", "musume2"
 돌아갑니다@

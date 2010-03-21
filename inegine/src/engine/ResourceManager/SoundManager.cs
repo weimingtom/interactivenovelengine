@@ -17,11 +17,6 @@ namespace INovelEngine.ResourceManager
 {
     public class INESound : AbstractResource
     {
-        public Sound Sound
-        {
-            get; set;
-        }
-
         public string FileName
         { 
             get; set;
@@ -44,12 +39,12 @@ namespace INovelEngine.ResourceManager
 
         public void Play()
         {
-            SoundPlayer.PlaySound(this.Sound, Loop);
+            SoundPlayer.PlaySound(this.FileName, Loop);
         }
 
         public void Stop()
         {
-            SoundPlayer.StopSound(this.Sound);
+            SoundPlayer.StopSound(this.FileName);
         }
 
         private float _volume;
@@ -62,7 +57,7 @@ namespace INovelEngine.ResourceManager
             set
             {
                 _volume = value;
-                if (this.loaded) Sound.Volume = _volume;
+                SoundPlayer.SetVolume((int)(_volume * 100));
             }
         }
 
@@ -70,14 +65,13 @@ namespace INovelEngine.ResourceManager
 
         public override void LoadContent()
         {
-            if (Sound != null) return;
-            Sound = SoundPlayer.LoadSound(FileName);
-            Sound.Volume = _volume;
+            SoundPlayer.LoadSound(FileName);
             base.LoadContent();
         }
 
         public override void UnloadContent()
         {
+            SoundPlayer.CloseSound(FileName);
             base.UnloadContent();
         }
 
@@ -87,8 +81,6 @@ namespace INovelEngine.ResourceManager
 
         public override void Dispose()
         {
-            Console.WriteLine("disposing " + this.Name);
-            Sound.Dispose();
         }
 
         #endregion
