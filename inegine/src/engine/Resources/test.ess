@@ -9,7 +9,7 @@ $counter = counter + 1;
 girl:
 #Show "testwindow", 500
 #Show "bgimg1", 1000
-일본 공격합니까?
+일본을 공격합니까?
 #AddSelection "예"
 #AddSelection "아니오"
 #ShowSelection

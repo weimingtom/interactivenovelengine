@@ -76,12 +76,18 @@ namespace INovelEngine
             Clock.AddTimeEvent(new TimeEvent(1000f, getFPS));          
         }
 
+        protected override void OnExiting(EventArgs e)
+        {
+            base.OnExiting(e);
+        }
+
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
             /* dispose audiomanager after base cause sound files need to be */
             /* disposed first */
-            SoundPlayer.Dispose(); 
+            //SoundPlayer.Dispose();
+            Console.WriteLine("disposing supervisor!");
         }  
  
         private void InitDevice()
