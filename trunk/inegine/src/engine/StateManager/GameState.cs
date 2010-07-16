@@ -23,13 +23,11 @@ namespace INovelEngine.StateManager
         }
 
         /* resources managed by state */
-        
         protected ResourceCollection resources = new ResourceCollection();
         protected Dictionary<String, AbstractResource> resourcesMap = new Dictionary<string, AbstractResource>();
 
         /* components (objects to draw) managed by state */
-
-        // componentList sorted by z-order (higher, higher)
+        /* componentList sorted by z-order (higher, higher) */
         protected List<AbstractGUIComponent> componentList = new List<AbstractGUIComponent>();
         protected Dictionary<String, AbstractGUIComponent> componentMap = 
             new Dictionary<string, AbstractGUIComponent>();
@@ -53,10 +51,22 @@ namespace INovelEngine.StateManager
 
         #endregion
 
+
+        public void OnStarting()
+        {
+
+        }
+
+        public void OnExiting()
+        {
+            
+        }
+
         #region IDisposable Members
 
         public void Dispose()
         {
+            Console.WriteLine("disposing game state!");
             resources.Dispose();
         }
 
