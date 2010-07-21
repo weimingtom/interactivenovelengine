@@ -73,13 +73,9 @@ namespace INovelEngine.ResourceManager
             }
         }
 
-
-        public INEFont ()
-        {       
-        }
-
         public INEFont(string fileName)
         {
+            this.Type = INovelEngine.Effector.ResourceType.Graphical;
             this.FontFile = fileName;
             this.Name = fileName;
         }

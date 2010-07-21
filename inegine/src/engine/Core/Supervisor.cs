@@ -20,21 +20,6 @@ namespace INovelEngine
         private GameState activeState;
         Dictionary<String, GameState> states = new Dictionary<string, GameState>();
 
-        //Texture bgImg;
-        //Texture charImg;
-        //Sprite sprite;
-
-        /*
-        TextWindow testWindow = null;
-        ImageWindow testWindow2 = new ImageWindow(Color.MediumBlue, 200, 10, 390, 780, 200, 0, "Test2", 20);
-        
-        */
-
-        //FadingTransition testTransition = new FadingTransition();
-
-        //SpriteBase testSprite = new SpriteBase("testsprite.png", 100, 100, 0, false);
-
-
         public Device Device
         {
             get { return GraphicsDeviceManager.Direct3D9.Device; }
@@ -50,7 +35,6 @@ namespace INovelEngine
         {
             ClearColor = Color.White;
             Window.ClientSize = new Size(InitialWidth, InitialHeight);
-            //Window.Text = "SlimDX - Test Project";
             Window.KeyDown += new KeyEventHandler(Window_KeyDown);
             Window.MouseDown += new MouseEventHandler(Window_MouseDown);
             Window.MouseUp += new MouseEventHandler(Window_MouseUp);
@@ -66,8 +50,8 @@ namespace INovelEngine
             
             ScriptManager.Init();
 
+            /* load lua entry script */
             Lua_LoadScript("Resources/start.lua");
-
             
 
             this.Window.FormBorderStyle = FormBorderStyle.FixedSingle;

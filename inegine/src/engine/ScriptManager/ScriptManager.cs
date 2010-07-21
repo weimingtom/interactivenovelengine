@@ -64,9 +64,6 @@ namespace INovelEngine.Script
             }
         }
 
-
-
-        /* todo: simplify & get rid of unneeded logic... */
         public virtual void SendEvent(ScriptEvents luaevent, params object[] args)
         {
             try
@@ -86,38 +83,43 @@ namespace INovelEngine.Script
         public virtual void SendEvent(AbstractLuaEventHandler handler, ScriptEvents luaevent, params object[] args)
         {
             try
-            {
-                if (handler != this) handler.SendEvent(luaevent, args);
-                else
+            {   
+                /* handle the event myself since handler is this */
+                if (handler == this)
                 {
                     switch (luaevent)
                     {
                         case ScriptEvents.KeyPress:
-                            if (handler.KeyDown != null) handler.KeyDown(handler, luaevent, args);
+                            if (KeyDown != null) KeyDown(handler, luaevent, args);
                             break;
                         case ScriptEvents.MouseDown:
-                            if (handler.MouseDown != null) handler.MouseDown(handler, luaevent, args);
+                            if (MouseDown != null) MouseDown(handler, luaevent, args);
                             break;
                         case ScriptEvents.MouseUp:
-                            if (handler.MouseUp != null) handler.MouseUp(handler, luaevent, args);
+                            if (MouseUp != null) MouseUp(handler, luaevent, args);
                             break;
                         case ScriptEvents.MouseMove:
-                            if (handler.MouseMove != null) handler.MouseMove(handler, luaevent, args);
+                            if (MouseMove != null) MouseMove(handler, luaevent, args);
                             break;
                         case ScriptEvents.MouseClick:
-                            if (handler.MouseClick != null) handler.MouseClick(handler, luaevent, args);
+                            if (MouseClick != null) MouseClick(handler, luaevent, args);
                             break;
                         case ScriptEvents.MouseLeave:
-                            if (handler.MouseLeave != null) handler.MouseLeave(handler, luaevent, args);
+                            if (MouseLeave != null) MouseLeave(handler, luaevent, args);
                             break;
                         case ScriptEvents.Update:
-                            if (handler.StateUpdate != null) handler.StateUpdate(handler, luaevent, args);
+                            if (StateUpdate != null) StateUpdate(handler, luaevent, args);
                             break;
                         default:
-                            if (handler.GeneralEvent != null) handler.GeneralEvent(handler, luaevent, args);
+                            if (GeneralEvent != null) GeneralEvent(handler, luaevent, args);
                             break;
                     }
                 }
+                else // send the event to the handler and delegate handling
+                {
+                    handler.SendEvent(luaevent, args);
+                }
+
 
             }
             catch (Exception e)
@@ -142,6 +144,7 @@ namespace INovelEngine.Script
         {
             try
             {
+                /* load initialization script */
                 lua.DoFile("BaseScripts/Init.lua");
             }
             catch (Exception e)

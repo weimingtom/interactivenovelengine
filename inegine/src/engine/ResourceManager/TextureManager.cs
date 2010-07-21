@@ -23,12 +23,9 @@ namespace INovelEngine.ResourceManager
         private Bitmap scaledBitmap;
         private string fileName;
 
-        public INETexture ()
-        {       
-        }
-
         public INETexture (string fileName)
         {
+            this.Type = INovelEngine.Effector.ResourceType.Graphical;
             this.TextureFile = fileName;
             this.Name = fileName;
         }

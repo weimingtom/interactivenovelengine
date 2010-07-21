@@ -33,9 +33,8 @@ namespace INovelEngine.Effector
             }
             set
             {
-                textureManager = new INETexture();
+                textureManager = new INETexture(value);
                 resources.Add(textureManager);
-                textureManager.TextureFile = value;
                 SetDimensions();
             }
         }

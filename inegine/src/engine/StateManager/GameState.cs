@@ -23,8 +23,12 @@ namespace INovelEngine.StateManager
         }
 
         /* resources managed by state */
-        protected ResourceCollection resources = new ResourceCollection();
-        protected Dictionary<String, AbstractResource> resourcesMap = new Dictionary<string, AbstractResource>();
+        protected ResourceCollection graphicalResources = new ResourceCollection();
+        protected Dictionary<String, AbstractResource> graphicalResourcesMap = new Dictionary<string, AbstractResource>();
+
+
+        protected ResourceCollection generalResources = new ResourceCollection();
+        protected Dictionary<String, AbstractResource> generalResourcesMap = new Dictionary<string, AbstractResource>();
 
         /* components (objects to draw) managed by state */
         /* componentList sorted by z-order (higher, higher) */
@@ -32,21 +36,21 @@ namespace INovelEngine.StateManager
         protected Dictionary<String, AbstractGUIComponent> componentMap = 
             new Dictionary<string, AbstractGUIComponent>();
 
-        #region IResource Members
+        #region IResource Members for managing graphical resources
 
         public void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
-            resources.Initialize(graphicsDeviceManager);
+            graphicalResources.Initialize(graphicsDeviceManager);
         }
 
         public void LoadContent()
         {
-            resources.LoadContent();
+            graphicalResources.LoadContent();
         }
 
         public void UnloadContent()
         {
-            resources.UnloadContent();
+            graphicalResources.UnloadContent();
         }
 
         #endregion
@@ -67,7 +71,7 @@ namespace INovelEngine.StateManager
         public void Dispose()
         {
             Console.WriteLine("disposing game state!");
-            resources.Dispose();
+            graphicalResources.Dispose();
         }
 
         #endregion
@@ -91,20 +95,38 @@ namespace INovelEngine.StateManager
         }
 
         #endregion
-        
+
+
+        #region resource management
+
         public void AddResource(AbstractResource resource)
         {
-            if (resourcesMap.ContainsKey(resource.Name)) return;
+            if (resource.Type == INovelEngine.Effector.ResourceType.Graphical)
+            {
+                if (graphicalResourcesMap.ContainsKey(resource.Name)) return;
 
-            resources.Add(resource);
-            resourcesMap[resource.Name] = resource;
+                graphicalResources.Add(resource);
+                graphicalResourcesMap[resource.Name] = resource;
+            }
+            else
+            {
+                if (generalResourcesMap.ContainsKey(resource.Name)) return;
+
+                generalResources.Add(resource);
+                generalResourcesMap[resource.Name] = resource;
+            }
         }
+    
 
         public AbstractResource GetResource(string id)
         {
-            if (resourcesMap.ContainsKey(id))
+            if (graphicalResourcesMap.ContainsKey(id))
             {
-                return resourcesMap[id];
+                return graphicalResourcesMap[id];
+            }
+            else if(generalResourcesMap.ContainsKey(id))
+            {
+                return generalResourcesMap[id];
             }
             else
             {
@@ -114,14 +136,26 @@ namespace INovelEngine.StateManager
 
         public void RemoveResource(string id)
         {
-            if (resourcesMap.ContainsKey(id))
+            if (graphicalResourcesMap.ContainsKey(id))
             {
-                AbstractResource resource = resourcesMap[id];
-                resources.Remove(resource);
-                resourcesMap.Remove(id);
+                AbstractResource resource = graphicalResourcesMap[id];
+                graphicalResources.Remove(resource);
+                graphicalResourcesMap.Remove(id);
+                resource.Dispose();
+            }
+            else if (generalResourcesMap.ContainsKey(id))
+            {
+                AbstractResource resource = generalResourcesMap[id];
+                generalResources.Remove(resource);
+                generalResourcesMap.Remove(id);
                 resource.Dispose();
             }
         }
+
+        #endregion
+
+
+        #region GUI component management
 
         public void AddComponent(AbstractGUIComponent component)
         {
@@ -130,7 +164,7 @@ namespace INovelEngine.StateManager
             component.ManagingState = this;
 
             componentList.Add(component);
-            resources.Add(component);
+            graphicalResources.Add(component);
             componentMap.Add(component.Name, component);
 
             InvalidateZOrder();
@@ -155,7 +189,7 @@ namespace INovelEngine.StateManager
                 AbstractGUIComponent component = componentMap[id];
                 componentList.Remove(component);
                 componentMap.Remove(id);
-                resources.Remove(component);
+                graphicalResources.Remove(component);
                 component.Dispose();
             }
         }
@@ -164,6 +198,24 @@ namespace INovelEngine.StateManager
         {
             componentList.Sort(); // sort them according to z-order (higher, higher)
         }
+
+        public AbstractGUIComponent GetCollidingComponent(int x, int y)
+        {
+            AbstractGUIComponent component;
+            // do it in reverse order because components sorted in z order...
+            for (int i = componentList.Count - 1; i >= 0; i--)
+            {
+                component = componentList[i];
+                if (component.RealX <= x && component.RealY <= y &&
+                    component.RealX + component.Width >= x &&
+                    component.RealY + component.Height >= y && component.Enabled) return component;
+            }
+            return null;
+        }
+
+        #endregion
+
+        #region event handling 
 
         private AbstractLuaEventHandler mouseDownLocked;
         private AbstractLuaEventHandler mouseMoveLocked;
@@ -217,18 +269,7 @@ namespace INovelEngine.StateManager
             return handler;
         }
 
-        public AbstractGUIComponent GetCollidingComponent(int x, int y)
-        {
-            AbstractGUIComponent component;
-            // do it in reverse order because components sorted in z order...
-            for (int i = componentList.Count - 1; i >= 0; i--)
-            {
-                component = componentList[i];
-                if (component.RealX <= x && component.RealY <= y &&
-                    component.RealX + component.Width >= x &&
-                    component.RealY + component.Height >= y && component.Enabled) return component;
-            }
-            return null;
-        }
+        #endregion
+
     }
 }

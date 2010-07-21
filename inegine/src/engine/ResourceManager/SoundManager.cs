@@ -15,7 +15,10 @@ using SlimDX.Direct3D9;
 
 namespace INovelEngine.ResourceManager
 {
-    public class INESound : AbstractResource
+    /* todo: change resource type from AbstractResource to custom type.... 
+     * sound resource should not be managed like graphical resource!!! */
+
+    public class INESound : AbstractResource 
     {
         public string FileName
         { 
@@ -27,12 +30,13 @@ namespace INovelEngine.ResourceManager
             get; set;
         }
 
-        public INESound ()
-        {       
-        }
+        //public INESound ()
+        //{       
+        //}
 
         public INESound(string fileName)
         {
+            this.Type = INovelEngine.Effector.ResourceType.General;
             this.FileName = fileName;
             this.Name = fileName;
         }

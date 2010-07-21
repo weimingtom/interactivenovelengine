@@ -1,3 +1,5 @@
+-- selection UI component implemented in lua
+
 Selector = {}
 
 function Selector:New (name, font)
