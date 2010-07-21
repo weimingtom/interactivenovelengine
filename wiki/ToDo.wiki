@@ -9,15 +9,15 @@
 ===중장기===
   * Script
     * ESS
-     * Goto
-     * Conditional branching
+     * Goto (done)
+     * Conditional branching (done)
 
   * Graphics
     * More components
      * Tachie
-     * Button
+     * Button (done)
      * Text label
-     * Composite
+     * Composite (done)
     * Effect
      * Transition
       * Dissolve
