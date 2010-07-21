@@ -12,7 +12,7 @@ namespace INovelEngine.Effector
 {
     public enum ResourceType
     {
-        Texture, Font, Sound
+        Graphical, General
     }
 
     public abstract class AbstractResource : IResource
