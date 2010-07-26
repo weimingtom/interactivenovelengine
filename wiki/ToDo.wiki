@@ -1,30 +1,26 @@
 #summary 앞으로 할 일들
 
 ===단기===
- * Script
-   * Lua
-     * Fix globarl variables (i.e. state, sprite)
-     * Fix GUI system API
-
+ * C# - Lua - ESS 통합 설계
+ * PM2 survey
+     * overall architecture
+     * game mechanics
 ===중장기===
-  * Script
-    * ESS
+ * ESS script 기능 강화
      * Goto (done)
      * Conditional branching (done)
 
-  * Graphics
-    * More components
+ * 추가 컴퍼넌트 구현 
      * Tachie
      * Button (done)
      * Text label
      * Composite (done)
-    * Effect
-     * Transition
+ * 추가 이펙트 구현
       * Dissolve
       * Pixellate
       * Move/Zoom
-  * Sound
-    * Channel management
+ * 사운드 기능 구현
+      * Channel management
 
   * Input
     * Keyboard/Mouse support
