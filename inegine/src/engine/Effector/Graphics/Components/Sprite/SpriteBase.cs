@@ -99,6 +99,7 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void Dispose()
         {
+            Console.WriteLine("disposing sprite base! : " + this.Name);
             base.Dispose();
             sprite.Dispose();
             GC.SuppressFinalize(this);

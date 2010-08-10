@@ -16,19 +16,25 @@ namespace INovelEngine.Effector.Audio
         [DllImport("winmm.dll")]
         private static extern int waveOutSetVolume(IntPtr hwo, uint dwVolume);
 
-        public static void Play(string strFileName, string name)
-        {
-            //mciSendString("setaudio " + name + " volume to 50", null, 0, IntPtr.Zero);
-            mciSendString("play " + name + " repeat", null, 0, IntPtr.Zero);
-        }
-
         public static void SetVolume(int newVolumePercentage)
         {
+            Console.WriteLine("setting overall volume to " + newVolumePercentage);
             // Set the same volume for both the left and the right channels
-            uint NewVolumeAllChannels = ((uint)(0x0000ffff * newVolumePercentage / 100f));
+            uint NewVolumeAllChannels = ((uint)(0x0000ffff * newVolumePercentage / 100f))
+                                        + ((uint)(0xffff0000 * newVolumePercentage / 100f));
             // Set the volume
             waveOutSetVolume(IntPtr.Zero, NewVolumeAllChannels);
         }
+        
+        // works only for mp3...
+        public static void SetVolume(string file, int newVolumePercentage)
+        {
+            string volumeString = (newVolumePercentage*10).ToString();
+            string commandString = "setaudio  \"" + file + "\" volume to " + volumeString;
+            Console.WriteLine(commandString);
+            mciSendString(commandString, null, 0, IntPtr.Zero);
+        }
+
 
         public static void Init()
         { 
@@ -47,8 +53,8 @@ namespace INovelEngine.Effector.Audio
 
         public static void PlaySound(string file, Boolean loop)
         {
-            string commandString = "play " + file + " from 0";
-            if (loop) commandString = commandString + " repeat";
+
+            string commandString = "play \"" + file + "\"";
             mciSendString(commandString, null, 0, IntPtr.Zero);
         }
 

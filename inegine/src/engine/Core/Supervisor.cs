@@ -18,7 +18,8 @@ namespace INovelEngine
         static int InitialHeight = 600;
 
         private GameState activeState;
-        Dictionary<String, GameState> states = new Dictionary<string, GameState>();
+        private Dictionary<String, GameState> states = new Dictionary<string, GameState>();
+        private Stack<GameState> stateStack = new Stack<GameState>();
 
         public Device Device
         {
@@ -189,6 +190,8 @@ namespace INovelEngine
 
             ScriptManager.lua.RegisterFunction("LoadScript", this, this.GetType().GetMethod("Lua_LoadScript"));
             ScriptManager.lua.RegisterFunction("AddState", this, this.GetType().GetMethod("Lua_AddState"));
+            ScriptManager.lua.RegisterFunction("CloseState", this, this.GetType().GetMethod("Lua_CloseState"));
+
             ScriptManager.lua.RegisterFunction("SwitchState", this, this.GetType().GetMethod("Lua_SwitchState"));
             ScriptManager.lua.RegisterFunction("LoadState", this, this.GetType().GetMethod("Lua_LoadState"));
             ScriptManager.lua.RegisterFunction("CurrentState", this, this.GetType().GetMethod("Lua_CurrentState"));
@@ -197,6 +200,10 @@ namespace INovelEngine
             
             ScriptManager.lua.RegisterFunction("Delay", this, this.GetType().GetMethod("Lua_DelayedCall"));
             ScriptManager.lua.RegisterFunction("LoadESS", this, this.GetType().GetMethod("Lua_LoadESS"));
+
+            ScriptManager.lua.RegisterFunction("SetVolume", this, this.GetType().GetMethod("Lua_SetVolume"));
+
+
         }
 
         public void Lua_LoadScript(String ScriptFile)
@@ -211,10 +218,12 @@ namespace INovelEngine
             }
         }
 
+        /* create a new state and initialize the state using given lua script */
         public void Lua_LoadState(String stateName, String ScriptFile)
         {
             GameState newState = new GameState();
             newState.Name = stateName;
+            newState.OnStarting();
             Lua_AddState(newState);
             Lua_LoadScript(ScriptFile);
         }
@@ -227,6 +236,20 @@ namespace INovelEngine
             }
         }
 
+        public void Lua_CloseState()
+        {
+            if (stateStack.Count == 0)
+            {
+                throw new Exception("at least one state required to be removed!");
+            }
+
+            GameState removedState = stateStack.Pop();
+            states.Remove(removedState.Name);
+            this.activeState = stateStack.Peek();
+            Resources.Remove(removedState);
+            removedState.OnExiting();
+        }
+
         public void Lua_AddState(GameState state)
         {
             if (states.ContainsKey(state.Name))
@@ -235,6 +258,7 @@ namespace INovelEngine
             }
 
             states.Add(state.Name, state);
+            stateStack.Push(state);
             this.activeState = state;
             Resources.Add(state);
         }
@@ -299,6 +323,11 @@ namespace INovelEngine
         public Supervisor Lua_Supervisor()
         {
             return this;
+        }
+
+        public void Lua_SetVolume(int volumePercentage)
+        {
+            SoundPlayer.SetVolume(volumePercentage);
         }
 
 

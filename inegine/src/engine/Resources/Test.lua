@@ -8,7 +8,7 @@ function LoadScene(id, image)
 	bgimg.Texture = image
 	bgimg.Visible = false;
 	bgimg.Layer = 0;
-	AddComponent(bgimg);
+	InitComponent(bgimg);
 end
 
 function LoadCharacter(id, image)
@@ -20,7 +20,7 @@ function LoadCharacter(id, image)
 		newCharacter.Y = (GetHeight() - newCharacter.Height);
 		newCharacter.Layer = 2;
 		newCharacter.Visible = false;
-		AddComponent(newCharacter);
+		InitComponent(newCharacter);
 		Trace("loading " .. id .. " done (" .. newCharacter.Width .. "," .. newCharacter.Height .. ")");
 	else
 		Trace("loading " .. id .. " failed");
@@ -134,7 +134,7 @@ function InitComponents()
 	anis.Cols = 4;
 	anis.Layer = 10;
 	anis.Visible = false
-	AddComponent(anis);
+	InitComponent(anis);
 	
 	local button = Button();
 	button.Name = "testButton"
@@ -161,7 +161,7 @@ function InitComponents()
 	button.Font = defaultFont
 	button.TextColor = 0xEEEEEE
 	
-	AddComponent(button)
+	InitComponent(button)
 	
 	button = Button();
 	button.Name = "testButton2"
@@ -195,8 +195,43 @@ function InitComponents()
 	button.Font = defaultFont
 	button.TextColor = 0xEEEEEE
 	
-	AddComponent(button)
+	InitComponent(button)
 	
+	button = Button();
+	button.Name = "testButton4"
+	button.Texture = "Resources/button.png"	
+	button.Layer = 3
+	button.X = 20 + button.Width;
+	button.Y = 65;
+	button.State = {}
+	button.MouseDown = 
+		function (button, luaevent, args)
+			button.State["mouseDown"] = true
+			button.Pushed = true
+		end
+	button.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				Trace("button click!")
+				button.Pushed = false
+				if (SoundStarted) then
+					SoundStarted = false
+					GetResource("testsound").Volume = 0;
+                    button.Text = "OFF";
+				else
+					SoundStarted = true
+					GetResource("testsound").Volume = 100;
+					button.Text = "ON";
+				end
+			end
+		end
+	button.Text = "VOLUME";
+	button.Font = defaultFont
+	button.TextColor = 0xEEEEEE
+	
+	InitComponent(button)
+
+
 	button = Button();
 	button.Name = "testButton3"
 	button.Texture = "Resources/button.png"	
@@ -224,9 +259,64 @@ function InitComponents()
 	button.Text = "ADD";
 	button.Font = defaultFont
 	button.TextColor = 0xEEEEEE
+
+	InitComponent(button)
+
+	button = Button();
+	button.Name = "testButton5"
+	button.Texture = "Resources/button.png"	
+	button.Layer = 3
+	button.X = 10;
+	button.Y = 175;
+	button.State = {}
+	button.MouseDown = 
+		function (button, luaevent, args)
+			button.State["mouseDown"] = true
+			button.Pushed = true
+		end
+	button.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				Trace("button click!")
+			button.State["mouseDown"] = false
+			button.Pushed = false
+            LoadState("test2", "Resources/Test2.lua");
+			end
+		end
+	button.Text = "STATE 2";
+	button.Font = defaultFont
+	button.TextColor = 0xEEEEEE
+
+	InitComponent(button)
 	
-	AddComponent(button)
+	button = Button();
+	button.Name = "testButton6"
+	button.Texture = "Resources/button.png"	
+	button.Layer = 3
+	button.X = 20 + button.Width;
+	button.Y = 175;
+	button.State = {}
+	button.MouseDown = 
+		function (button, luaevent, args)
+			button.State["mouseDown"] = true
+			button.Pushed = true
+		end
+	button.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				Trace("button click!")
+			button.State["mouseDown"] = false
+			button.Pushed = false
+            SwitchState("test2");
+			end
+		end
+	button.Text = "SWITCH";
+	button.Font = defaultFont
+	button.TextColor = 0xEEEEEE
+
+	InitComponent(button)
 	
+
 	local win = ImageWindow()
 	win.Name = "testwindow"
 	win.Alpha = 155
@@ -250,14 +340,16 @@ function InitComponents()
 	win.Cursor.Cols = 4;
 	win.Cursor.Layer = 10;
 	win.Cursor.Visible = true
-	AddComponent(anis);
-	AddComponent(win)
+	InitComponent(win)
 	
 	anis:Begin(100, 0, 4, true)
 	
-	local sound = Sound("Resources/MusicMono.wav")
-	sound.Name = "testsound"
-	sound.Volume = 0.1
+	local sound = Sound("Resources/test.mid")	
+	--local sound = Sound("Resources/MusicMono.wav")
+	--local sound = Sound("Resources/Track02.mp3")	
+    sound.Name = "testsound"
+	sound.Volume = 50
+    sound.Loop = true;
 	AddResource(sound)
 	
 	selectionMenu = Selector:New("selector", defaultFont)
@@ -284,4 +376,5 @@ selected = -1
 counter = 0
 SoundStarted = false
 
+Trace("State 1!");
 Trace(GameTable["daughtet_name"]);
