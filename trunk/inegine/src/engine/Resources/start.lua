@@ -1,6 +1,7 @@
 SetTitle("테스트입니다 ^^");
 SetIcon("Resources/test.ico");
 SetSize(800, 600);
+SetVolume(50);
 
 -- global data structure for game
 GameTable = {}

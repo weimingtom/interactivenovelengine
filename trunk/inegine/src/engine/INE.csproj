@@ -97,7 +97,8 @@
       <HintPath>lib\SampleFramework.dll</HintPath>
     </Reference>
     <Reference Include="SlimDX, Version=2.0.7.41, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
-      <Private>True</Private>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\SlimDX.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Private>False</Private>
@@ -226,6 +227,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\test.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\test.mid">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Track02.mp3">

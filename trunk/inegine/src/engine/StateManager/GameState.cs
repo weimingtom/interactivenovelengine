@@ -58,11 +58,13 @@ namespace INovelEngine.StateManager
 
         public void OnStarting()
         {
-
+            Console.WriteLine(this.Name + " is starting!");
         }
 
         public void OnExiting()
         {
+            Console.WriteLine(this.Name + " is closing!");
+            generalResources.Dispose();
             
         }
 

@@ -1,5 +1,6 @@
 luanet.load_assembly("System.Windows.Forms");
 luanet.load_assembly("INovelEngine");
+
 GameState = luanet.import_type("INovelEngine.StateManager.GameState");
 TextWindow = luanet.import_type("INovelEngine.Effector.TextWindow");
 ImageWindow = luanet.import_type("INovelEngine.Effector.ImageWindow");
@@ -33,6 +34,10 @@ end
 
 function GetResource(id)
     return CurrentState():GetResource(id);
+end
+
+function InitComponent(component)
+    AddComponent(component);
 end
 
 function AddComponent(component)

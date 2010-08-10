@@ -60,8 +60,10 @@ namespace INovelEngine.ResourceManager
             }
             set
             {
+                Console.WriteLine("setting volume to " + value);
                 _volume = value;
-                SoundPlayer.SetVolume((int)(_volume * 100));
+                SoundPlayer.SetVolume(this.FileName, (int)(_volume));
+                //SoundPlayer.SetVolume((int)(_volume));
             }
         }
 
