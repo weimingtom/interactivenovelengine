@@ -1,4 +1,10 @@
 ﻿PROGRAM
+#LoadScene "bgimg1", "Resources/daughterroom.png"
+#LoadScene "bgimg2", "Resources/cwd.jpg"
+#LoadCharacter "musume1", "Resources/before.png" 
+#LoadCharacter "musume2", "Resources/after.png" 
+#Show "musume1", 0
+#Show "bgimg1", 0
 \다른 스크립트가 로드되었습니다.
 #Dissolve "bgimg1", "bgimg2"
 #Wait 1000
