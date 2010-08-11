@@ -57,8 +57,8 @@ function this.Dissolve(id1, id2)
 		first.Layer = first.Layer + 1
 	end
 	--Trace(first.Layer .. " vs " .. second.Layer)
-	Show(id2, 0)
-	Hide(id1, 500)
+	this.Show(id2, 0)
+	this.Hide(id1, 500)
 end
 
 
@@ -117,7 +117,6 @@ end
 --GUI initialization
 
 function this.InitComponents()
-	CurrentState().MouseMove = CursorHandler;
 	
 	local defaultFont = Font("c:\\windows\\fonts\\gulim.ttc")
 	defaultFont.Size = 20;
@@ -135,7 +134,10 @@ function this.InitComponents()
 	anis.Layer = 10;
 	anis.Visible = false
 	InitComponent(anis);
-	
+
+	CurrentState().MouseMove = this.CursorHandler;
+	anis:Begin(100, 0, 4, true)
+
 	local button = Button();
 	button.Name = "testButton"
 	button.Texture = "Resources/button.png"	
@@ -349,7 +351,6 @@ function this.InitComponents()
 	win.Cursor.Visible = true
 	InitComponent(win)
 	
-	anis:Begin(100, 0, 4, true)
 	
 	local sound = Sound("Resources/test.mid")	
 	--local sound = Sound("Resources/MusicMono.wav")
