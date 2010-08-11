@@ -57,7 +57,10 @@ function InitComponents()
 	InitComponent(button)
 end
 
+function this.Test()
+    Trace("state2 test!");
+end
 
 InitComponents()
-
+this.Test()
 Trace("State 2!");

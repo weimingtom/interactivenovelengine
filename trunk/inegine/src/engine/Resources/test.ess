@@ -1,5 +1,6 @@
 ﻿PROGRAM
-$counter = counter + 1;
+\
+$this.counter = this.counter + 1;
 #Trace counter
 #LoadScene "bgimg1", "Resources/daughterroom.png"
 #LoadScene "bgimg2", "Resources/cwd.jpg"
@@ -9,7 +10,7 @@ $counter = counter + 1;
 girl:
 #Show "testwindow", 500
 #Show "bgimg1", 1000
-일본을 공격합니까?
+\일본을 공격합니까?
 #AddSelection "예"
 #AddSelection "아니오"
 #ShowSelection
