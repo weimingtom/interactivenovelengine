@@ -126,3 +126,4 @@ function Selector:Clear()
 	self.nextx = self.Margin
 	self.nexty = self.Margin
 end
+

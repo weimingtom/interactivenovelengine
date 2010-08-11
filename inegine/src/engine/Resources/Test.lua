@@ -1,8 +1,8 @@
+--Init namespace
 
---Scene & character managing functions
 
-function LoadScene(id, image)
-	local gameState = CurrentState();
+-- Scene & character managing functions
+function this.LoadScene(id, image)
 	local status, bgimg = pcall(SpriteBase);
 	bgimg.Name = id
 	bgimg.Texture = image
@@ -11,7 +11,7 @@ function LoadScene(id, image)
 	InitComponent(bgimg);
 end
 
-function LoadCharacter(id, image)
+function this.LoadCharacter(id, image)
 	local status, newCharacter = pcall(SpriteBase);
 	if (status) then
 		newCharacter.Name = id;
@@ -27,7 +27,7 @@ function LoadCharacter(id, image)
 	end
 end
 
-function Show(id, delay)
+function this.Show(id, delay)
 	local component = GetComponent(id)
 	if (component ~= nil) then
 		component:LaunchTransition(delay, true) 
@@ -36,7 +36,7 @@ function Show(id, delay)
 	end
 end
 
-function Hide(id, delay)
+function this.Hide(id, delay)
 	local component = GetComponent(id)
 	if (component ~= nil) then
 		component:LaunchTransition(delay, false)	
@@ -45,7 +45,7 @@ function Hide(id, delay)
 	end
 end
 
-function Dissolve(id1, id2)
+function this.Dissolve(id1, id2)
 	local first = GetComponent(id1)
 	local second = GetComponent(id2)
 	
@@ -64,11 +64,11 @@ end
 
 --Text handling functions
 
-function PrintOver(state, luaevent, args)
+function this.PrintOver(state, luaevent, args) --called by ESS scripts when printing is over after yielding
 	ResumeEss();
 end
 
-function TextOut(value)
+function this.TextOut(value) --called by ESS scripts to output text
 	if(GetComponent("testwindow"):Print(value)) then
 		Trace "yielding because not over "
 		YieldESS();
@@ -77,18 +77,21 @@ function TextOut(value)
 	end
 end
 
-function Clear()
+function this.Clear() --called by ESS scripts to clear text
 	GetComponent("testwindow"):Clear();
 end
 
-function MouseClick(window, luaevent, args)	
-	Trace("click!")
-    window:AdvanceText();
-    --PlaySound("click", false);
-    --state:BeginNarrate("Hello world, test\ntest test test3", 100);
-end;
+function this.ESSOverHandler() --called by ESS scripts when entire script is over
+	Trace("ESS Over!!!!")
+	GetComponent("testButton").Enabled = true;
+end
 
-function CursorHandler(state, luaevent, args)
+
+--etc...
+
+
+
+function this.CursorHandler(state, luaevent, args)
 	local cursorSprite = GetComponent("cursor")
 	if (cursorSprite.Visible == false) then cursorSprite.Visible = true end
 	cursorSprite.x = args[0] + 1;
@@ -96,28 +99,25 @@ function CursorHandler(state, luaevent, args)
 end
 
 --Selection handling
-
-function AddSelection(text)
-	selectionMenu:Add(text)
+function this.AddSelection(text)
+	this.selectionMenu:Add(text)
 end
 
-function ShowSelection()
-	selectionMenu:Show()
+function this.ShowSelection()
+	this.selectionMenu:Show()
 	YieldESS()
 end
 
-function SelectionOver(index)
-	selected = selectionMenu.SelectedIndex
-	selectionMenu:Clear()
+function this.SelectionOver(index)
+	this.selected = this.selectionMenu.SelectedIndex
+	this.selectionMenu:Clear()
 	ResumeEss()
 end
 
 --GUI initialization
 
-function InitComponents()
-	local gamestate = CurrentState();
-	
-	gamestate.MouseMove = CursorHandler;
+function this.InitComponents()
+	CurrentState().MouseMove = CursorHandler;
 	
 	local defaultFont = Font("c:\\windows\\fonts\\gulim.ttc")
 	defaultFont.Size = 20;
@@ -185,6 +185,7 @@ function InitComponents()
 					GetResource("testsound"):Stop()
 					button.Text = "OFF";
 				else
+                    this.Test()
 					SoundStarted = true
 					GetResource("testsound"):Play()
 					button.Text = "ON";
@@ -249,11 +250,11 @@ function InitComponents()
 			if (button.State["mouseDown"]) then
 				Trace("button click!")
 				button.Pushed = false
-				selectionMenu:Clear()
-				selectionMenu:Add("1. 집에 간다")
-				selectionMenu:Add("2. 학교에 간다")
-				selectionMenu:Add("3. 일본을 공격한다")
-				selectionMenu:Show()
+				this.selectionMenu:Clear()
+				this.selectionMenu:Add("1. 집에 간다")
+				this.selectionMenu:Add("2. 학교에 간다")
+				this.selectionMenu:Add("3. 일본을 공격한다")
+				this.selectionMenu:Show()
 			end
 		end
 	button.Text = "ADD";
@@ -327,7 +328,13 @@ function InitComponents()
 	win.Layer = 5
 	win.LineSpacing = 20
 	win.PrintOver = PrintOver
-	win.MouseClick = MouseClick
+	win.MouseClick =
+        function(window, luaevent, args)	
+	        Trace("click!")
+            GetComponent("testwindow"):AdvanceText();
+            --PlaySound("click", false);
+            --state:BeginNarrate("Hello world, test\ntest test test3", 100);
+        end;
 	win.Visible = false
 	win.WindowTexture = "Resources/win.png"
 	win.Font = defaultFont
@@ -352,29 +359,27 @@ function InitComponents()
     sound.Loop = true;
 	AddResource(sound)
 	
-	selectionMenu = Selector:New("selector", defaultFont)
-	selectionMenu.Layer = 6
-	selectionMenu.Width = 640
-	selectionMenu.SelectionHeight = 70
-	selectionMenu.MouseClick = 
+	this.selectionMenu = Selector:New("selector", defaultFont)
+	this.selectionMenu.Layer = 6
+	this.selectionMenu.Width = 640
+	this.selectionMenu.SelectionHeight = 70
+	this.selectionMenu.MouseClick = 
 		function()
-			Trace("selected: " .. selectionMenu.SelectedIndex)
-			SelectionOver(selectionMenu.SelectedIndex)
+			Trace("selected: " .. this.selectionMenu.SelectedIndex)
+			this.SelectionOver(this.selectionMenu.SelectedIndex)
 		end
 end
 
-function ESSOverHandler()
-	Trace("ESS Over!!!!")
-	local gamestate = CurrentState();
-	GetComponent("testButton").Enabled = true;
+function this.Test()
+    Trace("state1 test!");
 end
 
-InitComponents()
+this.InitComponents()
 
 --state global variables
-selected = -1
-counter = 0
-SoundStarted = false
+this.selected = -1
+this.counter = 0
+this.SoundStarted = false
 
 Trace("State 1!");
 Trace(GameTable["daughtet_name"]);

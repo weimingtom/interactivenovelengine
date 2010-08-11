@@ -206,6 +206,11 @@ namespace INovelEngine
 
         }
 
+        public void SetStateNamespace()
+        {
+            ScriptManager.lua.DoString("this = CurrentState().State");
+        }
+
         public void Lua_LoadScript(String ScriptFile)
         {
             try
@@ -224,6 +229,12 @@ namespace INovelEngine
             GameState newState = new GameState();
             newState.Name = stateName;
             newState.OnStarting();
+            this.activeState = newState;  // set the new state as the active state
+
+            ScriptManager.lua.DoString("CurrentState().State = {}"); // initialize state table
+
+            SetStateNamespace(); // set the namespace
+
             Lua_AddState(newState);
             Lua_LoadScript(ScriptFile);
         }
@@ -245,7 +256,11 @@ namespace INovelEngine
 
             GameState removedState = stateStack.Pop();
             states.Remove(removedState.Name);
+
+
             this.activeState = stateStack.Peek();
+            SetStateNamespace();
+
             Resources.Remove(removedState);
             removedState.OnExiting();
         }
@@ -259,7 +274,11 @@ namespace INovelEngine
 
             states.Add(state.Name, state);
             stateStack.Push(state);
+
+
             this.activeState = state;
+            SetStateNamespace();
+
             Resources.Add(state);
         }
 
