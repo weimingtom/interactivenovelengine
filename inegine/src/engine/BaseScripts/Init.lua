@@ -15,6 +15,8 @@ Texture = luanet.import_type("INovelEngine.ResourceManager.INETexture");
 Font = luanet.import_type("INovelEngine.ResourceManager.INEFont");
 Sound = luanet.import_type("INovelEngine.ResourceManager.INESound");
 
+Supervisor = Supervisor()
+
 function dofile (filename)
 	local f = assert(loadfile(filename))
 	return f()
@@ -58,3 +60,4 @@ end
 
 dofile "BaseScripts/ESS.lua"
 dofile "BaseScripts/Selector.lua"
+dofile "BaseScripts/font.lua"

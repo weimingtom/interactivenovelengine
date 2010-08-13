@@ -409,6 +409,7 @@ namespace INovelEngine.Effector
 
         public virtual void Dispose()
         {
+            Console.WriteLine("disposing : " + this.Name);
             Removed = true;
             resources.Dispose();
         }

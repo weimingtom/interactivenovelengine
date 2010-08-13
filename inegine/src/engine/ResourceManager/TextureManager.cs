@@ -83,7 +83,7 @@ namespace INovelEngine.ResourceManager
         {
             if (this.scaledBitmap == null) LoadTextureFile(fileName);
 
-            Console.WriteLine("loading : " + this.fileName);
+            //Console.WriteLine("loading : " + this.fileName);
 
             //this.Texture = Texture.FromFile(device, this.fileName);
             if (this.scaledBitmap != null)

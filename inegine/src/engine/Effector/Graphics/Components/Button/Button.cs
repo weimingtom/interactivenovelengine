@@ -96,23 +96,25 @@ namespace INovelEngine.Effector
 
         protected override void DrawInternal()
         {
-            if (this.textureManager.Texture == null) return;
             sprite.Begin(SpriteFlags.AlphaBlend);
 
 
-            if (!Enabled)
+            if (this.Texture != null)
             {
-                sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(),
-                            new Vector3(RealX + 2, RealY + 2, 0), Color.DimGray);
-            }
-            else if (pushed)
-            {
-                sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(), 
-                            new Vector3(RealX+2, RealY+2, 0), Color.LightSlateGray);
-            }
-            else
-            {
-                sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(), new Vector3(RealX, RealY, 0), renderColor);
+                if (!Enabled)
+                {
+                    sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(),
+                                new Vector3(RealX + 2, RealY + 2, 0), Color.DimGray);
+                }
+                else if (pushed)
+                {
+                    sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(),
+                                new Vector3(RealX + 2, RealY + 2, 0), Color.LightSlateGray);
+                }
+                else
+                {
+                    sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(), new Vector3(RealX, RealY, 0), renderColor);
+                }
             }
 
             DrawText();

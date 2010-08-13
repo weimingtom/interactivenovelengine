@@ -58,7 +58,7 @@ namespace INovelEngine.Effector
 
         public override void DrawWindow()
         {
-            if (_windowTexture == null || _windowTexture.Texture == null)
+            if (WindowTexture == null)
             {
                 return;
             }

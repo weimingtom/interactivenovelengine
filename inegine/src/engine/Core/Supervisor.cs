@@ -9,6 +9,7 @@ using INovelEngine.Core;
 using INovelEngine.StateManager;
 using INovelEngine.Script;
 using System.Collections.Generic;
+using INovelEngine.ResourceManager;
 
 namespace INovelEngine
 {
@@ -20,6 +21,7 @@ namespace INovelEngine
         private GameState activeState;
         private Dictionary<String, GameState> states = new Dictionary<string, GameState>();
         private Stack<GameState> stateStack = new Stack<GameState>();
+        private FontManager fontManager = new FontManager();
 
         public Device Device
         {
@@ -48,8 +50,11 @@ namespace INovelEngine
             this.RegisterLuaGlue();
 
             SoundPlayer.Init();
-            
+            SoundPlayer.SetVolume(50);
+
             ScriptManager.Init();
+            
+            Resources.Add(fontManager);
 
             /* load lua entry script */
             Lua_LoadScript("Resources/start.lua");
@@ -68,11 +73,8 @@ namespace INovelEngine
 
         protected override void Dispose(bool disposing)
         {
-            base.Dispose(disposing);
-            /* dispose audiomanager after base cause sound files need to be */
-            /* disposed first */
-            //SoundPlayer.Dispose();
             Console.WriteLine("disposing supervisor!");
+            base.Dispose(disposing);
         }  
  
         private void InitDevice()
@@ -197,7 +199,8 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("CurrentState", this, this.GetType().GetMethod("Lua_CurrentState"));
 
             ScriptManager.lua.RegisterFunction("Supervisor", this, this.GetType().GetMethod("Lua_Supervisor"));
-            
+            ScriptManager.lua.RegisterFunction("FontManager", this, this.GetType().GetMethod("Lua_FontManager"));
+
             ScriptManager.lua.RegisterFunction("Delay", this, this.GetType().GetMethod("Lua_DelayedCall"));
             ScriptManager.lua.RegisterFunction("LoadESS", this, this.GetType().GetMethod("Lua_LoadESS"));
 
@@ -349,6 +352,9 @@ namespace INovelEngine
             SoundPlayer.SetVolume(volumePercentage);
         }
 
-
+        public FontManager Lua_FontManager()
+        {
+            return this.fontManager;
+        }
     }
 }

@@ -51,7 +51,7 @@ namespace INovelEngine.Effector
 
         protected override void DrawInternal()
         {
-            if (this.textureManager.Texture == null) return;
+            if (this.Texture == null) return;
             sprite.Begin(SpriteFlags.AlphaBlend);
   
             sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(), new Vector3(RealX, RealY, 0), renderColor);
@@ -99,7 +99,6 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void Dispose()
         {
-            Console.WriteLine("disposing sprite base! : " + this.Name);
             base.Dispose();
             sprite.Dispose();
             GC.SuppressFinalize(this);
