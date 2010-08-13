@@ -64,16 +64,16 @@ end
 
 --Text handling functions
 
-function this.PrintOver(state, luaevent, args) --called by ESS scripts when printing is over after yielding
+function this.PrintOver(state, luaevent, args) --called by Text Window when printing is over after yielding (return to script)
 	ResumeEss();
 end
 
 function this.TextOut(value) --called by ESS scripts to output text
 	if(GetComponent("testwindow"):Print(value)) then
 		Trace "yielding because not over "
-		YieldESS();
+		YieldESS(); -- wait for text window to finish printing
 	else
-		Trace "not yielding because over"
+		Trace "not yielding because over" -- proceed with script processing
 	end
 end
 
@@ -86,6 +86,10 @@ function this.ESSOverHandler() --called by ESS scripts when entire script is ove
 	GetComponent("testButton").Enabled = true;
 end
 
+function this.ESSOverTest()
+	Trace("ESS Over Test!!!!")
+	GetComponent("testButton").Enabled = true;
+end
 
 --etc...
 
@@ -118,11 +122,14 @@ end
 
 function this.InitComponents()
 	
-	local defaultFont = Font("c:\\windows\\fonts\\gulim.ttc")
-	defaultFont.Size = 20;
-	defaultFont.LineSpacing = 10;
-	defaultFont.TextEffect = 1;
-	AddResource(defaultFont);	
+	LoadFont("default", "c:\\windows\\fonts\\gulim.ttc", 20);
+	GetFont("default").LineSpacing = 10;
+	GetFont("default").TextEffect = 1;
+	--local defaultFont = Font("c:\\windows\\fonts\\gulim.ttc")
+	--defaultFont.Size = 20;
+	--defaultFont.LineSpacing = 10;
+	--defaultFont.TextEffect = 1;
+	--AddResource(defaultFont);	
 	
 	local anis = AnimatedSprite();
 	anis.Name = "cursor"
@@ -156,11 +163,13 @@ function this.InitComponents()
 				Trace("button click!")
 				button.Pushed = false
 				button.Enabled = false
+				this.ESSOverHandler = this.ESSOverTest;
 				BeginESS("Resources/test.ess");
+				--Trace("called ess..")
 			end
 		end
 	button.Text = "스크립트";
-	button.Font = defaultFont
+	button.Font = GetFont("default"); --defaultFont
 	button.TextColor = 0xEEEEEE
 	
 	InitComponent(button)
@@ -195,7 +204,7 @@ function this.InitComponents()
 			end
 		end
 	button.Text = "OFF";
-	button.Font = defaultFont
+	button.Font = GetFont("default") --defaultFont
 	button.TextColor = 0xEEEEEE
 	
 	InitComponent(button)
@@ -229,7 +238,7 @@ function this.InitComponents()
 			end
 		end
 	button.Text = "VOLUME";
-	button.Font = defaultFont
+	button.Font = GetFont("default") --defaultFont
 	button.TextColor = 0xEEEEEE
 	
 	InitComponent(button)
@@ -260,7 +269,7 @@ function this.InitComponents()
 			end
 		end
 	button.Text = "ADD";
-	button.Font = defaultFont
+	button.Font = GetFont("default") --defaultFont
 	button.TextColor = 0xEEEEEE
 
 	InitComponent(button)
@@ -287,7 +296,7 @@ function this.InitComponents()
 			end
 		end
 	button.Text = "STATE 2";
-	button.Font = defaultFont
+	button.Font = GetFont("default") --defaultFont
 	button.TextColor = 0xEEEEEE
 
 	InitComponent(button)
@@ -314,7 +323,7 @@ function this.InitComponents()
 			end
 		end
 	button.Text = "SWITCH";
-	button.Font = defaultFont
+	button.Font = GetFont("default") --defaultFont
 	button.TextColor = 0xEEEEEE
 
 	InitComponent(button)
@@ -329,7 +338,7 @@ function this.InitComponents()
 	win.y = GetHeight() - win.Height - 10;
 	win.Layer = 5
 	win.LineSpacing = 20
-	win.PrintOver = PrintOver
+	win.PrintOver = this.PrintOver
 	win.MouseClick =
         function(window, luaevent, args)	
 	        Trace("click!")
@@ -339,7 +348,7 @@ function this.InitComponents()
         end;
 	win.Visible = false
 	win.WindowTexture = "Resources/win.png"
-	win.Font = defaultFont
+	win.Font = GetFont("default") --defaultFont
 	win.Cursor = AnimatedSprite();
 	win.Cursor.Name = "cursor"
 	win.Cursor.Texture = "Resources/sprite.png"
@@ -352,15 +361,15 @@ function this.InitComponents()
 	InitComponent(win)
 	
 	
-	local sound = Sound("Resources/test.mid")	
+	--local sound = Sound("Resources/test.mid")	
 	--local sound = Sound("Resources/MusicMono.wav")
-	--local sound = Sound("Resources/Track02.mp3")	
+	local sound = Sound("Resources/Track02.mp3")	
     sound.Name = "testsound"
 	sound.Volume = 50
     sound.Loop = true;
 	AddResource(sound)
 	
-	this.selectionMenu = Selector:New("selector", defaultFont)
+	this.selectionMenu = Selector:New("selector", GetFont("default")) --defaultFont)
 	this.selectionMenu.Layer = 6
 	this.selectionMenu.Width = 640
 	this.selectionMenu.SelectionHeight = 70

@@ -38,6 +38,7 @@ namespace INovelEngine.Effector.Audio
 
         public static void Init()
         { 
+        
         }
 
         public static void LoadSound(string file)

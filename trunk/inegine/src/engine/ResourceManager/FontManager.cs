@@ -14,6 +14,8 @@ using SlimDX.Direct3D9;
 
 namespace INovelEngine.ResourceManager
 {
+    /* todo: implement a real font manager... (one that managed by supervisor) */
+
     public class INEFont : AbstractResource
     {
         private GraphicsDeviceManager manager;
@@ -130,5 +132,101 @@ namespace INovelEngine.ResourceManager
         }
 
         #endregion
+    }
+
+    public class FontManager : IResource // font manager is a graphical resource itself
+    {
+        protected ResourceCollection graphicalResources = new ResourceCollection();
+        protected Dictionary<String, AbstractResource> graphicalResourcesMap = new Dictionary<string, AbstractResource>();
+
+
+        #region IResource Members for managing graphical resources
+
+        public void Initialize(GraphicsDeviceManager graphicsDeviceManager)
+        {
+            Console.WriteLine("initializing font manager!");
+            graphicalResources.Initialize(graphicsDeviceManager);
+        }
+
+        public void LoadContent()
+        {
+            graphicalResources.LoadContent();
+        }
+
+        public void UnloadContent()
+        {
+            graphicalResources.UnloadContent();
+        }
+
+        #endregion
+
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            Console.WriteLine("disposing font manager!");
+            graphicalResources.Dispose();
+        }
+
+        #endregion
+
+        #region resource management
+
+        public void LoadFont(string alias, string path, int size)
+        {
+            INEFont newFont = new INEFont(path);
+            newFont.Size = size;
+            newFont.Name = alias;
+            AddFont(newFont);
+        }
+
+        public void LoadFont(string alias, string path, int size, string rubyPath, int rubySize)
+        {
+            INEFont newFont = new INEFont(path);
+            newFont.Size = size;
+            newFont.RubyFontFile = rubyPath;
+            newFont.RubySize = rubySize;
+            newFont.RubyOn = true;
+            newFont.Name = alias;
+            AddFont(newFont);
+        }
+
+        public void AddFont(INEFont font)
+        {
+            if (graphicalResourcesMap.ContainsKey(font.Name)) return;
+
+            graphicalResources.Add(font);
+            graphicalResourcesMap[font.Name] = font;
+        }
+
+
+        public INEFont GetFont(string id)
+        {
+            if (graphicalResourcesMap.ContainsKey(id))
+            {
+                return (INEFont)graphicalResourcesMap[id];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void RemoveResource(string id)
+        {
+            if (graphicalResourcesMap.ContainsKey(id))
+            {
+                INEFont font = (INEFont)graphicalResourcesMap[id];
+                graphicalResources.Remove(font);
+                graphicalResourcesMap.Remove(id);
+                font.Dispose();
+            }
+        }
+
+        #endregion
+
+
+
     }
 }
