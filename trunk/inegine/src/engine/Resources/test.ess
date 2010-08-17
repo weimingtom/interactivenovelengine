@@ -1,4 +1,4 @@
-﻿PROGRAM
+﻿[테스트 스크립트 1]
 \
 $this.counter = this.counter + 1;
 #Trace counter
@@ -13,6 +13,7 @@ girl:
 \일본을 공격합니까?
 #AddSelection "예"
 #AddSelection "아니오"
+#Wait 100
 #ShowSelection
 #if selected == 0
 \일본을 공격합니다.@

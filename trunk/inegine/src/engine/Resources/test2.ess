@@ -3,17 +3,17 @@
 #LoadScene "bgimg2", "Resources/cwd.jpg"
 #LoadCharacter "musume1", "Resources/before.png" 
 #LoadCharacter "musume2", "Resources/after.png" 
-#Show "musume1", 0
-#Show "bgimg1", 0
+#Show "musume1"
+#Show "bgimg1"
 \다른 스크립트가 로드되었습니다.
 #Dissolve "bgimg1", "bgimg2"
 #Wait 1000
 사라졌죠?@
 #Dissolve "musume1", "musume2"
-끝입니다.@
+끝입니다.@\
 #Hide "musume2", 500
 #Hide "bgimg2", 1000
-#Hide "testwindow", 500
+;#Hide "testwindow", 500
 #goto unload
 unload:
 ;unloading musume1 and musume2...

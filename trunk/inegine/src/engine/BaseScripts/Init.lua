@@ -22,7 +22,7 @@ function dofile (filename)
 	return f()
 end
 
-function AddResource(resource)
+function InitResource(resource)
 	if (resource.name == nil) then
 		Trace "Resource name undefined!"
 		return
