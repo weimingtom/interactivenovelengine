@@ -67,19 +67,88 @@ namespace INovelEngine.Effector
             }
         }
 
+        protected int _margin = 5;
+        public int Margin
+        {
+            get
+            {
+                return _margin;
+            }
+            set
+            {
+                _margin = value;
+            }
+        }
+
+        protected int _alignment = 1;
+        public int Alignment
+        {
+            get
+            {
+                return _alignment;
+            }
+
+            set
+            {
+                _alignment = value;
+            }
+        }
+
+
+        protected int _verticalAlignment = 1;
+        public int VerticalAlignment
+        {
+            get
+            {
+                return _verticalAlignment;
+            }
+
+            set
+            {
+                _verticalAlignment = value;
+            }
+        }
+
         public string Text
         {
             get; set;
         }
 
-        public void DrawText()
+        protected void DrawText()
         {
             if (freeFont == null) throw new Exception("Font not loaded!");
             
             Size dim = this.freeFont.Measure(Text, Width);
+
+            int leftMargin = 0;
             
-            int leftMargin = (Width - dim.Width)/2;
-            int topMargin = (Height - dim.Height)/2;
+            if (_alignment == 1)
+            {
+                leftMargin = (Width - dim.Width) / 2;
+            }
+            else if (_alignment == 0)
+            {
+                leftMargin = _margin;
+            }
+            else
+            {
+                leftMargin = (Width - dim.Width) - _margin;
+            }
+
+            int topMargin = 0;
+            
+            if (_verticalAlignment == 1)
+            {
+                topMargin = (Height - dim.Height)/2;
+            }
+            else if (_verticalAlignment == 0)
+            {
+                topMargin = _margin;
+            }
+            else
+            {
+                topMargin = (Height - dim.Height) - _margin;
+            }
 
 
             if (pushed)

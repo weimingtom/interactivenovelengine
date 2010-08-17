@@ -124,7 +124,7 @@ function this.InitComponents()
 	
 	LoadFont("default", "c:\\windows\\fonts\\gulim.ttc", 20);
 	GetFont("default").LineSpacing = 10;
-	GetFont("default").TextEffect = 1;
+	GetFont("default").TextEffect = 0;
 	--local defaultFont = Font("c:\\windows\\fonts\\gulim.ttc")
 	--defaultFont.Size = 20;
 	--defaultFont.LineSpacing = 10;
