@@ -320,10 +320,6 @@ namespace INovelEngine.Effector
                     handler = this;
                     break;
                 case ScriptEvents.MouseMove:
-                    if (this.Name == "selector")
-                    {
-                        Console.WriteLine("selection!");
-                    }
                     if (mouseDownLocked != null && !mouseDownLocked.Removed) handler = mouseDownLocked;
                     else
                     {
