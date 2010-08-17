@@ -21,7 +21,7 @@ namespace INovelEngine.Effector.Audio
             Console.WriteLine("setting overall volume to " + newVolumePercentage);
             // Set the same volume for both the left and the right channels
             uint NewVolumeAllChannels = ((uint)(0x0000ffff * newVolumePercentage / 100f))
-                                        + ((uint)(0xffff0000 * newVolumePercentage / 100f));
+                                        + ((uint)(0xffff0000 * (100 - newVolumePercentage) / 100f));
             // Set the volume
             waveOutSetVolume(IntPtr.Zero, NewVolumeAllChannels);
         }

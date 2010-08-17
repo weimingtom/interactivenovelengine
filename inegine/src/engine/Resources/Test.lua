@@ -367,7 +367,7 @@ function this.InitComponents()
     sound.Name = "testsound"
 	sound.Volume = 50
     sound.Loop = true;
-	AddResource(sound)
+	InitResource(sound)
 	
 	this.selectionMenu = Selector:New("selector", GetFont("default")) --defaultFont)
 	this.selectionMenu.Layer = 6

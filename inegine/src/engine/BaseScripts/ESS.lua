@@ -78,25 +78,68 @@ end
 -- ESS function synonyms (called by ESS as functions i.e. "#LoadScene "bgimg1", "Resources/daughterroom.png""
 
 -- for image handling
+-- Scene & character managing functions
 function LoadScene(id, image)
-	this.LoadScene(id, image)
+	local status, bgimg = pcall(SpriteBase);
+	bgimg.Name = id
+	bgimg.Texture = image
+	bgimg.Visible = false;
+	bgimg.Layer = 0;
+	InitComponent(bgimg);
 end
 
 function LoadCharacter(id, image)
-	this.LoadCharacter(id, image)
+	local status, newCharacter = pcall(SpriteBase);
+	if (status) then
+		newCharacter.Name = id;
+		newCharacter.Texture = image;
+		newCharacter.X = (GetWidth() - newCharacter.Width)/2;
+		newCharacter.Y = (GetHeight() - newCharacter.Height);
+		newCharacter.Layer = 2;
+		newCharacter.Visible = false;
+		InitComponent(newCharacter);
+		Trace("loading " .. id .. " done (" .. newCharacter.Width .. "," .. newCharacter.Height .. ")");
+	else
+		Trace("loading " .. id .. " failed");
+	end
 end
 
 function Show(id, delay)
-	this.Show(id, delay)
+	local component = GetComponent(id)
+    if (delay == nil) then delay = 0; end
+	if (component ~= nil) then
+		component:LaunchTransition(delay, true) 
+	else
+		Trace("invalid id: " .. id);
+	end
 end
 
 function Hide(id, delay)
-	this.Hide(id, delay)
+	local component = GetComponent(id)
+    if (delay == nil) then delay = 0; end
+	if (component ~= nil) then
+		component:LaunchTransition(delay, false)	
+	else
+		Trace("invalid id: " .. id);
+	end
 end
 
 function Dissolve(id1, id2)
-    this.Dissolve(id1, id2)
+	local first = GetComponent(id1)
+	local second = GetComponent(id2)
+	
+	if (second.Layer > first.Layer) then
+		local swap = first.Layer
+		first.Layer = second.Layer
+		second.Layer = swap
+	elseif(second.Layer == first.Layer) then
+		first.Layer = first.Layer + 1
+	end
+	--Trace(first.Layer .. " vs " .. second.Layer)
+	Show(id2, 0)
+	Hide(id1, 500)
 end
+
 
 -- for selection window
 

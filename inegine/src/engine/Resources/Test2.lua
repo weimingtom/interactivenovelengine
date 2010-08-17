@@ -1,63 +1,4 @@
 --GUI initialization
--- Scene & character managing functions
-function this.LoadScene(id, image)
-	local status, bgimg = pcall(SpriteBase);
-	bgimg.Name = id
-	bgimg.Texture = image
-	bgimg.Visible = false;
-	bgimg.Layer = 0;
-	InitComponent(bgimg);
-end
-
-function this.LoadCharacter(id, image)
-	local status, newCharacter = pcall(SpriteBase);
-	if (status) then
-		newCharacter.Name = id;
-		newCharacter.Texture = image;
-		newCharacter.X = (GetWidth() - newCharacter.Width)/2;
-		newCharacter.Y = (GetHeight() - newCharacter.Height);
-		newCharacter.Layer = 2;
-		newCharacter.Visible = false;
-		InitComponent(newCharacter);
-		Trace("loading " .. id .. " done (" .. newCharacter.Width .. "," .. newCharacter.Height .. ")");
-	else
-		Trace("loading " .. id .. " failed");
-	end
-end
-
-function this.Show(id, delay)
-	local component = GetComponent(id)
-	if (component ~= nil) then
-		component:LaunchTransition(delay, true) 
-	else
-		Trace("invalid id: " .. id);
-	end
-end
-
-function this.Hide(id, delay)
-	local component = GetComponent(id)
-	if (component ~= nil) then
-		component:LaunchTransition(delay, false)	
-	else
-		Trace("invalid id: " .. id);
-	end
-end
-
-function this.Dissolve(id1, id2)
-	local first = GetComponent(id1)
-	local second = GetComponent(id2)
-	
-	if (second.Layer > first.Layer) then
-		local swap = first.Layer
-		first.Layer = second.Layer
-		second.Layer = swap
-	elseif(second.Layer == first.Layer) then
-		first.Layer = first.Layer + 1
-	end
-	--Trace(first.Layer .. " vs " .. second.Layer)
-	this.Show(id2, 0)
-	this.Hide(id1, 500)
-end
 
 
 --Text handling functions
@@ -138,12 +79,6 @@ function InitComponents()
         end;
 	
 	anis:Begin(100, 0, 4, true)
-
-	local defaultFont = Font("c:\\windows\\fonts\\gulim.ttc")
-	defaultFont.Size = 20;
-	defaultFont.LineSpacing = 10;
-	defaultFont.TextEffect = 1;
-	AddResource(defaultFont);	
 	
 	local anis = AnimatedSprite();
 	anis.Name = "cursor"
@@ -179,7 +114,7 @@ function InitComponents()
 			end
 		end
 	button.Text = "닫기";
-	button.Font = defaultFont
+	button.Font = GetFont("default")
 	button.TextColor = 0xEEEEEE
 	
 	InitComponent(button)
@@ -206,7 +141,7 @@ function InitComponents()
 			end
 		end
 	button.Text = "스크립트";
-	button.Font = defaultFont
+	button.Font = GetFont("default")
 	button.TextColor = 0xEEEEEE
 	
 	InitComponent(button)
@@ -230,7 +165,7 @@ function InitComponents()
         end;
 	win.Visible = true
 	win.WindowTexture = "Resources/win.png"
-	win.Font = defaultFont
+	win.Font = GetFont("default")
 	win.Cursor = AnimatedSprite();
 	win.Cursor.Name = "cursor"
 	win.Cursor.Texture = "Resources/sprite.png"
