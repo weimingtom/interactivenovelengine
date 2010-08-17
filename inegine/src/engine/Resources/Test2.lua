@@ -146,6 +146,23 @@ function InitComponents()
 	
 	InitComponent(button)
 
+
+	local label = Label();
+	label.Name = "testlabel"
+	label.Alignment = 0
+	label.VerticalAlignment = 0
+	label.Layer = 3
+	label.Margin = 10
+	label.X = 10;
+	label.Y = 120;
+	label.Width = 300;
+	label.Height = 100;
+	label.Text = "LABEL\nLABEL2";
+	label.Font = GetFont("default")
+	label.TextColor = 0x000000
+	
+	InitComponent(label)
+
 	local win = ImageWindow()
 	win.Name = "testwindow"
 	win.Alpha = 155
