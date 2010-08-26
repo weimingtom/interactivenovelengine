@@ -347,8 +347,12 @@ function this.InitComponents()
             --state:BeginNarrate("Hello world, test\ntest test test3", 100);
         end;
 	win.Visible = false
-	win.WindowTexture = "Resources/win.png"
+	
+	win.WindowTexture = "Resources/win2.png"
+	win.BackgroundColor = 0xFFFFFF
+	
 	win.Font = GetFont("default") --defaultFont
+	
 	win.Cursor = AnimatedSprite();
 	win.Cursor.Name = "cursor"
 	win.Cursor.Texture = "Resources/sprite.png"
@@ -358,12 +362,13 @@ function this.InitComponents()
 	win.Cursor.Cols = 4;
 	win.Cursor.Layer = 10;
 	win.Cursor.Visible = true
+	
 	InitComponent(win)
 	
 	
 	--local sound = Sound("Resources/test.mid")	
 	--local sound = Sound("Resources/MusicMono.wav")
-	local sound = Sound("Resources/Track02.mp3")	
+	local sound = Sound("Resources/Track01.mp3")	
     sound.Name = "testsound"
 	sound.Volume = 50
     sound.Loop = true;
