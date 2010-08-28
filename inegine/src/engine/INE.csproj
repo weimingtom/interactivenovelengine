@@ -153,10 +153,24 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <None Include="BaseScripts\ESS.lua" />
+    <None Include="BaseScripts\font.lua" />
+    <None Include="BaseScripts\Init.lua" />
+    <None Include="BaseScripts\selector.lua" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\co.lua" />
+    <None Include="Resources\meiryo.ttc" />
+    <None Include="Resources\sampler\intro.lua" />
+    <None Include="Resources\sampler\intro.lua~" />
+    <None Include="Resources\sampler\main.lua" />
+    <None Include="Resources\start.lua" />
+    <None Include="Resources\test.ess" />
+    <None Include="Resources\Test.lua" />
+    <None Include="Resources\test2.ess" />
+    <None Include="Resources\Test2.lua" />
     <None Include="ScriptManager\ine.ATG" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -182,6 +196,33 @@
     </Content>
     <Content Include="LuaInterface.dll">
     </Content>
+    <Content Include="Resources\after.png" />
+    <Content Include="Resources\before.png" />
+    <Content Include="Resources\bg.png" />
+    <Content Include="Resources\button.png" />
+    <Content Include="Resources\click.wav" />
+    <Content Include="Resources\cwd.jpg" />
+    <Content Include="Resources\daughterroom.png" />
+    <Content Include="Resources\MusicMono.wav" />
+    <Content Include="Resources\sampler\images\1.png" />
+    <Content Include="Resources\sampler\images\2.png" />
+    <Content Include="Resources\sampler\images\3.png" />
+    <Content Include="Resources\sampler\images\4.png" />
+    <Content Include="Resources\sampler\images\c1.png" />
+    <Content Include="Resources\sampler\images\c2.png" />
+    <Content Include="Resources\sampler\images\c3.png" />
+    <Content Include="Resources\sampler\images\f1.png" />
+    <Content Include="Resources\sampler\images\f2.png" />
+    <Content Include="Resources\sampler\images\f3.png" />
+    <Content Include="Resources\sprite.png" />
+    <Content Include="Resources\test.ico" />
+    <Content Include="Resources\test.mid" />
+    <Content Include="Resources\testsprite.png" />
+    <Content Include="Resources\Track01.mp3" />
+    <Content Include="Resources\Track02.mp3" />
+    <Content Include="Resources\win.png" />
+    <Content Include="Resources\win2.png" />
+    <Content Include="Resources\win3.png" />
     <Content Include="SampleFramework.dll">
     </Content>
     <Content Include="zlib1.dll">
@@ -228,7 +269,9 @@
   -->
   <PropertyGroup>
     <PreBuildEvent>"$(ProjectDir)ScriptManager\compileifnewer.bat" "$(ProjectDir)ScriptManager\ine.ATG" "$(ProjectDir)ScriptManager\.ine.ATG"</PreBuildEvent>
-    <PostBuildEvent>Mklink /D "$(ProjectDir)$(OutDir)BaseScripts" "$(ProjectDir)BaseScripts"
+    <PostBuildEvent>rmdir "$(ProjectDir)$(OutDir)BaseScripts"
+Mklink /D "$(ProjectDir)$(OutDir)BaseScripts" "$(ProjectDir)BaseScripts"
+rmdir "$(ProjectDir)$(OutDir)Resources"
 Mklink /D "$(ProjectDir)$(OutDir)Resources" "$(ProjectDir)Resources"</PostBuildEvent>
   </PropertyGroup>
 </Project>
