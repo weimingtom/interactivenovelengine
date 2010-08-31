@@ -12,7 +12,7 @@ namespace INovelEngine.Script
         
         private enum FunctionType
         {
-            Function, Goto, Load, If, Elseif, Else, Ifend
+            Function, Goto, Load, If, Elseif, Else, Ifend, Return
         }
 
         private FunctionType callType = FunctionType.Function;
@@ -64,6 +64,10 @@ namespace INovelEngine.Script
             {
                 callType = FunctionType.Ifend;
             }
+            else if (name.Equals("return"))
+            {
+                callType = FunctionType.Return;
+            }
             else
             {
                 callType = FunctionType.Function;
@@ -88,6 +92,10 @@ namespace INovelEngine.Script
             else if(callType == FunctionType.Ifend)
             {
                 compiledScript.Append("end;\n");
+            }
+            else if (callType == FunctionType.Return)
+            {
+                compiledScript.Append("return;\n");
             }
             else
             {
@@ -142,7 +150,8 @@ namespace INovelEngine.Script
 
                     if (index <= content.Length - 1) content = content.Substring(index + 1);
                     index = content.IndexOf('\\');
-
+                    
+                    
                     compiledScript.Append("TextOut(\"");
                     compiledScript.Append(temp);
                     compiledScript.Append("\\n\");\n");
@@ -156,6 +165,7 @@ namespace INovelEngine.Script
             compiledScript.Append("\\n\");\n");
         }
 
+        /* replace variable names in string lit */
         public string ReplaceString(string content)
         {
             StringBuilder output = new StringBuilder();

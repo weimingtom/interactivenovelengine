@@ -1,0 +1,23 @@
+﻿[테스트 스크립트 1]
+#LoadScene "bgimg1", "Resources/daughterroom.png"
+#LoadScene "bgimg2", "Resources/cwd.jpg"
+#LoadCharacter "musume1", "Resources/before.png" 
+#LoadCharacter "musume2", "Resources/after.png" 
+#Show "textwindow", 500
+$TestName = "TestName"
+#Name ""
+-따르르릉....@
+-따르르릉....@
+.
+.
+. @
+\시끄러운 자명종 소리에 눈이 깨버리고 말았다.@
+#Show "bgimg1", 1000
+#Wait 500
+\-똑똑똑@
+#Name "???"
+\&'들어가겠습니다'@
+#Show "musume1", 500
+#Name "Sampler"
+#Dissolve "musume1", "musume2"
+#Dissolve "musume2", "musume1"

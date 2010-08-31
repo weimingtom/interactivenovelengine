@@ -8,7 +8,7 @@ function this.PrintOver(state, luaevent, args) --called by ESS scripts when prin
 end
 
 function this.TextOut(value) --called by ESS scripts to output text
-	if(GetComponent("testwindow"):Print(value)) then
+	if(GetComponent("textwindow"):Print(value)) then
 		Trace "yielding because not over "
 		YieldESS();
 	else
@@ -17,15 +17,17 @@ function this.TextOut(value) --called by ESS scripts to output text
 end
 
 function this.Clear() --called by ESS scripts to clear text
-	GetComponent("testwindow"):Clear();
+	GetComponent("textwindow"):Clear();
 end
 
 function this.ESSOverHandler() --called by ESS scripts when entire script is over
 	Trace("ESS Over!!!!")
-	GetComponent("testButton2").Enabled = true;
+	--GetComponent("testButton2").Enabled = true;
 end
 
-
+function Name(name)
+	GetComponent("textwindow"):GetComponent("namewindow").Text = name;
+end
 --etc...
 
 
@@ -37,31 +39,24 @@ function this.CursorHandler(state, luaevent, args)
 	cursorSprite.y = args[1] + 1;
 end
 
---Selection handling
-function this.AddSelection(text)
-	this.selectionMenu:Add(text)
-end
-
-function this.ShowSelection()
-	this.selectionMenu:Show()
-	YieldESS()
-end
-
-function this.SelectionOver(index)
-	this.selected = this.selectionMenu.SelectedIndex
-	this.selectionMenu:Clear()
-	ResumeEss()
-end
-
-
-
-
 function InitComponents()
 	local gamestate = CurrentState();
 	
+	--init font
+	LoadFont("default", "c:\\windows\\fonts\\gulim.ttc", 17);
+	--LoadFont("default", "c:\\windows\\fonts\\gulim.ttc", 12, "c:\\windows\\fonts\\gulim.ttc", 10) --ruby font
+	GetFont("default").LineSpacing = 10;
+	GetFont("default").TextEffect = 1;
+	
+	--LoadFont("small", "c:\\windows\\fonts\\gulim.ttc", 15);
+	LoadFont("small", "c:\\windows\\fonts\\meiryo.ttc", 15);
+	GetFont("small").LineSpacing = 10;
+	GetFont("small").TextEffect = 0;
+	
+	
     local anis = AnimatedSprite();
 	anis.Name = "cursor"
-	anis.Texture = "Resources/sprite.png"
+	anis.Texture = "Resources/sampler/resources/cursor.png"
 	anis.Width = 32;
 	anis.Height = 48;
 	anis.Rows = 4;
@@ -69,138 +64,121 @@ function InitComponents()
 	anis.Layer = 10;
 	anis.Visible = false
 	InitComponent(anis);
+	anis:Begin(100, 0, 2, true) --start animation
 	
-	gamestate.MouseMove =
-        function(state, luaevent, args)
-	        local cursorSprite = GetComponent("cursor")
-	        if (cursorSprite.Visible == false) then cursorSprite.Visible = true end
-	        cursorSprite.x = args[0] + 1;
-	        cursorSprite.y = args[1] + 1;
-        end;
+	--set cursor handler
+	gamestate.MouseMove = this.CursorHandler;
 	
-	anis:Begin(100, 0, 4, true)
-	
-	local anis = AnimatedSprite();
-	anis.Name = "cursor"
-	anis.Texture = "Resources/sprite.png"
-	anis.Width = 32;
-	anis.Height = 48;
-	anis.Rows = 4;
-	anis.Cols = 4;
-	anis.Layer = 10;
-	anis.Visible = false
-	InitComponent(anis);
-
-	anis:Begin(100, 0, 4, true)
-	
-	local button = Button();
-	button.Name = "testButton"
-	button.Texture = "Resources/button.png"	
-	button.Layer = 3
-	button.X = 10;
-	button.Y = 10;
-	button.State = {}
-	button.MouseDown = 
-		function (button, luaevent, args)
-			button.State["mouseDown"] = true
-			button.Pushed = true
-		end
-	button.MouseUp = 
-		function (button, luaevent, args)
-			if (button.State["mouseDown"]) then
-				Trace("button click!")
-				button.Pushed = false
-				CloseState();
-			end
-		end
-	button.Text = "닫기";
-	button.Font = GetFont("default")
-	button.TextColor = 0xEEEEEE
-	
-	InitComponent(button)
-
-	local button = Button();
-	button.Name = "testButton2"
-	button.Texture = "Resources/button.png"	
-	button.Layer = 3
-	button.X = 10;
-	button.Y = 65;
-	button.State = {}
-	button.MouseDown = 
-		function (button, luaevent, args)
-			button.State["mouseDown"] = true
-			button.Pushed = true
-		end
-	button.MouseUp = 
-		function (button, luaevent, args)
-			if (button.State["mouseDown"]) then
-				Trace("button click!")
-				button.Pushed = false
-				button.Enabled = false
-				BeginESS("Resources/test2.ess");
-			end
-		end
-	button.Text = "스크립트";
-	button.Font = GetFont("default")
-	button.TextColor = 0xEEEEEE
-	
-	InitComponent(button)
-
-
-	local label = Label();
-	label.Name = "testlabel"
-	label.Alignment = 0
-	label.VerticalAlignment = 0
-	label.Layer = 3
-	label.Margin = 10
-	label.X = 10;
-	label.Y = 120;
-	label.Width = 300;
-	label.Height = 100;
-	label.Text = "LABEL\nLABEL2";
-	label.Font = GetFont("default")
-	label.TextColor = 0x000000
-	
-	InitComponent(label)
-
+	--create text window
 	local win = ImageWindow()
-	win.Name = "testwindow"
+	win.Name = "textwindow"
 	win.Alpha = 155
-	win.Width = 780
+	win.Width = 760
 	win.Height = 200
 	win.x = (GetWidth() - win.Width) / 2;
-	win.y = GetHeight() - win.Height - 10;
+	win.y = GetHeight() - win.Height - 20;
 	win.Layer = 5
 	win.LineSpacing = 20
 	win.PrintOver = PrintOver
 	win.MouseClick =
         function(window, luaevent, args)	
 	        Trace("click!")
-            GetComponent("testwindow"):AdvanceText();
-            --PlaySound("click", false);
-            --state:BeginNarrate("Hello world, test\ntest test test3", 100);
+            window:AdvanceText();
         end;
 	win.Visible = true
-	win.WindowTexture = "Resources/win.png"
+	win.WindowTexture = "Resources/sampler/resources/win.png"
 	win.Font = GetFont("default")
 	win.Cursor = AnimatedSprite();
-	win.Cursor.Name = "cursor"
-	win.Cursor.Texture = "Resources/sprite.png"
-	win.Cursor.Width = 32;
-	win.Cursor.Height = 48;
-	win.Cursor.Rows = 4;
-	win.Cursor.Cols = 4;
-	win.Cursor.Layer = 10;
-	win.Cursor.Visible = true
+		win.Cursor.Name = "newcursor"
+		win.Cursor.Texture = "Resources/sampler/resources/cursor.png"
+		win.Cursor.Width = 32;
+		win.Cursor.Height = 48;
+		win.Cursor.Rows = 4;
+		win.Cursor.Cols = 4;
+		win.Cursor.Layer = 10;
+		win.Cursor.Visible = true
+	win.Margin = 45;
+	win.LeftMargin = 20;
 	InitComponent(win)
-	
 
-end
+	--a small window for displaying character name in text window...
+	local namewin = Button()
+	namewin.Name = "namewindow"
+	--namewin.Texture = "Resources/sampler/resources/button.png"	
+	namewin.Alpha = 255
+	namewin.Width = 150
+	namewin.Height = 40
+	namewin.Relative = true
+	namewin.x = 10;
+	namewin.y = 5;
+	namewin.Layer = 6
+	--namewin.LineSpacing = 20
+	namewin.Visible = true
+	namewin.Font = GetFont("small")
+	--namewin.Text = "Sampler:"
+	namewin.TextColor = 0xFFFFFF
+	namewin.Alignment = 0
+	win:AddComponent(namewin)	
 
-function this.Test()
-    Trace("state2 test!");
+	local button = Button()
+	button.Name = "skipbutton"
+	button.Texture = "Resources/sampler/resources/button.png"	
+	button.Alpha = 255
+	--button.Width = 150
+	button.Height = 40
+	button.Relative = true
+	button.x = win.width - 374;
+	button.y = win.height - 40;
+	button.Layer = 6
+	--namewin.LineSpacing = 20
+	button.Visible = true
+	button.Font = GetFont("small")
+	button.Text = "SKIP"
+	button.TextColor = 0xFFFFFF
+	button.Alignment = 1
+	win:AddComponent(button)	
+
+	--a small window for displaying character name in text window...
+	local button = Button()
+	button.Name = "autobutton"
+	button.Texture = "Resources/sampler/resources/button.png"	
+	button.Alpha = 255
+	button.Height = 40
+	button.Relative = true
+	button.x = win.width - 252;
+	button.y = win.height - 40;
+	button.Layer = 6
+	--namewin.LineSpacing = 20
+	button.Visible = true
+	button.Font = GetFont("small")
+	button.Text = "AUTO"
+	button.TextColor = 0xFFFFFF
+	button.Alignment = 1
+	win:AddComponent(button)	
+
+	--a small window for displaying character name in text window...
+	local button = Button()
+	button.Name = "logbutton"
+	button.Texture = "Resources/sampler/resources/button.png"	
+	button.Alpha = 255
+	button.Height = 40
+	button.Relative = true
+	button.x = win.width - 130;
+	button.y = win.height - 40;
+	button.Layer = 6
+	--namewin.LineSpacing = 20
+	button.Visible = true
+	button.Font = GetFont("small")
+	button.Text = "LOG..."
+	button.TextColor = 0xFFFFFF
+	button.Alignment = 1
+	win:AddComponent(button)	
+
+
 end
 
 InitComponents()
-this.Test()
-Trace("State 2!");
+--this.ESSOverHandler = this.ESSOverTest;
+BeginESS("Resources/sampler/intro.ess");
+--GetComponent("textwindow"):Print("hi!");
+--name("Sampler:")

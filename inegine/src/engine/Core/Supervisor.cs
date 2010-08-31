@@ -252,9 +252,9 @@ namespace INovelEngine
 
         public void Lua_CloseState()
         {
-            if (stateStack.Count == 0)
+            if (stateStack.Count <= 1)
             {
-                throw new Exception("at least one state required to be removed!");
+                throw new Exception("the base state cannot be removed!");
             }
 
             GameState removedState = stateStack.Pop();

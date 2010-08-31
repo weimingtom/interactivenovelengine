@@ -164,8 +164,8 @@
     <None Include="Resources\co.lua" />
     <None Include="Resources\meiryo.ttc" />
     <None Include="Resources\sampler\intro.lua" />
-    <None Include="Resources\sampler\intro.lua~" />
     <None Include="Resources\sampler\main.lua" />
+    <None Include="Resources\sampler\intro.ess" />
     <None Include="Resources\start.lua" />
     <None Include="Resources\test.ess" />
     <None Include="Resources\Test.lua" />
@@ -214,6 +214,10 @@
     <Content Include="Resources\sampler\images\f1.png" />
     <Content Include="Resources\sampler\images\f2.png" />
     <Content Include="Resources\sampler\images\f3.png" />
+    <Content Include="Resources\sampler\resources\button.png" />
+    <Content Include="Resources\sampler\resources\cursor.png" />
+    <Content Include="Resources\sampler\resources\whitewin.png" />
+    <Content Include="Resources\sampler\resources\win.png" />
     <Content Include="Resources\sprite.png" />
     <Content Include="Resources\test.ico" />
     <Content Include="Resources\test.mid" />

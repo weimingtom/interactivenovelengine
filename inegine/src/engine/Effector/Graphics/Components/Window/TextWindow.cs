@@ -115,6 +115,31 @@ namespace INovelEngine.Effector
         }
 
         protected int _margin = 10;
+        public int Margin
+        {
+            get
+            {
+                return _margin;
+            }
+            set
+            {
+                _margin = value;
+            }
+        }
+
+        protected int _leftmargin = 10;
+        public int LeftMargin
+        {
+            get
+            {
+                return _leftmargin;
+            }
+            set
+            {
+                _leftmargin = value;
+            }
+        }
+
         private TimeEvent narrationEvent;
 
         public Line line;
@@ -204,23 +229,16 @@ namespace INovelEngine.Effector
 
             this.sprite.Begin(SpriteFlags.AlphaBlend);
 
-            if (isStatic)
-            {
-                Size dim = this.freeFont.Measure(viewText);
-                int leftMargin;
-                int topMargin;
-                if (this.centerText) leftMargin = (this.Width - dim.Width)/2;
-                else leftMargin = _margin;
-                if (this.centerTextVertically) topMargin = (this.Height - dim.Height) / 2;
-                else topMargin = _margin;
-                TextRenderer.DrawText(this.sprite, this.freeFont, viewText, this.RealX + leftMargin,
-                                      this.RealY + topMargin, Width - _margin * 2, Height - _margin * 2, Color.White);
-            }
-            else
-            {
-                TextRenderer.DrawText(this.sprite, this.freeFont, scrollBuffer, this.RealX + _margin,
-                                      this.RealY + _margin, Width - _margin * 2, Height - _margin * 2, Color.White);
-            }
+            Size dim = this.freeFont.Measure(isStatic?viewText:scrollBuffer);
+            int leftMargin;
+            int topMargin;
+            if (this.centerText) leftMargin = (this.Width - dim.Width) / 2;
+            else leftMargin = _leftmargin;
+            if (this.centerTextVertically) topMargin = (this.Height - dim.Height) / 2;
+            else topMargin = _margin;
+            TextRenderer.DrawText(this.sprite, this.freeFont, isStatic ? viewText : scrollBuffer,
+                                  this.RealX + leftMargin, this.RealY + topMargin,
+                                  Width - _margin * 2, Height - _margin * 2, Color.White);
 
             if (_printState == State.Waiting)
             {
@@ -233,18 +251,16 @@ namespace INovelEngine.Effector
                         cursorSprite.X = 0;
                         cursorSprite.Y = cursorSprite.RealY + this.freeFont.Size + this.freeFont.LineSpacing;
                     }
-                    cursorSprite.X += this.RealX + this._margin;
+                    cursorSprite.X += this.RealX + leftMargin;
 
                     if (cursorSprite.RealY + cursorSprite.Height <= this.Height)
                     {
-                        cursorSprite.Y += this.RealY + this._margin;
+                        cursorSprite.Y += this.RealY + topMargin;
                         cursorSprite.Draw();
                     }
                 }
             }
             this.sprite.End();
-            
-            //textRenderer.DrawText(sourceText, this.x + margin, this.y + margin, width - margin * 2, height - margin * 2, Color.White);
         }
 
         
