@@ -116,7 +116,7 @@ namespace INovelEngine.Effector
 
         protected void DrawText()
         {
-            if (freeFont == null) throw new Exception("Font not loaded!");
+            if (freeFont == null || Text == null) return;//throw new Exception("Font not loaded!");
             
             Size dim = this.freeFont.Measure(Text, Width);
 
