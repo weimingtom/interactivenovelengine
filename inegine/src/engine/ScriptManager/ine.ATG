@@ -49,12 +49,12 @@ Stat { Stat }                             (. gen.EndScript(); .).
 Stat                                 (. string val; .)
 = LuaCall
 | FunctionCall
-| Label<out val>                     (. gen.EndLabel(); gen.StartLabel(val); .)
-| Litstring<out val>                 (. gen.StringLit(val.TrimStart('\n')); .)
+| Label<out val>                     (. gen.EndLabel(); gen.SetDebugInfo(t.line, t.col); gen.StartLabel(val); .)
+| Litstring<out val>                 (. gen.SetDebugInfo(t.line, t.col); gen.StringLit(val.TrimStart('\n')); .)
 | ANY.
 
 FunctionCall                         (. string name, val; .)
-= Ident<out name>                    (. gen.StartFunction(name); .)
+= Ident<out name>                    (. gen.SetDebugInfo(t.line, t.col); gen.StartFunction(name); .)
   {
   Parameters<out val>               
   }                                   (. gen.EndFunction(); .).
@@ -68,8 +68,8 @@ Expr<out string val, out ExprType type>
 Ident<out string val>
 = ident                                 (. val = 
                                             t.val.TrimStart('\n').TrimStart('#'); .).
-LuaCall					(. string val = ""; .)
-= LuaIdent { String<out val> }	        (. gen.AddText(val); .).
+LuaCall					                        (. string val = ""; .)
+= LuaIdent { String<out val> }	        (. gen.SetDebugInfo(t.line, t.col); gen.AddText(val); .).
 
 LuaIdent
 = luaident.

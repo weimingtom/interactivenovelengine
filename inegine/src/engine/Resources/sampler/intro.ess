@@ -11,12 +11,12 @@ $TestName = "TestName"
 .
 .
 . @
-\시끄러운 자명종 소리에 눈이 깨버리고 말았다.@
+|시끄러운 자명종 소리에 눈이 깨버리고 말았다.@
 #Show "bgimg1", 1000
 #Wait 500
-\-똑똑똑@
+|-똑똑똑@
 #Name "???"
-\&'들어가겠습니다'@
+|"들어가겠습니다"@
 #Show "musume1", 500
 #Name "Sampler"
 #Dissolve "musume1", "musume2"
