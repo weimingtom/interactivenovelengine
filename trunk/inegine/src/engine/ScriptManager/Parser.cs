@@ -107,10 +107,10 @@ public enum Op { ADD, SUB, MUL, DIV, EQU, LSS, GTR, NEG };
 			FunctionCall();
 		} else if (la.kind == 5) {
 			Label(out val);
-			gen.EndLabel(); gen.StartLabel(val); 
+			gen.EndLabel(); gen.SetDebugInfo(t.line, t.col); gen.StartLabel(val); 
 		} else if (la.kind == 3) {
 			Litstring(out val);
-			gen.StringLit(val.TrimStart('\n')); 
+			gen.SetDebugInfo(t.line, t.col); gen.StringLit(val.TrimStart('\n')); 
 		} else if (la.kind == 4 || la.kind == 6 || la.kind == 7) {
 			Get();
 		} else SynErr(8);
@@ -122,13 +122,13 @@ public enum Op { ADD, SUB, MUL, DIV, EQU, LSS, GTR, NEG };
 		while (la.kind == 4) {
 			String(out val);
 		}
-		gen.AddText(val); 
+		gen.SetDebugInfo(t.line, t.col); gen.AddText(val); 
 	}
 
 	void FunctionCall() {
 		string name, val; 
 		Ident(out name);
-		gen.StartFunction(name); 
+		gen.SetDebugInfo(t.line, t.col); gen.StartFunction(name); 
 		while (la.kind == 4) {
 			Parameters(out val);
 		}

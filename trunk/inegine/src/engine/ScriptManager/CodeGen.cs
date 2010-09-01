@@ -139,8 +139,14 @@ namespace INovelEngine.Script
         {
             content = ReplaceString(content);
             string temp;
-            int index = content.IndexOf('\\');
-            Console.WriteLine(index);
+            int index = content.IndexOf('|');
+
+            // escape case for "%/"
+            if (index - 1 >= 0 && content[index - 1].Equals('&'))
+            {
+                content = content.Remove(index - 1, 1);
+                index = content.IndexOf('|', index + 1);
+            }
             if (index > -1)
             {
                 while (index > -1)
@@ -148,15 +154,23 @@ namespace INovelEngine.Script
                     if (index > 0) temp = content.Substring(0, index);
                     else temp = "";
 
-                    if (index <= content.Length - 1) content = content.Substring(index + 1);
-                    index = content.IndexOf('\\');
-                    
-                    
                     compiledScript.Append("TextOut(\"");
                     compiledScript.Append(temp);
-                    compiledScript.Append("\\n\");\n");
+                    //compiledScript.Append("\\n\");\n"); // why append "\n" before clearing?
+                    compiledScript.Append("\");\n");
 
                     compiledScript.Append("Clear();\n");
+
+                    // remove portion before index
+                    if (index <= content.Length - 1) content = content.Substring(index + 1); 
+                    // get next index
+                    index = content.IndexOf('|');
+                    // escape case for "%/"
+                    if (index - 1 >= 0 && content[index - 1].Equals('&'))
+                    {
+                        content = content.Remove(index - 1, 1);
+                        index = content.IndexOf('|', index + 1);
+                    }     
                 }
 
             }
@@ -169,6 +183,7 @@ namespace INovelEngine.Script
         public string ReplaceString(string content)
         {
             StringBuilder output = new StringBuilder();
+            content = content.Replace("\"", "\\\""); // escape " characters so it won't interfere...
             int index = content.IndexOf('<');
             int endindex = content.IndexOf('>');
             if (index > -1)
@@ -193,6 +208,13 @@ namespace INovelEngine.Script
         {
             compiledScript.Append(val);
             compiledScript.Append("\n");
+        }
+
+        /* todo: toggle for debug/production mode? */
+        public void SetDebugInfo(int row, int col)
+        {   
+            compiledScript.Append("currentLine = " + row + "; ");
+            compiledScript.Append("currentCol = " + col + ";\n");
         }
 
     }
