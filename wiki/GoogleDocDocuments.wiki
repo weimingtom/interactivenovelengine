@@ -1,7 +1,0 @@
-#summary 구글독을 통해서 관리되는 문서
-
-=Technical Documents=
-
-  * [http://docs.google.com/Doc?docid=0AXBVkvO8fbwEZDY4M3h0Z18zMGhuaHh3ZmNm&hl=ko Overal Engine Architecture]
-  * [http://spreadsheets.google.com/ccc?key=0AnBVkvO8fbwEdE01dng0Z1AxcFpoUjFkdktYWTZNWWc&hl=ko Engine Requirements]
-  * [http://spreadsheets.google.com/ccc?key=0Aoz4sfbbeX6tdHBnSGtJUTB0OE0tRHNkQ2gyeVRxOHc&hl=ko Script Requirements]
