@@ -1,18 +1,37 @@
 ﻿[테스트 스크립트 1]
-#LoadScene "bgimg1", "Resources/daughterroom.png"
-#LoadScene "bgimg2", "Resources/cwd.jpg"
+#Load "room", "Resources/sampler/images/room02.jpg"
+#Load "logo", "Resources/sampler/images/logo.png"
+#Load "title", "Resources/sampler/images/title.png"
 #LoadCharacter "musume1", "Resources/before.png" 
-#LoadCharacter "musume2", "Resources/after.png" 
+#LoadCharacter "musume2", "Resources/after.png"
+#LoadSound "intro", "Resources/sampler/sound/intro.mp3"
+#Volume "intro", 25
+#Wait 100
+#Play "intro"
+#Wait 100
+#Center "logo"
+#Show "logo", 1000
+#Wait 3000
+#Hide "logo", 1500
+
+#Wait 2000
+#Center "title"
+#Show "title", 1000
+#Wait 3000
+#Hide "title", 1500
+
+#Wait 3000
+#ShowCursor ""
 #Show "textwindow", 500
-$TestName = "TestName"
 #Name ""
--따르르릉....@
--따르르릉....@
+-띵동띵동....@
+-띵동띵동....@
 .
 .
 . @
-|시끄러운 자명종 소리에 눈이 깨버리고 말았다.@
-#Show "bgimg1", 1000
+|시끄러운 현관벨 소리에 눈이 깨버리고 말았다.@
+#Alpha "room", 155
+#Show "room", 1000
 #Wait 500
 |-똑똑똑@
 #Name "???"

@@ -25,21 +25,28 @@ function this.ESSOverHandler() --called by ESS scripts when entire script is ove
 	--GetComponent("testButton2").Enabled = true;
 end
 
-function Name(name)
+function this.Name(name)
 	GetComponent("textwindow"):GetComponent("namewindow").Text = name;
 end
---etc...
-
-
 
 function this.CursorHandler(state, luaevent, args)
 	local cursorSprite = GetComponent("cursor")
-	if (cursorSprite.Visible == false) then cursorSprite.Visible = true end
+	--if (cursorSprite.Visible == false) then cursorSprite.Visible = true end
 	cursorSprite.x = args[0] + 1;
 	cursorSprite.y = args[1] + 1;
 end
 
-function InitComponents()
+function this.HideCursor()
+	local cursorSprite = GetComponent("cursor")
+	cursorSprite.Visible = false;
+end
+
+function this.ShowCursor()
+	local cursorSprite = GetComponent("cursor")
+	cursorSprite.Visible = true;
+end
+
+function this.InitComponents()
 	local gamestate = CurrentState();
 	
 	--init font
@@ -68,6 +75,7 @@ function InitComponents()
 	
 	--set cursor handler
 	gamestate.MouseMove = this.CursorHandler;
+	HideWinCursor()
 	
 	--create text window
 	local win = ImageWindow()
@@ -85,7 +93,7 @@ function InitComponents()
 	        Trace("click!")
             window:AdvanceText();
         end;
-	win.Visible = true
+	win.Visible = false
 	win.WindowTexture = "Resources/sampler/resources/win.png"
 	win.Font = GetFont("default")
 	win.Cursor = AnimatedSprite();
@@ -177,7 +185,7 @@ function InitComponents()
 
 end
 
-InitComponents()
+this.InitComponents()
 --this.ESSOverHandler = this.ESSOverTest;
 BeginESS("Resources/sampler/intro.ess");
 --GetComponent("textwindow"):Print("hi!");

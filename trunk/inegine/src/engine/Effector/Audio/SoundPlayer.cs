@@ -27,9 +27,9 @@ namespace INovelEngine.Effector.Audio
         }
         
         // works only for mp3...
-        public static void SetVolume(string file, int newVolumePercentage)
+        public static void SetVolume(string file, float newVolumePercentage)
         {
-            string volumeString = (newVolumePercentage*10).ToString();
+            string volumeString = ((int)Math.Min(100, Math.Max(0, newVolumePercentage)) * 10).ToString();
             string commandString = "setaudio  \"" + file + "\" volume to " + volumeString;
             Console.WriteLine(commandString);
             mciSendString(commandString, null, 0, IntPtr.Zero);
@@ -56,6 +56,7 @@ namespace INovelEngine.Effector.Audio
         {
 
             string commandString = "play \"" + file + "\"";
+            Console.WriteLine(commandString);
             mciSendString(commandString, null, 0, IntPtr.Zero);
         }
 

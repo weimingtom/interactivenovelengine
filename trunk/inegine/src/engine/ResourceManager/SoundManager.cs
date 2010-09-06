@@ -15,11 +15,12 @@ using SlimDX.Direct3D9;
 
 namespace INovelEngine.ResourceManager
 {
-    /* todo: change resource type from AbstractResource to custom type.... 
-     * sound resource should not be managed like graphical resource!!! */
-
     public class INESound : AbstractResource 
     {
+        private float fadeStartTick;
+        private float fadeDuration;
+        private float oldVolume;
+
         public string FileName
         { 
             get; set;
@@ -30,9 +31,11 @@ namespace INovelEngine.ResourceManager
             get; set;
         }
 
-        //public INESound ()
-        //{       
-        //}
+
+        public INESound()
+        {
+            this.Type = INovelEngine.Effector.ResourceType.General;
+        }
 
         public INESound(string fileName)
         {
@@ -62,9 +65,47 @@ namespace INovelEngine.ResourceManager
             {
                 Console.WriteLine("setting volume to " + value);
                 _volume = value;
-                SoundPlayer.SetVolume(this.FileName, (int)(_volume));
-                //SoundPlayer.SetVolume((int)(_volume));
+                SoundPlayer.SetVolume(this.FileName, _volume);
+
             }
+        }
+
+        private void FadeOutStep()
+        {
+            float currentTick = Clock.GetTime();
+            //Console.WriteLine("elapsed:" + (currentTick - fadeStartTick).ToString() + " / " + fadeDuration);
+            
+            float progress = (currentTick - fadeStartTick) / fadeDuration + 0.1f;
+
+            Console.WriteLine("progress:" + progress);
+            Volume = oldVolume * (1.0f - (float)Math.Log10(progress * 10f));
+            //Volume = oldVolume * (1.1f - progress);
+
+            if (currentTick >= (fadeStartTick + fadeDuration)) fadeOutEvent.kill = true;
+        }
+
+        private void FadeOutOver()
+        {
+            this.Stop();
+        }
+
+        TimeEvent fadeOutEvent;
+
+        public void Fadeout(int delay)
+        {
+            int steps = delay/5;
+            float stepDuration = 5;
+            
+            fadeStartTick = Clock.GetTime();
+            fadeDuration = (float)delay;
+            oldVolume = Volume;
+
+            fadeOutEvent = new TimeEvent(steps, stepDuration, FadeOutStep, FadeOutOver);
+            Clock.AddTimeEvent(fadeOutEvent);
+        }
+
+        public void Fadein(int delay)
+        {
         }
 
         #region IResource Members
