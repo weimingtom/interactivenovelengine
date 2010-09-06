@@ -207,6 +207,10 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("SetVolume", this, this.GetType().GetMethod("Lua_SetVolume"));
 
 
+            ScriptManager.lua.RegisterFunction("ShowWinCursor", this, this.GetType().GetMethod("Lua_ShowCursor"));
+            ScriptManager.lua.RegisterFunction("HideWinCursor", this, this.GetType().GetMethod("Lua_HideCursor"));
+
+
         }
 
         public void SetStateNamespace()
@@ -356,5 +360,19 @@ namespace INovelEngine
         {
             return this.fontManager;
         }
+
+        public void Lua_HideCursor()
+        {
+            Cursor.Hide();
+        }
+
+
+        public void Lua_ShowCursor()
+        {
+            Cursor.Show();
+        }
+    
     }
+
+
 }

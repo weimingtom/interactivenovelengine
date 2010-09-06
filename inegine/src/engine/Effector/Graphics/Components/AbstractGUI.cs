@@ -171,7 +171,7 @@ namespace INovelEngine.Effector
             set { _visible = value; }
         }
 
-        protected int _alpha;
+        protected int _alpha = 255;
 
         public int Alpha
         {
@@ -209,12 +209,11 @@ namespace INovelEngine.Effector
             {
                 if (this.Fading)
                 {
-                    renderColor = Color.FromArgb((int) (progress*255), Color.White);
-                    ;
+                    renderColor = Color.FromArgb((int) (progress*_alpha), Color.White);
                 }
                 else
                 {
-                    renderColor = Color.White;
+                    renderColor = Color.FromArgb(_alpha, Color.White);
                 }
                 this.DrawInternal();
 

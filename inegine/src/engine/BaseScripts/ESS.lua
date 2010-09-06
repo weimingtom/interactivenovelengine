@@ -79,7 +79,17 @@ end
 
 -- for image handling
 -- Scene & character managing functions
-function LoadScene(id, image)
+
+function LoadSound(id, path)
+	local status, sound = pcall(Sound);
+    sound.Name = id
+    sound.FileName = path;
+	sound.Volume = 50
+    sound.Loop = false;
+	InitResource(sound)
+end
+
+function Load(id, image)
 	local status, bgimg = pcall(SpriteBase);
 	bgimg.Name = id
 	bgimg.Texture = image
@@ -104,11 +114,66 @@ function LoadCharacter(id, image)
 	end
 end
 
+function Center(id)
+	local component = GetComponent(id)
+	if (component ~= nil) then
+		component.X = (GetWidth() - component.Width)/2;
+		component.Y = (GetHeight() - component.Height)/2;
+	else
+		Trace("invalid id: " .. id);
+	end
+end
+
+function Play(id, delay)
+	local sound = GetResource(id)
+	if (sound ~= nil) then
+		if (delay == nil) then
+			sound:Play()
+		else
+			sound:Fadein(delay)
+		end 
+	else
+		Trace("invalid id: " .. id);
+	end
+end
+
+function Volume(id, vol)
+
+	local sound = GetResource(id)
+	if (sound ~= nil) then
+		sound.Volume = vol;
+	else
+		Trace("invalid id: " .. id);
+	end
+end
+
+function Stop(id, delay)
+	local sound = GetResource(id)
+	if (sound ~= nil) then
+		if (delay == nil) then
+			sound:Stop()
+		else
+			sound:Fadeout(delay)
+		end 
+	else
+		Trace("invalid id: " .. id);
+	end
+end
+
 function Show(id, delay)
 	local component = GetComponent(id)
     if (delay == nil) then delay = 0; end
 	if (component ~= nil) then
 		component:LaunchTransition(delay, true) 
+	else
+		Trace("invalid id: " .. id);
+	end
+end
+
+function Alpha(id, level)
+	local component = GetComponent(id)
+	if (component ~= nil) then
+		component.Alpha = level 
 	else
 		Trace("invalid id: " .. id);
 	end
@@ -153,4 +218,16 @@ end
 
 function SelectionOver(index)
 	this.SelectionOver(index)
+end
+
+function Name(name)
+	this.Name(name)
+end
+
+function HideCursor()
+	this.HideCursor()
+end
+
+function ShowCursor()
+	this.ShowCursor()
 end
