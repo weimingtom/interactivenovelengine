@@ -5,7 +5,7 @@
 #LoadCharacter "musume1", "Resources/before.png" 
 #LoadCharacter "musume2", "Resources/after.png"
 #LoadSound "intro", "Resources/sampler/sound/intro.mp3"
-#Volume "intro", 25
+#Volume "intro", 20
 #Wait 100
 #Play "intro"
 #Wait 100
