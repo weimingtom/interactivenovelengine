@@ -84,7 +84,6 @@ function LoadSound(id, path)
 	local status, sound = pcall(Sound);
     sound.Name = id
     sound.FileName = path;
-	sound.Volume = 50
     sound.Loop = false;
 	InitResource(sound)
 end

@@ -65,7 +65,7 @@ namespace INovelEngine.ResourceManager
             {
                 Console.WriteLine("setting volume to " + value);
                 _volume = value;
-                SoundPlayer.SetVolume(this.FileName, _volume);
+                if (this.loaded) SoundPlayer.SetVolume(this.FileName, _volume);
 
             }
         }
@@ -113,6 +113,7 @@ namespace INovelEngine.ResourceManager
         public override void LoadContent()
         {
             SoundPlayer.LoadSound(FileName);
+            SoundPlayer.SetVolume(this.FileName, _volume);
             base.LoadContent();
         }
 

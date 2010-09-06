@@ -43,6 +43,7 @@ namespace INovelEngine.Effector.Audio
 
         public static void LoadSound(string file)
         {
+            Console.WriteLine("loading " + file);
             mciSendString("open \"" + file + "\" alias " + file, null, 0, IntPtr.Zero);
         }
 

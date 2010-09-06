@@ -116,6 +116,8 @@ namespace INovelEngine.StateManager
 
                 generalResources.Add(resource);
                 generalResourcesMap[resource.Name] = resource;
+                resource.Initialize(null);
+                resource.LoadContent();
             }
         }
     
