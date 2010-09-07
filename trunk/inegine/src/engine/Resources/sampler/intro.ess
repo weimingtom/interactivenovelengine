@@ -38,5 +38,6 @@
 |"들어가겠습니다"@
 #Show "musume1", 500
 #Name "Sampler"
-#Dissolve "musume1", "musume2"
-#Dissolve "musume2", "musume1"
+정체를 알수 없는 소녀가 갑자기 내 방에 들어섰다.@
+정체를 알수 없는 이유는 이 게임은 기술 데모이기 때문이다.@
+Game Over.
