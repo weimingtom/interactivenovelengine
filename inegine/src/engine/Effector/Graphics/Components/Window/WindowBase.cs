@@ -48,8 +48,8 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void LoadContent()
         {
-            sprite.OnResetDevice();
             base.LoadContent();
+            sprite.OnResetDevice();
         }
 
         /// <summary>
@@ -59,7 +59,6 @@ namespace INovelEngine.Effector
         {
             base.UnloadContent();
             sprite.OnLostDevice();
-            base.Dispose();
         }
 
 
@@ -69,7 +68,7 @@ namespace INovelEngine.Effector
         public override void Dispose()
         {
             sprite.Dispose();
-            GC.SuppressFinalize(this);
+            //GC.SuppressFinalize(this);
             base.Dispose();
         }
 

@@ -380,6 +380,7 @@ namespace INovelEngine.Effector
 
         public virtual void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
+            Console.WriteLine("initializing:" + this.Name);
             initialized = true;
             manager = graphicsDeviceManager;
             resources.Initialize(graphicsDeviceManager);
@@ -387,6 +388,7 @@ namespace INovelEngine.Effector
 
         public virtual void LoadContent()
         {
+            Console.WriteLine("loading:" + this.Name);
             resources.LoadContent();
             loaded = true;
             Removed = false;
@@ -394,6 +396,7 @@ namespace INovelEngine.Effector
 
         public virtual void UnloadContent()
         {
+            Console.WriteLine("unloading:" + this.Name);
             resources.UnloadContent();
             loaded = false;
         }
@@ -404,7 +407,7 @@ namespace INovelEngine.Effector
 
         public virtual void Dispose()
         {
-            Console.WriteLine("disposing : " + this.Name);
+            Console.WriteLine("disposing:" + this.Name);
             Removed = true;
             resources.Dispose();
         }
