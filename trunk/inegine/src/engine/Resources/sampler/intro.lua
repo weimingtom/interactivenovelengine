@@ -55,8 +55,8 @@ function this.InitComponents()
 	GetFont("default").LineSpacing = 10;
 	GetFont("default").TextEffect = 1;
 	
-	--LoadFont("small", "c:\\windows\\fonts\\gulim.ttc", 15);
-	LoadFont("small", "c:\\windows\\fonts\\meiryo.ttc", 15);
+	LoadFont("small", "c:\\windows\\fonts\\gulim.ttc", 15);
+	--LoadFont("small", "c:\\windows\\fonts\\meiryo.ttc", 15);
 	GetFont("small").LineSpacing = 10;
 	GetFont("small").TextEffect = 0;
 	

@@ -4,6 +4,7 @@ luanet.load_assembly("INovelEngine");
 GameState = luanet.import_type("INovelEngine.StateManager.GameState");
 TextWindow = luanet.import_type("INovelEngine.Effector.TextWindow");
 ImageWindow = luanet.import_type("INovelEngine.Effector.ImageWindow");
+WindowBase = luanet.import_type("INovelEngine.Effector.WindowBase");
 SpriteBase = luanet.import_type("INovelEngine.Effector.SpriteBase");
 AnimatedSprite = luanet.import_type("INovelEngine.Effector.AnimatedSprite")
 Button = luanet.import_type("INovelEngine.Effector.Button")
