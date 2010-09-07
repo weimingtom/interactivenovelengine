@@ -50,12 +50,12 @@ function this.InitComponents()
 	local gamestate = CurrentState();
 	
 	--init font
-	LoadFont("default", "c:\\windows\\fonts\\gulim.ttc", 17);
+	LoadFont("default", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 17);
 	--LoadFont("default", "c:\\windows\\fonts\\gulim.ttc", 12, "c:\\windows\\fonts\\gulim.ttc", 10) --ruby font
 	GetFont("default").LineSpacing = 10;
 	GetFont("default").TextEffect = 1;
 	
-	LoadFont("small", "c:\\windows\\fonts\\gulim.ttc", 15);
+	LoadFont("small", "Resources\\sampler\\fonts\\NanumMyeongjoBold.ttf", 15);
 	--LoadFont("small", "c:\\windows\\fonts\\meiryo.ttc", 15);
 	GetFont("small").LineSpacing = 10;
 	GetFont("small").TextEffect = 0;
