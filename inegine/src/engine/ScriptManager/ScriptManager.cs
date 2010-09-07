@@ -162,6 +162,22 @@ namespace INovelEngine.Script
             return parser.gen.GetScript();
         }
 
+        public static String GetESSLine(String path, int line)
+        {
+            int counter = 0;
+            string buffer;
+
+            // Read the file and display it line by line.
+            System.IO.StreamReader file =
+               new System.IO.StreamReader(path);
+            while ((buffer = file.ReadLine()) != null && counter < line - 1)
+            {
+                counter++;
+            }
+
+            return buffer;
+        }
+
         public static void WaitDo(float delay, LuaEventHandler Do)
         {
             TimeEvent eventToDo = new TimeEvent(1, delay, delegate() { },

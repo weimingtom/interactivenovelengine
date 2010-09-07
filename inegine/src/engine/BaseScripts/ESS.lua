@@ -13,6 +13,7 @@ function BeginESS(script)
 	if (CurrentState().state == nil) then
 		CurrentState().state = {};
 	end
+	CurrentState().state["ess_path"] = script;
 	CurrentState().state["ess"] = co;
 	ResumeEss();
 end
@@ -23,8 +24,8 @@ function ResumeEss()
 		--Trace "resuming!..."
 		local success, msg = coroutine.resume(CurrentState().state["ess"])
 		if (success == false) then
-			Trace "error in ESS - terminating!"
-			Trace(msg)
+            Trace("runtime error on line " .. currentLine)
+			Trace("\"" .. EssLine(CurrentState().state["ess_path"], currentLine) .. "\"")
 			ESSOver()
 		end
 	end

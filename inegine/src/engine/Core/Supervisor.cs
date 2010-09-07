@@ -203,6 +203,7 @@ namespace INovelEngine
 
             ScriptManager.lua.RegisterFunction("Delay", this, this.GetType().GetMethod("Lua_DelayedCall"));
             ScriptManager.lua.RegisterFunction("LoadESS", this, this.GetType().GetMethod("Lua_LoadESS"));
+            ScriptManager.lua.RegisterFunction("EssLine", this, this.GetType().GetMethod("Lua_GetESSLine"));
 
             ScriptManager.lua.RegisterFunction("SetVolume", this, this.GetType().GetMethod("Lua_SetVolume"));
 
@@ -305,7 +306,7 @@ namespace INovelEngine
             try
             {
                 result = ScriptManager.ParseESS(path);
-                Console.WriteLine(result);
+                //Console.WriteLine(result);
             }
             catch (Exception e)
             {
@@ -313,6 +314,12 @@ namespace INovelEngine
             }
             return result;
         }
+
+        public string Lua_GetESSLine(String path, int lineNumber)
+        {
+            return ScriptManager.GetESSLine(path, lineNumber);
+        }
+
 
         public void Lua_SetTitle(String s)
         {
