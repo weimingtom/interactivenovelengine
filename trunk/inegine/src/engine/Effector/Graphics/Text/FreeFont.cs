@@ -217,6 +217,8 @@ namespace INovelEngine.Effector.Graphics.Text
 
             int error = FT.FT_Init_FreeType(out _library);
             if (error != 0) throw new Exception("freetype library init error!");
+
+            /* todo: support loading from package */
             error = FT.FT_New_Face(_library, fontPath, 0, out _face);
             if (error != 0) throw new Exception("face init error!");
             this.SetSize(_size);
