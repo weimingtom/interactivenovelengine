@@ -223,7 +223,7 @@ namespace INovelEngine
         {
             try
             {
-                ScriptManager.lua.DoFile(ScriptFile);
+                ScriptManager.DoLua(ScriptFile);
             }
             catch (Exception e)
             {

@@ -145,6 +145,8 @@ namespace INovelEngine.Script
             try
             {
                 /* load initialization script */
+
+                /* todo: support loading from package */
                 lua.DoFile("BaseScripts/Init.lua");
             }
             catch (Exception e)
@@ -153,8 +155,15 @@ namespace INovelEngine.Script
             }
         }
 
+        public static void DoLua(String path)
+        {
+            /* todo: implement loading from package */
+            lua.DoFile(path);    
+        }
+
         public static String ParseESS(String path)
         {
+            /* todo: support loading from package */
             Scanner scanner = new Scanner(path);
             Parser parser = new Parser(scanner);
             parser.gen = new CodeGenerator();
@@ -164,6 +173,8 @@ namespace INovelEngine.Script
 
         public static String GetESSLine(String path, int line)
         {
+            /* todo: support loading from package */
+            /* todo: cache? */
             int counter = 0;
             string buffer;
 

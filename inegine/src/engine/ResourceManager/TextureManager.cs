@@ -44,6 +44,8 @@ namespace INovelEngine.ResourceManager
             }
         }
 
+
+        /* todo: support loading from package */
         public void LoadTextureFile(string fileName)
         {
             try
