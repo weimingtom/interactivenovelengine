@@ -14,8 +14,6 @@ using SlimDX.Direct3D9;
 
 namespace INovelEngine.ResourceManager
 {
-    /* todo: implement a real font manager... (one that managed by supervisor) */
-
     public class INEFont : AbstractResource
     {
         private GraphicsDeviceManager manager;

@@ -42,6 +42,11 @@ function Selector:New (name, font)
 	return o
 end
 
+
+function Selector:Remove()
+	RemoveComponent(self.frame)
+end
+
 function Selector:Show()
 	Trace("showing selector!")
 	self.frame.Layer = self.Layer
