@@ -216,7 +216,6 @@ namespace INovelEngine.Script
             compiledScript.Append("currentLine = " + row + "; ");
             compiledScript.Append("currentCol = " + col + ";\n");
         }
-
     }
 
 }
