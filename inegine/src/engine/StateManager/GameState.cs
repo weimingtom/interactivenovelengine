@@ -11,17 +11,6 @@ namespace INovelEngine.StateManager
     // GameState class representing a game state. 
     public class GameState : AbstractLuaEventHandler, IResource, IGameComponent
     {
-        public GameState()
-        {
-            this.handleMyself = true;
-        }
-
-        public string Name
-        {
-            get;
-            set;
-        }
-
         /* resources managed by state */
         protected ResourceCollection graphicalResources = new ResourceCollection();
         protected Dictionary<String, AbstractResource> graphicalResourcesMap = new Dictionary<string, AbstractResource>();
@@ -35,6 +24,17 @@ namespace INovelEngine.StateManager
         protected List<AbstractGUIComponent> componentList = new List<AbstractGUIComponent>();
         protected Dictionary<String, AbstractGUIComponent> componentMap = 
             new Dictionary<string, AbstractGUIComponent>();
+
+        public GameState()
+        {
+            this.handleMyself = true;
+        }
+
+        public string Name
+        {
+            get;
+            set;
+        }
 
         #region IResource Members for managing graphical resources
 
