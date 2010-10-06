@@ -178,6 +178,8 @@
     <None Include="Resources\Test.lua" />
     <None Include="Resources\test2.ess" />
     <None Include="Resources\Test2.lua" />
+    <None Include="Resources\test\popup.lua" />
+    <None Include="Resources\test\test.lua" />
     <None Include="ScriptManager\ine.ATG" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

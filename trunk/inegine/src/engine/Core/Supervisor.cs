@@ -19,8 +19,12 @@ namespace INovelEngine
         static int InitialHeight = 600;
 
         private GameState activeState;
+
         private Dictionary<String, GameState> states = new Dictionary<string, GameState>();
-        private Stack<GameState> stateStack = new Stack<GameState>();
+
+        //private Stack<GameState> stateStack = new Stack<GameState>();
+        private List<GameState> stateList = new List<GameState>();
+
         private FontManager fontManager = new FontManager();
 
         public Device Device
@@ -63,7 +67,9 @@ namespace INovelEngine
             this.Window.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.Window.MaximizeBox = false;
 
-            Clock.AddTimeEvent(new TimeEvent(1000f, getFPS));          
+#if DEBUG
+            Clock.AddTimeEvent(new TimeEvent(1000f, displayFPS));
+#endif         
         }
 
         protected override void OnExiting(EventArgs e)
@@ -94,7 +100,7 @@ namespace INovelEngine
             GraphicsDeviceManager.ChangeDevice(settings);
         }
 
-        #region Input Events
+        #region Keyboard Input Handler
 
         void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -138,11 +144,9 @@ namespace INovelEngine
             Clock.Tick();
         }
 
-        private void getFPS()
+        private void displayFPS()
         {
-#if DEBUG
             this.Window.Text = Clock.GetFPS().ToString();
-#endif
         }
 
         protected override void Draw(GameTime gameTime)
@@ -153,10 +157,18 @@ namespace INovelEngine
 
             base.Draw(gameTime);
 
-            if (this.activeState != null)
+            //if (this.activeState != null)
+            //{
+            //    this.activeState.Draw();
+            //}
+
+
+            //GameState[] stateList = stateStack.ToArray();
+            for (int i = 0; i < stateList.Count; i++)
             {
-                this.activeState.Draw();
+                stateList[i].Draw();
             }
+
 
             Device.EndScene();
         }
@@ -257,16 +269,19 @@ namespace INovelEngine
 
         public void Lua_CloseState()
         {
-            if (stateStack.Count <= 1)
+            //if (stateStack.Count <= 1)
+            if (stateList.Count <= 1)
             {
                 throw new Exception("the base state cannot be removed!");
             }
 
-            GameState removedState = stateStack.Pop();
+            GameState removedState = stateList[stateList.Count - 1];//stateStack.Pop();
+            stateList.Remove(removedState);
             states.Remove(removedState.Name);
 
 
-            this.activeState = stateStack.Peek();
+            this.activeState = stateList[stateList.Count - 1];//stateStack.Peek();
+
             SetStateNamespace();
 
             Resources.Remove(removedState);
@@ -281,7 +296,9 @@ namespace INovelEngine
             }
 
             states.Add(state.Name, state);
-            stateStack.Push(state);
+            
+            stateList.Add(state);
+            //stateStack.Push(state);
 
 
             this.activeState = state;

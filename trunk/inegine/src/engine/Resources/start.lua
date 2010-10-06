@@ -9,5 +9,6 @@ GameTable = {}
 GameTable["daughtet_name"] = "³»µþ"
 
 --LoadState("test", "Resources/Sampler/intro.lua");
-LoadState("main", "Resources/Sampler/main.lua");
+--LoadState("main", "Resources/Sampler/main.lua");
+LoadState("main", "Resources/Test/test.lua");
 
