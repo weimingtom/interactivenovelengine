@@ -40,4 +40,10 @@
 #Name "Sampler"
 정체를 알수 없는 소녀가 갑자기 내 방에 들어섰다.@
 정체를 알수 없는 이유는 이 게임은 기술 데모이기 때문이다.@
-Game Over.
+
+Game Over.@
+#Stop "intro", 1000
+#ScreenCrossFade 2000
+#Wait 1000
+#CloseState
+#LoadState "main", "Resources/sampler/main.lua"

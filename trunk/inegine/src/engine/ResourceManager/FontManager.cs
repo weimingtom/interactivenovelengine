@@ -173,6 +173,7 @@ namespace INovelEngine.ResourceManager
 
         public void LoadFont(string alias, string path, int size)
         {
+            if (graphicalResourcesMap.ContainsKey(alias)) return;
             INEFont newFont = new INEFont(path);
             newFont.Size = size;
             newFont.Name = alias;
@@ -181,12 +182,15 @@ namespace INovelEngine.ResourceManager
 
         public void LoadFont(string alias, string path, int size, string rubyPath, int rubySize)
         {
+            if (graphicalResourcesMap.ContainsKey(alias)) return;
             INEFont newFont = new INEFont(path);
             newFont.Size = size;
+            newFont.Name = alias;
+
             newFont.RubyFontFile = rubyPath;
             newFont.RubySize = rubySize;
             newFont.RubyOn = true;
-            newFont.Name = alias;
+            
             AddFont(newFont);
         }
 
