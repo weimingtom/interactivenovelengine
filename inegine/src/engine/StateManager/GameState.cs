@@ -65,7 +65,6 @@ namespace INovelEngine.StateManager
         {
             Console.WriteLine(this.Name + " is closing!");
             generalResources.Dispose();
-            
         }
 
         #region IDisposable Members

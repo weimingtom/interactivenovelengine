@@ -129,6 +129,10 @@ namespace INovelEngine.ResourceManager
 
         public override void Dispose()
         {
+            Console.WriteLine("disposing:" + this.Name);
+            SoundPlayer.StopSound(FileName);
+            SoundPlayer.CloseSound(FileName);
+            base.Dispose();
         }
 
         #endregion
