@@ -86,7 +86,7 @@ function Selector:Add(text)
 		function(selectionWindow, event, args)
 			self.SelectedIndex = index;
 			if (self.MouseClick ~= nil) then
-				self:Hide()
+				--self:Hide()
 				self:MouseClick()
 			end
 		end
