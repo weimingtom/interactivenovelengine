@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F1C6583A-8DAC-453B-AC68-FD2BDD0F4C6A}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -170,6 +170,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\meiryo.ttc" />
+    <None Include="Resources\sampler\fonts\NanumGothicBold.ttf" />
+    <None Include="Resources\sampler\fonts\NanumMyeongjoBold.ttf" />
+    <None Include="Resources\sampler\omake.lua" />
+    <None Include="Resources\sampler\event.lua" />
+    <None Include="Resources\sampler\schedule.lua" />
+    <None Include="Resources\sampler\shop.lua" />
+    <None Include="Resources\sampler\equip.lua" />
+    <None Include="Resources\sampler\system.lua" />
+    <None Include="Resources\sampler\status.lua" />
     <None Include="Resources\sampler\intro.lua" />
     <None Include="Resources\sampler\main.lua" />
     <None Include="Resources\sampler\intro.ess" />
@@ -226,10 +235,12 @@
     <Content Include="Resources\sampler\images\c1.png" />
     <Content Include="Resources\sampler\images\c2.png" />
     <Content Include="Resources\sampler\images\c3.png" />
+    <Content Include="Resources\sampler\images\daughter.png" />
     <Content Include="Resources\sampler\images\f1.png" />
     <Content Include="Resources\sampler\images\f2.png" />
     <Content Include="Resources\sampler\images\f3.png" />
     <Content Include="Resources\sampler\images\logo.png" />
+    <Content Include="Resources\sampler\images\room01.png" />
     <Content Include="Resources\sampler\images\room02.jpg" />
     <Content Include="Resources\sampler\images\title.png" />
     <Content Include="Resources\sampler\resources\button.png" />
