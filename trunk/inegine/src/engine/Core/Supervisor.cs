@@ -135,11 +135,18 @@ namespace INovelEngine
         {
             base.Update(gameTime);
 
-            if (this.activeState != null)
+            //if (this.activeState != null)
+            //{
+            //    this.activeState.Update(gameTime);
+            //    this.activeState.SendEvent(ScriptEvents.Update, Clock.GetTime());
+            //}
+
+            for (int i = 0; i < stateList.Count; i++)
             {
-                this.activeState.Update(gameTime);
-                this.activeState.SendEvent(ScriptEvents.Update, Clock.GetTime());
+                stateList[i].Update(gameTime);
             }
+
+            activeState.SendEvent(ScriptEvents.Update, Clock.GetTime());
 
             Clock.Tick();
         }
@@ -187,6 +194,8 @@ namespace INovelEngine
         {
             base.UnloadContent();
         }
+
+        #region Lua core bindings
 
         protected void RegisterLuaGlue()
         {
@@ -395,7 +404,9 @@ namespace INovelEngine
         {
             Cursor.Show();
         }
-    
+
+        #endregion
+
     }
 
 

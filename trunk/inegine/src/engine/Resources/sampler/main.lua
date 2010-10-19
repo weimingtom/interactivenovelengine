@@ -6,10 +6,7 @@
 --etc...
 
 
---Selection handling
-
-function InitComponents()
-
+function this.loadFonts()
 	LoadFont("default", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 17);
 
 	LoadFont("menu", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 18);
@@ -18,8 +15,14 @@ function InitComponents()
 	LoadFont("date", "Resources\\sampler\\fonts\\NanumMyeongjoBold.ttf", 13);
 	GetFont("date").LineSpacing = 13
 	GetFont("date").TextEffect = 1
+
 	LoadFont("state", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 12);
 	GetFont("state").LineSpacing = 5
+end
+
+function this.InitComponents()
+
+    this.loadFonts();
 	
 	local gamestate = CurrentState();
 
@@ -283,19 +286,19 @@ function InitComponents()
 	
 end
 
-function SetDate(year, month, day, week)
+function this.SetDate(year, month, day, week)
 	GetComponent("datedisplay").text = year .. "\n" 
 									   .. month .. " " .. day .. "\n"
 									   .. "Week " ..  week;
 end
 
-function SetState(firstname, lastname, age, gold, stress, mana)
+function this.SetState(firstname, lastname, age, gold, stress, mana)
 	GetComponent("statedisplay").text = firstname .. " " 
 										.. lastname .. "\nAge " .. age .. "\nGold "
 										.. gold .. "\nStress " .. stress .. "%\nMana " .. mana .."%";
 end
 
-function SetBackground(filename)
+function this.SetBackground(filename)
 	if (GetComponent("background") ~= nil) then
 		RemoveComponent("background");
 	end
@@ -308,7 +311,7 @@ function SetBackground(filename)
 	InitComponent(background);
 end
 
-function SetTachie(filename)
+function this.SetTachie(filename)
 	if (GetComponent("tachie") ~= nil) then
 		RemoveComponent("tachie");
 	end
@@ -323,12 +326,12 @@ function SetTachie(filename)
 	InitComponent(tachie);
 end
 
-InitComponents();
+this.InitComponents();
 
 Trace("hi!");
 
-SetDate(1217, "June", 5, 1);
-SetState("안제", "리오", 12, 1000, 50, 40);
-SetBackground("Resources/sampler/images/room01.png");
-SetTachie("Resources/sampler/images/daughter.png");
+this.SetDate(1217, "June", 5, 1);
+this.SetState("안나", "김", 12, 1000, 50, 40);
+this.SetBackground("Resources/sampler/images/room01.png");
+this.SetTachie("Resources/sampler/images/1.png");
 			
