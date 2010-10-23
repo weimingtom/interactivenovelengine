@@ -135,25 +135,20 @@ namespace INovelEngine
         {
             base.Update(gameTime);
 
-            //if (this.activeState != null)
-            //{
-            //    this.activeState.Update(gameTime);
-            //    this.activeState.SendEvent(ScriptEvents.Update, Clock.GetTime());
-            //}
-
-            for (int i = 0; i < stateList.Count; i++)
+            if (this.activeState != null)
             {
-                stateList[i].Update(gameTime);
+                this.activeState.Update(gameTime);
+                this.activeState.SendEvent(ScriptEvents.Update, Clock.GetTime());
             }
 
-            activeState.SendEvent(ScriptEvents.Update, Clock.GetTime());
+            //for (int i = 0; i < stateList.Count; i++)
+            //{
+            //    stateList[i].Update(gameTime);
+            //}
+
+            //activeState.SendEvent(ScriptEvents.Update, Clock.GetTime());
 
             Clock.Tick();
-        }
-
-        private void displayFPS()
-        {
-            this.Window.Text = Clock.GetFPS().ToString();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -164,20 +159,25 @@ namespace INovelEngine
 
             base.Draw(gameTime);
 
-            //if (this.activeState != null)
-            //{
-            //    this.activeState.Draw();
-            //}
-
-
-            //GameState[] stateList = stateStack.ToArray();
-            for (int i = 0; i < stateList.Count; i++)
+            if (this.activeState != null)
             {
-                stateList[i].Draw();
+                this.activeState.Draw();
             }
 
 
+            //GameState[] stateList = stateStack.ToArray();
+            //for (int i = 0; i < stateList.Count; i++)
+            //{
+            //    stateList[i].Draw();
+            //}
+
+
             Device.EndScene();
+        }
+
+        private void displayFPS()
+        {
+            this.Window.Text = Clock.GetFPS().ToString();
         }
 
         protected override void Initialize()
@@ -212,7 +212,6 @@ namespace INovelEngine
 
 
             ScriptManager.lua.RegisterFunction("LoadScript", this, this.GetType().GetMethod("Lua_LoadScript"));
-            ScriptManager.lua.RegisterFunction("AddState", this, this.GetType().GetMethod("Lua_AddState"));
             ScriptManager.lua.RegisterFunction("CloseState", this, this.GetType().GetMethod("Lua_CloseState"));
 
             ScriptManager.lua.RegisterFunction("SwitchState", this, this.GetType().GetMethod("Lua_SwitchState"));
@@ -264,7 +263,7 @@ namespace INovelEngine
 
             SetStateNamespace(); // set the namespace
 
-            Lua_AddState(newState);
+            AddState(newState);
             Lua_LoadScript(ScriptFile);
         }
 
@@ -297,7 +296,7 @@ namespace INovelEngine
             removedState.OnExiting();
         }
 
-        public void Lua_AddState(GameState state)
+        public void AddState(GameState state)
         {
             if (states.ContainsKey(state.Name))
             {

@@ -7,6 +7,7 @@ using SampleFramework;
 using INovelEngine.StateManager;
 using INovelEngine.Script;
 using SlimDX.Direct3D9;
+using INovelEngine.Effector.Graphics.Components;
 
 namespace INovelEngine.Effector
 {
@@ -21,7 +22,7 @@ namespace INovelEngine.Effector
 
     }
 
-    public abstract class AbstractGUIComponent : AbstractLuaEventHandler, IGUIComponent
+    public abstract class AbstractGUIComponent : AbstractLuaEventHandler, IGUIComponent, IComponentManager
     {
         protected GraphicsDeviceManager manager;
 

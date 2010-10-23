@@ -122,8 +122,10 @@
     <Compile Include="Core\LogManager.cs" />
     <Compile Include="Effector\Audio\SoundPlayer.cs" />
     <Compile Include="Effector\Graphics\Components\Button\Button.cs" />
+    <Compile Include="Effector\Graphics\Components\IComponentManager.cs" />
     <Compile Include="Effector\Graphics\Components\Label\Label.cs" />
     <Compile Include="Effector\Graphics\Components\Sprite\AnimatedSprite.cs" />
+    <Compile Include="Effector\Graphics\Components\View\View.cs" />
     <Compile Include="Effector\Graphics\Effect\AbstractTransition.cs" />
     <Compile Include="Effector\Graphics\Effect\TransitionManager.cs" />
     <Compile Include="Effector\Graphics\Text\FreeFont.cs" />
@@ -170,6 +172,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\meiryo.ttc" />
+    <None Include="Resources\sampler\components\tabview.lua" />
+    <None Include="Resources\sampler\components\inventory.lua" />
     <None Include="Resources\sampler\fonts\NanumGothicBold.ttf" />
     <None Include="Resources\sampler\fonts\NanumMyeongjoBold.ttf" />
     <None Include="Resources\sampler\omake.lua" />
@@ -231,10 +235,6 @@
     <Content Include="Resources\sampler\images\1.png" />
     <Content Include="Resources\sampler\images\2.png" />
     <Content Include="Resources\sampler\images\3.png" />
-    <Content Include="Resources\sampler\images\4.png" />
-    <Content Include="Resources\sampler\images\c1.png" />
-    <Content Include="Resources\sampler\images\c2.png" />
-    <Content Include="Resources\sampler\images\c3.png" />
     <Content Include="Resources\sampler\images\daughter.png" />
     <Content Include="Resources\sampler\images\f1.png" />
     <Content Include="Resources\sampler\images\f2.png" />

@@ -12,7 +12,7 @@ using INovelEngine.Core;
 
 namespace INovelEngine.Effector
 {
-    public class SpriteBase : AbstractGUIComponent, IComparable
+    public class SpriteBase : AbstractGUIComponent
     {
         protected Sprite sprite;
 

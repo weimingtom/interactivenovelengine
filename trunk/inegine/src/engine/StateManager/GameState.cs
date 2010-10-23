@@ -4,12 +4,13 @@ using System.Text;
 using SampleFramework;
 using INovelEngine.Script;
 using INovelEngine.Effector;
+using INovelEngine.Effector.Graphics.Components;
 
 namespace INovelEngine.StateManager
 {
 
     // GameState class representing a game state. 
-    public class GameState : AbstractLuaEventHandler, IResource, IGameComponent
+    public class GameState : AbstractLuaEventHandler, IResource, IGameComponent, IComponentManager
     {
         /* resources managed by state */
         protected ResourceCollection graphicalResources = new ResourceCollection();

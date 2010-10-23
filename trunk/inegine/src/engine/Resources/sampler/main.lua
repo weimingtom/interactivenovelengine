@@ -1,3 +1,7 @@
+--Import
+dofile "Resources\\sampler\\components\\inventory.lua"
+dofile "Resources\\sampler\\components\\tabview.lua"
+
 --GUI initialization
 
 
@@ -190,6 +194,7 @@ function this.InitComponents()
 			if (button4.State["mouseDown"]) then
 				button4.Pushed = false
 				Trace("button4 click!")
+				InitInventory();
 			end
 		end
 	button4.Text = "Inventory";
@@ -286,19 +291,45 @@ function this.InitComponents()
 	
 end
 
-function this.SetDate(year, month, day, week)
+function InitInventory()
+	ToggleMainMenu(false);
+	local inven = Inventory:New("inventory", GetFont("default"), CurrentState());
+	inven.frame.X = 10;
+	inven.frame.Y = 135;
+	inven:SetClosingEvent( 
+		function()
+			Trace("inventory clicked!")
+			this.inventory:Dispose();
+			this.inventory = nil;
+			ToggleMainMenu(true);
+			CenterTachie();
+		end
+	);
+	
+	MoveTachie(inven.frame.X + inven.frame.Width + 10);
+	inven:Show();
+	
+	this.inventory = inven;
+end
+
+function ToggleMainMenu(enabled)
+	GetComponent("mainmenu").enabled = enabled;
+	GetComponent("mainmenu").visible = enabled;
+end
+
+function SetDate(year, month, day, week)
 	GetComponent("datedisplay").text = year .. "\n" 
 									   .. month .. " " .. day .. "\n"
 									   .. "Week " ..  week;
 end
 
-function this.SetState(firstname, lastname, age, gold, stress, mana)
+function SetState(firstname, lastname, age, gold, stress, mana)
 	GetComponent("statedisplay").text = firstname .. " " 
 										.. lastname .. "\nAge " .. age .. "\nGold "
 										.. gold .. "\nStress " .. stress .. "%\nMana " .. mana .."%";
 end
 
-function this.SetBackground(filename)
+function SetBackground(filename)
 	if (GetComponent("background") ~= nil) then
 		RemoveComponent("background");
 	end
@@ -311,7 +342,7 @@ function this.SetBackground(filename)
 	InitComponent(background);
 end
 
-function this.SetTachie(filename)
+function SetTachie(filename)
 	if (GetComponent("tachie") ~= nil) then
 		RemoveComponent("tachie");
 	end
@@ -326,12 +357,20 @@ function this.SetTachie(filename)
 	InitComponent(tachie);
 end
 
+function MoveTachie(leftMargin)
+	GetComponent("tachie").X = leftMargin;
+end
+
+function CenterTachie()
+	local tachie = GetComponent("tachie");
+	tachie.X = (GetWidth() - tachie.Width)/2;
+end
+
 this.InitComponents();
 
-Trace("hi!");
 
-this.SetDate(1217, "June", 5, 1);
-this.SetState("¾È³ª", "±è", 12, 1000, 50, 40);
-this.SetBackground("Resources/sampler/images/room01.png");
-this.SetTachie("Resources/sampler/images/1.png");
+SetDate(1217, "June", 5, 1);
+SetState("¾È³ª", "±è", 12, 1000, 50, 40);
+SetBackground("Resources/sampler/images/room01.png");
+SetTachie("Resources/sampler/images/1.png");
 			
