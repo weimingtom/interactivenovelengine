@@ -217,8 +217,8 @@ namespace INovelEngine.Effector
             lines[1].X = RealX + Width;
             lines[1].Y = RealY + Height / 2;
 
-            line.Width = Height;
-            line.Begin();
+            line.Width = (float)Math.Max(0.000001, Height); // FIXME
+            line.Begin();   
             line.Draw(this.lines, Color.FromArgb(_alpha, _backgroundColor));
             line.End();
         }

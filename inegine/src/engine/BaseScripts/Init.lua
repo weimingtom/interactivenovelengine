@@ -9,6 +9,7 @@ SpriteBase = luanet.import_type("INovelEngine.Effector.SpriteBase");
 AnimatedSprite = luanet.import_type("INovelEngine.Effector.AnimatedSprite")
 Button = luanet.import_type("INovelEngine.Effector.Button")
 Label = luanet.import_type("INovelEngine.Effector.Label")
+View = luanet.import_type("INovelEngine.Effector.View")
 
 ScriptEvents = luanet.import_type("INovelEngine.Script.ScriptEvents");
 ScriptManager = luanet.import_type("INovelEngine.Script.ScriptManager");
