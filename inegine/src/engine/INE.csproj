@@ -172,6 +172,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\meiryo.ttc" />
+    <None Include="Resources\sampler\components\flowview.lua" />
     <None Include="Resources\sampler\components\tabview.lua" />
     <None Include="Resources\sampler\components\inventory.lua" />
     <None Include="Resources\sampler\fonts\NanumGothicBold.ttf" />

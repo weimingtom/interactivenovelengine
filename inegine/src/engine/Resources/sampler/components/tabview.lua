@@ -2,7 +2,7 @@
 
 Tabview = {}
 
-function Tabview:New (name, font, parent)
+function Tabview:New (name, font)
 	local o = {} 
 	setmetatable(o, self)
 	self.__index = self
@@ -15,8 +15,6 @@ function Tabview:New (name, font, parent)
 	self.font = font;
 	self.buttonWidth = 120;
 	self.buttonHeight = 40;
-	
-	local gamestate = CurrentState();
 	
 	self.frame = View()
 	self.frame.relative = true;
@@ -31,16 +29,12 @@ function Tabview:New (name, font, parent)
 		function(target, event, args)
 			Trace("mouse leave: " .. target.Name)	
 		end
-	
-	Trace("adding tab view frame!");
-	Trace(parent.name);
-	parent:AddComponent(self.frame)
-		
+			
 	return o
 end
 
 function Tabview:Dispose()
-	RemoveComponent(self.name)
+	--self.parent:RemoveComponent(self.name)
 end
 
 function Tabview:Show()
