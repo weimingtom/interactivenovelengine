@@ -1,6 +1,5 @@
 --Import
 dofile "Resources\\sampler\\components\\inventory.lua"
-dofile "Resources\\sampler\\components\\tabview.lua"
 
 --GUI initialization
 
@@ -288,6 +287,8 @@ function this.InitComponents()
 	
 	menu:AddComponent(button7);
 	
+	
+
 	
 end
 

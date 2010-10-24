@@ -219,7 +219,7 @@ namespace INovelEngine.Effector
                 this.DrawInternal();
 
                 foreach (IGameComponent component in componentList)
-                {
+                {   
                     component.Draw();
                 }
             }

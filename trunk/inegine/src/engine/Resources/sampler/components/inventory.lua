@@ -1,4 +1,6 @@
--- selection UI component implemented in lua
+-- inventory UI component implemented in lua
+dofile "Resources\\sampler\\components\\tabview.lua"
+dofile "Resources\\sampler\\components\\flowview.lua"
 
 Inventory = {}
 
@@ -7,6 +9,7 @@ function Inventory:New (name, font, parent)
 	setmetatable(o, self)
 	self.__index = self
 	
+	self.parent = parent;
 	self.name = name
 	self.font = font;
 	
@@ -30,29 +33,51 @@ function Inventory:New (name, font, parent)
 	parent:AddComponent(self.frame)
 	
 	
-	local tabView = Tabview:New("tabView", GetFont("default"), self.frame);
+	local tabView = Tabview:New("tabView", GetFont("default"));
 	tabView.frame.relative = true
 	tabView.frame.X = 0;
 	tabView.frame.Y = 0;
 	tabView.frame.Width = self.frame.Width;
 	tabView.frame.Height = self.frame.Height - 50;
+	self.frame:AddComponent(tabView.frame);
 	tabView:Show();
 	
-	local dressView = TextWindow()
-	dressView.name = "dressview"
-	dressView.relative = true;
-	dressView.width = self.frame.width - 10;
-	dressView.height = self.frame.height - 50 - 50;
-	dressView.x = 5;
-	dressView.y = 50;
-	dressView.alpha = 155
-	dressView.layer = 4;
+	local dressViewFrame = TextWindow()
+	dressViewFrame.name = "dressViewFrame"
+	dressViewFrame.relative = true;
+	dressViewFrame.width = self.frame.width - 10;
+	dressViewFrame.height = self.frame.height - 50 - 50;
+	dressViewFrame.x = 5;
+	dressViewFrame.y = 50;
+	dressViewFrame.alpha = 155
+	dressViewFrame.layer = 4;
 	
-	dressView.Text = "DRESS VIEW!"
-	dressView.font = font
+	dressViewFrame.font = font
+
+	dressViewFrame.visible = true;
+	dressViewFrame.enabled = true;
+	dressViewFrame.text = "TEST"
 	
+	local dressView = Flowview:New() --TextWindow()
+	dressView.frame.name = "dressview"
+	dressView.frame.relative = true;
+	dressView.frame.width = self.frame.width - 10;
+	dressView.frame.height = self.frame.height - 50 - 50;
+	dressView.frame.x = 0;
+	dressView.frame.y = 0;
+	--dressView.frame.x = 5;
+	--dressView.frame.y = 50;
+	dressView.frame.layer = 10;
+	
+	dressView.spacing = 5;
+	dressView.padding = 10;
+	dressView.frame.visible = true;
+	dressView.frame.enabled = true;
 	self.dressView = dressView;
-	tabView:AddTab("Dress", dressView);
+	dressViewFrame:AddComponent(dressView.frame);
+	Trace("weasd!!! " .. dressViewFrame:GetComponent("dressview").name);
+	
+	tabView:AddTab("Dress", dressViewFrame);	
 	
 	local itemView = TextWindow()
 	itemView.name = "itemView"
@@ -120,8 +145,253 @@ function Inventory:New (name, font, parent)
 	
 	self.closebutton = closeButton;
 	self.frame:AddComponent(closeButton);
-	
+	self:AddTestDressItems();
 	return o
+end
+
+function Inventory:AddTestDressItems()
+	local dressView = self.dressView;
+	local testButton = Button()
+	testButton.Relative = true;
+	testButton.Name = "testButton"
+	testButton.Texture = "Resources/sampler/resources/button.png"	
+	testButton.Layer = 3
+	testButton.X = 0;
+	testButton.Y = 0;
+	testButton.Width = 120;
+	testButton.Height = 40;
+	testButton.State = {}
+	testButton.MouseDown = 
+		function (testButton, luaevent, args)
+			testButton.State["mouseDown"] = true
+			testButton.Pushed = true
+		end
+	testButton.MouseUp = 
+		function (testButton, luaevent, args)
+			if (testButton.State["mouseDown"]) then
+				testButton.Pushed = false
+				Trace("dress 1")
+				-- todo : connect to character controller insetead of main view
+				SetTachie("Resources/sampler/images/1.png");
+				MoveTachie(self.frame.X + self.frame.Width + 10);
+			end
+		end
+	testButton.Text = "Dress 1";
+	testButton.Font = GetFont("menu"); --menuFont
+	testButton.TextColor = 0xEEEEEE
+	
+	dressView:Add(testButton);
+	
+	
+	testButton = Button()
+	testButton.Relative = true;
+	testButton.Name = "testButton2"
+	testButton.Texture = "Resources/sampler/resources/button.png"	
+	testButton.Layer = 3
+	testButton.X = 0;
+	testButton.Y = 0;
+	testButton.Width = 120;
+	testButton.Height = 40;
+	testButton.State = {}
+	testButton.MouseDown = 
+		function (testButton, luaevent, args)
+			testButton.State["mouseDown"] = true
+			testButton.Pushed = true
+		end
+	testButton.MouseUp = 
+		function (testButton, luaevent, args)
+			if (testButton.State["mouseDown"]) then
+				testButton.Pushed = false
+				Trace("dress 2")
+				-- todo : connect to character controller insetead of main view
+				SetTachie("Resources/sampler/images/2.png");
+				MoveTachie(self.frame.X + self.frame.Width + 10);
+			end
+		end
+	testButton.Text = "Dress 2";
+	testButton.Font = GetFont("menu"); --menuFont
+	testButton.TextColor = 0xEEEEEE
+	
+	dressView:Add(testButton);
+	
+	
+	
+	testButton = Button()
+	testButton.Relative = true;
+	testButton.Name = "testButton3"
+	testButton.Texture = "Resources/sampler/resources/button.png"	
+	testButton.Layer = 3
+	testButton.X = 0;
+	testButton.Y = 0;
+	testButton.Width = 120;
+	testButton.Height = 40;
+	testButton.State = {}
+	testButton.MouseDown = 
+		function (testButton, luaevent, args)
+			testButton.State["mouseDown"] = true
+			testButton.Pushed = true
+		end
+	testButton.MouseUp = 
+		function (testButton, luaevent, args)
+			if (testButton.State["mouseDown"]) then
+				testButton.Pushed = false
+				Trace("Dress 3!");
+			
+				-- todo : connect to character controller insetead of main view
+				SetTachie("Resources/sampler/images/3.png");
+				MoveTachie(self.frame.X + self.frame.Width + 10);
+			end
+		end
+	testButton.Text = "Dress 3";
+	testButton.Font = GetFont("menu"); --menuFont
+	testButton.TextColor = 0xEEEEEE
+	
+	dressView:Add(testButton);
+	
+		
+	testButton = Button()
+	testButton.Relative = true;
+	testButton.Name = "testButton4"
+	testButton.Texture = "Resources/sampler/resources/button.png"	
+	testButton.Layer = 3
+	testButton.X = 0;
+	testButton.Y = 0;
+	testButton.Width = 120;
+	testButton.Height = 40;
+	testButton.State = {}
+	testButton.MouseDown = 
+		function (testButton, luaevent, args)
+			testButton.State["mouseDown"] = true
+			testButton.Pushed = true
+		end
+	testButton.MouseUp = 
+		function (testButton, luaevent, args)
+			if (testButton.State["mouseDown"]) then
+				testButton.Pushed = false
+				Trace("testButton click!")
+			end
+		end
+	testButton.Text = "Dummy";
+	testButton.Font = GetFont("menu"); --menuFont
+	testButton.TextColor = 0xEEEEEE
+	
+	dressView:Add(testButton);
+	
+		testButton = Button()
+	testButton.Relative = true;
+	testButton.Name = "testButton5"
+	testButton.Texture = "Resources/sampler/resources/button.png"	
+	testButton.Layer = 3
+	testButton.X = 0;
+	testButton.Y = 0;
+	testButton.Width = 120;
+	testButton.Height = 40;
+	testButton.State = {}
+	testButton.MouseDown = 
+		function (testButton, luaevent, args)
+			testButton.State["mouseDown"] = true
+			testButton.Pushed = true
+		end
+	testButton.MouseUp = 
+		function (testButton, luaevent, args)
+			if (testButton.State["mouseDown"]) then
+				testButton.Pushed = false
+				Trace("testButton click!")
+			end
+		end
+	testButton.Text = "Dummy";
+	testButton.Font = GetFont("menu"); --menuFont
+	testButton.TextColor = 0xEEEEEE
+	
+	dressView:Add(testButton);
+	
+		testButton = Button()
+	testButton.Relative = true;
+	testButton.Name = "testButton6"
+	testButton.Texture = "Resources/sampler/resources/button.png"	
+	testButton.Layer = 3
+	testButton.X = 0;
+	testButton.Y = 0;
+	testButton.Width = 120;
+	testButton.Height = 40;
+	testButton.State = {}
+	testButton.MouseDown = 
+		function (testButton, luaevent, args)
+			testButton.State["mouseDown"] = true
+			testButton.Pushed = true
+		end
+	testButton.MouseUp = 
+		function (testButton, luaevent, args)
+			if (testButton.State["mouseDown"]) then
+				testButton.Pushed = false
+				Trace("testButton click!")
+			end
+		end
+	testButton.Text = "Dummy";
+	testButton.Font = GetFont("menu"); --menuFont
+	testButton.TextColor = 0xEEEEEE
+	
+	dressView:Add(testButton);
+	
+	testButton = Button()
+	testButton.Relative = true;
+	testButton.Name = "testButton7"
+	testButton.Texture = "Resources/sampler/resources/button.png"	
+	testButton.Layer = 3
+	testButton.X = 0;
+	testButton.Y = 0;
+	testButton.Width = 120;
+	testButton.Height = 40;
+	testButton.State = {}
+	testButton.MouseDown = 
+		function (testButton, luaevent, args)
+			testButton.State["mouseDown"] = true
+			testButton.Pushed = true
+		end
+	testButton.MouseUp = 
+		function (testButton, luaevent, args)
+			if (testButton.State["mouseDown"]) then
+				testButton.Pushed = false
+				Trace("testButton click!")
+			end
+		end
+	testButton.Text = "Dummy";
+	testButton.Font = GetFont("menu"); --menuFont
+	testButton.TextColor = 0xEEEEEE
+	
+	
+	dressView:Add(testButton);
+	
+	
+	testButton = Button()
+	testButton.Relative = true;
+	testButton.Name = "testButton8"
+	testButton.Texture = "Resources/sampler/resources/button.png"	
+	testButton.Layer = 3
+	testButton.X = 0;
+	testButton.Y = 0;
+	testButton.Width = 120;
+	testButton.Height = 40;
+	testButton.State = {}
+	testButton.MouseDown = 
+		function (testButton, luaevent, args)
+			testButton.State["mouseDown"] = true
+			testButton.Pushed = true
+		end
+	testButton.MouseUp = 
+		function (testButton, luaevent, args)
+			if (testButton.State["mouseDown"]) then
+				testButton.Pushed = false
+				Trace("testButton click!")
+			end
+		end
+	testButton.Text = "Dummy";
+	testButton.Font = GetFont("menu"); --menuFont
+	testButton.TextColor = 0xEEEEEE
+	
+	
+	dressView:Add(testButton);
+	
 end
 
 function Inventory:SetClosingEvent(event)
@@ -129,7 +399,7 @@ function Inventory:SetClosingEvent(event)
 end
 
 function Inventory:Dispose()
-	RemoveComponent(self.name)
+	self.parent:RemoveComponent(self.name)
 end
 
 function Inventory:Show()
