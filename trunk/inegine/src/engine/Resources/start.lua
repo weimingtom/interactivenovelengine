@@ -3,12 +3,5 @@ SetIcon("Resources/test.ico");
 SetSize(800, 600);
 SetVolume(50);
 
--- global data structure for game
-GameTable = {}
-
-GameTable["daughtet_name"] = "³»µþ"
-
---LoadState("test", "Resources/Sampler/intro.lua");
-LoadState("main", "Resources/Sampler/main.lua");
---LoadState("main", "Resources/Test/test.lua");
+dofile "Resources/Sampler/init.lua"
 
