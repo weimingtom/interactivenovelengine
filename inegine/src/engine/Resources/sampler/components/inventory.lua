@@ -5,7 +5,7 @@ require "Resources\\sampler\\components\\flowview"
 Inventory = {}
 
 function Inventory:New (name, font, parent)
-	local o = {}   -- create object if user does not provide one
+	local o = {}
 	setmetatable(o, self)
 	self.__index = self
 	
@@ -146,6 +146,7 @@ function Inventory:New (name, font, parent)
 	self.closebutton = closeButton;
 	self.frame:AddComponent(closeButton);
 	self:AddTestDressItems();
+
 	return o
 end
 
@@ -172,8 +173,8 @@ function Inventory:AddTestDressItems()
 				testButton.Pushed = false
 				Trace("dress 1")
 				-- todo : connect to character controller insetead of main view
-				SetTachie("Resources/sampler/images/1.png");
-				MoveTachie(self.frame.X + self.frame.Width + 10);
+				main:SetTachieBody("Resources/sampler/images/1.png");
+				main:SetTachiePosition(self.frame.X + self.frame.Width + 10);
 			end
 		end
 	testButton.Text = "Dress 1";
@@ -204,8 +205,8 @@ function Inventory:AddTestDressItems()
 				testButton.Pushed = false
 				Trace("dress 2")
 				-- todo : connect to character controller insetead of main view
-				SetTachie("Resources/sampler/images/2.png");
-				MoveTachie(self.frame.X + self.frame.Width + 10);
+				main:SetTachieBody("Resources/sampler/images/2.png");
+				main:SetTachiePosition(self.frame.X + self.frame.Width + 10);
 			end
 		end
 	testButton.Text = "Dress 2";
@@ -238,8 +239,8 @@ function Inventory:AddTestDressItems()
 				Trace("Dress 3!");
 			
 				-- todo : connect to character controller insetead of main view
-				SetTachie("Resources/sampler/images/3.png");
-				MoveTachie(self.frame.X + self.frame.Width + 10);
+				main:SetTachieBody("Resources/sampler/images/3.png");
+				main:SetTachiePosition(self.frame.X + self.frame.Width + 10);
 			end
 		end
 	testButton.Text = "Dress 3";

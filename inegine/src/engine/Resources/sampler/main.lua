@@ -1,31 +1,20 @@
 --Import
 require "Resources\\sampler\\components\\inventory"
 
---GUI initialization
+Main = {}
 
+function Main:New()
+    local o = {}
+	setmetatable(o, self)
+	self.__index = self
 
---Text handling functions
-
---etc...
-
-
-function this.loadFonts()
-	LoadFont("default", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 17);
-
-	LoadFont("menu", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 18);
-	GetFont("menu").TextEffect = 1
-	
-	LoadFont("date", "Resources\\sampler\\fonts\\NanumMyeongjoBold.ttf", 13);
-	GetFont("date").LineSpacing = 13
-	GetFont("date").TextEffect = 1
-
-	LoadFont("state", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 12);
-	GetFont("state").LineSpacing = 5
+    self:InitComponents()
+	return o
 end
 
-function this.InitComponents()
-
-    this.loadFonts();
+--Component initialization
+function Main:InitComponents()
+    self:loadFonts();
 	
 	local gamestate = CurrentState();
 
@@ -193,7 +182,7 @@ function this.InitComponents()
 			if (button4.State["mouseDown"]) then
 				button4.Pushed = false
 				Trace("button4 click!")
-				InitInventory();
+				self:OpenInventory();
 			end
 		end
 	button4.Text = "Inventory";
@@ -286,14 +275,32 @@ function this.InitComponents()
 	button7.TextColor = 0xEEEEEE
 	
 	menu:AddComponent(button7);
-	
-	
-
-	
 end
 
-function InitInventory()
-	ToggleMainMenu(false);
+--public interface
+
+--mainmenu
+
+function Main:OpenSchedule()
+end
+
+function Main:OpenCommunication()
+end
+
+function Main:OpenStatus()
+end
+
+function Main:OpenShop()
+end
+
+function Main:OpenGoddess()
+end
+
+function Main:OpenSystem()
+end
+
+function Main:OpenInventory()
+	self:ToggleMainMenu(false);
 	local inven = Inventory:New("inventory", GetFont("default"), CurrentState());
 	inven.frame.X = 10;
 	inven.frame.Y = 135;
@@ -302,35 +309,32 @@ function InitInventory()
 			Trace("inventory clicked!")
 			this.inventory:Dispose();
 			this.inventory = nil;
-			ToggleMainMenu(true);
-			CenterTachie();
+			self:ToggleMainMenu(true);
+			self:CenterTachie();
 		end
 	);
 	
-	MoveTachie(inven.frame.X + inven.frame.Width + 10);
+	self:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
 	inven:Show();
 	
 	this.inventory = inven;
 end
 
-function ToggleMainMenu(enabled)
-	GetComponent("mainmenu").enabled = enabled;
-	GetComponent("mainmenu").visible = enabled;
-end
-
-function SetDate(year, month, day, week)
+--datewindow
+function Main:SetDate(year, month, day, week)
 	GetComponent("datedisplay").text = year .. "\n" 
 									   .. month .. " " .. day .. "\n"
 									   .. "Week " ..  week;
 end
 
-function SetState(firstname, lastname, age, gold, stress, mana)
+function Main:SetState(firstname, lastname, age, gold, stress, mana)
 	GetComponent("statedisplay").text = firstname .. " " 
 										.. lastname .. "\nAge " .. age .. "\nGold "
 										.. gold .. "\nStress " .. stress .. "%\nMana " .. mana .."%";
 end
 
-function SetBackground(filename)
+--wallpaper
+function Main:SetBackground(filename)
 	if (GetComponent("background") ~= nil) then
 		RemoveComponent("background");
 	end
@@ -343,7 +347,8 @@ function SetBackground(filename)
 	InitComponent(background);
 end
 
-function SetTachie(filename)
+--tachie
+function Main:SetTachieBody(filename)
 	if (GetComponent("tachie") ~= nil) then
 		RemoveComponent("tachie");
 	end
@@ -358,20 +363,46 @@ function SetTachie(filename)
 	InitComponent(tachie);
 end
 
-function MoveTachie(leftMargin)
+function Main:SetTachieFace(filename)
+end
+
+function Main:SetTachieDress(filename)
+end
+
+function Main:SetTachiePosition(leftMargin)
 	GetComponent("tachie").X = leftMargin;
 end
 
-function CenterTachie()
+function Main:CenterTachie()
 	local tachie = GetComponent("tachie");
 	tachie.X = (GetWidth() - tachie.Width)/2;
 end
 
-this.InitComponents();
+--private/helper functions
+function Main:ToggleMainMenu(enabled)
+	GetComponent("mainmenu").enabled = enabled;
+	GetComponent("mainmenu").visible = enabled;
+end
 
+function Main:loadFonts()
+	LoadFont("default", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 17);
 
-SetDate(1217, "June", 5, 1);
-SetState("¾È³ª", "±è", 12, 1000, 50, 40);
-SetBackground("Resources/sampler/images/room01.png");
-SetTachie("Resources/sampler/images/1.png");
-			
+	LoadFont("menu", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 18);
+	GetFont("menu").TextEffect = 1
+	
+	LoadFont("date", "Resources\\sampler\\fonts\\NanumMyeongjoBold.ttf", 13);
+	GetFont("date").LineSpacing = 13
+	GetFont("date").TextEffect = 1
+
+	LoadFont("state", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 12);
+	GetFont("state").LineSpacing = 5
+end
+
+main = Main:New();
+CurrentState().state = mainView;
+
+--extra actions
+main:SetDate(1217, "June", 5, 1);
+main:SetState("¾È³ª", "±è", 12, 1000, 50, 40);
+main:SetBackground("Resources/sampler/images/room01.png");
+main:SetTachieBody("Resources/sampler/images/1.png");
