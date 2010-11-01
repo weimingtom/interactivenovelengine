@@ -1,5 +1,5 @@
 --Import
-dofile "Resources\\sampler\\components\\inventory.lua"
+require "Resources\\sampler\\components\\inventory"
 
 --GUI initialization
 

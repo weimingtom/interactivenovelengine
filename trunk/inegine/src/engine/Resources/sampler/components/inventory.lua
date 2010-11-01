@@ -1,6 +1,6 @@
 -- inventory UI component implemented in lua
-dofile "Resources\\sampler\\components\\tabview.lua"
-dofile "Resources\\sampler\\components\\flowview.lua"
+require "Resources\\sampler\\components\\tabview"
+require "Resources\\sampler\\components\\flowview"
 
 Inventory = {}
 
