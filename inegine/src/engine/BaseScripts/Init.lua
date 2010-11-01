@@ -61,6 +61,6 @@ function GetComponent(id)
     return CurrentState():GetComponent(id);
 end
 
-dofile "BaseScripts/ESS.lua"
-dofile "BaseScripts/Selector.lua"
-dofile "BaseScripts/font.lua"
+require "BaseScripts\\ESS"
+require "BaseScripts\\Selector"
+require "BaseScripts\\font"
