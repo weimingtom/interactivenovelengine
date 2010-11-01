@@ -63,7 +63,6 @@ end
 
 
 function Selector:Add(text)
-	
 	local newSelection = TextWindow()
 	newSelection.Name = "selection" .. self.selectionCount;
 	newSelection.Alpha = 155
