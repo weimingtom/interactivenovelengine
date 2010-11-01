@@ -280,7 +280,6 @@ end
 --public interface
 
 --mainmenu
-
 function Main:OpenSchedule()
 end
 
@@ -307,8 +306,8 @@ function Main:OpenInventory()
 	inven:SetClosingEvent( 
 		function()
 			Trace("inventory clicked!")
-			this.inventory:Dispose();
-			this.inventory = nil;
+			self.inventory:Dispose();
+			self.inventory = nil;
 			self:ToggleMainMenu(true);
 			self:CenterTachie();
 		end
@@ -317,7 +316,7 @@ function Main:OpenInventory()
 	self:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
 	inven:Show();
 	
-	this.inventory = inven;
+	self.inventory = inven;
 end
 
 --datewindow
@@ -327,10 +326,32 @@ function Main:SetDate(year, month, day, week)
 									   .. "Week " ..  week;
 end
 
+function Main:SetYear(year)
+end
+
+function Main:SetMonth(month)
+end
+
+function Main:SetWeek(week)
+end
+
+--statuswindow
 function Main:SetState(firstname, lastname, age, gold, stress, mana)
 	GetComponent("statedisplay").text = firstname .. " " 
 										.. lastname .. "\nAge " .. age .. "\nGold "
 										.. gold .. "\nStress " .. stress .. "%\nMana " .. mana .."%";
+end
+
+function Main:SetName(name)
+end
+
+function Main:SetGold(gold)
+end
+
+function Main:SetStress(stress)
+end
+
+function Main:SetMana(mana)
 end
 
 --wallpaper
