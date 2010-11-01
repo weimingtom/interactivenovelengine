@@ -9,6 +9,7 @@ function Main:New()
 	self.__index = self
 
     self:InitComponents()
+   
 	return o
 end
 
@@ -320,38 +321,14 @@ function Main:OpenInventory()
 end
 
 --datewindow
-function Main:SetDate(year, month, day, week)
-	GetComponent("datedisplay").text = year .. "\n" 
-									   .. month .. " " .. day .. "\n"
-									   .. "Week " ..  week;
+function Main:InvalidateDate()
+	Main:SetDate(calendar:GetYear(), calendar:GetMonth(), calendar:GetDay(), calendar:GetWeek());
 end
-
-function Main:SetYear(year)
-end
-
-function Main:SetMonth(month)
-end
-
-function Main:SetWeek(week)
-end
-
+	
 --statuswindow
-function Main:SetState(firstname, lastname, age, gold, stress, mana)
-	GetComponent("statedisplay").text = firstname .. " " 
-										.. lastname .. "\nAge " .. age .. "\nGold "
-										.. gold .. "\nStress " .. stress .. "%\nMana " .. mana .."%";
-end
-
-function Main:SetName(name)
-end
-
-function Main:SetGold(gold)
-end
-
-function Main:SetStress(stress)
-end
-
-function Main:SetMana(mana)
+function Main:InvalidateStatus()
+	Main:SetState(character:GetFirstName(), character:GetLastName(), character:GetAge(), character:GetGold(),
+				  character:GetStress(), character:GetMana());
 end
 
 --wallpaper
@@ -419,11 +396,25 @@ function Main:loadFonts()
 	GetFont("state").LineSpacing = 5
 end
 
+function Main:SetDate(year, month, day, week)
+	GetComponent("datedisplay").text = year .. "\n" 
+									   .. month .. " " .. day .. "\n"
+									   .. "Week " ..  week;
+end
+
+function Main:SetState(firstname, lastname, age, gold, stress, mana)
+	GetComponent("statedisplay").text = firstname .. " " 
+										.. lastname .. "\nAge " .. age .. "\nGold "
+										.. gold .. "\nStress " .. stress .. "%\nMana " .. mana .."%";
+end
+
+
 main = Main:New();
 CurrentState().state = mainView;
 
 --extra actions
-main:SetDate(1217, "June", 5, 1);
-main:SetState("¾È³ª", "±è", 12, 1000, 50, 40);
+main:InvalidateDate();
+main:InvalidateStatus();
+
 main:SetBackground("Resources/sampler/images/room01.png");
 main:SetTachieBody("Resources/sampler/images/1.png");
