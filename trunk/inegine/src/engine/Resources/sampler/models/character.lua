@@ -12,7 +12,7 @@ function Character:New()
 	self.gold = 0;
 	self.stress = 0;
 	self.mana = 0;
-   
+	
 	return o
 end
 
@@ -62,4 +62,28 @@ end
 
 function Character:SetMana(mana)
 	self.mana = mana;
+end
+
+function Character:GetBody()
+
+end
+
+function Character:SetBody(image)
+
+end
+
+function Character:GetHead()
+
+end
+
+function Character:SetHead(image)
+
+end
+
+function Character:GetDress()
+
+end
+
+function Character:SetDress(image)
+
 end

@@ -38,15 +38,12 @@ function Calendar:SetDay(day)
 	self.day = day;
 end
 
+function Calendar:GetDayOfWeek()
+
+end
+
 function Calendar:GetWeek()
 	return self.week;
-end
-
-function Calendar:SetWeek(week)
-	self.week = week;
-end
-
-function Calendar:AdvanceDay()
 end
 
 function Calendar:AdvanceYear()
@@ -55,5 +52,20 @@ end
 function Calendar:AdvanceMonth()
 end
 
+function Calendar:AdvanceDay()
+end
+
 function Calendar:AdvanceWeek()
+end
+
+function Calendar:GetFirstDayOfWeek()
+
+end
+
+function Calendar:GetLastDayOfWeek()
+
+end
+
+function Calendar:GetNumberOfWeeks()
+
 end

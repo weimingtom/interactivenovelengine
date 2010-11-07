@@ -3,22 +3,28 @@
 Tabview = {}
 
 function Tabview:New (name, font)
-	local o = {} 
+	local o = {};
 	setmetatable(o, self)
-	self.__index = self
+	self.__index = self;
+	o.name = name;
+	o.font = font;
 	
+	o:Init();
+	
+	return o;	
+end
+
+function Tabview:Init()
 	self.tabList = {}
 	self.viewList = {}
 	self.tabCount = 0
 	
-	self.name = name
-	self.font = font;
 	self.buttonWidth = 120;
 	self.buttonHeight = 40;
 	
 	self.frame = View()
 	self.frame.relative = true;
-	self.frame.Name = name
+	self.frame.Name = self.name;
 	self.frame.Width = 400
 	self.frame.Height = 430
 	self.frame.alpha = 155
@@ -29,8 +35,6 @@ function Tabview:New (name, font)
 		function(target, event, args)
 			Trace("mouse leave: " .. target.Name)	
 		end
-			
-	return o
 end
 
 function Tabview:Dispose()
@@ -68,7 +72,7 @@ function Tabview:AddTab(name, view)
 	newButton.TextColor = 0xEEEEEE
 	newButton.MouseUp = 
 		function (target, luaevent, args) 
-			Tabview:ButtonClicked(target, luaevent, args);
+			self:ButtonClicked(target, luaevent, args);
 		end
 	self.frame:AddComponent(newButton);
 	
@@ -80,7 +84,7 @@ function Tabview:AddTab(name, view)
 	self.frame:AddComponent(view);
 		
 	if (self.tabCount == 0) then
-		Tabview:SetEnabledView(name);
+		self:SetEnabledView(name);
 	end
 	
 	self.tabCount = self.tabCount + 1;
@@ -104,7 +108,7 @@ end
 
 function Tabview:ButtonClicked(target, luaevent, args)
 	Trace("button clicked!!! " .. target.name);
-	Tabview:SetEnabledView(target.name);
+	self:SetEnabledView(target.name);
 end
 
 function Tabview:SetEnabledView(name)

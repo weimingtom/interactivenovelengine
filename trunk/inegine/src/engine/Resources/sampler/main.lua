@@ -1,5 +1,6 @@
 --Import
 require "Resources\\sampler\\components\\inventory"
+require "Resources\\sampler\\components\\schedule"
 
 Main = {}
 
@@ -81,7 +82,7 @@ function Main:InitComponents()
 	
 	local button1 = Button()
 	button1.Relative = true;
-	button1.Name = "button1"
+	button1.Name = "scheduleButton"
 	button1.Texture = "Resources/sampler/resources/button.png"	
 	button1.Layer = 3
 	button1.X = 0;
@@ -98,7 +99,7 @@ function Main:InitComponents()
 		function (button1, luaevent, args)
 			if (button1.State["mouseDown"]) then
 				button1.Pushed = false
-				Trace("button1 click!")
+				self:OpenSchedule();
 			end
 		end
 	button1.Text = "Schedule";
@@ -282,6 +283,21 @@ end
 
 --mainmenu
 function Main:OpenSchedule()
+	self:ToggleMainMenu(false);
+	local schedule = ScheduleView:New("scheduleView", GetFont("default"), CurrentState());
+	
+	schedule:SetClosingEvent( 
+		function()
+			Trace("scheduletory clicked!")
+			self.schedule:Dispose();
+			self.schedule = nil;
+			self:ToggleMainMenu(true);
+		end
+	);
+	
+	schedule:Show();
+	
+	self.schedule = schedule;
 end
 
 function Main:OpenCommunication()
@@ -301,9 +317,8 @@ end
 
 function Main:OpenInventory()
 	self:ToggleMainMenu(false);
-	local inven = Inventory:New("inventory", GetFont("default"), CurrentState());
-	inven.frame.X = 10;
-	inven.frame.Y = 135;
+	local inven = InventoryView:New("inventory", GetFont("default"), CurrentState());
+	
 	inven:SetClosingEvent( 
 		function()
 			Trace("inventory clicked!")
