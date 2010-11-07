@@ -1,27 +1,42 @@
--- inventory UI component implemented in lua
+-- InventoryView UI component implemented in lua
 require "Resources\\sampler\\components\\tabview"
 require "Resources\\sampler\\components\\flowview"
 
-Inventory = {}
+InventoryView = {}
 
-function Inventory:New (name, font, parent)
+
+function InventoryView:New (name, font, parent)
 	local o = {}
 	setmetatable(o, self)
 	self.__index = self
 	
-	self.parent = parent;
-	self.name = name
-	self.font = font;
+	o.parent = parent;
+	o.name = name
+	o.font = font;
 	
+	o:Init();
+	
+	return o
+end
+
+function InventoryView:Init()
 	local gamestate = CurrentState();
+	
+	local parent = self.parent;
+	local font = self.font; 
+	local name = self.name;
 	
 	self.frame = TextWindow()
 	self.frame.Name = name
 	self.frame.LineSpacing = 20
+	
+	self.frame.x = 10;
+	self.frame.y = 135;
 	self.frame.Width = 400
 	self.frame.Height = 430
 	self.frame.alpha = 155
 	self.frame.layer = 3
+	
 	self.frame.Visible = false
 	self.frame.Enabled = false
 	self.frame.Font = font
@@ -33,7 +48,20 @@ function Inventory:New (name, font, parent)
 	parent:AddComponent(self.frame)
 	
 	
+	local background = TextWindow()
+	background.name = "backround"
+	background.relative = true;
+	background.width = self.frame.width - 10;
+	background.height = self.frame.height - 50 - 50;
+	background.x = 5;
+	background.y = 50;
+	background.alpha = 155
+	background.layer = 4;
+	self.frame:AddComponent(background);
+	
+	
 	local tabView = Tabview:New("tabView", GetFont("default"));
+	--tabView:Init();
 	tabView.frame.relative = true
 	tabView.frame.X = 0;
 	tabView.frame.Y = 0;
@@ -41,81 +69,53 @@ function Inventory:New (name, font, parent)
 	tabView.frame.Height = self.frame.Height - 50;
 	self.frame:AddComponent(tabView.frame);
 	tabView:Show();
-	
-	local dressViewFrame = TextWindow()
-	dressViewFrame.name = "dressViewFrame"
-	dressViewFrame.relative = true;
-	dressViewFrame.width = self.frame.width - 10;
-	dressViewFrame.height = self.frame.height - 50 - 50;
-	dressViewFrame.x = 5;
-	dressViewFrame.y = 50;
-	dressViewFrame.alpha = 155
-	dressViewFrame.layer = 4;
-	
-	dressViewFrame.font = font
-
-	dressViewFrame.visible = true;
-	dressViewFrame.enabled = true;
-	dressViewFrame.text = "TEST"
-	
-	local dressView = Flowview:New() --TextWindow()
-	dressView.frame.name = "dressview"
+		
+	local dressView = Flowview:New("dressview")
+	--dressView:Init();
 	dressView.frame.relative = true;
 	dressView.frame.width = self.frame.width - 10;
 	dressView.frame.height = self.frame.height - 50 - 50;
-	dressView.frame.x = 0;
-	dressView.frame.y = 0;
-	--dressView.frame.x = 5;
-	--dressView.frame.y = 50;
+	dressView.frame.x = 5;
+	dressView.frame.y = 50;
 	dressView.frame.layer = 10;
-	
 	dressView.spacing = 5;
 	dressView.padding = 10;
 	dressView.frame.visible = true;
 	dressView.frame.enabled = true;
 	self.dressView = dressView;
-	dressViewFrame:AddComponent(dressView.frame);
-	Trace("weasd!!! " .. dressViewFrame:GetComponent("dressview").name);
+	tabView:AddTab("Dress", dressView.frame);
 	
-	tabView:AddTab("Dress", dressViewFrame);	
-	
-	local itemView = TextWindow()
-	itemView.name = "itemView"
-	itemView.relative = true;
-	itemView.width = self.frame.width - 10;
-	itemView.height = self.frame.height - 50 - 50;
-	itemView.x = 5;
-	itemView.y = 50;
-	itemView.alpha = 155
-	itemView.layer = 4;
-	
-	itemView.Text = "ITEM VIEW!"
-	itemView.font = font
-
-	itemView.visible = false;
-	itemView.enabled = false;
-	
+	local itemView = Flowview:New("itemview")--TextWindow()
+	--itemView:Init();
+	itemView.frame.relative = true;
+	itemView.frame.width = self.frame.width - 10;
+	itemView.frame.height = self.frame.height - 50 - 50;
+	itemView.frame.x = 5;
+	itemView.frame.y = 50;
+	itemView.frame.alpha = 155
+	itemView.frame.layer = 4;
+	itemView.spacing = 5;
+	itemView.padding = 10;
+	itemView.frame.visible = false;
+	itemView.frame.enabled = false;
 	self.itemView = itemView;
-	tabView:AddTab("Item", itemView);
+	tabView:AddTab("Item", itemView.frame);
 	
-	local furnitureView = TextWindow()
-	furnitureView.name = "furnitureView"
-	furnitureView.relative = true;
-	furnitureView.width = self.frame.width - 10;
-	furnitureView.height = self.frame.height - 50 - 50;
-	furnitureView.x = 5;
-	furnitureView.y = 50;
-	furnitureView.alpha = 155
-	furnitureView.layer = 4;
-	
-	furnitureView.Text = "FURNITURE VIEW!"
-	furnitureView.font = font
-
-	furnitureView.visible = false;
-	furnitureView.enabled = false;
-	
+	local furnitureView = Flowview:New("furnitureview");--TextWindow()
+	--furnitureView:Init();
+	furnitureView.frame.relative = true;
+	furnitureView.frame.width = self.frame.width - 10;
+	furnitureView.frame.height = self.frame.height - 50 - 50;
+	furnitureView.frame.x = 5;
+	furnitureView.frame.y = 50;
+	furnitureView.frame.alpha = 155
+	furnitureView.frame.layer = 4;	
+	furnitureView.spacing = 5;
+	furnitureView.padding = 10;
+	furnitureView.frame.visible = false;
+	furnitureView.frame.enabled = false;
 	self.furnitureView = furnitureView;
-	tabView:AddTab("Furniture", furnitureView);
+	tabView:AddTab("Furniture", furnitureView.frame);
 	
 	local closeButton = Button()
 	closeButton.Relative = true;
@@ -144,15 +144,18 @@ function Inventory:New (name, font, parent)
 	closeButton.TextColor = 0xEEEEEE
 	
 	self.closebutton = closeButton;
+	
 	self.frame:AddComponent(closeButton);
+	
 	self:AddTestDressItems();
-
-	return o
 end
 
-function Inventory:AddTestDressItems()
+function InventoryView:AddTestDressItems()
 	local dressView = self.dressView;
 	local testButton = Button()
+	
+	Trace("adding test items to : " .. dressView.frame.Name);
+	
 	testButton.Relative = true;
 	testButton.Name = "testButton"
 	testButton.Texture = "Resources/sampler/resources/button.png"	
@@ -395,22 +398,22 @@ function Inventory:AddTestDressItems()
 	
 end
 
-function Inventory:SetClosingEvent(event)
+function InventoryView:SetClosingEvent(event)
 	self.closebutton.MouseUp = event;
 end
 
-function Inventory:Dispose()
+function InventoryView:Dispose()
 	self.parent:RemoveComponent(self.name)
 end
 
-function Inventory:Show()
-	Trace("showing inventory!")
+function InventoryView:Show()
+	Trace("showing InventoryView!")
 	self.frame.Visible = true
 	self.frame.Enabled = true
 end
 
 
-function Inventory:Hide()
+function InventoryView:Hide()
 	self.frame.Visible = false
 	self.frame.Enabled = false
 end

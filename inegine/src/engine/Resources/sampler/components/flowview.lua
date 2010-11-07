@@ -3,22 +3,28 @@
 Flowview = {}
 
 function Flowview:New (name)
-	local o = {} 
+	local o = {};
 	setmetatable(o, self)
-	self.__index = self
+	self.__index = self;
 	
+	o.name = name;
+	
+	o:Init();
+	
+	return o;
+end
+
+function Flowview:Init()
 	self.componentList = {}
 	self.viewList = {}
 	self.itemCount = 0
-	--self.parent = parent;
-	self.name = name
 	
 	self.padding = 40;
 	self.spacing = 20;
 	
 	self.frame = View()
 	self.frame.relative = true;
-	self.frame.Name = name
+	self.frame.Name = self.name
 	self.frame.Width = 400
 	self.frame.Height = 430
 	self.frame.alpha = 155
@@ -29,10 +35,6 @@ function Flowview:New (name)
 		function(target, event, args)
 			Trace("mouse leave: " .. target.Name)	
 		end
-	
-	--parent:AddComponent(self.frame)
-		
-	return o
 end
 
 function Flowview:Dispose()
