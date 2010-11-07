@@ -56,22 +56,21 @@ function InventoryView:Init()
 	background.x = 5;
 	background.y = 50;
 	background.alpha = 155
-	background.layer = 4;
+	background.layer = 6;
 	self.frame:AddComponent(background);
 	
 	
 	local tabView = Tabview:New("tabView", GetFont("default"));
-	--tabView:Init();
 	tabView.frame.relative = true
 	tabView.frame.X = 0;
 	tabView.frame.Y = 0;
 	tabView.frame.Width = self.frame.Width;
 	tabView.frame.Height = self.frame.Height - 50;
+	tabView.frame.layer = 10;
 	self.frame:AddComponent(tabView.frame);
 	tabView:Show();
 		
 	local dressView = Flowview:New("dressview")
-	--dressView:Init();
 	dressView.frame.relative = true;
 	dressView.frame.width = self.frame.width - 10;
 	dressView.frame.height = self.frame.height - 50 - 50;
@@ -85,8 +84,7 @@ function InventoryView:Init()
 	self.dressView = dressView;
 	tabView:AddTab("Dress", dressView.frame);
 	
-	local itemView = Flowview:New("itemview")--TextWindow()
-	--itemView:Init();
+	local itemView = Flowview:New("itemview")
 	itemView.frame.relative = true;
 	itemView.frame.width = self.frame.width - 10;
 	itemView.frame.height = self.frame.height - 50 - 50;
@@ -101,8 +99,7 @@ function InventoryView:Init()
 	self.itemView = itemView;
 	tabView:AddTab("Item", itemView.frame);
 	
-	local furnitureView = Flowview:New("furnitureview");--TextWindow()
-	--furnitureView:Init();
+	local furnitureView = Flowview:New("furnitureview");
 	furnitureView.frame.relative = true;
 	furnitureView.frame.width = self.frame.width - 10;
 	furnitureView.frame.height = self.frame.height - 50 - 50;
