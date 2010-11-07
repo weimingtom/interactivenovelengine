@@ -43,12 +43,13 @@ function ScheduleView:Init()
 	
 	parent:AddComponent(self.frame)
 	
-	self.tabviewframe = TextWindow()
+	local tabviewframe = TextWindow()
+	self.tabviewframe = tabviewframe;
 	self.tabviewframe.Name = "tabviewframe"
 	
 	self.tabviewframe.X = 10;
 	self.tabviewframe.Y = 300;
-	self.tabviewframe.Width = 500
+	self.tabviewframe.Width = 400
 	self.tabviewframe.Height = 290
 	self.tabviewframe.alpha = 155
 	self.tabviewframe.layer = 3
@@ -62,90 +63,115 @@ function ScheduleView:Init()
 	tabView.frame.Y = 0;
 	tabView.frame.Width = self.tabviewframe.Width;
 	tabView.frame.Height = self.tabviewframe.Height - 50;
-	self.tabviewframe:AddComponent(tabView.frame);
+	tabView.frame.layer = 5;
+	tabviewframe:AddComponent(tabView.frame);
 	tabView:Show();
 	
-	local dressViewFrame = TextWindow()
-	dressViewFrame.name = "dressViewFrame"
-	dressViewFrame.relative = true;
-	dressViewFrame.width = tabView.frame.width - 10;
-	dressViewFrame.height = tabView.frame.height - 50 - 50;
-	dressViewFrame.x = 5;
-	dressViewFrame.y = 50;
-	dressViewFrame.alpha = 155
-	dressViewFrame.layer = 4;
 	
-	dressViewFrame.font = font
+	local background = TextWindow()
+	background.name = "backround"
+	background.relative = true;
+	background.width = self.tabviewframe.width - 10;
+	background.height = self.tabviewframe.height - 50 - 50;
+	background.x = 5;
+	background.y = 50;
+	background.alpha = 155
+	background.layer = 4;
+	tabviewframe:AddComponent(background);
+		
+	local educationView = Flowview:New("educationview")
+	educationView.frame.relative = true;
+	educationView.frame.width = tabView.frame.width - 10;
+	educationView.frame.height = tabView.frame.height - 50 - 50;
+	educationView.frame.x = 5;
+	educationView.frame.y = 50;
+	educationView.frame.layer = 10;
+	educationView.spacing = 5;
+	educationView.padding = 10;
+	educationView.frame.visible = true;
+	educationView.frame.enabled = true;
+	self.educationView = educationView;
+	tabView:AddTab("education", educationView.frame);
+	
+	local workView = Flowview:New("workview")
+	workView.frame.relative = true;
+	workView.frame.width = tabView.frame.width - 10;
+	workView.frame.height = tabView.frame.height - 50 - 50;
+	workView.frame.x = 5;
+	workView.frame.y = 50;
+	workView.frame.alpha = 155
+	workView.frame.layer = 4;
+	workView.spacing = 5;
+	workView.padding = 10;
+	workView.frame.visible = false;
+	workView.frame.enabled = false;
+	self.workView = workView;
+	tabView:AddTab("work", workView.frame);
+	
+	local vacationView = Flowview:New("vacationview");
+	vacationView.frame.relative = true;
+	vacationView.frame.width = tabView.frame.width - 10;
+	vacationView.frame.height = tabView.frame.height - 50 - 50;
+	vacationView.frame.x = 5;
+	vacationView.frame.y = 50;
+	vacationView.frame.alpha = 155
+	vacationView.frame.layer = 4;	
+	vacationView.spacing = 5;
+	vacationView.padding = 10;
+	vacationView.frame.visible = false;
+	vacationView.frame.enabled = false;
+	self.vacationView = vacationView;
+	tabView:AddTab("vacation", vacationView.frame);
 
-	dressViewFrame.visible = true;
-	dressViewFrame.enabled = true;
-	dressViewFrame.text = "TEST"
+	local repeatButton = Button()
+	repeatButton.Relative = true;
+	repeatButton.Name = "repeatButton"
+	repeatButton.Texture = "Resources/sampler/resources/button.png"	
+	repeatButton.Layer = 4;
+	repeatButton.X = tabviewframe.width - 125;
+	repeatButton.Y = tabviewframe.height - 45;
+	repeatButton.Width = 120;
+	repeatButton.Height = 40;
+	repeatButton.State = {}
+	repeatButton.MouseDown = 
+		function (repeatButton, luaevent, args)
+			repeatButton.State["mouseDown"] = true
+			repeatButton.Pushed = true
+		end
+	repeatButton.MouseUp = 
+		function (repeatButton, luaevent, args)
+			if (repeatButton.State["mouseDown"]) then
+				repeatButton.Pushed = false
+				Trace("repeatButton click!")
+			end
+		end
+	repeatButton.Text = "Repeat";
+	repeatButton.Font = font
+	repeatButton.TextColor = 0xEEEEEE
 	
-	local dressView = Flowview:New() --TextWindow()
-	dressView.frame.name = "dressview"
-	dressView.frame.relative = true;
-	dressView.frame.width = tabView.frame.width - 10;
-	dressView.frame.height = tabView.frame.height - 50 - 50;
-	dressView.frame.x = 0;
-	dressView.frame.y = 0;
-	--dressView.frame.x = 5;
-	--dressView.frame.y = 50;
-	dressView.frame.layer = 10;
+	self.repeatButton = repeatButton;
+	tabviewframe:AddComponent(repeatButton);
 	
-	dressView.spacing = 5;
-	dressView.padding = 10;
-	dressView.frame.visible = true;
-	dressView.frame.enabled = true;
-	self.dressView = dressView;
-	dressViewFrame:AddComponent(dressView.frame);
+	local selectionframe = TextWindow()
+	self.selectionframe = selectionframe;
+	selectionframe.Name = "selectionframe"
 	
-	tabView:AddTab("Dress", dressViewFrame);	
+	selectionframe.X = 415;
+	selectionframe.Y = 200;
+	selectionframe.Width = 380
+	selectionframe.Height = 230
+	selectionframe.alpha = 155
+	selectionframe.layer = 3
 	
-	local itemView = TextWindow()
-	itemView.name = "itemView"
-	itemView.relative = true;
-	itemView.width = tabView.frame.width - 10;
-	itemView.height = tabView.frame.height - 50 - 50;
-	itemView.x = 5;
-	itemView.y = 50;
-	itemView.alpha = 155
-	itemView.layer = 4;
-	
-	itemView.Text = "ITEM VIEW!"
-	itemView.font = font
-
-	itemView.visible = false;
-	itemView.enabled = false;
-	
-	self.itemView = itemView;
-	tabView:AddTab("Item", itemView);
-	
-	local furnitureView = TextWindow()
-	furnitureView.name = "furnitureView"
-	furnitureView.relative = true;
-	furnitureView.width = tabView.frame.width - 10;
-	furnitureView.height = tabView.frame.height - 50 - 50;
-	furnitureView.x = 5;
-	furnitureView.y = 50;
-	furnitureView.alpha = 155
-	furnitureView.layer = 4;
-	
-	furnitureView.Text = "FURNITURE VIEW!"
-	furnitureView.font = font
-
-	furnitureView.visible = false;
-	furnitureView.enabled = false;
-	
-	self.furnitureView = furnitureView;
-	tabView:AddTab("Furniture", furnitureView);
+	self.frame:AddComponent(selectionframe)
 	
 	local closeButton = Button()
 	closeButton.Relative = true;
 	closeButton.Name = "closeButton"
 	closeButton.Texture = "Resources/sampler/resources/button.png"	
 	closeButton.Layer = 4;
-	closeButton.X = self.frame.width - 125;
-	closeButton.Y = self.frame.height - 45;
+	closeButton.X = 5;
+	closeButton.Y = selectionframe.height - 45;
 	closeButton.Width = 120;
 	closeButton.Height = 40;
 	closeButton.State = {}
@@ -161,12 +187,90 @@ function ScheduleView:Init()
 				Trace("closeButton click!")
 			end
 		end
-	closeButton.Text = "Close";
+	closeButton.Text = "Cancel";
 	closeButton.Font = font
 	closeButton.TextColor = 0xEEEEEE
 	
 	self.closebutton = closeButton;
-	self.frame:AddComponent(closeButton);
+	selectionframe:AddComponent(closeButton);
+	
+	
+	local deleteButton = Button()
+	deleteButton.Relative = true;
+	deleteButton.Name = "deleteButton"
+	deleteButton.Texture = "Resources/sampler/resources/button.png"	
+	deleteButton.Layer = 4;
+	deleteButton.X = 130;
+	deleteButton.Y = selectionframe.height - 45;
+	deleteButton.Width = 120;
+	deleteButton.Height = 40;
+	deleteButton.State = {}
+	deleteButton.MouseDown = 
+		function (deleteButton, luaevent, args)
+			deleteButton.State["mouseDown"] = true
+			deleteButton.Pushed = true
+		end
+	deleteButton.MouseUp = 
+		function (deleteButton, luaevent, args)
+			if (deleteButton.State["mouseDown"]) then
+				deleteButton.Pushed = false
+				Trace("deleteButton click!")
+			end
+		end
+	deleteButton.Text = "Delete";
+	deleteButton.Font = font
+	deleteButton.TextColor = 0xEEEEEE
+	
+	self.deleteButton = deleteButton;
+	selectionframe:AddComponent(deleteButton);
+	
+	local executeButton = Button()
+	executeButton.Relative = true;
+	executeButton.Name = "executeButton"
+	executeButton.Texture = "Resources/sampler/resources/button.png"	
+	executeButton.Layer = 4;
+	executeButton.X = 255;
+	executeButton.Y = selectionframe.height - 45;
+	executeButton.Width = 120;
+	executeButton.Height = 40;
+	executeButton.State = {}
+	executeButton.MouseDown = 
+		function (executeButton, luaevent, args)
+			executeButton.State["mouseDown"] = true
+			executeButton.Pushed = true
+		end
+	executeButton.MouseUp = 
+		function (executeButton, luaevent, args)
+			if (executeButton.State["mouseDown"]) then
+				executeButton.Pushed = false
+				Trace("executeButton click!")
+			end
+		end
+	executeButton.Text = "Run";
+	executeButton.Font = font
+	executeButton.TextColor = 0xEEEEEE
+	
+	self.executeButton = executeButton;
+	selectionframe:AddComponent(executeButton);
+	
+	
+	local detailviewframe = TextWindow()
+	self.detailviewframe = detailviewframe;
+	detailviewframe.Name = "detailviewframe"
+	
+	detailviewframe.X = 415;
+	detailviewframe.Y = 440;
+	detailviewframe.Width = 380
+	detailviewframe.Height = 150
+	detailviewframe.alpha = 155
+	detailviewframe.layer = 3
+	
+	self.frame:AddComponent(detailviewframe)
+	
+	
+	
+	
+	self:AddTestEducationItems();
 end
 
 function ScheduleView:SetClosingEvent(event)
@@ -187,4 +291,250 @@ end
 function ScheduleView:Hide()
 	self.frame.Visible = false
 	self.frame.Enabled = false
+end
+
+
+function ScheduleView:AddTestEducationItems()
+	local educationView = self.educationView;
+	local testButton = Button()
+	
+	Trace("adding test items to : " .. educationView.frame.Name);
+	
+	testButton.Relative = true;
+	testButton.Name = "testButton"
+	testButton.Texture = "Resources/sampler/resources/button.png"	
+	testButton.Layer = 3
+	testButton.X = 0;
+	testButton.Y = 0;
+	testButton.Width = 120;
+	testButton.Height = 40;
+	testButton.State = {}
+	testButton.MouseDown = 
+		function (testButton, luaevent, args)
+			testButton.State["mouseDown"] = true
+			testButton.Pushed = true
+		end
+	testButton.MouseUp = 
+		function (testButton, luaevent, args)
+			if (testButton.State["mouseDown"]) then
+				testButton.Pushed = false
+				Trace("dress 1")
+				-- todo : connect to character controller insetead of main view
+				main:SetTachieBody("Resources/sampler/images/1.png");
+			end
+		end
+	testButton.Text = "Dress 1";
+	testButton.Font = GetFont("menu"); --menuFont
+	testButton.TextColor = 0xEEEEEE
+	
+	educationView:Add(testButton);
+	
+	
+	testButton = Button()
+	testButton.Relative = true;
+	testButton.Name = "testButton2"
+	testButton.Texture = "Resources/sampler/resources/button.png"	
+	testButton.Layer = 3
+	testButton.X = 0;
+	testButton.Y = 0;
+	testButton.Width = 120;
+	testButton.Height = 40;
+	testButton.State = {}
+	testButton.MouseDown = 
+		function (testButton, luaevent, args)
+			testButton.State["mouseDown"] = true
+			testButton.Pushed = true
+		end
+	testButton.MouseUp = 
+		function (testButton, luaevent, args)
+			if (testButton.State["mouseDown"]) then
+				testButton.Pushed = false
+				Trace("dress 2")
+				-- todo : connect to character controller insetead of main view
+				main:SetTachieBody("Resources/sampler/images/2.png");
+			end
+		end
+	testButton.Text = "Dress 2";
+	testButton.Font = GetFont("menu"); --menuFont
+	testButton.TextColor = 0xEEEEEE
+	
+	educationView:Add(testButton);
+	
+	
+	
+	testButton = Button()
+	testButton.Relative = true;
+	testButton.Name = "testButton3"
+	testButton.Texture = "Resources/sampler/resources/button.png"	
+	testButton.Layer = 3
+	testButton.X = 0;
+	testButton.Y = 0;
+	testButton.Width = 120;
+	testButton.Height = 40;
+	testButton.State = {}
+	testButton.MouseDown = 
+		function (testButton, luaevent, args)
+			testButton.State["mouseDown"] = true
+			testButton.Pushed = true
+		end
+	testButton.MouseUp = 
+		function (testButton, luaevent, args)
+			if (testButton.State["mouseDown"]) then
+				testButton.Pushed = false
+				Trace("Dress 3!");
+			
+				-- todo : connect to character controller insetead of main view
+				main:SetTachieBody("Resources/sampler/images/3.png");
+			end
+		end
+	testButton.Text = "Dress 3";
+	testButton.Font = GetFont("menu"); --menuFont
+	testButton.TextColor = 0xEEEEEE
+	
+	educationView:Add(testButton);
+	
+		
+	testButton = Button()
+	testButton.Relative = true;
+	testButton.Name = "testButton4"
+	testButton.Texture = "Resources/sampler/resources/button.png"	
+	testButton.Layer = 3
+	testButton.X = 0;
+	testButton.Y = 0;
+	testButton.Width = 120;
+	testButton.Height = 40;
+	testButton.State = {}
+	testButton.MouseDown = 
+		function (testButton, luaevent, args)
+			testButton.State["mouseDown"] = true
+			testButton.Pushed = true
+		end
+	testButton.MouseUp = 
+		function (testButton, luaevent, args)
+			if (testButton.State["mouseDown"]) then
+				testButton.Pushed = false
+				Trace("testButton click!")
+			end
+		end
+	testButton.Text = "Dummy";
+	testButton.Font = GetFont("menu"); --menuFont
+	testButton.TextColor = 0xEEEEEE
+	
+	educationView:Add(testButton);
+	
+		testButton = Button()
+	testButton.Relative = true;
+	testButton.Name = "testButton5"
+	testButton.Texture = "Resources/sampler/resources/button.png"	
+	testButton.Layer = 3
+	testButton.X = 0;
+	testButton.Y = 0;
+	testButton.Width = 120;
+	testButton.Height = 40;
+	testButton.State = {}
+	testButton.MouseDown = 
+		function (testButton, luaevent, args)
+			testButton.State["mouseDown"] = true
+			testButton.Pushed = true
+		end
+	testButton.MouseUp = 
+		function (testButton, luaevent, args)
+			if (testButton.State["mouseDown"]) then
+				testButton.Pushed = false
+				Trace("testButton click!")
+			end
+		end
+	testButton.Text = "Dummy";
+	testButton.Font = GetFont("menu"); --menuFont
+	testButton.TextColor = 0xEEEEEE
+	
+	educationView:Add(testButton);
+	
+		testButton = Button()
+	testButton.Relative = true;
+	testButton.Name = "testButton6"
+	testButton.Texture = "Resources/sampler/resources/button.png"	
+	testButton.Layer = 3
+	testButton.X = 0;
+	testButton.Y = 0;
+	testButton.Width = 120;
+	testButton.Height = 40;
+	testButton.State = {}
+	testButton.MouseDown = 
+		function (testButton, luaevent, args)
+			testButton.State["mouseDown"] = true
+			testButton.Pushed = true
+		end
+	testButton.MouseUp = 
+		function (testButton, luaevent, args)
+			if (testButton.State["mouseDown"]) then
+				testButton.Pushed = false
+				Trace("testButton click!")
+			end
+		end
+	testButton.Text = "Dummy";
+	testButton.Font = GetFont("menu"); --menuFont
+	testButton.TextColor = 0xEEEEEE
+	
+	educationView:Add(testButton);
+	
+	testButton = Button()
+	testButton.Relative = true;
+	testButton.Name = "testButton7"
+	testButton.Texture = "Resources/sampler/resources/button.png"	
+	testButton.Layer = 3
+	testButton.X = 0;
+	testButton.Y = 0;
+	testButton.Width = 120;
+	testButton.Height = 40;
+	testButton.State = {}
+	testButton.MouseDown = 
+		function (testButton, luaevent, args)
+			testButton.State["mouseDown"] = true
+			testButton.Pushed = true
+		end
+	testButton.MouseUp = 
+		function (testButton, luaevent, args)
+			if (testButton.State["mouseDown"]) then
+				testButton.Pushed = false
+				Trace("testButton click!")
+			end
+		end
+	testButton.Text = "Dummy";
+	testButton.Font = GetFont("menu"); --menuFont
+	testButton.TextColor = 0xEEEEEE
+	
+	
+	educationView:Add(testButton);
+	
+	
+	testButton = Button()
+	testButton.Relative = true;
+	testButton.Name = "testButton8"
+	testButton.Texture = "Resources/sampler/resources/button.png"	
+	testButton.Layer = 3
+	testButton.X = 0;
+	testButton.Y = 0;
+	testButton.Width = 120;
+	testButton.Height = 40;
+	testButton.State = {}
+	testButton.MouseDown = 
+		function (testButton, luaevent, args)
+			testButton.State["mouseDown"] = true
+			testButton.Pushed = true
+		end
+	testButton.MouseUp = 
+		function (testButton, luaevent, args)
+			if (testButton.State["mouseDown"]) then
+				testButton.Pushed = false
+				Trace("testButton click!")
+			end
+		end
+	testButton.Text = "Dummy";
+	testButton.Font = GetFont("menu"); --menuFont
+	testButton.TextColor = 0xEEEEEE
+	
+	
+	educationView:Add(testButton);
+	
 end
