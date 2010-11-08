@@ -143,260 +143,56 @@ function InventoryView:Init()
 	self.closebutton = closeButton;
 	
 	self.frame:AddComponent(closeButton);
-	
-	self:AddTestDressItems();
 end
 
-function InventoryView:AddTestDressItems()
-	local dressView = self.dressView;
-	local testButton = Button()
-	
-	Trace("adding test items to : " .. dressView.frame.Name);
-	
-	testButton.Relative = true;
-	testButton.Name = "testButton"
-	testButton.Texture = "Resources/sampler/resources/button.png"	
-	testButton.Layer = 3
-	testButton.X = 0;
-	testButton.Y = 0;
-	testButton.Width = 120;
-	testButton.Height = 40;
-	testButton.State = {}
-	testButton.MouseDown = 
-		function (testButton, luaevent, args)
-			testButton.State["mouseDown"] = true
-			testButton.Pushed = true
+function InventoryView:CreateButton(buttonName, buttonText)
+	local newButton = Button()
+	newButton.Relative = true;
+	newButton.Name = buttonName;
+	newButton.Texture = "Resources/sampler/resources/button.png"	
+	newButton.Layer = 3
+	newButton.X = 0;
+	newButton.Y = 0;
+	newButton.Width = 120;
+	newButton.Height = 40;
+	newButton.State = {}
+	newButton.MouseDown = 
+		function (newButton, luaevent, args)
+			newButton.State["mouseDown"] = true
+			newButton.Pushed = true
 		end
-	testButton.MouseUp = 
-		function (testButton, luaevent, args)
-			if (testButton.State["mouseDown"]) then
-				testButton.Pushed = false
-				Trace("dress 1")
-				-- todo : connect to character controller insetead of main view
-				main:SetTachieBody("Resources/sampler/images/1.png");
-				main:SetTachiePosition(self.frame.X + self.frame.Width + 10);
+	newButton.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				button.Pushed = false;
+				self.selectedEvent(button, luaevent, args);
 			end
 		end
-	testButton.Text = "Dress 1";
-	testButton.Font = GetFont("menu"); --menuFont
-	testButton.TextColor = 0xEEEEEE
-	
-	dressView:Add(testButton);
-	
-	
-	testButton = Button()
-	testButton.Relative = true;
-	testButton.Name = "testButton2"
-	testButton.Texture = "Resources/sampler/resources/button.png"	
-	testButton.Layer = 3
-	testButton.X = 0;
-	testButton.Y = 0;
-	testButton.Width = 120;
-	testButton.Height = 40;
-	testButton.State = {}
-	testButton.MouseDown = 
-		function (testButton, luaevent, args)
-			testButton.State["mouseDown"] = true
-			testButton.Pushed = true
-		end
-	testButton.MouseUp = 
-		function (testButton, luaevent, args)
-			if (testButton.State["mouseDown"]) then
-				testButton.Pushed = false
-				Trace("dress 2")
-				-- todo : connect to character controller insetead of main view
-				main:SetTachieBody("Resources/sampler/images/2.png");
-				main:SetTachiePosition(self.frame.X + self.frame.Width + 10);
-			end
-		end
-	testButton.Text = "Dress 2";
-	testButton.Font = GetFont("menu"); --menuFont
-	testButton.TextColor = 0xEEEEEE
-	
-	dressView:Add(testButton);
-	
-	
-	
-	testButton = Button()
-	testButton.Relative = true;
-	testButton.Name = "testButton3"
-	testButton.Texture = "Resources/sampler/resources/button.png"	
-	testButton.Layer = 3
-	testButton.X = 0;
-	testButton.Y = 0;
-	testButton.Width = 120;
-	testButton.Height = 40;
-	testButton.State = {}
-	testButton.MouseDown = 
-		function (testButton, luaevent, args)
-			testButton.State["mouseDown"] = true
-			testButton.Pushed = true
-		end
-	testButton.MouseUp = 
-		function (testButton, luaevent, args)
-			if (testButton.State["mouseDown"]) then
-				testButton.Pushed = false
-				Trace("Dress 3!");
-			
-				-- todo : connect to character controller insetead of main view
-				main:SetTachieBody("Resources/sampler/images/3.png");
-				main:SetTachiePosition(self.frame.X + self.frame.Width + 10);
-			end
-		end
-	testButton.Text = "Dress 3";
-	testButton.Font = GetFont("menu"); --menuFont
-	testButton.TextColor = 0xEEEEEE
-	
-	dressView:Add(testButton);
-	
-		
-	testButton = Button()
-	testButton.Relative = true;
-	testButton.Name = "testButton4"
-	testButton.Texture = "Resources/sampler/resources/button.png"	
-	testButton.Layer = 3
-	testButton.X = 0;
-	testButton.Y = 0;
-	testButton.Width = 120;
-	testButton.Height = 40;
-	testButton.State = {}
-	testButton.MouseDown = 
-		function (testButton, luaevent, args)
-			testButton.State["mouseDown"] = true
-			testButton.Pushed = true
-		end
-	testButton.MouseUp = 
-		function (testButton, luaevent, args)
-			if (testButton.State["mouseDown"]) then
-				testButton.Pushed = false
-				Trace("testButton click!")
-			end
-		end
-	testButton.Text = "Dummy";
-	testButton.Font = GetFont("menu"); --menuFont
-	testButton.TextColor = 0xEEEEEE
-	
-	dressView:Add(testButton);
-	
-		testButton = Button()
-	testButton.Relative = true;
-	testButton.Name = "testButton5"
-	testButton.Texture = "Resources/sampler/resources/button.png"	
-	testButton.Layer = 3
-	testButton.X = 0;
-	testButton.Y = 0;
-	testButton.Width = 120;
-	testButton.Height = 40;
-	testButton.State = {}
-	testButton.MouseDown = 
-		function (testButton, luaevent, args)
-			testButton.State["mouseDown"] = true
-			testButton.Pushed = true
-		end
-	testButton.MouseUp = 
-		function (testButton, luaevent, args)
-			if (testButton.State["mouseDown"]) then
-				testButton.Pushed = false
-				Trace("testButton click!")
-			end
-		end
-	testButton.Text = "Dummy";
-	testButton.Font = GetFont("menu"); --menuFont
-	testButton.TextColor = 0xEEEEEE
-	
-	dressView:Add(testButton);
-	
-		testButton = Button()
-	testButton.Relative = true;
-	testButton.Name = "testButton6"
-	testButton.Texture = "Resources/sampler/resources/button.png"	
-	testButton.Layer = 3
-	testButton.X = 0;
-	testButton.Y = 0;
-	testButton.Width = 120;
-	testButton.Height = 40;
-	testButton.State = {}
-	testButton.MouseDown = 
-		function (testButton, luaevent, args)
-			testButton.State["mouseDown"] = true
-			testButton.Pushed = true
-		end
-	testButton.MouseUp = 
-		function (testButton, luaevent, args)
-			if (testButton.State["mouseDown"]) then
-				testButton.Pushed = false
-				Trace("testButton click!")
-			end
-		end
-	testButton.Text = "Dummy";
-	testButton.Font = GetFont("menu"); --menuFont
-	testButton.TextColor = 0xEEEEEE
-	
-	dressView:Add(testButton);
-	
-	testButton = Button()
-	testButton.Relative = true;
-	testButton.Name = "testButton7"
-	testButton.Texture = "Resources/sampler/resources/button.png"	
-	testButton.Layer = 3
-	testButton.X = 0;
-	testButton.Y = 0;
-	testButton.Width = 120;
-	testButton.Height = 40;
-	testButton.State = {}
-	testButton.MouseDown = 
-		function (testButton, luaevent, args)
-			testButton.State["mouseDown"] = true
-			testButton.Pushed = true
-		end
-	testButton.MouseUp = 
-		function (testButton, luaevent, args)
-			if (testButton.State["mouseDown"]) then
-				testButton.Pushed = false
-				Trace("testButton click!")
-			end
-		end
-	testButton.Text = "Dummy";
-	testButton.Font = GetFont("menu"); --menuFont
-	testButton.TextColor = 0xEEEEEE
-	
-	
-	dressView:Add(testButton);
-	
-	
-	testButton = Button()
-	testButton.Relative = true;
-	testButton.Name = "testButton8"
-	testButton.Texture = "Resources/sampler/resources/button.png"	
-	testButton.Layer = 3
-	testButton.X = 0;
-	testButton.Y = 0;
-	testButton.Width = 120;
-	testButton.Height = 40;
-	testButton.State = {}
-	testButton.MouseDown = 
-		function (testButton, luaevent, args)
-			testButton.State["mouseDown"] = true
-			testButton.Pushed = true
-		end
-	testButton.MouseUp = 
-		function (testButton, luaevent, args)
-			if (testButton.State["mouseDown"]) then
-				testButton.Pushed = false
-				Trace("testButton click!")
-			end
-		end
-	testButton.Text = "Dummy";
-	testButton.Font = GetFont("menu"); --menuFont
-	testButton.TextColor = 0xEEEEEE
-	
-	
-	dressView:Add(testButton);
-	
+	newButton.Text = buttonText;
+	newButton.Font = self.font;
+	newButton.TextColor = 0xEEEEEE
+	return newButton;
 end
+
+function InventoryView:AddDressItem(buttonName, buttonText)
+	self.dressView:Add(self:CreateButton(buttonName, buttonText));
+end
+
+function InventoryView:AddItemItem(buttonName, buttonText)
+	self.itemView:Add(self:CreateButton(buttonName, buttonText));
+end
+
+function InventoryView:AddFurnitureItem(buttonName, buttonText)
+	self.furnitureView:Add(self:CreateButton(buttonName, buttonText));
+end
+
 
 function InventoryView:SetClosingEvent(event)
 	self.closebutton.MouseUp = event;
+end
+
+function InventoryView:SetSelectedEvent(event)
+	self.selectedEvent = event;
 end
 
 function InventoryView:Dispose()
