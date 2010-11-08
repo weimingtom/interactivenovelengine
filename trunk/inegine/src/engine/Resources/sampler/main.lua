@@ -289,11 +289,29 @@ function Main:OpenSchedule()
 	schedule:SetClosingEvent( 
 		function()
 			Trace("scheduletory clicked!")
+			self.schedule:Hide();
 			self.schedule:Dispose();
 			self.schedule = nil;
 			self:ToggleMainMenu(true);
 		end
 	);
+	
+	schedule:SetSelectedEvent(
+		function (button, luaevent, args)
+			Trace("select event called from " .. button.name);
+		end
+	)
+	
+	
+	--add test items
+	schedule:AddEducationItem("education1", "edu 1");
+	schedule:AddEducationItem("education2", "edu 2");
+	schedule:AddEducationItem("education3", "edu 2");
+	
+	schedule:AddWorkItem("work1", "work 1");
+	
+	schedule:AddVacationItem("vacation1", "vacation 1");
+	
 	
 	schedule:Show();
 	
@@ -328,6 +346,35 @@ function Main:OpenInventory()
 			self:CenterTachie();
 		end
 	);
+	
+	inven:SetSelectedEvent(
+		function (button, luaevent, args)
+			Trace("select event called from " .. button.name);
+			if (button.name == "dress1") then
+				Trace("changing dress to dress 1")
+				main:SetTachieBody("Resources/sampler/images/1.png");
+				main:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
+			elseif (button.name == "dress2") then
+				Trace("changing dress to dress 2")
+				main:SetTachieBody("Resources/sampler/images/2.png");
+				main:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
+			elseif (button.name == "dress3") then
+				Trace("changing dress to dress 3")
+				main:SetTachieBody("Resources/sampler/images/3.png");
+				main:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
+			end 
+		end
+	)
+	
+	
+	--add test items
+	inven:AddDressItem("dress1", "Dress 1");
+	inven:AddDressItem("dress2", "Dress 2");
+	inven:AddDressItem("dress3", "Dress 2");
+	
+	inven:AddItemItem("item1", "Item 1");
+	
+	inven:AddFurnitureItem("furniture1", "Furniture 1");
 	
 	self:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
 	inven:Show();
