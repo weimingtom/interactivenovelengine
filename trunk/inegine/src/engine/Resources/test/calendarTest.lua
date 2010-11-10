@@ -1,5 +1,5 @@
 dofile "../sampler/models/calendar.lua"
-require "luaunit"
+require('luaunit')
 
 TestCalendar = {}
 
@@ -10,7 +10,7 @@ TestCalendar = {}
 		self.cal:SetDay(19)
     end
 
-    function TestCalendar:GetSetDateTest()
+    function TestCalendar:testGetSetDate()
 		print("testing getter/setter for year")
 		assertEquals(self.cal:GetYear(), 1984)
         assertEquals(self.cal:GetMonth(), 3)
@@ -18,5 +18,3 @@ TestCalendar = {}
         assertEquals(self.cal:GetWeek(), 4)
 		assertEquals(self.cal:GetDayOfWeek(), "Mon")
     end
-    
-LuaUnit:run() -- run all tests

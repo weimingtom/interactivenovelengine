@@ -143,13 +143,16 @@ function ScheduleView:Init()
 			if (repeatButton.State["mouseDown"]) then
 				repeatButton.Pushed = false
 				Trace("repeatButton click!")
+                if (self.executeEvent~=nil) then 
+                    self.repeatEvent(repeatButton, luaevent, args);
+                end
 			end
 		end
 	repeatButton.Text = "Repeat";
 	repeatButton.Font = font
 	repeatButton.TextColor = 0xEEEEEE
 	
-	self.repeatButton = repeatButton;
+	self.repeatButton = repeatButton
 	tabviewframe:AddComponent(repeatButton);
 	
 	local selectionframe = TextWindow()
@@ -165,6 +168,21 @@ function ScheduleView:Init()
 	
 	self.frame:AddComponent(selectionframe)
 	
+	local selectedItemsView = Flowview:New("selectedItemsView");
+	selectedItemsView.frame.relative = true;
+	selectedItemsView.frame.width = selectionframe.width - 10;
+	selectedItemsView.frame.height = selectionframe.height - 55;
+	selectedItemsView.frame.x = 5;
+	selectedItemsView.frame.y = 5;
+	selectedItemsView.frame.alpha = 155
+	selectedItemsView.frame.layer = 4;	
+	selectedItemsView.spacing = 5;
+	selectedItemsView.padding = 10;
+	selectedItemsView.frame.visible = true;
+	selectedItemsView.frame.enabled = true;
+	self.selectedItemsView = selectedItemsView;
+	selectionframe:AddComponent(selectedItemsView.frame);
+
 	local closeButton = Button()
 	closeButton.Relative = true;
 	closeButton.Name = "closeButton"
@@ -185,6 +203,8 @@ function ScheduleView:Init()
 			if (closeButton.State["mouseDown"]) then
 				closeButton.Pushed = false
 				Trace("closeButton click!")
+                
+                if (self.closeEvent~=nil) then self.closeEvent(closeButton, luaevent, args); end
 			end
 		end
 	closeButton.Text = "Cancel";
@@ -215,6 +235,7 @@ function ScheduleView:Init()
 			if (deleteButton.State["mouseDown"]) then
 				deleteButton.Pushed = false
 				Trace("deleteButton click!")
+                self.deleteEvent(deleteButton, luaevent, args);
 			end
 		end
 	deleteButton.Text = "Delete";
@@ -244,6 +265,9 @@ function ScheduleView:Init()
 			if (executeButton.State["mouseDown"]) then
 				executeButton.Pushed = false
 				Trace("executeButton click!")
+                if (self.executeEvent~=nil) then 
+                    self.executeEvent(executeButton, luaevent, args);
+                end
 			end
 		end
 	executeButton.Text = "Run";
@@ -257,7 +281,7 @@ function ScheduleView:Init()
 	local detailviewframe = TextWindow()
 	self.detailviewframe = detailviewframe;
 	detailviewframe.Name = "detailviewframe"
-	
+	detailviewframe.font = self.font;
 	detailviewframe.X = 415;
 	detailviewframe.Y = 440;
 	detailviewframe.Width = 380
@@ -299,6 +323,37 @@ function ScheduleView:CreateButton(buttonName, buttonText)
 	return newButton;
 end
 
+function ScheduleView:CreateSelectedButton(buttonName, buttonText)
+	local newButton = Button()
+	newButton.Relative = true;
+	newButton.Name = buttonName;
+	newButton.Texture = "Resources/sampler/resources/button.png"	
+	newButton.Layer = 3
+	newButton.X = 0;
+	newButton.Y = 0;
+	newButton.Width = 120;
+	newButton.Height = 40;
+	newButton.State = {}
+	newButton.MouseDown = 
+		function (newButton, luaevent, args)
+			newButton.State["mouseDown"] = true
+			--ewButton.Pushed = true
+		end
+	newButton.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				--button.Pushed = false;
+				self.selectedFocusEvent(button, luaevent, args);
+			end
+		end
+	newButton.Text = buttonText;
+	newButton.Font = self.font;
+	newButton.TextColor = 0xEEEEEE
+	return newButton;
+end
+
+--TODO: modify to reflect model's state directly?
+--i.e. SetEducationItems(), SetSelectedItems()...
 function ScheduleView:AddEducationItem(buttonName, buttonText)
 	self.educationView:Add(self:CreateButton(buttonName, buttonText));
 end
@@ -311,25 +366,52 @@ function ScheduleView:AddVacationItem(buttonName, buttonText)
 	self.vacationView:Add(self:CreateButton(buttonName, buttonText));
 end
 
+function ScheduleView:AddSelectedItem(buttonName, buttonText)
+	self.selectedItemsView:Add(self:CreateSelectedButton(buttonName, buttonText));
+end
+
+function ScheduleView:RemoveSelectedItem(buttonName)
+	self.selectedItemsView:Remove(buttonName);
+end
+
+function ScheduleView:FocusSelectedItem(buttonName)
+    for i,v in ipairs(self.selectedItemsView:GetItems()) do 
+        local item = self.selectedItemsView:GetItem(v);
+		if (buttonName == v) then
+            item.pushed = true;
+        else
+            item.pushed = false;
+        end
+	end
+end
+
+function ScheduleView:SetDetailText(text)
+    self.detailviewframe.text = text;
+end
 
 function ScheduleView:SetClosingEvent(event)
-	self.closebutton.MouseUp = event;
+	self.closeEvent = event;
 end
 
 function ScheduleView:SetRepeatingEvent(event)
-	self.repeatButton.MouseUp = event;
+	self.repeatEvent = event;
 end
 
 function ScheduleView:SetExecutingEvent(event)
-	self.executeButton.MouseUp = event;
+	self.executeEvent = event;
 end
 
 function ScheduleView:SetDeletingEvent(event)
-	self.deleteButton.MouseUp = event;
+	self.deleteEvent = event;
 end
 
 function ScheduleView:SetSelectedEvent(event)
 	self.selectedEvent = event;
+end
+
+
+function ScheduleView:SetSelectedFocusEvent(event)
+	self.selectedFocusEvent = event;
 end
 
 function ScheduleView:Dispose()
