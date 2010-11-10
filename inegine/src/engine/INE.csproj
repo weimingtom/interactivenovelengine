@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F1C6583A-8DAC-453B-AC68-FD2BDD0F4C6A}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -197,8 +197,8 @@
     <None Include="Resources\Test.lua" />
     <None Include="Resources\test2.ess" />
     <None Include="Resources\Test2.lua" />
-    <None Include="Resources\test\Copy of roomTest.lua" />
-    <None Include="Resources\test\characterTest.lua" />
+    <None Include="Resources\test\mockview.lua" />
+    <None Include="Resources\test\flowviewTest.lua" />
     <None Include="Resources\test\runtest.lua" />
     <None Include="Resources\test\luaunit.lua" />
     <None Include="Resources\test\calendarTest.lua" />

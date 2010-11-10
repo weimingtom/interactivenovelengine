@@ -4,3 +4,5 @@ for i in io.popen("dir /b"):lines() do
 		dofile(i);
 	end
 end
+
+LuaUnit:run() -- run all tests

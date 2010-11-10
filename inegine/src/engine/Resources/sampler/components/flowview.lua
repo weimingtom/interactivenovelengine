@@ -59,10 +59,31 @@ function Flowview:Add(component)
 	self.itemCount = self.itemCount + 1
 end
 
-function Flowview:Trace()
-	for i,v in ipairs(self.componentList) 
-		do Trace(v) 
+function table.removeItem(tbl, item)
+	for i,v in ipairs(tbl) do 
+		if (item == v) then
+            table.remove(tbl, i)
+            return;
+        end
 	end
+end
+
+function Flowview:Remove(componentName)
+	table.removeItem(self.componentList, componentName);
+	self.frame:RemoveComponent(componentName)
+	self:RearrangeComponents()
+	self.itemCount = self.itemCount - 1
+end
+
+function Flowview:GetItem(componentName)
+    return self.frame:GetComponent(componentName);
+end
+
+function Flowview:GetItems()
+	--for i,v in ipairs(self.componentList) 
+	--	do Trace(v) 
+	--end
+    return self.componentList;
 end
 
 function Flowview:Clear()

@@ -295,13 +295,40 @@ function Main:OpenSchedule()
 			self:ToggleMainMenu(true);
 		end
 	);
-	
+	selectedIndex = 0;
+    selectedItemCount = 0;
 	schedule:SetSelectedEvent(
 		function (button, luaevent, args)
 			Trace("select event called from " .. button.name);
+            if (selectedItemCount < 4) then
+                schedule:AddSelectedItem(button.name .. selectedIndex, button.text);
+                selectedIndex = selectedIndex + 1
+                selectedItemCount = selectedItemCount + 1;
+            end
 		end
 	)
 	
+	schedule:SetSelectedFocusEvent(
+		function (button, luaevent, args)
+			Trace("focus selected event called from " .. button.name);
+            focusedSelectedIcon = button.name;          
+            schedule:FocusSelectedItem(button.name);
+            schedule:SetDetailText("detailed explanation: " .. button.name);
+		end
+	)
+
+	schedule:SetDeletingEvent(
+		function (button, luaevent, args)
+			Trace("remove selected event called from " .. button.name);          
+            if (focusedSelectedIcon ~= nil) then
+                schedule:RemoveSelectedItem(focusedSelectedIcon);
+                focusedSelectedIcon = nil;
+                selectedItemCount = selectedItemCount - 1;
+            end
+		end
+	)
+	
+    
 	
 	--add test items
 	schedule:AddEducationItem("education1", "edu 1");
@@ -311,7 +338,12 @@ function Main:OpenSchedule()
 	schedule:AddWorkItem("work1", "work 1");
 	
 	schedule:AddVacationItem("vacation1", "vacation 1");
-	
+	--
+    --schedule:AddSelectedItem("test1", "test 1");
+    --schedule:AddSelectedItem("test2", "test 2");
+    --schedule:AddSelectedItem("test3", "test 3");
+--
+    --schedule:FocusSelectedItem("test2");
 	
 	schedule:Show();
 	
@@ -362,7 +394,9 @@ function Main:OpenInventory()
 				Trace("changing dress to dress 3")
 				main:SetTachieBody("Resources/sampler/images/3.png");
 				main:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
-			end 
+			end
+
+            button.pushed = false; 
 		end
 	)
 	
