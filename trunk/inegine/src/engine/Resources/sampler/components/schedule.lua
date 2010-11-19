@@ -4,14 +4,14 @@ require "Resources\\sampler\\components\\flowview"
 
 ScheduleView = {}
 
-function ScheduleView:New (name, font, parent)
+function ScheduleView:New (name, parent)
 	local o = {}
 	setmetatable(o, self)
 	self.__index = self
 	
 	o.parent = parent;
 	o.name = name
-	o.font = font;
+	o.font = GetFont("default");
 	
 	o:Init();
 	
