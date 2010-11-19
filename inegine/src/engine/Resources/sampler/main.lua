@@ -284,7 +284,7 @@ end
 --mainmenu
 function Main:OpenSchedule()
 	self:ToggleMainMenu(false);
-	local schedule = ScheduleView:New("scheduleView", GetFont("default"), CurrentState());
+	local schedule = ScheduleView:New("scheduleView", CurrentState());
 	
 	schedule:SetClosingEvent( 
 		function()
@@ -367,7 +367,7 @@ end
 
 function Main:OpenInventory()
 	self:ToggleMainMenu(false);
-	local inven = InventoryView:New("inventory", GetFont("default"), CurrentState());
+	local inven = InventoryView:New("inventory", CurrentState());
 	
 	inven:SetClosingEvent( 
 		function()

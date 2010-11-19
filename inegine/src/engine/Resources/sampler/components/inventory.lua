@@ -5,14 +5,14 @@ require "Resources\\sampler\\components\\flowview"
 InventoryView = {}
 
 
-function InventoryView:New (name, font, parent)
+function InventoryView:New (name, parent)
 	local o = {}
 	setmetatable(o, self)
 	self.__index = self
 	
 	o.parent = parent;
 	o.name = name
-	o.font = font;
+	o.font = GetFont("default");
 	
 	o:Init();
 	
