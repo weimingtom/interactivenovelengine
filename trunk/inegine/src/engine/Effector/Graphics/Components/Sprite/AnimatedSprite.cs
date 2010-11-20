@@ -121,23 +121,35 @@ namespace INovelEngine.Effector
             Begin(interval, startFrame, endFrame, false);   
         }
 
-        public void Begin(int interval, int startFrame, int endFrame, bool loop)
+
+        public void Begin(int interval, int startFrame, int endFrame, bool loopForever)
+        {
+            Begin(interval, startFrame, endFrame, loopForever, 1);
+        }
+
+        public void Begin(int interval, int startFrame, int endFrame, int loopNumber)
+        {
+            Begin(interval, startFrame, endFrame, false, loopNumber);
+        }
+
+        public void Begin(int interval, int startFrame, int endFrame, bool loopForever, int loopNumber)
         {
             if (this.updateEvent != null)
             {
                 Clock.RemoveTimeEvent(this.updateEvent);
             }
-            
+
+            loopNumber = Math.Max(0, loopNumber);
             this.startFrame = Math.Max(0, startFrame);
             this.endFrame = Math.Max(0, endFrame);
             this.Frame = startFrame;
-            if (loop)
+            if (loopForever)
             {
                 this.updateEvent = new TimeEvent(interval, UpdateFrame);
             }
             else
             {
-                this.updateEvent = new TimeEvent(endFrame - startFrame + 1, interval, UpdateFrame, EndFrame);
+                this.updateEvent = new TimeEvent((endFrame - startFrame + 1) * loopNumber, interval, UpdateFrame, EndFrame);
             }
             int eventID = Clock.AddTimeEvent(this.updateEvent);
             inAnimation = true;

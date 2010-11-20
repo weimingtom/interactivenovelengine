@@ -313,7 +313,7 @@ namespace INovelEngine.Effector
                 }
             }
  
-            scrollBuffer = viewText.Substring(0, narrationIndex);
+            scrollBuffer = viewText.Substring(0, narrationIndex + 1);
             if (narrationIndex + 1 < viewText.Length)
             {
                 narrationIndex++;
