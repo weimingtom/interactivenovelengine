@@ -165,7 +165,9 @@ function InventoryView:CreateButton(buttonName, buttonText)
 		function (button, luaevent, args)
 			if (button.State["mouseDown"]) then
 				button.Pushed = false;
-				self.selectedEvent(button, luaevent, args);
+                if (self.selectedEvent~=nil) then 
+					self.selectedEvent(button, luaevent, args);
+				end
 			end
 		end
 	newButton.Text = buttonText;

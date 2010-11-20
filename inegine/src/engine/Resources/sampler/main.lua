@@ -1,6 +1,7 @@
 --Import
 require "Resources\\sampler\\components\\inventory"
 require "Resources\\sampler\\components\\schedule"
+require "Resources\\sampler\\components\\execution"
 
 Main = {}
 
@@ -350,6 +351,21 @@ function Main:OpenSchedule()
 	self.schedule = schedule;
 end
 
+function Main:OpenScheduleExecution()
+	self:ToggleMainMenu(false);
+	local execution = ExecutionView:New("executionView", CurrentState());
+	
+	execution:Show();
+	execution:SetDialogueText("test test test@ \ntesttesttest@");
+	execution:SetDialogueOverEvent(
+		function ()
+			Trace("dialogue over!");
+			execution:ShowDialogue(false);
+		end
+	)
+	self.execution = schedule;
+end
+
 function Main:OpenCommunication()
 end
 
@@ -490,6 +506,11 @@ function Main:loadFonts()
 
 	LoadFont("state", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 12);
 	GetFont("state").LineSpacing = 5
+	
+	LoadFont("dialogue", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 17);
+	--LoadFont("default", "c:\\windows\\fonts\\gulim.ttc", 12, "c:\\windows\\fonts\\gulim.ttc", 10) --ruby font
+	GetFont("dialogue").LineSpacing = 10;
+	GetFont("dialogue").TextEffect = 1;
 end
 
 function Main:SetDate(year, month, day, week)
@@ -514,3 +535,5 @@ main:InvalidateStatus();
 
 main:SetBackground("Resources/sampler/images/room01.png");
 main:SetTachieBody("Resources/sampler/images/1.png");
+
+main:OpenScheduleExecution();
