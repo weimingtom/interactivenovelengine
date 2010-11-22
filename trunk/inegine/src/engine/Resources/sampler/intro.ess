@@ -25,11 +25,14 @@
 #Show "textwindow", 500
 #Name ""
 -띵동띵동....@
+
 -띵동띵동....@
+
 .
 .
 . @
-|시끄러운 현관벨 소리에 눈이 깨버리고 말았다.@
+|시끄러운 현관벨 소리에 눈이 깨버리고 말았다.
+하하하.@
 #Alpha "room", 155
 #Show "room", 1000
 #Wait 500
@@ -43,7 +46,7 @@
 
 Game Over.@
 #Stop "intro", 1000
-#ScreenCrossFade 2000
-#Wait 1000
-#CloseState
-#LoadState "main", "Resources/sampler/main.lua"
+;#ScreenCrossFade 2000
+;#Wait 1000
+;#CloseState
+;#LoadState "main", "Resources/sampler/main.lua"

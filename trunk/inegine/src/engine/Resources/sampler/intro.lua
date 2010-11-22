@@ -1,13 +1,24 @@
 --GUI initialization
 
+Intro = {}
+
+function Intro:New()
+    local o = {}
+	setmetatable(o, self)
+	self.__index = self
+
+    self:InitComponents()
+   
+	return o
+end
 
 --Text handling functions
 
-function this.PrintOver(state, luaevent, args) --called by ESS scripts when printing is over after yielding
+function Intro:PrintOver(state, luaevent, args) --called by ESS scripts when printing is over after yielding
 	ResumeEss();
 end
 
-function this.TextOut(value) --called by ESS scripts to output text
+function Intro:TextOut(value) --called by ESS scripts to output text
 	if(GetComponent("textwindow"):Print(value)) then
 		Trace "yielding because not over "
 		YieldESS();
@@ -16,37 +27,37 @@ function this.TextOut(value) --called by ESS scripts to output text
 	end
 end
 
-function this.Clear() --called by ESS scripts to clear text
+function Intro:Clear() --called by ESS scripts to clear text
 	GetComponent("textwindow"):Clear();
 end
 
-function this.ESSOverHandler() --called by ESS scripts when entire script is over
+function Intro:ESSOverHandler() --called by ESS scripts when entire script is over
 	Trace("ESS Over!!!!")
 	--GetComponent("testButton2").Enabled = true;
 end
 
-function this.Name(name)
+function Intro:Name(name)
 	GetComponent("textwindow"):GetComponent("namewindow").Text = name;
 end
 
-function this.CursorHandler(state, luaevent, args)
+function Intro:CursorHandler(state, luaevent, args)
 	local cursorSprite = GetComponent("cursor")
 	--if (cursorSprite.Visible == false) then cursorSprite.Visible = true end
 	cursorSprite.x = args[0] + 1;
 	cursorSprite.y = args[1] + 1;
 end
 
-function this.HideCursor()
+function Intro:HideCursor()
 	local cursorSprite = GetComponent("cursor")
 	cursorSprite.Visible = false;
 end
 
-function this.ShowCursor()
+function Intro:ShowCursor()
 	local cursorSprite = GetComponent("cursor")
 	cursorSprite.Visible = true;
 end
 
-function this.InitComponents()
+function Intro:InitComponents()
 	local gamestate = CurrentState();
 	
 	--init font
@@ -69,12 +80,18 @@ function this.InitComponents()
 	anis.Rows = 4;
 	anis.Cols = 4;
 	anis.Layer = 10;
-	anis.Visible = false
+	anis.Visible = true
 	InitComponent(anis);
 	anis:Begin(100, 0, 2, true) --start animation
 	
 	--set cursor handler
-	gamestate.MouseMove = this.CursorHandler;
+	gamestate.MouseMove =
+function(state, luaevent, args)
+	local cursorSprite = GetComponent("cursor")
+	--if (cursorSprite.Visible == false) then cursorSprite.Visible = true end
+	cursorSprite.x = args[0] + 1;
+	cursorSprite.y = args[1] + 1;
+end;
 	HideWinCursor()
 	
 	--create text window
@@ -108,6 +125,7 @@ function this.InitComponents()
 	win.Margin = 45;
 	win.LeftMargin = 20;
 	InitComponent(win)
+    self.win = win;
 
 	--a small window for displaying character name in text window...
 	local namewin = Button()
@@ -185,8 +203,14 @@ function this.InitComponents()
 
 end
 
-this.InitComponents()
+
+intro = Intro:New();
+CurrentState().state = intro;
 --this.ESSOverHandler = this.ESSOverTest;
 BeginESS("Resources/sampler/intro.ess");
 --GetComponent("textwindow"):Print("hi!");
 --name("Sampler:")
+
+--Show("textwindow", 500)
+--intro:TextOut("이번주는 사공일을 합니다@");
+--intro.win:Print("이번주는 사공일을 합니다@");

@@ -365,8 +365,9 @@ function Main:TestExecution(execution)
 	
 	execution:Show();
 	
-	execution:SetDialogueText("이번주는 사공일을 합니다@");
 	execution:ShowDialogue(true);
+	execution:SetDialogueText("이번주는 사공일을 합니다.@\n");
+	execution:SetDialogueText("잘 부탁 드립니다.@\n");
 	
 	execution:SetDialogueOverEvent(
 		function ()

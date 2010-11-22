@@ -142,9 +142,13 @@ function ExecutionView:SetDialogueOverEvent(event)
 end
 
 function ExecutionView:SetDialogueText(text)
-	self.dialogueWin:Clear()
+	--self.dialogueWin:Clear()
 	self.dialogueWin:Print(text)
-	self:ShowDialogue(true);
+	--self:ShowDialogue(true);
+end
+
+function ExecutionView:ClearDialogueText()
+	self.dialogueWin:Clear()
 end
 
 function ExecutionView:ShowDialogue(show)

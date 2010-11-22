@@ -2,7 +2,8 @@
 
 -- lua functions for managing ESS execution (called by lua/ESS scripts)
 function BeginESS(script)
-	if (this.TextOut == nil or this.Clear == nil) then
+    local currentState = CurrentState().state;
+	if (currentState.TextOut == nil or currentState.Clear == nil) then
 		Trace "ESS interface undefined!"
 		return
 	end
@@ -21,7 +22,6 @@ end
 -- todo: need more elaborate error tracking system...
 function ResumeEss()
 	if (CurrentState().state["ess"] ~= nil) then
-		--Trace "resuming!..."
 		local success, msg = coroutine.resume(CurrentState().state["ess"])
 		if (success == false) then
             Trace("runtime error on line " .. currentLine)
@@ -61,19 +61,19 @@ end
 
 -- ESS text handling functions (used in string literals...)
 function PrintOver(state, luaevent, args) --called by ESS scripts when printing is over after yielding
-	this.PrintOver(state, luaevent, args)
+	CurrentState().state:PrintOver(state, luaevent, args)
 end
 
 function TextOut(value) --called by ESS scripts to output text
-	this.TextOut(value)
+	CurrentState().state:TextOut(value)
 end
 
 function Clear() --called by ESS scripts to clear text
-	this.Clear();
+	CurrentState().state:Clear();
 end
 
 function ESSOverHandler() --called by ESS scripts when entire script is over
-	this.ESSOverHandler()
+	CurrentState().state:ESSOverHandler()
 end
 
 -- ESS function synonyms (called by ESS as functions i.e. "#LoadScene "bgimg1", "Resources/daughterroom.png""
@@ -209,25 +209,25 @@ end
 -- for selection window
 
 function AddSelection(text)
-	this.AddSelection(text)
+	CurrentState().state:AddSelection(text)
 end
 
 function ShowSelection()
-	this.ShowSelection()
+	CurrentState().state:ShowSelection()
 end
 
 function SelectionOver(index)
-	this.SelectionOver(index)
+	CurrentState().state:SelectionOver(index)
 end
 
 function Name(name)
-	this.Name(name)
+	CurrentState().state:Name(name)
 end
 
 function HideCursor()
-	this.HideCursor()
+	CurrentState().state:HideCursor()
 end
 
 function ShowCursor()
-	this.ShowCursor()
+	CurrentState().state:ShowCursor()
 end
