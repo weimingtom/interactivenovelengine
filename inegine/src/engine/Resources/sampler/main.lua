@@ -365,9 +365,10 @@ function Main:TestExecution(execution)
 	
 	execution:Show();
 	
+	execution:ClearDialogueText();
 	execution:ShowDialogue(true);
-	execution:SetDialogueText("이번주는 사공일을 합니다.@\n");
-	execution:SetDialogueText("잘 부탁 드립니다.@\n");
+	execution:SetDialogueText("이번주는 사공일을 합니다.\n");
+	execution:SetDialogueText("잘 부탁 드립니다.@");
 	
 	execution:SetDialogueOverEvent(
 		function ()
@@ -399,6 +400,9 @@ function Main:TestExecution(execution)
 							self:TestExecution(execution);
 						end
 					)
+					execution:ClearDialogueText();
+					execution:ShowDialogue(true);
+				
 					execution:SetDialogueText("이번주는 잘 되었습니다!\n아버지도 기뻐하실거에요.@");
 
 				end

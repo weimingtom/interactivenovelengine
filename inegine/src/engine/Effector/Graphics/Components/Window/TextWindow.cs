@@ -15,17 +15,29 @@ namespace INovelEngine.Effector
 {
     public class TextWindow : WindowBase
     {
-        private enum State
-        {
-            Started, Idle, Narrating, Waiting
-        }
-
         public enum Mode
         {
             Narration, Skipping
         }
 
+        protected TextNarrator textNarrator;
+
         protected Color _textColor;
+        protected bool printOverCalled;
+
+        public TextWindow()
+            : base()
+        {
+            this.Type = ComponentType.TextWindow;
+            narrationSpeed = 50;
+            LineSpacing = 20;
+            IsStatic = true;
+            TextColor = 0xFFFFFF;
+            _margin = 10;
+            textNarrator = new TextNarrator();
+            printOverCalled = false;
+        }
+
         public int TextColor
         {
             get
@@ -55,17 +67,10 @@ namespace INovelEngine.Effector
             }
         }
 
-        private State _printState = State.Idle;
-        private readonly List<int> breaks = new List<int>();
-        private int _breakIndex = 0;
-        
-        private string sourceText = "";
-        private string viewText = "";
-        private string scrollBuffer = "";
-
         public LuaEventHandler PrintOver;
-
-        protected bool isStatic = false;
+        private TimeEvent tickEvent;
+        
+        protected bool isStatic;
 
         public bool IsStatic
         {
@@ -76,6 +81,15 @@ namespace INovelEngine.Effector
             set
             {
                 isStatic = value;
+
+                if (!isStatic)
+                {
+                    startTickEvent();
+                }
+                else
+                {
+                    stopTickEvent();
+                }
             }
         }
 
@@ -107,13 +121,43 @@ namespace INovelEngine.Effector
         }
 
         protected Mode narrationMode = Mode.Narration;
-        protected int narrationIndex = 0;
 
+        private int _narrationSpeed;
         public int narrationSpeed
         {
-            get; set;
+            get
+            {
+                return _narrationSpeed;
+            }
+            set
+            {
+                _narrationSpeed = value;
+
+                if (!isStatic)
+                {
+                    startTickEvent();
+                }
+            }
         }
 
+        private void startTickEvent()
+        {
+            if (tickEvent != null)
+            {
+                Clock.RemoveTimeEvent(tickEvent);
+            }
+            tickEvent = new TimeEvent(_narrationSpeed, TickText);
+            Clock.AddTimeEvent(tickEvent);
+        
+        }
+
+        private void stopTickEvent()
+        {
+            if (tickEvent != null)
+            {
+                Clock.RemoveTimeEvent(tickEvent);
+            }
+        }
         private int _lineSpacing;
 
         public int LineSpacing
@@ -155,8 +199,6 @@ namespace INovelEngine.Effector
             }
         }
 
-        private TimeEvent narrationEvent;
-
         public Line line;
 
         private INEFont fontManager;
@@ -187,32 +229,16 @@ namespace INovelEngine.Effector
                 }
             }
         }
-        private bool wrapFlag = false;
-
+        
         Vector2[] lines = new Vector2[2];
-        private bool _cancelFlag = false; // flag for indicating whether to skip when beginning a new textout
-
-
-        public TextWindow()
-            : base()
-        {
-            this.Type = ComponentType.TextWindow;
-            narrationSpeed = 50;
-            LineSpacing = 20;
-            IsStatic = true;
-            TextColor = 0xFFFFFF;
-            _margin = 10;
-        }
-
+        
         public string Text
         {
-            get { return this.sourceText; }
             set
             {
-                this.isStatic = true;
-                this.sourceText = value;
-                this.WrapText();
-                this.ParseText();
+                IsStatic = true;
+                textNarrator.Clear();
+                textNarrator.AppendText(value);
             }
         }
 
@@ -252,26 +278,26 @@ namespace INovelEngine.Effector
 
             this.sprite.Begin(SpriteFlags.AlphaBlend);
 
-            Size dim = this.freeFont.Measure(isStatic?viewText:scrollBuffer);
+            Size dim = this.freeFont.Measure(isStatic ? textNarrator.SourceString : textNarrator.OutputString);
             int leftMargin;
             int topMargin;
             if (this.centerText) leftMargin = (this.Width - dim.Width) / 2;
             else leftMargin = _leftmargin;
             if (this.centerTextVertically) topMargin = (this.Height - dim.Height) / 2;
             else topMargin = _margin;
-            if (Fading)
-            {
-                TextRenderer.DrawText(this.sprite, this.freeFont, isStatic ? viewText : scrollBuffer,
-                                      this.RealX + leftMargin, this.RealY + topMargin,
-                                      Width - _margin * 2, Height - _margin * 2, Color.FromArgb(255, this._textColor));
-            }
-            else
-            {
-                TextRenderer.DrawText(this.sprite, this.freeFont, isStatic ? viewText : scrollBuffer,
-                                      this.RealX + leftMargin, this.RealY + topMargin,
-                                      Width - _margin * 2, Height - _margin * 2, Color.FromArgb(255, this._textColor));
-            }
-            if (_printState == State.Waiting)
+            //if (Fading)
+            //{
+            //    TextRenderer.DrawText(this.sprite, this.freeFont, isStatic ? viewText : scrollBuffer,
+            //                          this.RealX + leftMargin, this.RealY + topMargin,
+            //                          Width - _margin * 2, Height - _margin * 2, Color.FromArgb(255, this._textColor));
+            //}
+            //else
+            //{
+            TextRenderer.DrawText(this.sprite, this.freeFont, isStatic ? textNarrator.SourceString : textNarrator.OutputString,
+                                  this.RealX + leftMargin, this.RealY + topMargin,
+                                  Width - _margin * 2, Height - _margin * 2, Color.FromArgb(255, this._textColor));
+            //}
+            if (textNarrator.State == NarrationState.Stopped)
             {
                 if (cursorSprite != null)
                 {
@@ -294,210 +320,56 @@ namespace INovelEngine.Effector
             this.sprite.End();
         }
 
-        
-        private void WrapText()
-        {
-            if (this.freeFont == null)
-            {
-                wrapFlag = true;
-                return;
-            }
-
-            wrapFlag = false;
-
-            viewText = sourceText;
-        }
-
-
-        private void ParseText()
-        {
-            this.breaks.Clear();
-            for (int i = 0; i < this.viewText.Length; i++)
-            {
-                char currentChar = viewText[i];
-                switch (currentChar)
-                {
-                    case '@':
-                        viewText = viewText.Remove(i, 1);
-                        this.breaks.Add(i);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            //_breakIndex = 0;
-        }
-
-        private void CountText()
-        {
-            if (narrationIndex > 0 && viewText[narrationIndex - 1] == '[')
-            {
-                int tagEnd = viewText.IndexOf(']', narrationIndex - 1);
-                if (tagEnd > -1)
-                {
-                    narrationIndex = tagEnd + 1;
-                }
-                else
-                {
-                    //_printState = State.Waiting;
-                    //return;
-                }
-            }
-
-            scrollBuffer = viewText.Substring(0, narrationIndex);
-            if (narrationIndex + 1 < viewText.Length)
-            {
-                narrationIndex++;
-            }
-            else
-            {
-                _printState = State.Idle;
-            }
-        }
-
-        private void EndText()
-        {
-            this._printState = State.Waiting;
-        }
-
         private void PrintOverEnd() // what to do when everything is printed
         {
-            this.narrationEvent = null;
-            this._printState = State.Idle;
+            Console.WriteLine("<print over called! by " + this.Name);
             if (this.PrintOver != null)
             {
                 try
                 {
-                    PrintOver(this, ScriptEvents.Etc, null);
+                    Supervisor.CallLater(PrintOver); 
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                 }
             }
-        }
-
-        private void SkipToNextBreak()
-        {
-            Clock.RemoveTimeEvent(this.narrationEvent);
-
-            if (this.breaks.Count == 0)
-            {
-                this.scrollBuffer = viewText;
-                this.narrationIndex = this.viewText.Length - 1;
-                this._cancelFlag = true;
-                PrintOverEnd();
-            }
-            else
-            {
-                if (false)//!_cancelFlag && (_breakIndex >= this.breaks.Count || _breakIndex == 1 && this.breaks.Count == 1)) // last _breakIndex
-                {
-                    this.scrollBuffer = viewText;
-                    this.narrationIndex = this.viewText.Length - 1;
-                    this._cancelFlag = true;
-                    PrintOverEnd();
-                }
-                else
-                {
-                    if (_cancelFlag) _cancelFlag = false;
-                    this.scrollBuffer = this.viewText.Substring(0, breaks[_breakIndex - 1]);
-                    this.narrationIndex = breaks[_breakIndex - 1];
-                    this._printState = State.Waiting;
-                }
-            }    
+            Console.WriteLine("print over called!>");
         }
 
         public void AdvanceText()
         {
-            if (this._printState == State.Narrating) // if in narration, skip to next stop
-            {
-                SkipToNextBreak();
-                return;
-            }
-            else if (this._printState == State.Idle) // if in idle mode, do nothing
-            {
-                return;
-            }
-            else if (this._printState == State.Waiting || this._printState == State.Started)
-            {
-                if (this.viewText.Length == 0) return; // do nothing if viewtext length is zero
-                
-                if (this.breaks.Count == 0 || _breakIndex >= this.breaks.Count) // if there is no more text stop
-                {
-                    if (this.narrationMode == Mode.Narration)
-                    {
-                        int lengthToCount = 0;
-                        lengthToCount = this.viewText.Length - narrationIndex;
-                        this.narrationEvent = new TimeEvent(lengthToCount, narrationSpeed, CountText, PrintOverEnd);
-                        Clock.AddTimeEvent(narrationEvent);
-                        this._printState = State.Narrating;
-                    }
-                    else
-                    {
-                        this.scrollBuffer = viewText;
-                        this._printState = State.Idle; 
-                        if (this.PrintOver != null)
-                        {
-                            PrintOver(this, ScriptEvents.Etc, null);
-                        }
-                    }
-                }
-                else // if there is next text stop
-                {
-                    if (this.narrationMode == Mode.Narration)
-                    {
-                        int lengthToCount = 0;
-                        lengthToCount = this.breaks[_breakIndex] + 1 - narrationIndex;
-                        this.narrationEvent = new TimeEvent(lengthToCount, narrationSpeed, CountText, EndText);
-                        Clock.AddTimeEvent(narrationEvent);
-                        this._printState = State.Narrating;
-                    }
-                    else
-                    {
-                        this.scrollBuffer = viewText.Substring(0, this.breaks[_breakIndex]);
-                        this._printState = State.Waiting;
-                    }
-                    _breakIndex++;
-                }
-            }
-
-            if (_cancelFlag)
-            {
-                SkipToNextBreak();
-            }
+            textNarrator.Advance();
         }
 
         public void Clear()
         {
-            Console.WriteLine("clearing text window!");
-            this.sourceText = "";
-            this.viewText = "";
-            this.scrollBuffer = "";
-            this.WrapText();
-            this.ParseText();
-            this._breakIndex = 0;
-            this.narrationIndex = 0;
-            //this.AdvanceText();
+            textNarrator.Clear();
         }
 
-        public Boolean Print(string value)
+        public void Print(string value)
         {
-            if (value[value.Length - 1] != '\n')
-            {
-                value = value + "\n";
-            }
-            this.isStatic = false;
-            this.sourceText += value;
-            this.WrapText();
-            this.ParseText();
-            this._printState = State.Started;
-            AdvanceText();
-            if (this._printState == State.Waiting) return true;
-            else if(this._printState == State.Narrating) return true;
-            else if(this._printState == State.Idle) return false;
-            else return false;
+            IsStatic = false;
+            printOverCalled = false;
+            textNarrator.AppendText(value);
         }
 
+        private void TickText()
+        {
+            if (textNarrator.State == NarrationState.Over && !printOverCalled)
+            {
+                printOverCalled = true;
+                PrintOverEnd();
+            }
+            else
+            {
+                textNarrator.Tick();
+            }
+        }
+
+        private void DoNothing()
+        {
+        }
 
         public void TurnOffSkip()
         {
@@ -517,12 +389,6 @@ namespace INovelEngine.Effector
             {
                 this.cursorSprite.Initialize(graphicsDeviceManager);
                 this.cursorSprite.Begin(100, 0, 2, true);
-            }
-
-            if (wrapFlag)
-            {
-                this.WrapText();
-                this.ParseText();
             }
         }
 
