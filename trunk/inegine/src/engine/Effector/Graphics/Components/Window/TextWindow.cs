@@ -25,6 +25,21 @@ namespace INovelEngine.Effector
             Narration, Skipping
         }
 
+        protected Color _textColor;
+        public int TextColor
+        {
+            get
+            {
+                return this._textColor.ToArgb();
+            }
+
+            set
+            {
+                this._textColor = Color.FromArgb(value);
+                this._textColor = Color.FromArgb(255, _textColor); 
+            }
+        }
+
 
         private AnimatedSprite cursorSprite;
 
@@ -185,6 +200,7 @@ namespace INovelEngine.Effector
             narrationSpeed = 50;
             LineSpacing = 20;
             IsStatic = true;
+            TextColor = 0xFFFFFF;
             _margin = 10;
         }
 
@@ -218,8 +234,15 @@ namespace INovelEngine.Effector
             lines[1].Y = RealY + Height / 2;
 
             line.Width = (float)Math.Max(0.000001, Height); // FIXME
-            line.Begin();   
-            line.Draw(this.lines, Color.FromArgb(_alpha, _backgroundColor));
+            line.Begin();
+            if (this.Fading)
+            {
+                line.Draw(this.lines, Color.FromArgb((int)(progress * _alpha), _backgroundColor));
+            }
+            else
+            {
+                line.Draw(this.lines, Color.FromArgb(_alpha, _backgroundColor));
+            }
             line.End();
         }
 
@@ -236,10 +259,18 @@ namespace INovelEngine.Effector
             else leftMargin = _leftmargin;
             if (this.centerTextVertically) topMargin = (this.Height - dim.Height) / 2;
             else topMargin = _margin;
-            TextRenderer.DrawText(this.sprite, this.freeFont, isStatic ? viewText : scrollBuffer,
-                                  this.RealX + leftMargin, this.RealY + topMargin,
-                                  Width - _margin * 2, Height - _margin * 2, Color.White);
-
+            if (Fading)
+            {
+                TextRenderer.DrawText(this.sprite, this.freeFont, isStatic ? viewText : scrollBuffer,
+                                      this.RealX + leftMargin, this.RealY + topMargin,
+                                      Width - _margin * 2, Height - _margin * 2, Color.FromArgb((int)(255*progress), this._textColor));
+            }
+            else
+            {
+                TextRenderer.DrawText(this.sprite, this.freeFont, isStatic ? viewText : scrollBuffer,
+                                      this.RealX + leftMargin, this.RealY + topMargin,
+                                      Width - _margin * 2, Height - _margin * 2, Color.FromArgb(255, this._textColor));
+            }
             if (_printState == State.Waiting)
             {
                 if (cursorSprite != null)
@@ -312,8 +343,9 @@ namespace INovelEngine.Effector
                     //return;
                 }
             }
- 
-            scrollBuffer = viewText.Substring(0, narrationIndex + 1);
+
+            int substringLength = Math.Min(narrationIndex + 1, viewText.Length);
+            scrollBuffer = viewText.Substring(0, substringLength);
             if (narrationIndex + 1 < viewText.Length)
             {
                 narrationIndex++;
@@ -333,7 +365,17 @@ namespace INovelEngine.Effector
         {
             this.narrationEvent = null;
             this._printState = State.Idle;
-            if (this.PrintOver != null) PrintOver(this, ScriptEvents.Etc, null);
+            if (this.PrintOver != null)
+            {
+                try
+                {
+                    PrintOver(this, ScriptEvents.Etc, null);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
         }
 
         private void SkipToNextBreak()

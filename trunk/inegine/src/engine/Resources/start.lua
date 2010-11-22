@@ -4,4 +4,5 @@ SetSize(800, 600);
 SetVolume(50);
 
 dofile "Resources/Sampler/init.lua"
+--dofile "Resources/test2.lua"
 
