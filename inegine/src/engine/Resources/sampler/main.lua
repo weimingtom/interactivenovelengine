@@ -17,7 +17,6 @@ end
 
 --Component initialization
 function Main:InitComponents()
-    self:loadFonts();
 	
 	local gamestate = CurrentState();
 
@@ -354,16 +353,57 @@ end
 function Main:OpenScheduleExecution()
 	self:ToggleMainMenu(false);
 	local execution = ExecutionView:New("executionView", CurrentState());
+	self.execution = execution;
+	
+	self:TestExecution(execution);
+end
+
+function Main:TestExecution(execution)
+	execution:ShowAnimationView(false);
+	execution:ShowStatus(false);
+	execution:ShowDialogue(false);
 	
 	execution:Show();
-	execution:SetDialogueText("test test test@ \ntesttesttest@");
+	
+	execution:SetDialogueText("이번주는 사공일을 합니다@");
+	execution:ShowDialogue(true);
+	
 	execution:SetDialogueOverEvent(
 		function ()
 			Trace("dialogue over!");
+			self:ShowTachie(false);
 			execution:ShowDialogue(false);
+			execution:ShowAnimationView(true);
+			local tempAnimation = AnimatedSprite();
+			tempAnimation.Name = "testani"
+			tempAnimation.Texture = "Resources/sampler/resources/cursor.png"
+			tempAnimation.Width = 32;
+			tempAnimation.Height = 48;
+			tempAnimation.Rows = 4;
+			tempAnimation.Cols = 4;
+			tempAnimation.Layer = 10;
+			tempAnimation.Visible = true
+			
+			execution:SetAnimation(tempAnimation);
+			execution:SetAnimationOverEvent(
+				function()
+					execution:ShowStatus(true);
+					execution:SetStatusText("GOLD +5,400\nSTR +10, DEX +10, CON + 10");
+					execution:SetDialogueOverEvent(
+						function ()
+							execution:ShowAnimationView(false);
+							execution:ShowStatus(false);
+							execution:ShowDialogue(false);
+							
+							self:TestExecution(execution);
+						end
+					)
+					execution:SetDialogueText("이번주는 잘 되었습니다!\n아버지도 기뻐하실거에요.@");
+
+				end
+			);
 		end
 	)
-	self.execution = schedule;
 end
 
 function Main:OpenCommunication()
@@ -479,13 +519,23 @@ end
 function Main:SetTachieDress(filename)
 end
 
+function Main:ShowTachie(show)
+	local tachie = GetComponent("tachie");
+	if (tachie ~= nil) then
+		tachie.visible = show;
+		tachie.enabled = show;
+	end
+end
+
 function Main:SetTachiePosition(leftMargin)
 	GetComponent("tachie").X = leftMargin;
 end
 
 function Main:CenterTachie()
 	local tachie = GetComponent("tachie");
-	tachie.X = (GetWidth() - tachie.Width)/2;
+	if (tachie ~= nil) then
+		tachie.X = (GetWidth() - tachie.Width)/2;
+	end
 end
 
 --private/helper functions
@@ -494,24 +544,6 @@ function Main:ToggleMainMenu(enabled)
 	GetComponent("mainmenu").visible = enabled;
 end
 
-function Main:loadFonts()
-	LoadFont("default", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 17);
-
-	LoadFont("menu", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 18);
-	GetFont("menu").TextEffect = 1
-	
-	LoadFont("date", "Resources\\sampler\\fonts\\NanumMyeongjoBold.ttf", 13);
-	GetFont("date").LineSpacing = 13
-	GetFont("date").TextEffect = 1
-
-	LoadFont("state", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 12);
-	GetFont("state").LineSpacing = 5
-	
-	LoadFont("dialogue", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 17);
-	--LoadFont("default", "c:\\windows\\fonts\\gulim.ttc", 12, "c:\\windows\\fonts\\gulim.ttc", 10) --ruby font
-	GetFont("dialogue").LineSpacing = 10;
-	GetFont("dialogue").TextEffect = 1;
-end
 
 function Main:SetDate(year, month, day, week)
 	GetComponent("datedisplay").text = year .. "\n" 

@@ -44,7 +44,7 @@ function ExecutionView:Init()
 	dialogueWin.Name = "dialogueWindow"
 	dialogueWin.Alpha = 155
 	dialogueWin.Width = 600
-	dialogueWin.Height = 150
+	dialogueWin.Height = 120
 	dialogueWin.x = self.frame.Width - dialogueWin.Width - 20;
 	dialogueWin.y = self.frame.Height - dialogueWin.Height - 20;
 	dialogueWin.Layer = 5
@@ -88,8 +88,37 @@ function ExecutionView:Init()
 	self.portrait = portrait;
 	self.frame:AddComponent(portrait);
 
-
 	self:ShowDialogue(false);	
+	
+	local statusWindow = TextWindow()
+	statusWindow.name = "statusWindow"
+	statusWindow.relative = true;
+	statusWindow.width = 480;
+	statusWindow.height = 100;
+	statusWindow.x = (self.frame.width - statusWindow.width) / 2;
+	statusWindow.y = dialogueWin.y - statusWindow.height - 5;
+	statusWindow.alpha = 155
+	statusWindow.layer = 6;
+	statusWindow.BackgroundColor = 0xFFFFFF
+	statusWindow.TextColor = 0x000000
+	statusWindow.font = GetFont("state");
+	self.statusWindow = statusWindow;
+	self.frame:AddComponent(statusWindow);
+	self:ShowStatus(false);
+	
+	local animatedWindow = TextWindow()
+	animatedWindow.name = "animatedwindow"
+	animatedWindow.relative = true;
+	animatedWindow.width = 320;
+	animatedWindow.height = 240;
+	animatedWindow.x = (self.frame.width - animatedWindow.width) / 2;
+	animatedWindow.y = statusWindow.y - animatedWindow.height - 5;
+	animatedWindow.alpha = 200
+	animatedWindow.layer = 6;
+	self.frame:AddComponent(animatedWindow);
+	self.animatedWindow = animatedWindow;
+	self:ShowAnimationView(false);
+	
 end
 
 function ExecutionView:Dispose()
@@ -113,8 +142,9 @@ function ExecutionView:SetDialogueOverEvent(event)
 end
 
 function ExecutionView:SetDialogueText(text)
-	self:ShowDialogue(true);
+	self.dialogueWin:Clear()
 	self.dialogueWin:Print(text)
+	self:ShowDialogue(true);
 end
 
 function ExecutionView:ShowDialogue(show)
@@ -122,4 +152,44 @@ function ExecutionView:ShowDialogue(show)
 	self.dialogueWin.Enabled = show;
 	self.portrait.Visible = show;
 	self.portrait.Enabled = show;
+end
+
+function ExecutionView:SetAnimation(animation)
+	animation.name = "currentanimation"
+	animation.relative = true;
+	animation.x = (self.animatedWindow.width - animation.width) / 2
+	animation.y = (self.animatedWindow.height - animation.height) / 2;
+	
+	animation.AnimationOver = 
+		function (animation, luaevent, args)
+			Trace(animation.name .. "animation over!")
+                if (self.animationOverEvent~=nil) then 
+                    self.animationOverEvent(animation, luaevent, args);
+                end
+		end
+	self.animatedWindow:RemoveComponent("currentanimation");
+	self.animatedWindow:AddComponent(animation);
+	animation:Begin(100, 0, 10);
+end
+
+function ExecutionView:SetAnimationOverEvent(event)
+	self.animationOverEvent = event;
+end
+
+function ExecutionView:ShowAnimationView(show)
+	self.animatedWindow.Enabled = show;
+	self.animatedWindow.Visible = show;
+end
+
+function ExecutionView:ShowStatus(show)
+	self.statusWindow.Enabled = show;
+	if (show == false) then
+		self.statusWindow.Visible = false;
+	else
+		self.statusWindow:LaunchTransition(200, true);
+	end
+end
+
+function ExecutionView:SetStatusText(text)
+	self.statusWindow.text = text;
 end

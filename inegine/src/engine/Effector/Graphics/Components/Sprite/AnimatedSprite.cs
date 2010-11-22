@@ -111,16 +111,26 @@ namespace INovelEngine.Effector
             int id = this.updateEvent.timeID;
             this.updateEvent = null;
             this.inAnimation = false;
-            if (this.AnimationOver != null) 
-                this.AnimationOver(this, ScriptEvents.AnimationOver, id);
-            
+            if (this.AnimationOver != null)
+                try
+                {
+                    this.AnimationOver(this, ScriptEvents.AnimationOver, id);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
         }
- 
+
+        public void Begin(int interval)
+        {
+            Begin(interval, this.startFrame, this.endFrame);
+        }
+
         public void Begin(int interval, int startFrame, int endFrame)
         {
             Begin(interval, startFrame, endFrame, false);   
         }
-
 
         public void Begin(int interval, int startFrame, int endFrame, bool loopForever)
         {

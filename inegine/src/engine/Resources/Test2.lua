@@ -3,6 +3,7 @@
 
 --Text handling functions
 
+
 function this.PrintOver(state, luaevent, args) --called by ESS scripts when printing is over after yielding
 	ResumeEss();
 end
