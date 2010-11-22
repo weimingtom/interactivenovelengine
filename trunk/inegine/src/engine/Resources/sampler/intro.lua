@@ -19,12 +19,8 @@ function Intro:PrintOver(state, luaevent, args) --called by ESS scripts when pri
 end
 
 function Intro:TextOut(value) --called by ESS scripts to output text
-	if(GetComponent("textwindow"):Print(value)) then
-		Trace "yielding because not over "
-		YieldESS();
-	else
-		Trace "not yielding because over"
-	end
+	GetComponent("textwindow"):Print(value)
+	YieldESS();
 end
 
 function Intro:Clear() --called by ESS scripts to clear text

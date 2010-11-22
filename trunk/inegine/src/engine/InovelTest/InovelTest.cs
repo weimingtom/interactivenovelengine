@@ -59,12 +59,5 @@ namespace InovelTest
         //
         #endregion
 
-        [TestMethod]
-        public void TestMethod1()
-        {
-            //
-            // TODO: Add test logic	here
-            //
-        }
     }
 }

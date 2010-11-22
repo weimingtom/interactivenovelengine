@@ -27,6 +27,8 @@ namespace INovelEngine
 
         private FontManager fontManager = new FontManager();
 
+        private static Queue<LuaEventHandler> defferedCallList = new Queue<LuaEventHandler>();
+
         public Device Device
         {
             get { return GraphicsDeviceManager.Direct3D9.Device; }
@@ -149,6 +151,13 @@ namespace INovelEngine
             //activeState.SendEvent(ScriptEvents.Update, Clock.GetTime());
 
             Clock.Tick();
+
+            // call deferred calls
+            while (defferedCallList.Count > 0)
+            {
+                LuaEventHandler luaEvent = defferedCallList.Dequeue();
+                luaEvent(this, ScriptEvents.AnimationOver, null);
+            }
         }
 
         protected override void Draw(GameTime gameTime)
@@ -193,6 +202,11 @@ namespace INovelEngine
         protected override void UnloadContent()
         {
             base.UnloadContent();
+        }
+
+        public static void CallLater(LuaEventHandler luaEvent)
+        {
+            defferedCallList.Enqueue(luaEvent);
         }
 
         #region Lua core bindings
