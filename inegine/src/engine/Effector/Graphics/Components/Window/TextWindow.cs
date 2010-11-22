@@ -263,7 +263,7 @@ namespace INovelEngine.Effector
             {
                 TextRenderer.DrawText(this.sprite, this.freeFont, isStatic ? viewText : scrollBuffer,
                                       this.RealX + leftMargin, this.RealY + topMargin,
-                                      Width - _margin * 2, Height - _margin * 2, Color.FromArgb((int)(255*progress), this._textColor));
+                                      Width - _margin * 2, Height - _margin * 2, Color.FromArgb(255, this._textColor));
             }
             else
             {
@@ -344,8 +344,7 @@ namespace INovelEngine.Effector
                 }
             }
 
-            int substringLength = Math.Min(narrationIndex + 1, viewText.Length);
-            scrollBuffer = viewText.Substring(0, substringLength);
+            scrollBuffer = viewText.Substring(0, narrationIndex);
             if (narrationIndex + 1 < viewText.Length)
             {
                 narrationIndex++;
@@ -391,7 +390,7 @@ namespace INovelEngine.Effector
             }
             else
             {
-                if (!_cancelFlag && (_breakIndex >= this.breaks.Count || _breakIndex == 1 && this.breaks.Count == 1)) // last _breakIndex
+                if (false)//!_cancelFlag && (_breakIndex >= this.breaks.Count || _breakIndex == 1 && this.breaks.Count == 1)) // last _breakIndex
                 {
                     this.scrollBuffer = viewText;
                     this.narrationIndex = this.viewText.Length - 1;
@@ -470,7 +469,10 @@ namespace INovelEngine.Effector
 
         public void Clear()
         {
+            Console.WriteLine("clearing text window!");
             this.sourceText = "";
+            this.viewText = "";
+            this.scrollBuffer = "";
             this.WrapText();
             this.ParseText();
             this._breakIndex = 0;
@@ -480,6 +482,10 @@ namespace INovelEngine.Effector
 
         public Boolean Print(string value)
         {
+            if (value[value.Length - 1] != '\n')
+            {
+                value = value + "\n";
+            }
             this.isStatic = false;
             this.sourceText += value;
             this.WrapText();

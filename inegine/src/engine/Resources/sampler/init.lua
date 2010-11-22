@@ -18,3 +18,4 @@ dofile("Resources/Sampler/init_testdata.lua")
 	GetFont("dialogue").TextEffect = 1;
 
 LoadState("main", "Resources/Sampler/main.lua");
+--LoadState("main", "Resources/Sampler/intro.lua");
