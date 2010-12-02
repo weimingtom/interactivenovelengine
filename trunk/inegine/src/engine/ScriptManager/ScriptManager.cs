@@ -191,7 +191,7 @@ namespace INovelEngine.Script
 
         public static void WaitDo(float delay, LuaEventHandler Do)
         {
-            TimeEvent eventToDo = new TimeEvent(1, delay, delegate() { },
+            TimeEvent eventToDo = new TimeEvent(1, (int)delay, delegate() { },
                                                 delegate() { Do(null, ScriptEvents.Etc, null); });
             Clock.AddTimeEvent(eventToDo);
         }

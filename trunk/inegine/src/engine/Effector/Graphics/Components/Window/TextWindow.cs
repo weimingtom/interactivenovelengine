@@ -82,13 +82,13 @@ namespace INovelEngine.Effector
             {
                 isStatic = value;
 
-                if (!isStatic)
+                if (isStatic)
                 {
-                    startTickEvent();
+                    stopTickEvent();
                 }
                 else
                 {
-                    stopTickEvent();
+                    startTickEvent();
                 }
             }
         }
@@ -132,9 +132,9 @@ namespace INovelEngine.Effector
             set
             {
                 _narrationSpeed = value;
-
-                if (!isStatic)
+                if (!this.isStatic)
                 {
+                    stopTickEvent();
                     startTickEvent();
                 }
             }
@@ -142,13 +142,11 @@ namespace INovelEngine.Effector
 
         private void startTickEvent()
         {
-            if (tickEvent != null)
+            if (tickEvent == null)
             {
-                Clock.RemoveTimeEvent(tickEvent);
+                tickEvent = new TimeEvent(_narrationSpeed, TickText);
+                Clock.AddTimeEvent(tickEvent);
             }
-            tickEvent = new TimeEvent(_narrationSpeed, TickText);
-            Clock.AddTimeEvent(tickEvent);
-        
         }
 
         private void stopTickEvent()
@@ -156,6 +154,7 @@ namespace INovelEngine.Effector
             if (tickEvent != null)
             {
                 Clock.RemoveTimeEvent(tickEvent);
+                tickEvent = null;
             }
         }
         private int _lineSpacing;
@@ -237,6 +236,7 @@ namespace INovelEngine.Effector
             set
             {
                 IsStatic = true;
+                stopTickEvent();
                 textNarrator.Clear();
                 textNarrator.AppendText(value);
             }
@@ -322,7 +322,6 @@ namespace INovelEngine.Effector
 
         private void PrintOverEnd() // what to do when everything is printed
         {
-            Console.WriteLine("<print over called! by " + this.Name);
             if (this.PrintOver != null)
             {
                 try
@@ -334,7 +333,6 @@ namespace INovelEngine.Effector
                     Console.WriteLine(e.Message);
                 }
             }
-            Console.WriteLine("print over called!>");
         }
 
         public void AdvanceText()
@@ -350,6 +348,7 @@ namespace INovelEngine.Effector
         public void Print(string value)
         {
             IsStatic = false;
+            startTickEvent();
             printOverCalled = false;
             textNarrator.AppendText(value);
         }
@@ -367,9 +366,6 @@ namespace INovelEngine.Effector
             }
         }
 
-        private void DoNothing()
-        {
-        }
 
         public void TurnOffSkip()
         {

@@ -73,7 +73,7 @@ function ExecutionView:Init()
 					self.dialogueOverEvent(window, luaevent, args);
 				end
 		end
-	
+	dialogueWin.narrationSpeed = 30;
 	self.frame:AddComponent(dialogueWin);
 	self.dialogueWin = dialogueWin;
 	
@@ -190,7 +190,7 @@ function ExecutionView:ShowStatus(show)
 	if (show == false) then
 		self.statusWindow.Visible = false;
 	else
-		self.statusWindow:LaunchTransition(200, true);
+		self.statusWindow:LaunchTransition(500, true);
 	end
 end
 

@@ -126,7 +126,6 @@
     <Compile Include="Effector\Graphics\Components\Label\Label.cs" />
     <Compile Include="Effector\Graphics\Components\Sprite\AnimatedSprite.cs" />
     <Compile Include="Effector\Graphics\Components\View\View.cs" />
-    <None Include="Effector\Graphics\Components\Window\TextWindowBackup.cs.bak" />
     <Compile Include="Effector\Graphics\Components\Window\TextNarrator.cs" />
     <Compile Include="Effector\Graphics\Effect\AbstractTransition.cs" />
     <Compile Include="Effector\Graphics\Effect\TransitionManager.cs" />

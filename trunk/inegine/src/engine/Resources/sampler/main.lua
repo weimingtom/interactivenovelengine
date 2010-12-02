@@ -367,12 +367,10 @@ function Main:TestExecution(execution)
 	
 	execution:ClearDialogueText();
 	execution:ShowDialogue(true);
-	execution:SetDialogueText("이번주는 사공일을 합니다.\n");
-	execution:SetDialogueText("잘 부탁 드립니다.@");
+	execution:SetDialogueText("이번주는 사공일을 합니다.\n잘 부탁 드립니다.@");
 	
 	execution:SetDialogueOverEvent(
 		function ()
-			Trace("dialogue over!");
 			self:ShowTachie(false);
 			execution:ShowDialogue(false);
 			execution:ShowAnimationView(true);

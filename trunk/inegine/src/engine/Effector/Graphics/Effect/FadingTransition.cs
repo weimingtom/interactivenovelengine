@@ -29,7 +29,7 @@ namespace INovelEngine.Effector
             thichkness = height;
         }
 
-        public void FadeOutIn(int width, int height, float duration, Color fadeColor)
+        public void FadeOutIn(int width, int height, int duration, Color fadeColor)
         {
             this.LaunchTransition(width, height, duration / 2, false, fadeColor);
             Clock.AddTimeEvent(new TimeEvent(1, duration / 2, 
