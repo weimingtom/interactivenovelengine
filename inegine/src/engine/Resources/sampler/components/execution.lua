@@ -29,7 +29,7 @@ function ExecutionView:Init()
 	self.frame.Width = GetWidth();
 	self.frame.Height = GetHeight();
 	self.frame.alpha = 155
-	self.frame.layer = 3
+	self.frame.layer = 10
 	
 	self.frame.Visible = false
 	self.frame.Enabled = false
@@ -196,4 +196,60 @@ end
 
 function ExecutionView:SetStatusText(text)
 	self.statusWindow.text = text;
+end
+
+function ExecutionView:SetExecutionOverEvent(event)
+	self.executionOverEvent = event;
+end
+
+function ExecutionView:ExecuteSchedule(beforeText, animationTexture, resultText, afterText)
+	self:ShowAnimationView(false);
+	self:ShowStatus(false);
+	self:ShowDialogue(false);
+	
+	self:Show();
+	
+	self:ClearDialogueText();
+	self:ShowDialogue(true);
+	self:SetDialogueText(beforeText);
+	
+	self:SetDialogueOverEvent(
+		function ()
+			self:ShowDialogue(false);
+			self:ShowAnimationView(true);
+			local tempAnimation = AnimatedSprite();
+			tempAnimation.Name = "scheduleAnimation"
+			tempAnimation.Texture = animationTexture
+			tempAnimation.Width = 32;
+			tempAnimation.Height = 48;
+			tempAnimation.Rows = 4;
+			tempAnimation.Cols = 4;
+			tempAnimation.Layer = 10;
+			tempAnimation.Visible = true
+			
+			self:SetAnimation(tempAnimation);
+			self:SetAnimationOverEvent(
+				function()
+					self:ShowStatus(true);
+					self:SetStatusText(resultText);
+					self:SetDialogueOverEvent(
+						function ()
+							self:ShowAnimationView(false);
+							self:ShowStatus(false);
+							self:ShowDialogue(false);
+							
+							if (self.executionOverEvent ~= nil) then
+								self:executionOverEvent();
+							end
+						end
+					)
+					self:ClearDialogueText();
+					self:ShowDialogue(true);
+				
+					self:SetDialogueText(afterText);
+
+				end
+			);
+		end
+	)
 end
