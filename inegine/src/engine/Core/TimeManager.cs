@@ -9,13 +9,13 @@ namespace INovelEngine.Core
     public class Clock
     {
         static private List<TimeEvent> timeEventList = new List<TimeEvent>();
-        static private float startUpTime = GetTime();
-        static private float timeBetweenFrames;
-        static private float timeOfLastTick = GetTime();
+        static private int startUpTime = GetTime();
+        static private int timeBetweenFrames;
+        static private int timeOfLastTick = GetTime();
         static private int frameRate = 0;
         static private int totalEvents = 0;
 
-        static public float GetTime()
+        static public int GetTime()
         {
             return System.Environment.TickCount;
         }
@@ -101,8 +101,8 @@ namespace INovelEngine.Core
     public class TimeEvent : IComparable
     {
         public int timeID;
-        public float timeLeft;
-        public float birthTime;
+        public int timeLeft;
+        public int birthTime;
 
         public bool kill = false;
         public bool immortal = false;
@@ -112,7 +112,7 @@ namespace INovelEngine.Core
         public Call call;
         public Call EndCall;
 
-        public TimeEvent(int iterationNumber, float delay, Call c, Call e)
+        public TimeEvent(int iterationNumber, int delay, Call c, Call e)
         {
             this.EndCall = new Call(e);
             this.call = new Call(c);
@@ -121,7 +121,7 @@ namespace INovelEngine.Core
             this.timeLeft = delay;
         }
 
-        public TimeEvent(int iterationNumber, float delay, Call c)
+        public TimeEvent(int iterationNumber, int delay, Call c)
         {
             this.call = new Call(c);
             this.birthTime = Clock.GetTime();
@@ -129,7 +129,7 @@ namespace INovelEngine.Core
             this.timeLeft = delay;
         }
 
-        public TimeEvent(float delayToCall, Call c)
+        public TimeEvent(int delayToCall, Call c)
         {
             this.call = new Call(c);
             this.birthTime = Clock.GetTime();

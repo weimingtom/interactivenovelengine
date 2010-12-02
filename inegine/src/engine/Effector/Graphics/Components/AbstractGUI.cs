@@ -26,10 +26,10 @@ namespace INovelEngine.Effector
     {
         protected GraphicsDeviceManager manager;
 
-        protected float beginTick;
-        protected float endTick;
-        protected float currentTick;
-        protected float tickLength;
+        protected int beginTick;
+        protected int endTick;
+        protected int currentTick;
+        protected int tickLength;
         protected bool fadeIn;
         protected bool inTransition = false;
         protected Color renderColor = Color.White;
@@ -193,8 +193,8 @@ namespace INovelEngine.Effector
         public void LaunchTransition(float duration, bool isFadingIn)
         {
             beginTick = Clock.GetTime();
-            tickLength = duration;
-            endTick = beginTick + duration;
+            tickLength = (int)duration;
+            endTick = beginTick + (int)duration;
             fadeIn = isFadingIn;
             Fading = true;
             Visible = true;
@@ -253,8 +253,8 @@ namespace INovelEngine.Effector
                 else
                 {
                     progress = fadeIn
-                                   ? Math.Min(1.0f, (currentTick - beginTick) / tickLength)
-                                   : 1.0f - Math.Min(1.0f, (currentTick - beginTick) / tickLength);
+                                   ? Math.Min(1.0f, (float)(currentTick - beginTick) / (float)tickLength)
+                                   : 1.0f - Math.Min(1.0f, (float)(currentTick - beginTick) / (float)tickLength);
 
                 }
             }

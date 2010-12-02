@@ -94,13 +94,12 @@ namespace INovelEngine.ResourceManager
         public void Fadeout(int delay)
         {
             int steps = delay/5;
-            float stepDuration = 5;
             
             fadeStartTick = Clock.GetTime();
             fadeDuration = (float)delay;
             oldVolume = Volume;
 
-            fadeOutEvent = new TimeEvent(steps, stepDuration, FadeOutStep, FadeOutOver);
+            fadeOutEvent = new TimeEvent(steps, 5, FadeOutStep, FadeOutOver);
             Clock.AddTimeEvent(fadeOutEvent);
         }
 

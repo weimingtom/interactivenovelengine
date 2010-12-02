@@ -70,7 +70,7 @@ namespace INovelEngine
             this.Window.MaximizeBox = false;
 
 #if DEBUG
-            Clock.AddTimeEvent(new TimeEvent(1000f, displayFPS));
+            Clock.AddTimeEvent(new TimeEvent(1000, displayFPS));
 #endif         
         }
 
