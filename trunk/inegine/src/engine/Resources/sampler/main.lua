@@ -328,7 +328,12 @@ function Main:OpenSchedule()
 		end
 	)
 	
-    
+    schedule:SetExecutingEvent(
+		function (button, luaevent, args)
+			schedule:Dispose();
+			self:OpenScheduleExecution();
+		end
+    )
 	
 	--add test items
 	schedule:AddEducationItem("education1", "edu 1");
@@ -351,62 +356,35 @@ function Main:OpenSchedule()
 end
 
 function Main:OpenScheduleExecution()
-	self:ToggleMainMenu(false);
 	local execution = ExecutionView:New("executionView", CurrentState());
 	self.execution = execution;
-	
 	self:TestExecution(execution);
 end
 
 function Main:TestExecution(execution)
-	execution:ShowAnimationView(false);
-	execution:ShowStatus(false);
-	execution:ShowDialogue(false);
-	
-	execution:Show();
-	
-	execution:ClearDialogueText();
-	execution:ShowDialogue(true);
-	execution:SetDialogueText("이번주는 사공일을 합니다.\n잘 부탁 드립니다.@");
-	
-	execution:SetDialogueOverEvent(
-		function ()
-			self:ShowTachie(false);
-			execution:ShowDialogue(false);
-			execution:ShowAnimationView(true);
-			local tempAnimation = AnimatedSprite();
-			tempAnimation.Name = "testani"
-			tempAnimation.Texture = "Resources/sampler/resources/cursor.png"
-			tempAnimation.Width = 32;
-			tempAnimation.Height = 48;
-			tempAnimation.Rows = 4;
-			tempAnimation.Cols = 4;
-			tempAnimation.Layer = 10;
-			tempAnimation.Visible = true
-			
-			execution:SetAnimation(tempAnimation);
-			execution:SetAnimationOverEvent(
-				function()
-					execution:ShowStatus(true);
-					execution:SetStatusText("GOLD +5,400\nSTR +10, DEX +10, CON + 10");
-					execution:SetDialogueOverEvent(
-						function ()
-							execution:ShowAnimationView(false);
-							execution:ShowStatus(false);
-							execution:ShowDialogue(false);
-							
-							self:TestExecution(execution);
-						end
-					)
-					execution:ClearDialogueText();
-					execution:ShowDialogue(true);
-				
-					execution:SetDialogueText("이번주는 잘 되었습니다!\n아버지도 기뻐하실거에요.@");
-
+	self:ShowTachie(false);
+	self:ToggleMainMenu(false);
+	execution:SetExecutionOverEvent(
+		function ()				
+			execution:SetExecutionOverEvent(
+				function ()		
+					self:ShowTachie(true);
+					self:ToggleMainMenu(true);
+					execution:Dispose();
+					Trace("execution over!");
 				end
-			);
+			)
+			execution:ExecuteSchedule("이번주는 사공일을 합니다.\n잘 부탁 드립니다.@", 
+									  "Resources/sampler/resources/cursor.png",
+									  "GOLD +0\nSTR +0, DEX +0, CON + 0",
+									  "이번주는 잘 안되었습니다!\n아버지가 슬퍼하실거에요.@");
 		end
 	)
+	execution:ExecuteSchedule("이번주는 사공일을 합니다.\n잘 부탁 드립니다.@", 
+							  "Resources/sampler/resources/cursor.png",
+							  "GOLD +5,400\nSTR +10, DEX +10, CON + 10",
+							  "이번주는 잘 되었습니다!\n아버지도 기뻐하실거에요.@");
+	Trace("executed!");
 end
 
 function Main:OpenCommunication()
@@ -570,5 +548,3 @@ main:InvalidateStatus();
 
 main:SetBackground("Resources/sampler/images/room01.png");
 main:SetTachieBody("Resources/sampler/images/1.png");
-
-main:OpenScheduleExecution();
