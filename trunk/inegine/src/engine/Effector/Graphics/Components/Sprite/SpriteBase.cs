@@ -33,6 +33,7 @@ namespace INovelEngine.Effector
             }
             set
             {
+                if (this.textureManager != null) resources.Remove(textureManager);
                 textureManager = new INETexture(value);
                 resources.Add(textureManager);
                 SetDimensions();

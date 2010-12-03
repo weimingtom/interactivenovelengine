@@ -56,6 +56,7 @@ function Calendar:AdvanceDay()
 end
 
 function Calendar:AdvanceWeek()
+	self.week = self.week + 1;
 end
 
 function Calendar:GetFirstDayOfWeek()
