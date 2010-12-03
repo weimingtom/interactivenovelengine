@@ -1,7 +1,7 @@
 --Import
-require "Resources\\sampler\\components\\inventory"
-require "Resources\\sampler\\components\\schedule"
-require "Resources\\sampler\\components\\execution"
+require "Resources\\sampler\\inventory\\inventory"
+require "Resources\\sampler\\schedule\\schedule"
+require "Resources\\sampler\\schedule\\execution"
 
 Main = {}
 
@@ -365,25 +365,33 @@ function Main:TestExecution(execution)
 	self:ShowTachie(false);
 	self:ToggleMainMenu(false);
 	execution:SetExecutionOverEvent(
-		function ()				
+		function ()
+			calendar:AdvanceWeek()
+			self:InvalidateDate()
 			execution:SetExecutionOverEvent(
-				function ()		
+				function ()
+			calendar:AdvanceWeek()
+			self:InvalidateDate()		
 					self:ShowTachie(true);
 					self:ToggleMainMenu(true);
 					execution:Dispose();
 					Trace("execution over!");
 				end
 			)
-			execution:ExecuteSchedule("이번주는 사공일을 합니다.\n잘 부탁 드립니다.@", 
+			execution:ExecuteSchedule("이번주는 사공일을 합니다.\n잘 부탁 드립니다.@",
+									  "Resources/sampler/resources/images/f3.png",
 									  "Resources/sampler/resources/cursor.png",
 									  "GOLD +0\nSTR +0, DEX +0, CON + 0",
-									  "이번주는 잘 안되었습니다!\n아버지가 슬퍼하실거에요.@");
+									  "이번주는 잘 안되었습니다!\n아버지가 슬퍼하실거에요.@",
+									  "Resources/sampler/resources/images/f1.png");
 		end
 	)
-	execution:ExecuteSchedule("이번주는 사공일을 합니다.\n잘 부탁 드립니다.@", 
+	execution:ExecuteSchedule("이번주는 사공일을 합니다.\n잘 부탁 드립니다.@",
+							  "Resources/sampler/resources/images/f3.png", 
 							  "Resources/sampler/resources/cursor.png",
 							  "GOLD +5,400\nSTR +10, DEX +10, CON + 10",
-							  "이번주는 잘 되었습니다!\n아버지도 기뻐하실거에요.@");
+							  "이번주는 잘 되었습니다!\n아버지도 기뻐하실거에요.@",
+							  "Resources/sampler/resources/images/f2.png");
 	Trace("executed!");
 end
 
@@ -421,15 +429,15 @@ function Main:OpenInventory()
 			Trace("select event called from " .. button.name);
 			if (button.name == "dress1") then
 				Trace("changing dress to dress 1")
-				main:SetTachieBody("Resources/sampler/images/1.png");
+				main:SetTachieBody("Resources/sampler/resources/images/1.png");
 				main:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
 			elseif (button.name == "dress2") then
 				Trace("changing dress to dress 2")
-				main:SetTachieBody("Resources/sampler/images/2.png");
+				main:SetTachieBody("Resources/sampler/resources/images/2.png");
 				main:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
 			elseif (button.name == "dress3") then
 				Trace("changing dress to dress 3")
-				main:SetTachieBody("Resources/sampler/images/3.png");
+				main:SetTachieBody("Resources/sampler/resources/images/3.png");
 				main:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
 			end
 
@@ -546,5 +554,5 @@ CurrentState().state = mainView;
 main:InvalidateDate();
 main:InvalidateStatus();
 
-main:SetBackground("Resources/sampler/images/room01.png");
-main:SetTachieBody("Resources/sampler/images/1.png");
+main:SetBackground("Resources/sampler/resources/images/room01.png");
+main:SetTachieBody("Resources/sampler/resources/images/1.png");

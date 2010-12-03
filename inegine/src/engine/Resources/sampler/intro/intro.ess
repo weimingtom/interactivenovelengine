@@ -1,7 +1,7 @@
 ﻿[테스트 스크립트 1]
-#Load "room", "Resources/sampler/images/room02.jpg"
-#Load "logo", "Resources/sampler/images/logo.png"
-#Load "title", "Resources/sampler/images/title.png"
+#Load "room", "Resources/sampler/resources/images/room02.jpg"
+#Load "logo", "Resources/sampler/resources/images/logo.png"
+#Load "title", "Resources/sampler/resources/images/title.png"
 #LoadCharacter "musume1", "Resources/before.png" 
 #LoadCharacter "musume2", "Resources/after.png"
 #LoadSound "intro", "Resources/sampler/sound/intro.mp3"

@@ -80,10 +80,9 @@ function ExecutionView:Init()
 	
 	local portrait = SpriteBase();
 	portrait.Name = "portrait";
-	portrait.Texture = "Resources/sampler/images/f2.png"
 	portrait.Visible = true;
-	portrait.X = (dialogueWin.x - portrait.Width) / 2;
-	portrait.y = self.frame.Height - dialogueWin.Height - 20 + ((dialogueWin.Height - portrait.Height) / 2);
+	--portrait.X = (dialogueWin.x - portrait.Width) / 2;
+	--portrait.y = self.frame.Height - dialogueWin.Height - 20 + ((dialogueWin.Height - portrait.Height) / 2);
 	portrait.Layer = 2;
 	self.portrait = portrait;
 	self.frame:AddComponent(portrait);
@@ -202,7 +201,14 @@ function ExecutionView:SetExecutionOverEvent(event)
 	self.executionOverEvent = event;
 end
 
-function ExecutionView:ExecuteSchedule(beforeText, animationTexture, resultText, afterText)
+function ExecutionView:SetPortraitTexture(texture)
+	self.portrait.Texture = texture;
+	self.portrait.X = (self.dialogueWin.x - self.portrait.Width) / 2;
+	self.portrait.y = self.frame.Height - self.dialogueWin.Height - 20 + 
+					  ((self.dialogueWin.Height - self.portrait.Height) / 2);
+end
+
+function ExecutionView:ExecuteSchedule(beforeText, beforePortrait, animationTexture, resultText, afterText, afterPortrait)
 	self:ShowAnimationView(false);
 	self:ShowStatus(false);
 	self:ShowDialogue(false);
@@ -211,6 +217,7 @@ function ExecutionView:ExecuteSchedule(beforeText, animationTexture, resultText,
 	
 	self:ClearDialogueText();
 	self:ShowDialogue(true);
+	self:SetPortraitTexture(beforePortrait);
 	self:SetDialogueText(beforeText);
 	
 	self:SetDialogueOverEvent(
@@ -244,6 +251,7 @@ function ExecutionView:ExecuteSchedule(beforeText, animationTexture, resultText,
 						end
 					)
 					self:ClearDialogueText();
+					self:SetPortraitTexture(afterPortrait);
 					self:ShowDialogue(true);
 				
 					self:SetDialogueText(afterText);
