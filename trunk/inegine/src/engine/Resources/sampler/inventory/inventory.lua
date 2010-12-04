@@ -1,29 +1,15 @@
 -- InventoryView UI component implemented in lua
+require "Resources\\sampler\\components\\luaview"
 require "Resources\\sampler\\components\\tabview"
 require "Resources\\sampler\\components\\flowview"
 
-InventoryView = {}
-
-
-function InventoryView:New (name, parent)
-	local o = {}
-	setmetatable(o, self)
-	self.__index = self
-	
-	o.parent = parent;
-	o.name = name
-	o.font = GetFont("default");
-	
-	o:Init();
-	
-	return o
-end
+InventoryView = LuaView:New();
 
 function InventoryView:Init()
 	local gamestate = CurrentState();
 	
 	local parent = self.parent;
-	local font = self.font; 
+	local font = GetFont("default"); 
 	local name = self.name;
 	
 	self.frame = TextWindow()

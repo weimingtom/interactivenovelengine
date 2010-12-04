@@ -1,28 +1,16 @@
 -- schedule UI component implemented in lua
+require "Resources\\sampler\\components\\luaview"
 require "Resources\\sampler\\components\\tabview"
 require "Resources\\sampler\\components\\flowview"
 
-ScheduleView = {}
-
-function ScheduleView:New (name, parent)
-	local o = {}
-	setmetatable(o, self)
-	self.__index = self
-	
-	o.parent = parent;
-	o.name = name
-	o.font = GetFont("default");
-	
-	o:Init();
-	
-	return o
-end
+ScheduleView = LuaView:New();
 
 function ScheduleView:Init()
 	local gamestate = CurrentState();
 	local parent = self.parent;
-	local font = self.font; 
+	local font = GetFont("default"); 
 	local name = self.name;
+	self.font = font;
 	
 	self.frame = View()
 	self.frame.Name = name
@@ -281,7 +269,7 @@ function ScheduleView:Init()
 	local detailviewframe = TextWindow()
 	self.detailviewframe = detailviewframe;
 	detailviewframe.Name = "detailviewframe"
-	detailviewframe.font = self.font;
+	detailviewframe.font = font;
 	detailviewframe.X = 415;
 	detailviewframe.Y = 440;
 	detailviewframe.Width = 380

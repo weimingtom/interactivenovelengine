@@ -289,7 +289,7 @@ end
 function Main:OpenSchedule()
 	self:ToggleMainMenu(false);
 	local schedule = ScheduleView:New("scheduleView", CurrentState());
-	
+	schedule:Init();
 	schedule:SetClosingEvent( 
 		function()
 			Trace("scheduletory clicked!")
@@ -361,6 +361,7 @@ end
 
 function Main:OpenScheduleExecution()
 	local execution = ExecutionView:New("executionView", CurrentState());
+	execution:Init();
 	self.execution = execution;
 	self:TestExecution(execution);
 end
@@ -484,6 +485,7 @@ end
 function Main:OpenInventory()
 	self:ToggleMainMenu(false);
 	local inven = InventoryView:New("inventory", CurrentState());
+	inven.init();
 	
 	inven:SetClosingEvent( 
 		function()
