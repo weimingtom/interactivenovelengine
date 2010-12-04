@@ -2,6 +2,8 @@
 require "Resources\\sampler\\inventory\\inventory"
 require "Resources\\sampler\\schedule\\schedule"
 require "Resources\\sampler\\schedule\\execution"
+require "Resources\\sampler\\shopping\\shoplist"
+require "Resources\\sampler\\shopping\\shop"
 
 Main = {}
 
@@ -212,7 +214,7 @@ function Main:InitComponents()
 		function (button5, luaevent, args)
 			if (button5.State["mouseDown"]) then
 				button5.Pushed = false
-				Trace("button5 click!")
+				self:OpenShop();
 			end
 		end
 	button5.Text = "Shopping";
@@ -402,6 +404,57 @@ function Main:OpenStatus()
 end
 
 function Main:OpenShop()
+	self:ToggleMainMenu(false);
+	self:ShowTachie(false);
+	local shoplist = ShopListView:New("shoplistview", CurrentState());
+	self.shoplist = shoplist;
+	shoplist:Init();
+	shoplist:SetShopSelectedEvent(
+		function(button, luaevent, arg)
+			shoplist:Dispose();
+			local shop = ShopView:New("shop", CurrentState());
+			self.shop = shop;
+			shop:Init();
+			shop:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+			shop:SetDialogueText("옷집에 오신것을 환영합니다.");	
+			shop:ShowDialogue(true);
+			shop:AddItem("item1", "item 1");
+			shop:AddItem("item2", "item 2");
+			shop:AddItem("item3", "item 3");
+			
+			shop:SetSelectedEvent(
+				function(button, luaevent, args)
+					self.itemSelected = button.name;
+					shop:SetDetailText("SELECTED " .. button.name)
+				end
+			);
+			
+			shop:SetBuyingEvent(
+				function()
+					Trace("buying something!")
+					shop:ClearDialogueText();
+					shop:SetDialogueText(self.itemSelected .. " 를 구입하셨습니다.");	
+				end
+			);
+			shop:SetClosingEvent(
+				function()
+					Trace("shop closing!")
+					shop:Dispose();
+					self:OpenShop();
+				end
+			);
+			shop:Show();
+		end
+	)
+	shoplist:SetClosingEvent( 
+		function()
+			Trace("shop closing!")
+			shoplist:Dispose();
+			self:ShowTachie(true);
+			self:ToggleMainMenu(true);
+		end
+	);
+	shoplist:Show();
 end
 
 function Main:OpenGoddess()
