@@ -1,19 +1,7 @@
 -- schedule UI component implemented in lua
+require "Resources\\sampler\\components\\luaview"
 
-ExecutionView = {}
-
-function ExecutionView:New (name, parent)
-	local o = {}
-	setmetatable(o, self)
-	self.__index = self
-	
-	o.parent = parent;
-	o.name = name
-	
-	o:Init();
-	
-	return o
-end
+ExecutionView = LuaView:New();
 
 function ExecutionView:Init()
 	local gamestate = CurrentState();
