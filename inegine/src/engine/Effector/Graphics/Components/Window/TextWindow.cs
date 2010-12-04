@@ -36,6 +36,7 @@ namespace INovelEngine.Effector
             _margin = 10;
             textNarrator = new TextNarrator();
             printOverCalled = false;
+            lines = new Vector2[2];
         }
 
         public int TextColor
@@ -198,7 +199,7 @@ namespace INovelEngine.Effector
             }
         }
 
-        public Line line;
+        private Line line;
 
         private INEFont fontManager;
 
@@ -229,7 +230,7 @@ namespace INovelEngine.Effector
             }
         }
         
-        Vector2[] lines = new Vector2[2];
+        Vector2[] lines;
         
         public string Text
         {

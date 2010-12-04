@@ -4,6 +4,7 @@ require "Resources\\sampler\\schedule\\schedule"
 require "Resources\\sampler\\schedule\\execution"
 require "Resources\\sampler\\shopping\\shoplist"
 require "Resources\\sampler\\shopping\\shop"
+require "Resources\\sampler\\status\\status"
 
 Main = {}
 
@@ -158,6 +159,7 @@ function Main:InitComponents()
 			if (button3.State["mouseDown"]) then
 				button3.Pushed = false
 				Trace("button3 click!")
+				self:OpenStatus();
 			end
 		end
 	button3.Text = "Status";
@@ -401,6 +403,22 @@ function Main:OpenCommunication()
 end
 
 function Main:OpenStatus()
+	self:ToggleMainMenu(false);
+	self.statusView = StatusView:New("statusView", CurrentState());
+	local statusView = self.statusView;
+	statusView:Init();
+	statusView:SetClosingEvent( 
+		function()
+			Trace("shop closing!")
+			statusView:Dispose();
+			self:ShowTachie(true);
+			self:ToggleMainMenu(true);
+		end
+	);
+	statusView:Show();
+	statusView:SetDescriptionText("TEST\nTEST2\nTEST3");
+	statusView:AddGraphItem("기품", "900", 50, 0x990000);
+	statusView:AddGraphItem("미모", "300", 100, 0x0099CC);
 end
 
 function Main:OpenShop()

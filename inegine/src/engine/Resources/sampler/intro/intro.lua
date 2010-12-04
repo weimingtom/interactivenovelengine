@@ -57,12 +57,12 @@ function Intro:InitComponents()
 	local gamestate = CurrentState();
 	
 	--init font
-	LoadFont("default", "Resources\\sampler\\fonts\\NanumGothicBold.ttf", 17);
+	LoadFont("default", "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf", 17);
 	--LoadFont("default", "c:\\windows\\fonts\\gulim.ttc", 12, "c:\\windows\\fonts\\gulim.ttc", 10) --ruby font
 	GetFont("default").LineSpacing = 10;
 	GetFont("default").TextEffect = 1;
 	
-	LoadFont("small", "Resources\\sampler\\fonts\\NanumMyeongjoBold.ttf", 15);
+	LoadFont("small", "Resources\\sampler\\resources\\fonts\\NanumMyeongjoBold.ttf", 15);
 	--LoadFont("small", "c:\\windows\\fonts\\meiryo.ttc", 15);
 	GetFont("small").LineSpacing = 10;
 	GetFont("small").TextEffect = 0;
@@ -203,7 +203,7 @@ end
 intro = Intro:New();
 CurrentState().state = intro;
 --this.ESSOverHandler = this.ESSOverTest;
-BeginESS("Resources/sampler/intro.ess");
+BeginESS("Resources/sampler/intro/intro.ess");
 --GetComponent("textwindow"):Print("hi!");
 --name("Sampler:")
 
