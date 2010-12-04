@@ -74,9 +74,10 @@ function ShopView:Init()
 
 	self:ShowDialogue(false);
 		
-	local background = TextWindow()
+	local background = View()
 	background.name = "backround"
 	background.relative = true;
+	background.BackgroundColor = 0x000000
 	background.width = 400;
 	background.height = 320;
 	background.x = 5;

@@ -2,8 +2,8 @@
 #Load "room", "Resources/sampler/resources/images/room02.jpg"
 #Load "logo", "Resources/sampler/resources/images/logo.png"
 #Load "title", "Resources/sampler/resources/images/title.png"
-#LoadCharacter "musume1", "Resources/before.png" 
-#LoadCharacter "musume2", "Resources/after.png"
+#LoadCharacter "musume1", "Resources/sampler/resources/before.png" 
+#LoadCharacter "musume2", "Resources/sampler/resources/after.png"
 #LoadSound "intro", "Resources/sampler/sound/intro.mp3"
 #Volume "intro", 20
 #Wait 100
