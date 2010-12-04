@@ -17,8 +17,7 @@ end
 
 function ExecutionView:Init()
 	local gamestate = CurrentState();
-	local parent = self.parent;
-	local font = self.font; 
+	local parent = self.parent; 
 	local name = self.name;
 	
 	self.frame = View()

@@ -207,7 +207,7 @@ function ScheduleView:Init()
                 if (self.closeEvent~=nil) then self.closeEvent(closeButton, luaevent, args); end
 			end
 		end
-	closeButton.Text = "Cancel";
+	closeButton.Text = "Close";
 	closeButton.Font = font
 	closeButton.TextColor = 0xEEEEEE
 	

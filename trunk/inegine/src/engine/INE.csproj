@@ -183,6 +183,9 @@
     <None Include="Resources\sampler\intro\intro.lua" />
     <None Include="Resources\sampler\main\main.lua" />
     <None Include="Resources\sampler\intro\intro.ess" />
+    <None Include="Resources\sampler\components\luaview.lua" />
+    <None Include="Resources\sampler\shopping\shop.lua" />
+    <None Include="Resources\sampler\shopping\shoplist.lua" />
     <None Include="Resources\start.lua" />
     <None Include="Resources\test\mockview.lua" />
     <None Include="Resources\test\flowviewTest.lua" />
@@ -233,6 +236,7 @@
     <Content Include="Resources\sampler\resources\images\title.png" />
     <Content Include="Resources\sampler\resources\button.png" />
     <Content Include="Resources\sampler\resources\cursor.png" />
+    <Content Include="Resources\sampler\resources\images\village.png" />
     <Content Include="Resources\sampler\resources\test.ico" />
     <Content Include="Resources\sampler\resources\whitewin.png" />
     <Content Include="Resources\sampler\resources\win.png" />
