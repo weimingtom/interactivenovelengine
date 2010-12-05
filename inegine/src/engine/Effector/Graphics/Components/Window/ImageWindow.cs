@@ -21,6 +21,22 @@ namespace INovelEngine.Effector
         
         protected INETexture _windowTexture;
 
+        public ImageWindow()
+            : base()
+        {
+            RectSize = 16;
+        }
+
+        public int RectSize
+        {
+            get;
+            set;
+        }
+
+        private int GetPosition(TilePositions pos)
+        {
+            return (int)pos * RectSize;
+        }
         public string WindowTexture
         {
             get
@@ -46,11 +62,7 @@ namespace INovelEngine.Effector
             }
         }
 
-        public ImageWindow()
-            : base()
-        {
-        }
-
+       
         public override void Draw()
         {
             base.Draw();
@@ -66,39 +78,39 @@ namespace INovelEngine.Effector
             sprite.Begin(SpriteFlags.AlphaBlend);
             rect.X = 0;
             rect.Y = 0;
-            rect.Width = 16;
-            rect.Height = 16;
+            rect.Width = RectSize;
+            rect.Height = RectSize;
 
             position.X = this.RealX;
             position.Y = this.RealY;
 
-            int numHorizontalTiles = this.Width / 16 - 2;
-            int numVerticalTiles = this.Height / 16 - 2;
+            int numHorizontalTiles = this.Width / RectSize - 2;
+            int numVerticalTiles = this.Height / RectSize - 2;
 
 
             int widthDrawn = 0;
             int heightDrawn = 0;
             // left side
-            rect.X =  (int)TilePositions.UPLEFT;
+            rect.X = GetPosition(TilePositions.UPLEFT);
 
             sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
             
-            position.X += 16;
-            widthDrawn += 16;
+            position.X += RectSize;
+            widthDrawn += RectSize;
             
             // tile upper side
-            rect.X = (int)TilePositions.UPCENTER;
+            rect.X = GetPosition(TilePositions.UPCENTER);
             
             for (int i = 0; i < numHorizontalTiles; i++)
             {
                 sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
-                position.X += 16;
-                widthDrawn += 16;
+                position.X += RectSize;
+                widthDrawn += RectSize;
             }
 
             // draw last tile
-            int lastWidth = this.Width - widthDrawn - 16;
+            int lastWidth = this.Width - widthDrawn - RectSize;
             rect.Width = lastWidth;
 
             sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
@@ -106,12 +118,12 @@ namespace INovelEngine.Effector
             position.X += lastWidth;
 
             // right side
-            rect.Width = 16;
-            rect.X = (int)TilePositions.UPRIGHT;
+            rect.Width = RectSize;
+            rect.X = GetPosition(TilePositions.UPRIGHT);
             sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
-            heightDrawn += 16;
-            position.Y += 16;
+            heightDrawn += RectSize;
+            position.Y += RectSize;
             
             // draw rows
             for (int j = 0; j < numVerticalTiles; j++)
@@ -119,26 +131,26 @@ namespace INovelEngine.Effector
                 position.X = this.RealX;
                 widthDrawn = 0;
                 // left side
-                rect.X = (int)TilePositions.CENTERLEFT;
+                rect.X = GetPosition(TilePositions.CENTERLEFT);
 
                 sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
-                position.X += 16;
-                widthDrawn += 16;
+                position.X += RectSize;
+                widthDrawn += RectSize;
 
                 // tile upper side
-                rect.X = (int)TilePositions.CENTER;
+                rect.X = GetPosition(TilePositions.CENTER);
 
                 for (int i = 0; i < numHorizontalTiles; i++)
                 {
                     sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
-                    position.X += 16;
-                    widthDrawn += 16;
+                    position.X += RectSize;
+                    widthDrawn += RectSize;
                 }
 
                 // draw last tile
-                lastWidth = this.Width - widthDrawn - 16;
+                lastWidth = this.Width - widthDrawn - RectSize;
                 rect.Width = lastWidth;
 
                 sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
@@ -146,42 +158,42 @@ namespace INovelEngine.Effector
                 position.X += lastWidth;
 
                 // right side
-                rect.Width = 16;
-                rect.X = (int)TilePositions.CENTERRIGHT;
+                rect.Width = RectSize;
+                rect.X = GetPosition(TilePositions.CENTERRIGHT);
                 sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
-                heightDrawn += 16;
-                position.Y += 16;
+                heightDrawn += RectSize;
+                position.Y += RectSize;
             }
             
             /* draw last row tiles */
-            int lastHeight = this.Height - heightDrawn - 16;
+            int lastHeight = this.Height - heightDrawn - RectSize;
 
             rect.Height = lastHeight;
             
             position.X = this.RealX;
             widthDrawn = 0;
             // left side
-            rect.X = (int)TilePositions.CENTERLEFT;
+            rect.X = GetPosition(TilePositions.CENTERLEFT);
 
             sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
-            position.X += 16;
-            widthDrawn += 16;
+            position.X += RectSize;
+            widthDrawn += RectSize;
 
             // tile upper side
-            rect.X = (int)TilePositions.CENTER;
+            rect.X = GetPosition(TilePositions.CENTER);
 
             for (int i = 0; i < numHorizontalTiles; i++)
             {
                 sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
-                position.X += 16;
-                widthDrawn += 16;
+                position.X += RectSize;
+                widthDrawn += RectSize;
             }
 
             // draw last tile
-            lastWidth = this.Width - widthDrawn - 16;
+            lastWidth = this.Width - widthDrawn - RectSize;
             rect.Width = lastWidth;
 
             sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
@@ -189,40 +201,40 @@ namespace INovelEngine.Effector
             position.X += lastWidth;
 
             // right side
-            rect.Width = 16;
-            rect.X = (int)TilePositions.CENTERRIGHT;
+            rect.Width = RectSize;
+            rect.X = GetPosition(TilePositions.CENTERRIGHT);
             sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
-            heightDrawn += 16;
+            heightDrawn += RectSize;
             position.Y += lastHeight;
             
             
             // draw lower part
 
-            rect.Height = 16;
+            rect.Height = RectSize;
             position.X = this.RealX;
             widthDrawn = 0;
             // left side
-            rect.X = (int)TilePositions.DOWNLEFT;
+            rect.X = GetPosition(TilePositions.DOWNLEFT);
 
             sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
-            position.X += 16;
-            widthDrawn += 16;
+            position.X += RectSize;
+            widthDrawn += RectSize;
 
             // tile upper side
-            rect.X = (int)TilePositions.DOWNCENTER;
+            rect.X = GetPosition(TilePositions.DOWNCENTER);
 
             for (int i = 0; i < numHorizontalTiles; i++)
             {
                 sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
-                position.X += 16;
-                widthDrawn += 16;
+                position.X += RectSize;
+                widthDrawn += RectSize;
             }
 
             // draw last tile
-            lastWidth = this.Width - widthDrawn - 16;
+            lastWidth = this.Width - widthDrawn - RectSize;
             rect.Width = lastWidth;
 
             sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
@@ -230,8 +242,8 @@ namespace INovelEngine.Effector
             position.X += lastWidth;
 
             // right side
-            rect.Width = 16;
-            rect.X = (int)TilePositions.DOWNRIGHT;
+            rect.Width = RectSize;
+            rect.X = GetPosition(TilePositions.DOWNRIGHT);
             sprite.Draw(this._windowTexture.Texture, rect, center, position, Color.FromArgb(this._alpha, this._backgroundColor));
 
             sprite.End();
@@ -265,17 +277,17 @@ namespace INovelEngine.Effector
             base.Dispose();
         }
 
-        enum TilePositions : int
+        private enum TilePositions : int
         {
             UPLEFT = 0,
-            UPCENTER = 16,
-            UPRIGHT = 32,
-            CENTERRIGHT = 48,
-            DOWNRIGHT = 64,
-            DOWNCENTER = 80,
-            DOWNLEFT = 96,
-            CENTERLEFT = 112,
-            CENTER = 128
+            UPCENTER = 1,
+            UPRIGHT = 2,
+            CENTERRIGHT = 3,
+            DOWNRIGHT = 4,
+            DOWNCENTER = 5,
+            DOWNLEFT = 6,
+            CENTERLEFT = 7,
+            CENTER = 8
         }
 
 

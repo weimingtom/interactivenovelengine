@@ -11,12 +11,6 @@ using INovelEngine.Effector.Graphics.Components;
 
 namespace INovelEngine.Effector
 {
-    public enum ComponentType
-    {
-        TextWindow
-    }
-
-
     public interface IGUIComponent : IResource, IGameComponent, IComparable
     {
 
@@ -69,12 +63,7 @@ namespace INovelEngine.Effector
             set;
         }
 
-        public ComponentType Type
-        {
-            get;
-            set;
-        }
-
+       
         public string Name
         {
             get;
@@ -414,7 +403,7 @@ namespace INovelEngine.Effector
 
         public virtual void Dispose()
         {
-            Console.WriteLine("disposing:" + this.Name);
+            Console.WriteLine("disposing : " + this.Name + " [" + this.ToString() + "] (" + ((object)this).GetHashCode() + ")");
             Removed = true;
             resources.Dispose();
         }

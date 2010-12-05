@@ -23,5 +23,8 @@ dofile("Resources/Sampler/init_testdata.lua")
 	GetFont("small").LineSpacing = 10;
 	GetFont("small").TextEffect = 0;
 
+	LoadFont("verysmall", "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf", 8);
+	GetFont("verysmall").LineSpacing = 5
+
 LoadState("main", "Resources/Sampler/main/main.lua");
 --LoadState("main", "Resources/Sampler/intro/intro.lua");
