@@ -92,6 +92,23 @@ function DialogueWindow:Init()
 	background:AddComponent(namewin)
 	self.namewin = namewin;	
 
+	local portraitFrame = ImageWindow()
+	self.portraitFrame = portraitFrame;
+	portraitFrame.Name = "portraitFrame"
+	portraitFrame.Alpha = 255
+	portraitFrame.Width = 152
+	portraitFrame.Height = 152
+	portraitFrame.X = (self.background.x - self.portraitFrame.Width) / 2;
+	portraitFrame.y = self.frame.Height - self.background.Height - 20 + 
+					  ((self.background.Height - self.portraitFrame.Height) / 2);
+	portraitFrame.Layer = 1
+	portraitFrame.LeftMargin = 20
+	portraitFrame.Margin = 15
+	portraitFrame.Visible = true
+	portraitFrame.WindowTexture = "Resources/sampler/resources/window.png"
+	portraitFrame.RectSize = 40
+	portraitFrame.BackgroundColor = 0xFFFFFF
+	self.frame:AddComponent(portraitFrame);		
 	
 	local portrait = SpriteBase();
 	portrait.Name = "portrait";
