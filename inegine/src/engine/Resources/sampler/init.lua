@@ -17,5 +17,11 @@ dofile("Resources/Sampler/init_testdata.lua")
 	GetFont("dialogue").LineSpacing = 10;
 	GetFont("dialogue").TextEffect = 1;
 
+
+	LoadFont("small", "Resources\\sampler\\resources\\fonts\\NanumMyeongjoBold.ttf", 15);
+	--LoadFont("small", "c:\\windows\\fonts\\meiryo.ttc", 15);
+	GetFont("small").LineSpacing = 10;
+	GetFont("small").TextEffect = 0;
+
 LoadState("main", "Resources/Sampler/main/main.lua");
 --LoadState("main", "Resources/Sampler/intro/intro.lua");

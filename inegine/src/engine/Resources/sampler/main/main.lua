@@ -5,6 +5,8 @@ require "Resources\\sampler\\schedule\\execution"
 require "Resources\\sampler\\shopping\\shoplist"
 require "Resources\\sampler\\shopping\\shop"
 require "Resources\\sampler\\status\\status"
+require "Resources\\sampler\\communication\\talklist"
+require "Resources\\sampler\\communication\\talk"
 
 Main = {}
 
@@ -131,6 +133,7 @@ function Main:InitComponents()
 			if (button2.State["mouseDown"]) then
 				button2.Pushed = false
 				Trace("button2 click!")
+				self:OpenCommunication();
 			end
 		end
 	button2.Text = "Talk";
@@ -292,9 +295,8 @@ function Main:OpenSchedule()
 	schedule:Init();
 	schedule:SetClosingEvent( 
 		function()
-			Trace("scheduletory clicked!")
+			Trace("closing cschedule view clicked!")
 			self.schedule:Hide();
-			self.schedule:Dispose();
 			self.schedule = nil;
 			self:ToggleMainMenu(true);
 		end
@@ -383,7 +385,8 @@ function Main:TestExecution(execution)
 					Trace("execution over!");
 				end
 			)
-			execution:ExecuteSchedule("이번주는 사공일을 합니다.\n잘 부탁 드립니다.@",
+			execution:ExecuteSchedule("강태공",
+									  "이번주는 사공일을 합니다.\n잘 부탁 드립니다.@",
 									  "Resources/sampler/resources/images/f3.png",
 									  "Resources/sampler/resources/cursor.png",
 									  "GOLD +0\nSTR +0, DEX +0, CON + 0",
@@ -391,7 +394,7 @@ function Main:TestExecution(execution)
 									  "Resources/sampler/resources/images/f1.png");
 		end
 	)
-	execution:ExecuteSchedule("이번주는 사공일을 합니다.\n잘 부탁 드립니다.@",
+	execution:ExecuteSchedule("강태공", "이번주는 사공일을 합니다.\n잘 부탁 드립니다.@",
 							  "Resources/sampler/resources/images/f3.png", 
 							  "Resources/sampler/resources/cursor.png",
 							  "GOLD +5,400\nSTR +10, DEX +10, CON + 10",
@@ -401,6 +404,54 @@ function Main:TestExecution(execution)
 end
 
 function Main:OpenCommunication()
+	self:ShowTachie(false);
+	self:ToggleMainMenu(false);
+	local talkListView = TalkListView:New("talkListView", CurrentState());
+	talkListView:Init();
+	talkListView:SetGreeting("Resources/sampler/resources/images/f2.png","규브", "따님과 대화하실 내용을 선택해주세요.");
+	self.talkListView = talkListView;
+	
+	talkListView:SetTalkSelectedEvent(
+		function(button, luaevent, args)
+			talkListView:Dispose();
+			self:TestTalk();
+		end
+	)
+	
+	talkListView:SetClosingEvent( 
+		function()
+			Trace("closing talk list view");
+			self:ShowTachie(true);
+			self:ToggleMainMenu(true);
+		end
+	);
+	talkListView:Show();
+end
+
+function Main:TestTalk()
+	local talkView = TalkView:New("talkView", CurrentState());
+	self.talkView = talkView;
+	talkView:Init();
+	
+	talkView:SetTalk("Resources/sampler/resources/images/f2.png","규브", "따님이 이야기하고 싶어하지 않네요.@");
+	talkView:SetTalkOverEvent(
+		function()
+			talkView:SetTalk("Resources/sampler/resources/images/f3.png","규브", "제 월급이나 올려주시죠?@");
+			talkView:SetTalkOverEvent(
+				function()
+					talkView:Dispose();
+				end
+			)
+		end
+	)
+	
+	talkView:SetClosingEvent( 
+		function()
+			self:ShowTachie(true);
+			self:ToggleMainMenu(true);
+		end
+	);
+	talkView:Show();
 end
 
 function Main:OpenStatus()
@@ -410,8 +461,6 @@ function Main:OpenStatus()
 	statusView:Init();
 	statusView:SetClosingEvent( 
 		function()
-			Trace("shop closing!")
-			statusView:Dispose();
 			self:ShowTachie(true);
 			self:ToggleMainMenu(true);
 		end
@@ -428,9 +477,10 @@ function Main:OpenShop()
 	local shoplist = ShopListView:New("shoplistview", CurrentState());
 	self.shoplist = shoplist;
 	shoplist:Init();
+	shoplist:SetGreeting("Resources/sampler/resources/images/f2.png","규브", "쇼핑하실 곳을 선택해주세요.");
 	shoplist:SetShopSelectedEvent(
 		function(button, luaevent, arg)
-			shoplist:Dispose();
+			shoplist:Hide();
 			local shop = ShopView:New("shop", CurrentState());
 			self.shop = shop;
 			shop:Init();
@@ -457,9 +507,8 @@ function Main:OpenShop()
 			);
 			shop:SetClosingEvent(
 				function()
+					shoplist:Show()
 					Trace("shop closing!")
-					shop:Dispose();
-					self:OpenShop();
 				end
 			);
 			shop:Show();
@@ -468,7 +517,6 @@ function Main:OpenShop()
 	shoplist:SetClosingEvent( 
 		function()
 			Trace("shop closing!")
-			shoplist:Dispose();
 			self:ShowTachie(true);
 			self:ToggleMainMenu(true);
 		end
@@ -485,12 +533,11 @@ end
 function Main:OpenInventory()
 	self:ToggleMainMenu(false);
 	local inven = InventoryView:New("inventory", CurrentState());
-	inven.init();
+	inven:Init();
 	
 	inven:SetClosingEvent( 
 		function()
 			Trace("inventory clicked!")
-			self.inventory:Dispose();
 			self.inventory = nil;
 			self:ToggleMainMenu(true);
 			self:CenterTachie();

@@ -46,6 +46,12 @@ namespace INovelEngine.Effector
         protected Dictionary<String, AbstractGUIComponent> componentMap =
             new Dictionary<string, AbstractGUIComponent>();
 
+        public AbstractGUIComponent()
+            : base()
+        {
+            Relative = true;
+        }
+
         public Device Device
         {
             get { return manager.Direct3D9.Device; }

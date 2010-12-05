@@ -27,52 +27,61 @@ function ShopView:Init()
 		end
 	
 	parent:AddComponent(self.frame)
-	
-	local dialogueWin = ImageWindow()
-	dialogueWin.Name = "dialogueWindow"
-	dialogueWin.Alpha = 155
-	dialogueWin.Width = 600
-	dialogueWin.Height = 120
-	dialogueWin.x = self.frame.Width - dialogueWin.Width - 20;
-	dialogueWin.y = self.frame.Height - dialogueWin.Height - 20;
-	dialogueWin.Layer = 5
-	dialogueWin.LineSpacing = 20
-	dialogueWin.MouseClick = 
-        function(window, luaevent, args)
-			Trace(window.name .. " clicked!");	
-            window:AdvanceText();
-        end
-	dialogueWin.Visible = true
-	dialogueWin.WindowTexture = "Resources/sampler/resources/win.png"
-	dialogueWin.Font = GetFont("dialogue")
-	
-	dialogueWin.Cursor = AnimatedSprite();
-	dialogueWin.Cursor.Name = "cursor"
-	dialogueWin.Cursor.Texture = "Resources/sampler/resources/cursor.png"
-	dialogueWin.Cursor.Width = 32;
-	dialogueWin.Cursor.Height = 48;
-	dialogueWin.Cursor.Rows = 4;
-	dialogueWin.Cursor.Cols = 4;
-	dialogueWin.Cursor.Layer = 10;
-	dialogueWin.Cursor.Visible = true
-	dialogueWin.PrintOver = 
-		function (window, luaevent, args)
-                if (self.dialogueOverEvent~=nil) then 
-					self.dialogueOverEvent(window, luaevent, args);
-				end
-		end
-	dialogueWin.narrationSpeed = 30;
-	self.frame:AddComponent(dialogueWin);
+	--
+	--local dialogueWin = ImageWindow()
+	--dialogueWin.Name = "dialogueWindow"
+	--dialogueWin.Alpha = 155
+	--dialogueWin.Width = 600
+	--dialogueWin.Height = 120
+	--dialogueWin.x = self.frame.Width - dialogueWin.Width - 20;
+	--dialogueWin.y = self.frame.Height - dialogueWin.Height - 20;
+	--dialogueWin.Layer = 5
+	--dialogueWin.LineSpacing = 20
+	--dialogueWin.MouseClick = 
+        --function(window, luaevent, args)
+			--Trace(window.name .. " clicked!");	
+            --window:AdvanceText();
+        --end
+	--dialogueWin.Visible = true
+	--dialogueWin.WindowTexture = "Resources/sampler/resources/win.png"
+	--dialogueWin.Font = GetFont("dialogue")
+	--
+	--dialogueWin.Cursor = AnimatedSprite();
+	--dialogueWin.Cursor.Name = "cursor"
+	--dialogueWin.Cursor.Texture = "Resources/sampler/resources/cursor.png"
+	--dialogueWin.Cursor.Width = 32;
+	--dialogueWin.Cursor.Height = 48;
+	--dialogueWin.Cursor.Rows = 4;
+	--dialogueWin.Cursor.Cols = 4;
+	--dialogueWin.Cursor.Layer = 10;
+	--dialogueWin.Cursor.Visible = true
+	--dialogueWin.PrintOver = 
+		--function (window, luaevent, args)
+                --if (self.dialogueOverEvent~=nil) then 
+					--self.dialogueOverEvent(window, luaevent, args);
+				--end
+		--end
+	--dialogueWin.narrationSpeed = 30;
+	--self.frame:AddComponent(dialogueWin);
+	--self.dialogueWin = dialogueWin;
+	--
+	--local portrait = SpriteBase();
+	--portrait.Name = "portrait";
+	--portrait.Visible = true;
+	--portrait.Layer = 2;
+	--self.portrait = portrait;
+	--self.frame:AddComponent(portrait);	
+--
+	--self:ShowDialogue(false);
+		--
+		
+	local dialogueWin = DialogueWindow:New("dialogueWin", self.frame);
 	self.dialogueWin = dialogueWin;
-	
-	local portrait = SpriteBase();
-	portrait.Name = "portrait";
-	portrait.Visible = true;
-	portrait.Layer = 2;
-	self.portrait = portrait;
-	self.frame:AddComponent(portrait);	
-
-	self:ShowDialogue(false);
+	dialogueWin:Init();
+	dialogueWin.frame.relative = true;
+	dialogueWin.frame.x = 0;
+	dialogueWin.frame.y = self.frame.height - dialogueWin.frame.height;
+	dialogueWin:Hide();
 		
 	local background = View()
 	background.name = "backround"
@@ -81,7 +90,7 @@ function ShopView:Init()
 	background.width = 400;
 	background.height = 320;
 	background.x = 5;
-	background.y = dialogueWin.y - background.height - 10;
+	background.y = dialogueWin.frame.y - background.height - 10;
 	background.alpha = 155
 	background.layer = 6;
 	self.frame:AddComponent(background);
@@ -109,7 +118,7 @@ function ShopView:Init()
 	detailviewframe.Width = 380
 	detailviewframe.Height = 150
 	detailviewframe.X = 415;
-	detailviewframe.Y = dialogueWin.y - detailviewframe.height - 10;
+	detailviewframe.Y = dialogueWin.frame.y - detailviewframe.height - 10;
 	detailviewframe.alpha = 155
 	detailviewframe.layer = 3
 	
@@ -139,9 +148,7 @@ function ShopView:Init()
 			if (button.State["mouseDown"]) then
 				button.Pushed = false
 				Trace("button click!")
-				if (self.closingEvent ~= nil) then 
-					self:closingEvent();
-				end
+				self:Dispose();
 			end
 		end
 	background:AddComponent(self.closeButton);
@@ -174,26 +181,21 @@ function ShopView:SetBuyingEvent(event)
 end
 
 function ShopView:SetPortraitTexture(texture)
-	self.portrait.Texture = texture;
-	self.portrait.X = (self.dialogueWin.x - self.portrait.Width) / 2;
-	self.portrait.y = self.frame.Height - self.dialogueWin.Height - 20 + 
-					  ((self.dialogueWin.Height - self.portrait.Height) / 2);
+	self.dialogueWin:SetPortraitTexture(texture);
 end
 
 function ShopView:ClearDialogueText()
-	self.dialogueWin:Clear()
+	self.dialogueWin:ClearDialogueText();
 end
 
 function ShopView:SetDialogueText(text)
-	self.dialogueWin:Print(text)
+	self.dialogueWin:SetDialogueText(text);
 end
 
 
 function ShopView:ShowDialogue(show)
-	self.dialogueWin.Visible = show;
-	self.dialogueWin.Enabled = show;
-	self.portrait.Visible = show;
-	self.portrait.Enabled = show;
+	self.dialogueWin.frame.Visible = show;
+	self.dialogueWin.frame.Enabled = show;
 end
 
 

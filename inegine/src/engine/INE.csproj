@@ -168,6 +168,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\sampler\communication\talk.lua" />
+    <None Include="Resources\sampler\communication\talklist.lua" />
+    <None Include="Resources\sampler\components\dialoguewindow.lua" />
     <None Include="Resources\sampler\schedule\execution.lua" />
     <None Include="Resources\sampler\components\flowview.lua" />
     <None Include="Resources\sampler\components\tabview.lua" />
