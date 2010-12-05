@@ -339,26 +339,24 @@ function ScheduleView:CreateSelectedButton(buttonName, buttonText)
 	return newButton;
 end
 
---TODO: modify to reflect model's state directly?
---i.e. SetEducationItems(), SetSelectedItems()...
-function ScheduleView:AddEducationItem(buttonName, buttonText)
-	self.educationView:Add(self:CreateButton(buttonName, buttonText));
+function ScheduleView:AddEducationItem(id, text, price, icon)
+	self.educationView:Add(self:CreateItem(id, text, price, icon));
 end
 
-function ScheduleView:AddWorkItem(buttonName, buttonText)
-	self.workView:Add(self:CreateButton(buttonName, buttonText));
+function ScheduleView:AddWorkItem(id, text, price, icon)
+	self.workView:Add(self:CreateItem(id, text, price, icon));
 end
 
-function ScheduleView:AddVacationItem(buttonName, buttonText)
-	self.vacationView:Add(self:CreateButton(buttonName, buttonText));
+function ScheduleView:AddVacationItem(id, text, price, icon)
+	self.vacationView:Add(self:CreateItem(id, text, price, icon));
 end
 
-function ScheduleView:AddSelectedItem(buttonName, buttonText)
-	self.selectedItemsView:Add(self:CreateSelectedButton(buttonName, buttonText));
+function ScheduleView:AddSelectedItem(id, icon)
+	self.selectedItemsView:Add(self:CreateSelectedItem(id, icon));
 end
 
-function ScheduleView:RemoveSelectedItem(buttonName)
-	self.selectedItemsView:Remove(buttonName);
+function ScheduleView:RemoveSelectedItem(id)
+	self.selectedItemsView:Remove(id);
 end
 
 function ScheduleView:FocusSelectedItem(buttonName)
@@ -392,7 +390,91 @@ function ScheduleView:SetSelectedEvent(event)
 	self.selectedEvent = event;
 end
 
-
 function ScheduleView:SetSelectedFocusEvent(event)
 	self.selectedFocusEvent = event;
+end
+
+function ScheduleView:CreateSelectedItem(id, icon)	
+	local pic = Button();
+	pic.Name = id;
+	pic.Texture = icon
+	pic.Visible = true;
+	pic.Width = 48;
+	pic.Height = 48;
+	pic.State = {}
+	pic.MouseDown = 
+		function (button, luaevent, args)
+			Trace("mouse down!");
+			button.State["mouseDown"] = true
+			button.Pushed = true;
+		end
+	pic.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				Trace("mouse up!");
+				button.Pushed = false;
+				self.selectedFocusEvent(button, luaevent, id);
+			end
+		end
+	return pic;
+end
+function ScheduleView:CreateItem(id, text, price, icon)
+	local frame = View();
+	frame.Name = id;
+	frame.Relative = true;
+	frame.Width = 90;
+	frame.Height = 80;
+	frame.Enabled = true;
+	
+	local pic = Button();
+	pic.Name = "picture";
+	pic.Texture = icon
+	pic.Visible = true;
+	pic.X = (frame.Width - pic.Width) / 2;
+	pic.Width = 48;
+	pic.Height = 48;
+	pic.State = {}
+	pic.MouseDown = 
+		function (button, luaevent, args)
+			Trace("mouse down!");
+			button.State["mouseDown"] = true
+			button.Pushed = true;
+		end
+	pic.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				Trace("mouse up!");
+				button.Pushed = false;
+				self.selectedEvent(button, luaevent, id);
+			end
+		end
+	frame:AddComponent(pic);
+	
+	local button = Button();
+	button.Name = "text"
+	button.Width = 80;
+	button.Height = 15;
+	button.X = 5;
+	button.Y = pic.Height;
+	button.font = GetFont("verysmall");
+	button.TextColor = 0xFFFFFF
+	button.Text = text;
+	button.Alignment = 1;
+	button.VerticalAlignment = 1;
+	frame:AddComponent(button);
+	
+	
+	local priceButton = Button();
+	priceButton.Name = "price"
+	priceButton.Width = 80;
+	priceButton.Height = 15;
+	priceButton.X = 5;
+	priceButton.Y = button.Y + button.Height;
+	priceButton.font = GetFont("verysmall");
+	priceButton.TextColor = 0xFFFFFF
+	priceButton.Text = price;
+	priceButton.Alignment = 1;
+	priceButton.VerticalAlignment = 1;
+	frame:AddComponent(priceButton);
+	return frame;
 end

@@ -26,55 +26,6 @@ function ExecutionView:Init()
 		end
 	
 	parent:AddComponent(self.frame)
-	--
-	--local dialogueWin = ImageWindow()
-	--dialogueWin.Name = "dialogueWindow"
-	--dialogueWin.Alpha = 155
-	--dialogueWin.Width = 600
-	--dialogueWin.Height = 120
-	--dialogueWin.x = self.frame.Width - dialogueWin.Width - 20;
-	--dialogueWin.y = self.frame.Height - dialogueWin.Height - 20;
-	--dialogueWin.Layer = 5
-	--dialogueWin.LineSpacing = 20
-	--dialogueWin.MouseClick = 
-        --function(window, luaevent, args)
-			--Trace(window.name .. " clicked!");	
-            --window:AdvanceText();
-        --end
-	--dialogueWin.Visible = true
-	--dialogueWin.WindowTexture = "Resources/sampler/resources/win.png"
-	--dialogueWin.Font = GetFont("dialogue")
-	--
-	--dialogueWin.Cursor = AnimatedSprite();
-	--dialogueWin.Cursor.Name = "cursor"
-	--dialogueWin.Cursor.Texture = "Resources/sampler/resources/cursor.png"
-	--dialogueWin.Cursor.Width = 32;
-	--dialogueWin.Cursor.Height = 48;
-	--dialogueWin.Cursor.Rows = 4;
-	--dialogueWin.Cursor.Cols = 4;
-	--dialogueWin.Cursor.Layer = 10;
-	--dialogueWin.Cursor.Visible = true
-	--dialogueWin.PrintOver = 
-		--function (window, luaevent, args)
-                --if (self.dialogueOverEvent~=nil) then 
-					--self.dialogueOverEvent(window, luaevent, args);
-				--end
-		--end
-	--dialogueWin.narrationSpeed = 30;
-	--self.frame:AddComponent(dialogueWin);
-	--self.dialogueWin = dialogueWin;
-	--
-	--
-	--local portrait = SpriteBase();
-	--portrait.Name = "portrait";
-	--portrait.Visible = true;
-	----portrait.X = (dialogueWin.x - portrait.Width) / 2;
-	----portrait.y = self.frame.Height - dialogueWin.Height - 20 + ((dialogueWin.Height - portrait.Height) / 2);
-	--portrait.Layer = 2;
-	--self.portrait = portrait;
-	--self.frame:AddComponent(portrait);
---
-
 			
 	local dialogueWin = DialogueWindow:New("dialogueWin", self.frame);
 	self.dialogueWin = dialogueWin;
@@ -131,23 +82,6 @@ function ExecutionView:Hide()
 	self.frame.Enabled = false
 end
 
---function ExecutionView:SetDialogueOverEvent(event)
-	--self.dialogueWin:SetDialogueOverEvent(event);
---end
---
---function ExecutionView:SetDialogueText(text)
-	--self.dialogueWin:SetDialogueText(text);
---end
---
---function ExecutionView:ClearDialogueText()
-	--self.dialogueWin:ClearDialogueText();
---end
---
---function ExecutionView:ShowDialogue(show)
-	--self.dialogueWin.frame.Visible = show;
-	--self.dialogueWin.frame.Enabled = show;
---end
-
 function ExecutionView:SetAnimation(animation)
 	animation.name = "currentanimation"
 	animation.relative = true;
@@ -180,7 +114,7 @@ function ExecutionView:ShowStatus(show)
 	if (show == false) then
 		self.statusWindow.Visible = false;
 	else
-		self.statusWindow:LaunchTransition(500, true);
+		self.statusWindow:FadeIn(500);--, true);
 	end
 end
 

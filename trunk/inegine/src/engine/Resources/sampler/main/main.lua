@@ -27,7 +27,7 @@ function Main:InitComponents()
 
 	local datewin = ImageWindow()
 	datewin.Name = "datedisplay"
-	datewin.Alpha = 155
+	datewin.Alpha = 255
 	datewin.Width = 100
 	datewin.Height = 100
 	datewin.x = 10;
@@ -40,15 +40,16 @@ function Main:InitComponents()
 	        Trace("datewindow clicked!")
         end;
 	datewin.Visible = true
-	datewin.WindowTexture = "Resources/sampler/resources/win.png"
-	datewin.BackgroundColor = 0x3333CC
+	datewin.WindowTexture = "Resources/sampler/resources/window.png"
+	datewin.RectSize = 40
+	datewin.BackgroundColor = 0xFFFFFF
 	
 	datewin.Font = GetFont("date") --defaultFont
 	InitComponent(datewin)
 	
 	local statewin = ImageWindow()
 	statewin.Name = "statedisplay"
-	statewin.Alpha = 155
+	statewin.Alpha = 255
 	statewin.Width = 120
 	statewin.Height = 100
 	statewin.x = 112;
@@ -61,8 +62,9 @@ function Main:InitComponents()
 	        Trace("statewindow clicked!")
         end;
 	statewin.Visible = true
-	statewin.WindowTexture = "Resources/sampler/resources/win.png"
-	statewin.BackgroundColor = 0x3399CC
+	statewin.WindowTexture = "Resources/sampler/resources/window.png"
+	statewin.RectSize = 40
+	statewin.BackgroundColor = 0xFFFFFF
 	
 	statewin.Font = GetFont("state") --defaultFont
 	InitComponent(statewin)
@@ -284,6 +286,7 @@ function Main:InitComponents()
 	button7.TextColor = 0xEEEEEE
 	
 	menu:AddComponent(button7);
+	
 end
 
 --public interface
@@ -305,9 +308,9 @@ function Main:OpenSchedule()
     selectedItemCount = 0;
 	schedule:SetSelectedEvent(
 		function (button, luaevent, args)
-			Trace("select event called from " .. button.name);
+			Trace("select event called from " .. args);
             if (selectedItemCount < 4) then
-                schedule:AddSelectedItem(button.name .. selectedIndex, button.text);
+                schedule:AddSelectedItem(args, "Resources/sampler/resources/icon.png");
                 selectedIndex = selectedIndex + 1
                 selectedItemCount = selectedItemCount + 1;
             end
@@ -316,16 +319,15 @@ function Main:OpenSchedule()
 	
 	schedule:SetSelectedFocusEvent(
 		function (button, luaevent, args)
-			Trace("focus selected event called from " .. button.name);
-            focusedSelectedIcon = button.name;          
-            schedule:FocusSelectedItem(button.name);
-            schedule:SetDetailText("detailed explanation: " .. button.name);
+			Trace("focus selected event called from " .. args);
+            focusedSelectedIcon = args;          
+            schedule:FocusSelectedItem(args);
+            schedule:SetDetailText("detailed explanation: " .. args);
 		end
 	)
 
 	schedule:SetDeletingEvent(
-		function (button, luaevent, args)
-			Trace("remove selected event called from " .. button.name);          
+		function (button, luaevent, args)         
             if (focusedSelectedIcon ~= nil) then
                 schedule:RemoveSelectedItem(focusedSelectedIcon);
                 focusedSelectedIcon = nil;
@@ -342,13 +344,16 @@ function Main:OpenSchedule()
     )
 	
 	--add test items
-	schedule:AddEducationItem("education1", "edu 1");
-	schedule:AddEducationItem("education2", "edu 2");
-	schedule:AddEducationItem("education3", "edu 2");
+	schedule:AddEducationItem("education1", "Education01", "100G", "Resources/sampler/resources/icon.png");
+	schedule:AddEducationItem("education2", "edu 2", "100G", "Resources/sampler/resources/icon.png");
+	schedule:AddEducationItem("education3", "edu 3", "100G", "Resources/sampler/resources/icon.png");
+	schedule:AddEducationItem("education4", "edu 4", "100G", "Resources/sampler/resources/icon.png");
+	schedule:AddEducationItem("education5", "edu 5", "100G", "Resources/sampler/resources/icon.png");
+	schedule:AddEducationItem("education6", "edu 6", "100G", "Resources/sampler/resources/icon.png");
 	
-	schedule:AddWorkItem("work1", "work 1");
+	schedule:AddWorkItem("work1", "work 1", "100G", "Resources/sampler/resources/icon.png");
 	
-	schedule:AddVacationItem("vacation1", "vacation 1");
+	schedule:AddVacationItem("vacation1", "vacation 1", "100G", "Resources/sampler/resources/icon.png");
 	--
     --schedule:AddSelectedItem("test1", "test 1");
     --schedule:AddSelectedItem("test2", "test 2");
@@ -429,6 +434,8 @@ function Main:OpenCommunication()
 end
 
 function Main:TestTalk()
+	self:ShowTachie(false);
+	self:ToggleMainMenu(false);
 	local talkView = TalkView:New("talkView", CurrentState());
 	self.talkView = talkView;
 	talkView:Init();
@@ -440,6 +447,8 @@ function Main:TestTalk()
 			talkView:SetTalkOverEvent(
 				function()
 					talkView:Dispose();
+					self:ShowTachie(true);
+					self:ToggleMainMenu(true);
 				end
 			)
 		end

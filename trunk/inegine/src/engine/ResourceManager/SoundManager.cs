@@ -128,7 +128,7 @@ namespace INovelEngine.ResourceManager
 
         public override void Dispose()
         {
-            Console.WriteLine("disposing:" + this.Name);
+            Console.WriteLine("disposing:" + this.Name + "(" + this.ToString()  + ")");
             SoundPlayer.StopSound(FileName);
             SoundPlayer.CloseSound(FileName);
             base.Dispose();

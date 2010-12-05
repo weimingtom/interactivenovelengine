@@ -229,6 +229,7 @@
     </Content>
     <Content Include="Resources\sampler\resources\after.png" />
     <Content Include="Resources\sampler\resources\before.png" />
+    <Content Include="Resources\sampler\resources\icon.png" />
     <Content Include="Resources\sampler\resources\images\1.png" />
     <Content Include="Resources\sampler\resources\images\2.png" />
     <Content Include="Resources\sampler\resources\images\3.png" />
@@ -237,6 +238,7 @@
     <Content Include="Resources\sampler\resources\images\f2.png" />
     <Content Include="Resources\sampler\resources\images\f3.png" />
     <Content Include="Resources\sampler\resources\images\logo.png" />
+    <Content Include="Resources\sampler\resources\images\musume.png" />
     <Content Include="Resources\sampler\resources\images\room01.png" />
     <Content Include="Resources\sampler\resources\images\room02.jpg" />
     <Content Include="Resources\sampler\resources\images\title.png" />
@@ -246,6 +248,9 @@
     <Content Include="Resources\sampler\resources\test.ico" />
     <Content Include="Resources\sampler\resources\whitewin.png" />
     <Content Include="Resources\sampler\resources\win.png" />
+    <Content Include="Resources\sampler\resources\window.png" />
+    <Content Include="Resources\sampler\resources\windows\calendar.png" />
+    <Content Include="Resources\sampler\resources\windows\dialoguewin.png" />
     <Content Include="Resources\sampler\sound\intro.mp3" />
     <Content Include="Resources\sampler\sound\rise.mp3" />
     <Content Include="SampleFramework.dll">

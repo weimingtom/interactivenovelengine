@@ -27,24 +27,34 @@ function DialogueWindow:Init()
 	
 	parent:AddComponent(self.frame)
 	
-	local dialogueWin = ImageWindow()
+	local background = SpriteBase();
+	background.Name = "background";
+	self.background = background;
+	background.Texture = "Resources/sampler/resources/windows/dialoguewin.png"
+	background.Visible = true;
+	background.Layer = 0;
+	background.x = self.frame.Width - background.Width - 20;
+	self.frame:AddComponent(background)
+	
+	
+	local dialogueWin = TextWindow()
 	dialogueWin.Name = "dialogueWindow"
 	dialogueWin.relative = true;
-	dialogueWin.Alpha = 155
-	dialogueWin.Width = 600
-	dialogueWin.Height = 120
-	dialogueWin.x = self.frame.Width - dialogueWin.Width - 20;
-	dialogueWin.y = self.frame.Height - dialogueWin.Height - 20;
+	dialogueWin.Alpha = 0
+	dialogueWin.Width = 570
+	dialogueWin.Height = 93
+	dialogueWin.x = 15;
+	dialogueWin.y = 40;
 	dialogueWin.Layer = 5
 	dialogueWin.LineSpacing = 20
-	dialogueWin.Margin = 30
+	dialogueWin.Margin = 0
 	dialogueWin.MouseClick = 
         function(window, luaevent, args)
 			Trace(window.name .. " clicked!");	
             window:AdvanceText();
         end
 	dialogueWin.Visible = true
-	dialogueWin.WindowTexture = "Resources/sampler/resources/win.png"
+	--dialogueWin.WindowTexture = "Resources/sampler/resources/win.png"
 	dialogueWin.Font = GetFont("dialogue")
 	
 	dialogueWin.Cursor = AnimatedSprite();
@@ -63,7 +73,7 @@ function DialogueWindow:Init()
 				end
 		end
 	dialogueWin.narrationSpeed = 30;
-	self.frame:AddComponent(dialogueWin);
+	background:AddComponent(dialogueWin);
 	self.dialogueWin = dialogueWin;
 	
 	local namewin = Button()
@@ -72,14 +82,14 @@ function DialogueWindow:Init()
 	namewin.Width = 150
 	namewin.Height = 40
 	namewin.Relative = true
-	namewin.x = 5;
-	namewin.y = -5;
+	namewin.x = 15;
+	namewin.y = -2;
 	namewin.Layer = 6
 	namewin.Visible = true
 	namewin.Font = GetFont("small")
 	namewin.TextColor = 0xFFFFFF
 	namewin.Alignment = 0
-	dialogueWin:AddComponent(namewin)
+	background:AddComponent(namewin)
 	self.namewin = namewin;	
 
 	
@@ -94,9 +104,9 @@ end
 
 function DialogueWindow:SetPortraitTexture(texture)
 	self.portrait.Texture = texture;
-	self.portrait.X = (self.dialogueWin.x - self.portrait.Width) / 2;
-	self.portrait.y = self.frame.Height - self.dialogueWin.Height - 20 + 
-					  ((self.dialogueWin.Height - self.portrait.Height) / 2);
+	self.portrait.X = (self.background.x - self.portrait.Width) / 2;
+	self.portrait.y = self.frame.Height - self.background.Height - 20 + 
+					  ((self.background.Height - self.portrait.Height) / 2);
 end
 
 function DialogueWindow:ClearDialogueText()

@@ -28,7 +28,6 @@ namespace INovelEngine.Effector
         public TextWindow()
             : base()
         {
-            this.Type = ComponentType.TextWindow;
             narrationSpeed = 50;
             LineSpacing = 20;
             IsStatic = true;
