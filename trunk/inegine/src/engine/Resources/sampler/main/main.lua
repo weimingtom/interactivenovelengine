@@ -25,13 +25,22 @@ function Main:InitComponents()
 	
 	local gamestate = CurrentState();
 
-	local datewin = ImageWindow()
+	
+	local calendarBackground = SpriteBase();
+	calendarBackground.Name = "calBackground";
+	self.calendarBackground = background;
+	calendarBackground.Texture = "Resources/sampler/resources/calendar.png"
+	calendarBackground.Visible = true;
+	calendarBackground.Layer = 3;
+	InitComponent(calendarBackground)
+
+	local datewin = TextWindow()
 	datewin.Name = "datedisplay"
-	datewin.Alpha = 255
+	datewin.Alpha = 0
 	datewin.Width = 100
 	datewin.Height = 100
-	datewin.x = 10;
-	datewin.y = 10;
+	datewin.x = 15;
+	datewin.y = 35;
 	datewin.Layer = 5
 	datewin.LeftMargin = 20
 	datewin.Margin = 15
@@ -40,20 +49,20 @@ function Main:InitComponents()
 	        Trace("datewindow clicked!")
         end;
 	datewin.Visible = true
-	datewin.WindowTexture = "Resources/sampler/resources/window.png"
-	datewin.RectSize = 40
+	--datewin.WindowTexture = "Resources/sampler/resources/window.png"
+	--datewin.RectSize = 40
 	datewin.BackgroundColor = 0xFFFFFF
 	
-	datewin.Font = GetFont("date") --defaultFont
+	datewin.Font = GetFont("verysmall") --defaultFont
 	InitComponent(datewin)
 	
-	local statewin = ImageWindow()
+	local statewin = TextWindow()
 	statewin.Name = "statedisplay"
-	statewin.Alpha = 255
+	statewin.Alpha = 0
 	statewin.Width = 120
 	statewin.Height = 100
 	statewin.x = 112;
-	statewin.y = 10;
+	statewin.y = 25;
 	statewin.Layer = 5
 	statewin.LeftMargin = 15
 	statewin.Margin = 10
@@ -62,8 +71,8 @@ function Main:InitComponents()
 	        Trace("statewindow clicked!")
         end;
 	statewin.Visible = true
-	statewin.WindowTexture = "Resources/sampler/resources/window.png"
-	statewin.RectSize = 40
+	--statewin.WindowTexture = "Resources/sampler/resources/window.png"
+	--statewin.RectSize = 40
 	statewin.BackgroundColor = 0xFFFFFF
 	
 	statewin.Font = GetFont("state") --defaultFont
@@ -74,8 +83,8 @@ function Main:InitComponents()
 	menu.Alpha = 155
 	menu.Width = 250
 	menu.Height = 42*4
-	menu.X = 10;
-	menu.Y = 135;
+	menu.X = 35;
+	menu.Y = 160;--135;
 	menu.Layer = 5
 	menu.LineSpacing = 20
 	menu.Visible = true
