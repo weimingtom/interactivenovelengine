@@ -1,8 +1,9 @@
 require "Resources\\sampler\\components\\luaview"
+require "Resources\\sampler\\components\\dialoguewindow"
 
-ShopListView = LuaView:New();
+TalkListView = LuaView:New();
 
-function ShopListView:Init()
+function TalkListView:Init()
 	local gamestate = CurrentState();
 	
 	local parent = self.parent;
@@ -12,8 +13,8 @@ function ShopListView:Init()
 	self.frame = View()
 	self.frame.Name = name
 	
-	self.frame.Width = GetWidth();
-	self.frame.Height = GetHeight();
+	self.frame.Width = GetWidth();--450
+	self.frame.Height = GetHeight();--240
 	self.frame.x = 0;--(GetWidth() - self.frame.Width) / 2;
 	self.frame.y = 0;--(GetHeight() - self.frame.Height) / 2;
 	self.frame.alpha = 155
@@ -28,7 +29,6 @@ function ShopListView:Init()
 	
 	parent:AddComponent(self.frame)
 	
-	
 	local viewframe = View();
 	viewframe.Name = "viewframe"
 	viewframe.Width = 450;
@@ -42,40 +42,34 @@ function ShopListView:Init()
 	self.viewframe = viewframe;
 	self.frame:AddComponent(viewframe);
 	
+	local talkimage = SpriteBase();
+	talkimage.Relative = true;
+	talkimage.Name = "villageiamge";
+	talkimage.Texture = "Resources/sampler/resources/images/musume.png";
+	talkimage.Visible = true;
+	talkimage.X = 0;
+	talkimage.y = 0;
+	talkimage.Layer = 2;
+	self.talkimage = talkimage;
+	viewframe:AddComponent(talkimage);
 	
-	local villageimage = SpriteBase();
-	villageimage.Relative = true;
-	villageimage.Name = "villageiamge";
-	villageimage.Texture = "Resources/sampler/resources/images/village.png";
-	villageimage.Visible = true;
-	villageimage.X = 0;
-	villageimage.y = 0;
-	villageimage.Layer = 2;
-	self.villageimage = villageimage;
-	self.viewframe:AddComponent(villageimage);
-	
-	self.shop1Button = self:CreateButton("shop1button", "옷집", 
-										 self.viewframe.width - 125, 5+45*0, 4)
-	self.viewframe:AddComponent(self.shop1Button);
+	self.talk1Button = self:CreateButton("shop1button", "대인관계", 
+										 viewframe.width - 125, 5+45*0, 4)
+	self.viewframe:AddComponent(self.talk1Button);
 	
 	
-	self.shop2Button = self:CreateButton("shop2button", "무기점", 
-										 self.viewframe.width - 125, 5+45*1, 4)
-	self.viewframe:AddComponent(self.shop2Button);
+	self.talk2Button = self:CreateButton("shop2button", "공부", 
+										 viewframe.width - 125, 5+45*1, 4)
+	self.viewframe:AddComponent(self.talk2Button);
 
 	
-	self.shop3Button = self:CreateButton("shop3button", "잡화점", 
-										 self.viewframe.width - 125, 5+45*2, 4)
-	self.viewframe:AddComponent(self.shop3Button);
-
-	self.shop4Button = self:CreateButton("shop4button", "가구점", 
-										 self.viewframe.width - 125, 5+45*3, 4)
-	self.viewframe:AddComponent(self.shop4Button);
-
+	self.talk3Button = self:CreateButton("shop3button", "불만", 
+										 viewframe.width - 125, 5+45*2, 4)
+	self.viewframe:AddComponent(self.talk3Button);
 
 	
 	self.closeButton = self:CreateButton("closeButton", "Close", 
-										 self.viewframe.width - 125, 5+45*4, 4)
+										 viewframe.width - 125, 5+45*3, 4)
 	self.closeButton.MouseUp = 
 		function (button, luaevent, args)
 			if (button.State["mouseDown"]) then
@@ -93,13 +87,14 @@ function ShopListView:Init()
 	dialogueWin.frame.x = 0;
 	dialogueWin.frame.y = self.frame.height - dialogueWin.frame.height;
 	dialogueWin:Hide();
+	
 end
 
-function ShopListView:SetShopSelectedEvent(event)
-	self.shopSelectedEvent = event;
+function TalkListView:SetTalkSelectedEvent(event)
+	self.talkSelectedEvent = event;
 end
 
-function ShopListView:CreateButton(buttonName, text, x, y, layer)
+function TalkListView:CreateButton(buttonName, text, x, y, layer)
 	local button = Button()
 	button.Relative = true;
 	button.Name = buttonName
@@ -125,8 +120,8 @@ function ShopListView:CreateButton(buttonName, text, x, y, layer)
 				button.Pushed = false
 				Trace("button click!")
 				
-				if (self.shopSelectedEvent ~= nil) then
-					self.shopSelectedEvent(button, luaevent, args);
+				if (self.talkSelectedEvent ~= nil) then
+					self.talkSelectedEvent(button, luaevent, args);
 				end
 				
 			end
@@ -135,8 +130,7 @@ function ShopListView:CreateButton(buttonName, text, x, y, layer)
 	return button;	
 end
 
-
-function ShopListView:SetGreeting(portrait, name, text)	
+function TalkListView:SetGreeting(portrait, name, text)	
 	self.dialogueWin:Show();
 	self.dialogueWin:SetPortraitTexture(portrait);
 	self.dialogueWin:SetDialogueName(name);

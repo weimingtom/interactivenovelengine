@@ -191,8 +191,7 @@ function ScheduleView:Init()
 			if (closeButton.State["mouseDown"]) then
 				closeButton.Pushed = false
 				Trace("closeButton click!")
-                
-                if (self.closeEvent~=nil) then self.closeEvent(closeButton, luaevent, args); end
+                self:Dispose();
 			end
 		end
 	closeButton.Text = "Close";
@@ -377,10 +376,6 @@ function ScheduleView:SetDetailText(text)
     self.detailviewframe.text = text;
 end
 
-function ScheduleView:SetClosingEvent(event)
-	self.closeEvent = event;
-end
-
 function ScheduleView:SetRepeatingEvent(event)
 	self.repeatEvent = event;
 end
@@ -400,20 +395,4 @@ end
 
 function ScheduleView:SetSelectedFocusEvent(event)
 	self.selectedFocusEvent = event;
-end
-
-function ScheduleView:Dispose()
-	self.parent:RemoveComponent(self.name)
-end
-
-function ScheduleView:Show()
-	Trace("showing schedule!")
-	self.frame.Visible = true
-	self.frame.Enabled = true
-end
-
-
-function ScheduleView:Hide()
-	self.frame.Visible = false
-	self.frame.Enabled = false
 end

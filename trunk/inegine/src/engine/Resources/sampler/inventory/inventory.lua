@@ -10,6 +10,7 @@ function InventoryView:Init()
 	
 	local parent = self.parent;
 	local font = GetFont("default"); 
+	self.font = font;
 	local name = self.name;
 	
 	self.frame = TextWindow()
@@ -120,6 +121,7 @@ function InventoryView:Init()
 			if (closeButton.State["mouseDown"]) then
 				closeButton.Pushed = false
 				Trace("closeButton click!")
+				self:Dispose();
 			end
 		end
 	closeButton.Text = "Close";
@@ -174,27 +176,7 @@ function InventoryView:AddFurnitureItem(buttonName, buttonText)
 	self.furnitureView:Add(self:CreateButton(buttonName, buttonText));
 end
 
-
-function InventoryView:SetClosingEvent(event)
-	self.closebutton.MouseUp = event;
-end
-
 function InventoryView:SetSelectedEvent(event)
 	self.selectedEvent = event;
 end
 
-function InventoryView:Dispose()
-	self.parent:RemoveComponent(self.name)
-end
-
-function InventoryView:Show()
-	Trace("showing InventoryView!")
-	self.frame.Visible = true
-	self.frame.Enabled = true
-end
-
-
-function InventoryView:Hide()
-	self.frame.Visible = false
-	self.frame.Enabled = false
-end

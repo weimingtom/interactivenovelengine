@@ -156,7 +156,14 @@ namespace INovelEngine
             while (defferedCallList.Count > 0)
             {
                 LuaEventHandler luaEvent = defferedCallList.Dequeue();
-                luaEvent(this, ScriptEvents.AnimationOver, null);
+                try
+                {
+                    luaEvent(this, ScriptEvents.AnimationOver, null);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
         }
 

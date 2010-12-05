@@ -7,7 +7,7 @@ function LuaView:New (name, parent)
 	
 	o.parent = parent;
 	o.name = name
-	
+	self.disposed = false;
 	local gamestate = CurrentState();
 	
 	return o
@@ -18,7 +18,13 @@ function LuaView:SetClosingEvent(event)
 end
 
 function LuaView:Dispose()
-	self.parent:RemoveComponent(self.name)
+	if (self.disposed ~= true) then
+		self.parent:RemoveComponent(self.name)
+		if (self.closingEvent ~= nil) then 
+			self:closingEvent();
+		end
+	end
+	self.disposed = true;
 end
 
 function LuaView:Show()

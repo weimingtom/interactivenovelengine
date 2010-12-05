@@ -47,9 +47,7 @@ function StatusView:Init()
 			if (button.State["mouseDown"]) then
 				button.Pushed = false
 				Trace("button click!")
-				if (self.closingEvent ~= nil) then 
-					self:closingEvent();
-				end
+				self:Dispose();
 			end
 		end
 	descriptionWindow:AddComponent(closeButton);
