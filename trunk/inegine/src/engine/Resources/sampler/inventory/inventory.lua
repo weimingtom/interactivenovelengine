@@ -13,20 +13,18 @@ function InventoryView:Init()
 	self.font = font;
 	local name = self.name;
 	
-	self.frame = TextWindow()
+	self.frame = View()
 	self.frame.Name = name
-	self.frame.LineSpacing = 20
 	
-	self.frame.x = 10;
-	self.frame.y = 135;
+	self.frame.x = 50;
+	self.frame.y = 160;
 	self.frame.Width = 400
 	self.frame.Height = 430
 	self.frame.alpha = 155
-	self.frame.layer = 3
+	self.frame.layer = 6
 	
 	self.frame.Visible = false
 	self.frame.Enabled = false
-	self.frame.Font = font
 	self.frame.MouseLeave =
 		function(target, event, args)
 			Trace("mouse leave: " .. target.Name)	
@@ -35,14 +33,17 @@ function InventoryView:Init()
 	parent:AddComponent(self.frame)
 	
 	
-	local background = TextWindow()
+	local background = ImageWindow()
 	background.name = "backround"
 	background.relative = true;
 	background.width = self.frame.width - 10;
 	background.height = self.frame.height - 50 - 50;
 	background.x = 5;
 	background.y = 50;
-	background.alpha = 155
+    background.WindowTexture = "Resources/sampler/resources/window.png"
+    background.RectSize = 40
+    background.BackgroundColor = 0xFFFFFF
+	background.alpha = 255
 	background.layer = 6;
 	self.frame:AddComponent(background);
 	
@@ -101,47 +102,28 @@ function InventoryView:Init()
 	self.furnitureView = furnitureView;
 	tabView:AddTab("Furniture", furnitureView.frame);
 	
-	local closeButton = Button()
-	closeButton.Relative = true;
-	closeButton.Name = "closeButton"
-	closeButton.Texture = "Resources/sampler/resources/button.png"	
+	local closeButton = self:CreateButton("closeButton", "Close",
+		function (closeButton, luaevent, args)
+			self:Dispose();
+		end)
 	closeButton.Layer = 4;
 	closeButton.X = self.frame.width - 125;
 	closeButton.Y = self.frame.height - 45;
-	closeButton.Width = 120;
-	closeButton.Height = 40;
-	closeButton.State = {}
-	closeButton.MouseDown = 
-		function (closeButton, luaevent, args)
-			closeButton.State["mouseDown"] = true
-			closeButton.Pushed = true
-		end
-	closeButton.MouseUp = 
-		function (closeButton, luaevent, args)
-			if (closeButton.State["mouseDown"]) then
-				closeButton.Pushed = false
-				Trace("closeButton click!")
-				self:Dispose();
-			end
-		end
-	closeButton.Text = "Close";
-	closeButton.Font = font
-	closeButton.TextColor = 0xEEEEEE
-	
 	self.closebutton = closeButton;
 	
 	self.frame:AddComponent(closeButton);
 end
 
-function InventoryView:CreateButton(buttonName, buttonText)
+
+function InventoryView:CreateButton(buttonName, buttonText, event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = buttonName;
-	newButton.Texture = "Resources/sampler/resources/button.png"	
-	newButton.Layer = 3
+	newButton.Texture = "Resources/sampler/resources/button/button.png"	
+	newButton.Layer = 5
 	newButton.X = 0;
 	newButton.Y = 0;
-	newButton.Width = 120;
+	newButton.Width = 100;
 	newButton.Height = 40;
 	newButton.State = {}
 	newButton.MouseDown = 
@@ -153,27 +135,75 @@ function InventoryView:CreateButton(buttonName, buttonText)
 		function (button, luaevent, args)
 			if (button.State["mouseDown"]) then
 				button.Pushed = false;
-                if (self.selectedEvent~=nil) then 
-					self.selectedEvent(button, luaevent, args);
+                if (event~=nil) then 
+					event(button, luaevent, args);
 				end
 			end
 		end
 	newButton.Text = buttonText;
-	newButton.Font = self.font;
+	newButton.Font = GetFont("menu"); --menuFont
 	newButton.TextColor = 0xEEEEEE
 	return newButton;
 end
 
-function InventoryView:AddDressItem(buttonName, buttonText)
-	self.dressView:Add(self:CreateButton(buttonName, buttonText));
+
+function InventoryView:CreateItem(id, text, icon)
+	local frame = View();
+	frame.Name = id;
+	frame.Relative = true;
+	frame.Width = 80;
+	frame.Height = 69;
+	frame.Enabled = true;
+	
+	local pic = Button();
+	pic.Name = "picture";
+	pic.Texture = icon
+	pic.Visible = true;
+	pic.Width = 48;
+	pic.Height = 48;
+	pic.X = (frame.Width - pic.Width) / 2;
+	pic.State = {}
+	pic.MouseDown = 
+		function (button, luaevent, args)
+			Trace("mouse down!");
+			button.State["mouseDown"] = true
+			button.Pushed = true;
+		end
+	pic.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				Trace("mouse up!");
+				button.Pushed = false;
+				self.selectedEvent(button, luaevent, id);
+			end
+		end
+	frame:AddComponent(pic);
+	
+	local button = Button();
+	button.Name = "text"
+	button.Width = 80;
+	button.Height = 21;
+	button.X = 0;
+	button.Y = pic.Height;
+	button.font = GetFont("verysmall");
+	button.TextColor = 0xFFFFFF
+	button.Text = text;
+	button.Alignment = 1;
+	button.VerticalAlignment = 1;
+	frame:AddComponent(button);
+	return frame;
 end
 
-function InventoryView:AddItemItem(buttonName, buttonText)
-	self.itemView:Add(self:CreateButton(buttonName, buttonText));
+function InventoryView:AddDressItem(buttonName, buttonText, icon)
+	self.dressView:Add(self:CreateItem(buttonName, buttonText, icon));
 end
 
-function InventoryView:AddFurnitureItem(buttonName, buttonText)
-	self.furnitureView:Add(self:CreateButton(buttonName, buttonText));
+function InventoryView:AddItemItem(buttonName, buttonText, icon)
+	self.itemView:Add(self:CreateItem(buttonName, buttonText, icon));
+end
+
+function InventoryView:AddFurnitureItem(buttonName, buttonText, icon)
+	self.furnitureView:Add(self:CreateItem(buttonName, buttonText, icon));
 end
 
 function InventoryView:SetSelectedEvent(event)

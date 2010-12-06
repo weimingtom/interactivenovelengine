@@ -2,7 +2,7 @@ dofile("Resources/Sampler/init_testdata.lua")
 
 	LoadFont("default", "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf", 17);
 
-	LoadFont("menu", "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf", 18);
+	LoadFont("menu", "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf", 13);
 	GetFont("menu").TextEffect = 1
 	
 	LoadFont("date", "Resources\\sampler\\resources\\fonts\\NanumMyeongjoBold.ttf", 13);

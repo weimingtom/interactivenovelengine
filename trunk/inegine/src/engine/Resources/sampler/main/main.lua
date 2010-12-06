@@ -83,8 +83,8 @@ function Main:InitComponents()
 	menu.Alpha = 155
 	menu.Width = 250
 	menu.Height = 42*4
-	menu.X = 35;
-	menu.Y = 160;--135;
+	menu.X = 50;
+	menu.Y = 160;
 	menu.Layer = 5
 	menu.LineSpacing = 20
 	menu.Visible = true
@@ -95,210 +95,91 @@ function Main:InitComponents()
 		function(selectionWindow, event, args)
 		end
 	AddComponent(menu)
-	
-	local button1 = Button()
-	button1.Relative = true;
-	button1.Name = "scheduleButton"
-	button1.Texture = "Resources/sampler/resources/button.png"	
-	button1.Layer = 3
+
+	local button1 = self:CreateButton("Schedule",
+ 		function (button, luaevent, args)
+			self:OpenSchedule();
+		end);
 	button1.X = 0;
-	button1.Y = 0;
-	button1.Width = 120;
-	button1.Height = 40;
-	button1.State = {}
-	button1.MouseDown = 
-		function (button1, luaevent, args)
-			button1.State["mouseDown"] = true
-			button1.Pushed = true
-		end
-	button1.MouseUp = 
-		function (button1, luaevent, args)
-			if (button1.State["mouseDown"]) then
-				button1.Pushed = false
-				self:OpenSchedule();
-			end
-		end
-	button1.Text = "Schedule";
-	button1.Font = GetFont("menu"); --defaultFont
-	button1.TextColor = 0xEEEEEE;
-	
+	button1.Y = 42 * 0;
 	menu:AddComponent(button1);
+
 	
-	local button2 = Button()
-	button2.Relative = true;
-	button2.Name = "button2"
-	button2.Texture = "Resources/sampler/resources/button.png"	
-	button2.Layer = 3
-	button2.X = 122;
+	local button2 = self:CreateButton("Talk",
+ 		function (button, luaevent, args)
+			self:OpenCommunication();
+		end);
+	button2.X = 100;
 	button2.Y = 42 * 0;
-	button2.Width = 120;
-	button2.Height = 40;
-	button2.State = {}
-	button2.MouseDown = 
-		function (button2, luaevent, args)
-			button2.State["mouseDown"] = true
-			button2.Pushed = true
-		end
-	button2.MouseUp = 
-		function (button2, luaevent, args)
-			if (button2.State["mouseDown"]) then
-				button2.Pushed = false
-				Trace("button2 click!")
-				self:OpenCommunication();
-			end
-		end
-	button2.Text = "Talk";
-	button2.Font = GetFont("menu"); --defaultFont
-	button2.TextColor = 0xEEEEEE
-	
 	menu:AddComponent(button2);
-	
-	local button3 = Button()
-	button3.Relative = true;
-	button3.Name = "button3"
-	button3.Texture = "Resources/sampler/resources/button.png"	
-	button3.Layer = 3
+
+	local button3 = self:CreateButton("Status",
+ 		function (button, luaevent, args)
+			self:OpenStatus();
+		end);
 	button3.X = 0;
 	button3.Y = 42 * 1;
-	button3.Width = 120;
-	button3.Height = 40;
-	button3.State = {}
-	button3.MouseDown = 
-		function (button3, luaevent, args)
-			button3.State["mouseDown"] = true
-			button3.Pushed = true
-		end
-	button3.MouseUp = 
-		function (button3, luaevent, args)
-			if (button3.State["mouseDown"]) then
-				button3.Pushed = false
-				Trace("button3 click!")
-				self:OpenStatus();
-			end
-		end
-	button3.Text = "Status";
-	button3.Font = GetFont("menu"); --defaultFont
-	button3.TextColor = 0xEEEEEE
-	
 	menu:AddComponent(button3);
-	
-	local button4 = Button()
-	button4.Relative = true;
-	button4.Name = "button4"
-	button4.Texture = "Resources/sampler/resources/button.png"	
-	button4.Layer = 3
-	button4.X = 122;
+
+	local button4 = self:CreateButton("Inventory",
+ 		function (button, luaevent, args)
+			self:OpenInventory();
+		end);
+	button4.X = 100;
 	button4.Y = 42 * 1;
-	button4.Width = 120;
-	button4.Height = 40;
-	button4.State = {}
-	button4.MouseDown = 
-		function (button4, luaevent, args)
-			button4.State["mouseDown"] = true
-			button4.Pushed = true
-		end
-	button4.MouseUp = 
-		function (button4, luaevent, args)
-			if (button4.State["mouseDown"]) then
-				button4.Pushed = false
-				Trace("button4 click!")
-				self:OpenInventory();
-			end
-		end
-	button4.Text = "Inventory";
-	button4.Font = GetFont("menu"); --menuFont
-	button4.TextColor = 0xEEEEEE
-	
 	menu:AddComponent(button4);
-	
-	local button5 = Button()
-	button5.Relative = true;
-	button5.Name = "button5"
-	button5.Texture = "Resources/sampler/resources/button.png"	
-	button5.Layer = 3
+
+	local button5 = self:CreateButton("Shopping",
+ 		function (button, luaevent, args)
+			self:OpenShop();
+		end);
 	button5.X = 0;
 	button5.Y = 42 * 2;
-	button5.Width = 120;
-	button5.Height = 40;
-	button5.State = {}
-	button5.MouseDown = 
-		function (button5, luaevent, args)
-			button5.State["mouseDown"] = true
-			button5.Pushed = true
-		end
-	button5.MouseUp = 
-		function (button5, luaevent, args)
-			if (button5.State["mouseDown"]) then
-				button5.Pushed = false
-				self:OpenShop();
-			end
-		end
-	button5.Text = "Shopping";
-	button5.Font = GetFont("menu"); --menuFont
-	button5.TextColor = 0xEEEEEE
-	
 	menu:AddComponent(button5);
 	
-	local button6 = Button()
-	button6.Relative = true;
-	button6.Name = "button6"
-	button6.Texture = "Resources/sampler/resources/button.png"	
-	button6.Layer = 3
-	button6.X = 122;
-	button6.Y = 42 * 2;
-	button6.Width = 120;
-	button6.Height = 40;
-	button6.State = {}
-	button6.MouseDown = 
-		function (button6, luaevent, args)
-			button6.State["mouseDown"] = true
-			button6.Pushed = true
-		end
-	button6.MouseUp = 
-		function (button6, luaevent, args)
-			if (button6.State["mouseDown"]) then
-				button6.Pushed = false
-				Trace("button6 click!")
-			end
-		end
-	button6.Text = "Goddess";
-	button6.Font = GetFont("menu"); --menuFont
-	button6.TextColor = 0xEEEEEE
-	
+	local button6 = self:CreateButton("Goddess", nil);
+	button6.X = 100;
+	button6.Y = 42 * 2;	
 	menu:AddComponent(button6);
 	
 	
-	local button7 = Button()
-	button7.Relative = true;
-	button7.Name = "button7"
-	button7.Texture = "Resources/sampler/resources/button.png"	
-	button7.Layer = 3
+	local button7 = self:CreateButton("System", nil);
 	button7.X = 0;
-	button7.Y = 42 * 3;
-	button7.Width = 120;
-	button7.Height = 40;
-	button7.State = {}
-	button7.MouseDown = 
-		function (button7, luaevent, args)
-			button7.State["mouseDown"] = true
-			button7.Pushed = true
-		end
-	button7.MouseUp = 
-		function (button7, luaevent, args)
-			if (button7.State["mouseDown"]) then
-				button7.Pushed = false
-				Trace("button7 click!")
-			end
-		end
-	button7.Text = "System";
-	button7.Font = GetFont("menu"); --menuFont
-	button7.TextColor = 0xEEEEEE
-	
+	button7.Y = 42 * 3;	
 	menu:AddComponent(button7);
 	
 end
 
---public interface
+function Main:CreateButton(buttonText, event)
+	local newButton = Button()
+	newButton.Relative = true;
+	newButton.Name = buttonText;
+	newButton.Texture = "Resources/sampler/resources/button/button.png"	
+	newButton.Layer = 3
+	newButton.X = 0;
+	newButton.Y = 0;
+	newButton.Width = 100;
+	newButton.Height = 40;
+	newButton.State = {}
+	newButton.MouseDown = 
+		function (newButton, luaevent, args)
+			newButton.State["mouseDown"] = true
+			newButton.Pushed = true
+		end
+	newButton.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				button.Pushed = false;
+                if (event~=nil) then 
+					event(button, luaevent, args);
+				end
+			end
+		end
+	newButton.Text = buttonText;
+	newButton.Font = GetFont("menu"); --menuFont
+	newButton.TextColor = 0xEEEEEE
+	return newButton;
+end
 
 --mainmenu
 function Main:OpenSchedule()
@@ -319,7 +200,7 @@ function Main:OpenSchedule()
 		function (button, luaevent, args)
 			Trace("select event called from " .. args);
             if (selectedItemCount < 4) then
-                schedule:AddSelectedItem(args, "Resources/sampler/resources/icon.png");
+                schedule:AddSelectedItem(args .. selectedItemCount, "Resources/sampler/resources/icon.png");
                 selectedIndex = selectedIndex + 1
                 selectedItemCount = selectedItemCount + 1;
             end
@@ -505,14 +386,14 @@ function Main:OpenShop()
 			shop:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
 			shop:SetDialogueText("옷집에 오신것을 환영합니다.");	
 			shop:ShowDialogue(true);
-			shop:AddItem("item1", "item 1");
-			shop:AddItem("item2", "item 2");
-			shop:AddItem("item3", "item 3");
+			shop:AddItem("item1", "item 1", "100G", "Resources/sampler/resources/icon.png");
+			shop:AddItem("item2", "item 2", "100G", "Resources/sampler/resources/icon.png");
+			shop:AddItem("item3", "item 3", "100G", "Resources/sampler/resources/icon.png");
 			
 			shop:SetSelectedEvent(
 				function(button, luaevent, args)
-					self.itemSelected = button.name;
-					shop:SetDetailText("SELECTED " .. button.name)
+					self.itemSelected = args;
+					shop:SetDetailText("SELECTED " .. args)
 				end
 			);
 			
@@ -564,16 +445,16 @@ function Main:OpenInventory()
 	
 	inven:SetSelectedEvent(
 		function (button, luaevent, args)
-			Trace("select event called from " .. button.name);
-			if (button.name == "dress1") then
+			Trace("select event called from " .. args);
+			if (args == "dress1") then
 				Trace("changing dress to dress 1")
 				main:SetTachieBody("Resources/sampler/resources/images/1.png");
 				main:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
-			elseif (button.name == "dress2") then
+			elseif (args == "dress2") then
 				Trace("changing dress to dress 2")
 				main:SetTachieBody("Resources/sampler/resources/images/2.png");
 				main:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
-			elseif (button.name == "dress3") then
+			elseif (args == "dress3") then
 				Trace("changing dress to dress 3")
 				main:SetTachieBody("Resources/sampler/resources/images/3.png");
 				main:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
@@ -585,13 +466,13 @@ function Main:OpenInventory()
 	
 	
 	--add test items
-	inven:AddDressItem("dress1", "Dress 1");
-	inven:AddDressItem("dress2", "Dress 2");
-	inven:AddDressItem("dress3", "Dress 2");
+	inven:AddDressItem("dress1", "Dress 1", "Resources/sampler/resources/icon.png");
+	inven:AddDressItem("dress2", "Dress 2", "Resources/sampler/resources/icon.png");
+	inven:AddDressItem("dress3", "Dress 2", "Resources/sampler/resources/icon.png");
 	
-	inven:AddItemItem("item1", "Item 1");
+	inven:AddItemItem("item1", "Item 1", "Resources/sampler/resources/icon.png");
 	
-	inven:AddFurnitureItem("furniture1", "Furniture 1");
+	inven:AddFurnitureItem("furniture1", "Furniture 1", "Resources/sampler/resources/icon.png");
 	
 	self:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
 	inven:Show();

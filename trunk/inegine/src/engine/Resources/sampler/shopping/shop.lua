@@ -16,8 +16,8 @@ function ShopView:Init()
 	self.frame.Height = GetHeight()
 	self.frame.x = 0;
 	self.frame.y = 0;
-	self.frame.alpha = 155
-	self.frame.layer = 3
+	self.frame.alpha = 255
+	self.frame.layer = 6
 	
 	self.frame.Visible = false
 	self.frame.Enabled = false
@@ -27,53 +27,6 @@ function ShopView:Init()
 		end
 	
 	parent:AddComponent(self.frame)
-	--
-	--local dialogueWin = ImageWindow()
-	--dialogueWin.Name = "dialogueWindow"
-	--dialogueWin.Alpha = 155
-	--dialogueWin.Width = 600
-	--dialogueWin.Height = 120
-	--dialogueWin.x = self.frame.Width - dialogueWin.Width - 20;
-	--dialogueWin.y = self.frame.Height - dialogueWin.Height - 20;
-	--dialogueWin.Layer = 5
-	--dialogueWin.LineSpacing = 20
-	--dialogueWin.MouseClick = 
-        --function(window, luaevent, args)
-			--Trace(window.name .. " clicked!");	
-            --window:AdvanceText();
-        --end
-	--dialogueWin.Visible = true
-	--dialogueWin.WindowTexture = "Resources/sampler/resources/win.png"
-	--dialogueWin.Font = GetFont("dialogue")
-	--
-	--dialogueWin.Cursor = AnimatedSprite();
-	--dialogueWin.Cursor.Name = "cursor"
-	--dialogueWin.Cursor.Texture = "Resources/sampler/resources/cursor.png"
-	--dialogueWin.Cursor.Width = 32;
-	--dialogueWin.Cursor.Height = 48;
-	--dialogueWin.Cursor.Rows = 4;
-	--dialogueWin.Cursor.Cols = 4;
-	--dialogueWin.Cursor.Layer = 10;
-	--dialogueWin.Cursor.Visible = true
-	--dialogueWin.PrintOver = 
-		--function (window, luaevent, args)
-                --if (self.dialogueOverEvent~=nil) then 
-					--self.dialogueOverEvent(window, luaevent, args);
-				--end
-		--end
-	--dialogueWin.narrationSpeed = 30;
-	--self.frame:AddComponent(dialogueWin);
-	--self.dialogueWin = dialogueWin;
-	--
-	--local portrait = SpriteBase();
-	--portrait.Name = "portrait";
-	--portrait.Visible = true;
-	--portrait.Layer = 2;
-	--self.portrait = portrait;
-	--self.frame:AddComponent(portrait);	
---
-	--self:ShowDialogue(false);
-		--
 		
 	local dialogueWin = DialogueWindow:New("dialogueWin", self.frame);
 	self.dialogueWin = dialogueWin;
@@ -83,15 +36,17 @@ function ShopView:Init()
 	dialogueWin.frame.y = self.frame.height - dialogueWin.frame.height;
 	dialogueWin:Hide();
 		
-	local background = View()
+	local background = ImageWindow()
 	background.name = "backround"
 	background.relative = true;
-	background.BackgroundColor = 0x000000
-	background.width = 400;
-	background.height = 320;
-	background.x = 5;
-	background.y = dialogueWin.frame.y - background.height - 10;
-	background.alpha = 155
+	background.width = 465;
+	background.height = 270;
+	background.x = 50;
+	background.y = 160;--dialogueWin.frame.y - background.height - 10;
+    background.WindowTexture = "Resources/sampler/resources/window.png"
+    background.RectSize = 40
+    background.BackgroundColor = 0xFFFFFF
+	background.alpha = 255
 	background.layer = 6;
 	self.frame:AddComponent(background);
 	
@@ -111,21 +66,24 @@ function ShopView:Init()
 	background:AddComponent(itemListView.frame);
 	
 	
-	local detailviewframe = TextWindow()
+	local detailviewframe = ImageWindow()
 	self.detailviewframe = detailviewframe;
 	detailviewframe.Name = "detailviewframe"
 	detailviewframe.font = GetFont("default");
-	detailviewframe.Width = 380
-	detailviewframe.Height = 150
-	detailviewframe.X = 415;
-	detailviewframe.Y = dialogueWin.frame.y - detailviewframe.height - 10;
-	detailviewframe.alpha = 155
+	detailviewframe.Width = 215
+	detailviewframe.Height = 230
+	detailviewframe.X = 525;
+	detailviewframe.Y = 160;
+    detailviewframe.WindowTexture = "Resources/sampler/resources/window.png"
+    detailviewframe.RectSize = 40
+    detailviewframe.BackgroundColor = 0xFFFFFF
+	detailviewframe.alpha = 255
 	detailviewframe.layer = 3
 	
 	self.frame:AddComponent(detailviewframe)
 	
 	self.buyButton = self:CreateButton("buyButton", "Buy", 
-										 detailviewframe.width - 125, detailviewframe.height - 45, 6)
+										 detailviewframe.x + detailviewframe.width - 105, background.y + background.height - 40, 6)
 	self.buyButton.relative = true;
 	self.buyButton.MouseUp = 
 		function (button, luaevent, args)
@@ -137,11 +95,11 @@ function ShopView:Init()
 				end
 			end
 		end
-	detailviewframe:AddComponent(self.buyButton);
+	self.frame:AddComponent(self.buyButton);
 
 	
 	self.closeButton = self:CreateButton("closeButton", "Close", 
-										 background.width - 125, background.height - 45, 6)
+										 detailviewframe.x + detailviewframe.width - 210, background.y + background.height - 40, 6)
 	self.closeButton.relative = true;
 	self.closeButton.MouseUp = 
 		function (button, luaevent, args)
@@ -151,21 +109,21 @@ function ShopView:Init()
 				self:Dispose();
 			end
 		end
-	background:AddComponent(self.closeButton);
+	self.frame:AddComponent(self.closeButton);
 end
 
 function ShopView:CreateButton(name, text, x, y, layer)
 	local button = Button()
 	button.Relative = true;
 	button.Name = name
-	button.Texture = "Resources/sampler/resources/button.png"	
+	button.Texture = "Resources/sampler/resources/button/button.png"	
 	button.Layer = layer;
 	button.X = x;
 	button.Y = y;
-	button.Width = 120;
+	button.Width = 100;
 	button.Height = 40;
 	button.Text = text;
-	button.Font =  GetFont("default")
+	button.Font =  GetFont("menu")
 	button.TextColor = 0xEEEEEE
 	button.State = {}
 	button.MouseDown = 
@@ -199,14 +157,74 @@ function ShopView:ShowDialogue(show)
 end
 
 
-function ShopView:AddItem(buttonName, buttonText)
-	self.itemListView:Add(self:CreateItemButton(buttonName, buttonText));
+function ShopView:AddItem(id, text, price, icon)
+	self.itemListView:Add(self:CreateItem(id, text, price, icon));
 end
 
 function ShopView:SetSelectedEvent(event)
 	self.selectedEvent = event;
 end
 
+function ShopView:CreateItem(id, text, price, icon)
+	local frame = View();
+	frame.Name = id;
+	frame.Relative = true;
+	frame.Width = 90;
+	frame.Height = 80;
+	frame.Enabled = true;
+	
+	local pic = Button();
+	pic.Name = "picture";
+	pic.Texture = icon
+	pic.Visible = true;
+	pic.X = (frame.Width - pic.Width) / 2;
+	pic.Width = 48;
+	pic.Height = 48;
+	pic.State = {}
+	pic.MouseDown = 
+		function (button, luaevent, args)
+			Trace("mouse down!");
+			button.State["mouseDown"] = true
+			button.Pushed = true;
+		end
+	pic.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				Trace("mouse up!");
+				button.Pushed = false;
+				self.selectedEvent(button, luaevent, id);
+			end
+		end
+	frame:AddComponent(pic);
+	
+	local button = Button();
+	button.Name = "text"
+	button.Width = 90;
+	button.Height = 15;
+	button.X = 0;
+	button.Y = pic.Height;
+	button.font = GetFont("verysmall");
+	button.TextColor = 0xFFFFFF
+	button.Text = text;
+	button.Alignment = 1;
+	button.VerticalAlignment = 1;
+	frame:AddComponent(button);
+	
+	
+	local priceButton = Button();
+	priceButton.Name = "price"
+	priceButton.Width = 90;
+	priceButton.Height = 15;
+	priceButton.X = 0;
+	priceButton.Y = button.Y + button.Height;
+	priceButton.font = GetFont("verysmall");
+	priceButton.TextColor = 0xFFFFFF
+	priceButton.Text = price;
+	priceButton.Alignment = 1;
+	priceButton.VerticalAlignment = 1;
+	frame:AddComponent(priceButton);
+	return frame;
+end
 
 function ShopView:CreateItemButton(buttonName, buttonText)
 	local newButton = Button()
