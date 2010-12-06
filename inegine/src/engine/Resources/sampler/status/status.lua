@@ -28,39 +28,42 @@ function StatusView:Init()
 
 	parent:AddComponent(self.frame)
 	
-	local descriptionWindow = TextWindow()
+	local descriptionWindow = ImageWindow()
 	self.descriptionWindow = descriptionWindow;
 	descriptionWindow.name = "descriptionWindow"
 	descriptionWindow.relative = true;
 	descriptionWindow.width = 240;
 	descriptionWindow.height = 320;
+    descriptionWindow.WindowTexture = "Resources/sampler/resources/window.png"
+    descriptionWindow.RectSize = 40
+    descriptionWindow.BackgroundColor = 0xFFFFFF
+    descriptionWindow.Margin = 20;
+    descriptionWindow.Leftmargin = 20;
 	descriptionWindow.x = 20;
 	descriptionWindow.y = GetHeight() - descriptionWindow.height - 20;
-	descriptionWindow.alpha = 155
+	descriptionWindow.alpha = 255;
 	descriptionWindow.layer = 6;
 	descriptionWindow.font = GetFont("state");
 	self.frame:AddComponent(descriptionWindow);
-	
-	local closeButton = self:CreateButton("closeButton", "Close", descriptionWindow.width - 125, descriptionWindow.height - 45, 5);
-	closeButton.MouseUp = 
+	local closeButton = self:CreateButton("Close", 
 		function (button, luaevent, args)
-			if (button.State["mouseDown"]) then
-				button.Pushed = false
-				Trace("button click!")
 				self:Dispose();
-			end
-		end
+		end,
+		descriptionWindow.width - 110, descriptionWindow.height - 50, 5)
 	descriptionWindow:AddComponent(closeButton);
 	
-	local graphWindow = View()
+	local graphWindow = ImageWindow()
 	graphWindow.name = "graphWindow"
 	graphWindow.relative = true;
-	graphWindow.BackgroundColor = 0x000000 
 	graphWindow.width = 280;
 	graphWindow.height = 480;
+    graphWindow.WindowTexture = "Resources/sampler/resources/window.png"
+    graphWindow.RectSize = 40
+    graphWindow.BackgroundColor = 0xFFFFFF
+    graphWindow.Margin = 50;
 	graphWindow.x = GetWidth() - graphWindow.width - 20;
 	graphWindow.y = GetHeight() - graphWindow.height - 20;
-	graphWindow.alpha = 155
+	graphWindow.alpha = 255
 	graphWindow.layer = 6;
 	self.frame:AddComponent(graphWindow);
 
@@ -69,7 +72,7 @@ function StatusView:Init()
 	itemListView.frame.width = graphWindow.width;
 	itemListView.frame.height = graphWindow.height;
 	itemListView.frame.x = 0;
-	itemListView.frame.y = 0;
+	itemListView.frame.y = 10;
 	itemListView.frame.layer = 4;
 	itemListView.spacing = 5;
 	itemListView.padding = 10;
@@ -83,26 +86,35 @@ function StatusView:SetDescriptionText(text)
 	self.descriptionWindow.text = text;
 end
 
-function StatusView:CreateButton(name, text, x, y, layer)
-	local button = Button()
-	button.Relative = true;
-	button.Name = name
-	button.Texture = "Resources/sampler/resources/button.png"	
-	button.Layer = layer;
-	button.X = x;
-	button.Y = y;
-	button.Width = 120;
-	button.Height = 40;
-	button.Text = text;
-	button.Font =  GetFont("default")
-	button.TextColor = 0xEEEEEE
-	button.State = {}
-	button.MouseDown = 
-		function (button, luaevent, args)
-			button.State["mouseDown"] = true
-			button.Pushed = true
+function StatusView:CreateButton(buttonText, event, x, y, layer)
+	local newButton = Button()
+	newButton.Relative = true;
+	newButton.Name = buttonText;
+	newButton.Texture = "Resources/sampler/resources/button/button.png"	
+	newButton.Layer = layer
+	newButton.X = x;
+	newButton.Y = y;
+	newButton.Width = 100;
+	newButton.Height = 40;
+	newButton.State = {}
+	newButton.MouseDown = 
+		function (newButton, luaevent, args)
+			newButton.State["mouseDown"] = true
+			newButton.Pushed = true
 		end
-	return button;
+	newButton.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				button.Pushed = false;
+                if (event~=nil) then 
+					event(button, luaevent, args);
+				end
+			end
+		end
+	newButton.Text = buttonText;
+	newButton.Font = GetFont("menu"); --menuFont
+	newButton.TextColor = 0xEEEEEE
+	return newButton;
 end
 
 function StatusView:AddGraphItem(key, value, percentage, color)

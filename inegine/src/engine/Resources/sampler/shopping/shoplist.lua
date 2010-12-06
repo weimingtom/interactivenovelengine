@@ -99,42 +99,50 @@ function ShopListView:SetShopSelectedEvent(event)
 	self.shopSelectedEvent = event;
 end
 
-function ShopListView:CreateButton(buttonName, text, x, y, layer)
-	local button = Button()
-	button.Relative = true;
-	button.Name = buttonName
-	button.Texture = "Resources/sampler/resources/button.png"	
-	button.Layer = layer;
-	button.X = x;
-	button.Y = y;
-	button.Width = 120;
-	button.Height = 40;
-	button.Text = text;
-	button.Font =  GetFont("default")
-	button.TextColor = 0xEEEEEE
-	button.State = {}
-	button.MouseDown = 
-		function (button, luaevent, args)
-			button.State["mouseDown"] = true
-			button.Pushed = true
+function ShopListView:CreateButtonInternal(buttonName, buttonText, event)
+	local newButton = Button()
+	newButton.Relative = true;
+	newButton.Name = buttonName;
+	newButton.Texture = "Resources/sampler/resources/button/button.png"	
+	newButton.Layer = 3
+	newButton.X = 0;
+	newButton.Y = 0;
+	newButton.Width = 100;
+	newButton.Height = 40;
+	newButton.State = {}
+	newButton.MouseDown = 
+		function (newButton, luaevent, args)
+			newButton.State["mouseDown"] = true
+			newButton.Pushed = true
 		end
-	
-	button.MouseUp = 
+	newButton.MouseUp = 
 		function (button, luaevent, args)
 			if (button.State["mouseDown"]) then
-				button.Pushed = false
-				Trace("button click!")
-				
-				if (self.shopSelectedEvent ~= nil) then
-					self.shopSelectedEvent(button, luaevent, args);
+				button.Pushed = false;
+                if (event~=nil) then 
+					event(button, luaevent, args);
 				end
-				
 			end
 		end
-
-	return button;	
+	newButton.Text = buttonText;
+	newButton.Font = GetFont("menu"); --menuFont
+	newButton.TextColor = 0xEEEEEE
+	return newButton;
 end
 
+
+
+function ShopListView:CreateButton(buttonName, text, x, y, layer)
+	local button = self:CreateButtonInternal(buttonName, text, 		
+        function (button, luaevent, args)
+			if (self.shopSelectedEvent ~= nil) then
+				self.shopSelectedEvent(button, luaevent, args);
+			end
+		end)
+	button.X = x;
+	button.Y = y;
+	return button;	
+end
 
 function ShopListView:SetGreeting(portrait, name, text)	
 	self.dialogueWin:Show();

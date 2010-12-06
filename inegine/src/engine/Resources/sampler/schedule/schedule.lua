@@ -31,13 +31,13 @@ function ScheduleView:Init()
 	
 	parent:AddComponent(self.frame)
 	
-	local tabviewframe = TextWindow()
+	local tabviewframe = View()
 	self.tabviewframe = tabviewframe;
 	self.tabviewframe.Name = "tabviewframe"
 	
 	self.tabviewframe.X = 10;
 	self.tabviewframe.Y = 300;
-	self.tabviewframe.Width = 400
+	self.tabviewframe.Width = 460
 	self.tabviewframe.Height = 290
 	self.tabviewframe.alpha = 155
 	self.tabviewframe.layer = 3
@@ -56,14 +56,17 @@ function ScheduleView:Init()
 	tabView:Show();
 	
 	
-	local background = TextWindow()
+	local background = ImageWindow()
 	background.name = "backround"
 	background.relative = true;
 	background.width = self.tabviewframe.width - 10;
 	background.height = self.tabviewframe.height - 50 - 50;
 	background.x = 5;
 	background.y = 50;
-	background.alpha = 155
+    background.WindowTexture = "Resources/sampler/resources/window.png"
+    background.RectSize = 40
+    background.BackgroundColor = 0xFFFFFF
+	background.alpha = 255
 	background.layer = 4;
 	tabviewframe:AddComponent(background);
 		
@@ -111,47 +114,30 @@ function ScheduleView:Init()
 	self.vacationView = vacationView;
 	tabView:AddTab("vacation", vacationView.frame);
 
-	local repeatButton = Button()
-	repeatButton.Relative = true;
-	repeatButton.Name = "repeatButton"
-	repeatButton.Texture = "Resources/sampler/resources/button.png"	
+	local repeatButton = self:CreateButton("Repeat", 
+		function (repeatButton, luaevent, args)
+            if (self.executeEvent~=nil) then 
+                self.repeatEvent(repeatButton, luaevent, args);
+            end
+		end)
 	repeatButton.Layer = 4;
-	repeatButton.X = tabviewframe.width - 125;
+	repeatButton.X = tabviewframe.width - 105;
 	repeatButton.Y = tabviewframe.height - 45;
-	repeatButton.Width = 120;
-	repeatButton.Height = 40;
-	repeatButton.State = {}
-	repeatButton.MouseDown = 
-		function (repeatButton, luaevent, args)
-			repeatButton.State["mouseDown"] = true
-			repeatButton.Pushed = true
-		end
-	repeatButton.MouseUp = 
-		function (repeatButton, luaevent, args)
-			if (repeatButton.State["mouseDown"]) then
-				repeatButton.Pushed = false
-				Trace("repeatButton click!")
-                if (self.executeEvent~=nil) then 
-                    self.repeatEvent(repeatButton, luaevent, args);
-                end
-			end
-		end
-	repeatButton.Text = "Repeat";
-	repeatButton.Font = font
-	repeatButton.TextColor = 0xEEEEEE
-	
 	self.repeatButton = repeatButton
 	tabviewframe:AddComponent(repeatButton);
 	
-	local selectionframe = TextWindow()
+	local selectionframe = ImageWindow()
 	self.selectionframe = selectionframe;
 	selectionframe.Name = "selectionframe"
 	
-	selectionframe.X = 415;
-	selectionframe.Y = 200;
-	selectionframe.Width = 380
-	selectionframe.Height = 230
-	selectionframe.alpha = 155
+	selectionframe.X = 475;
+	selectionframe.Y = 315;
+    selectionframe.WindowTexture = "Resources/sampler/resources/window.png"
+    selectionframe.RectSize = 40
+    selectionframe.BackgroundColor = 0xFFFFFF
+	selectionframe.Width = 320
+	selectionframe.Height = 80
+	selectionframe.alpha = 255
 	selectionframe.layer = 3
 	
 	self.frame:AddComponent(selectionframe)
@@ -159,121 +145,66 @@ function ScheduleView:Init()
 	local selectedItemsView = Flowview:New("selectedItemsView");
 	selectedItemsView.frame.relative = true;
 	selectedItemsView.frame.width = selectionframe.width - 10;
-	selectedItemsView.frame.height = selectionframe.height - 55;
+	selectedItemsView.frame.height = selectionframe.height;
 	selectedItemsView.frame.x = 5;
 	selectedItemsView.frame.y = 5;
 	selectedItemsView.frame.alpha = 155
 	selectedItemsView.frame.layer = 4;	
-	selectedItemsView.spacing = 5;
+	selectedItemsView.spacing = 30;
 	selectedItemsView.padding = 10;
 	selectedItemsView.frame.visible = true;
 	selectedItemsView.frame.enabled = true;
 	self.selectedItemsView = selectedItemsView;
 	selectionframe:AddComponent(selectedItemsView.frame);
 
-	local closeButton = Button()
-	closeButton.Relative = true;
-	closeButton.Name = "closeButton"
-	closeButton.Texture = "Resources/sampler/resources/button.png"	
+	local closeButton = self:CreateButton("Close", 
+		function (closeButton, luaevent, args)
+            self:Dispose();
+		end)
 	closeButton.Layer = 4;
-	closeButton.X = 5;
-	closeButton.Y = selectionframe.height - 45;
-	closeButton.Width = 120;
-	closeButton.Height = 40;
-	closeButton.State = {}
-	closeButton.MouseDown = 
-		function (closeButton, luaevent, args)
-			closeButton.State["mouseDown"] = true
-			closeButton.Pushed = true
-		end
-	closeButton.MouseUp = 
-		function (closeButton, luaevent, args)
-			if (closeButton.State["mouseDown"]) then
-				closeButton.Pushed = false
-				Trace("closeButton click!")
-                self:Dispose();
-			end
-		end
-	closeButton.Text = "Close";
-	closeButton.Font = font
-	closeButton.TextColor = 0xEEEEEE
-	
-	self.closebutton = closeButton;
-	selectionframe:AddComponent(closeButton);
+	closeButton.X = selectionframe.x + 7;
+	closeButton.Y = selectionframe.y + selectionframe.height;
+	self.closeButton = closeButton
+	self.frame:AddComponent(closeButton);
 	
 	
-	local deleteButton = Button()
-	deleteButton.Relative = true;
-	deleteButton.Name = "deleteButton"
-	deleteButton.Texture = "Resources/sampler/resources/button.png"	
-	deleteButton.Layer = 4;
-	deleteButton.X = 130;
-	deleteButton.Y = selectionframe.height - 45;
-	deleteButton.Width = 120;
-	deleteButton.Height = 40;
-	deleteButton.State = {}
-	deleteButton.MouseDown = 
+	local deleteButton = self:CreateButton("Delete", 
 		function (deleteButton, luaevent, args)
-			deleteButton.State["mouseDown"] = true
-			deleteButton.Pushed = true
-		end
-	deleteButton.MouseUp = 
-		function (deleteButton, luaevent, args)
-			if (deleteButton.State["mouseDown"]) then
-				deleteButton.Pushed = false
-				Trace("deleteButton click!")
+            if (self.deleteEvent ~= nil) then
                 self.deleteEvent(deleteButton, luaevent, args);
-			end
-		end
-	deleteButton.Text = "Delete";
-	deleteButton.Font = font
-	deleteButton.TextColor = 0xEEEEEE
+            end
+		end)
+	deleteButton.Layer = 4;
+	deleteButton.X = selectionframe.x + 110;
+	deleteButton.Y = selectionframe.y + selectionframe.height;
+	self.deleteButton = deleteButton
+	self.frame:AddComponent(deleteButton);
 	
-	self.deleteButton = deleteButton;
-	selectionframe:AddComponent(deleteButton);
-	
-	local executeButton = Button()
-	executeButton.Relative = true;
-	executeButton.Name = "executeButton"
-	executeButton.Texture = "Resources/sampler/resources/button.png"	
+	local executeButton = self:CreateButton("Run", 
+		function (executeButton, luaevent, args)
+            if (self.executeEvent~=nil) then 
+                self.executeEvent(executeButton, luaevent, args);
+            end
+		end)
 	executeButton.Layer = 4;
-	executeButton.X = 255;
-	executeButton.Y = selectionframe.height - 45;
-	executeButton.Width = 120;
-	executeButton.Height = 40;
-	executeButton.State = {}
-	executeButton.MouseDown = 
-		function (executeButton, luaevent, args)
-			executeButton.State["mouseDown"] = true
-			executeButton.Pushed = true
-		end
-	executeButton.MouseUp = 
-		function (executeButton, luaevent, args)
-			if (executeButton.State["mouseDown"]) then
-				executeButton.Pushed = false
-				Trace("executeButton click!")
-                if (self.executeEvent~=nil) then 
-                    self.executeEvent(executeButton, luaevent, args);
-                end
-			end
-		end
-	executeButton.Text = "Run";
-	executeButton.Font = font
-	executeButton.TextColor = 0xEEEEEE
-	
-	self.executeButton = executeButton;
-	selectionframe:AddComponent(executeButton);
+	executeButton.X = selectionframe.x + 213;
+	executeButton.Y = selectionframe.y + selectionframe.height;
+	self.executeButton = executeButton
+	self.frame:AddComponent(executeButton);
 	
 	
-	local detailviewframe = TextWindow()
+	local detailviewframe = ImageWindow()
 	self.detailviewframe = detailviewframe;
 	detailviewframe.Name = "detailviewframe"
 	detailviewframe.font = font;
-	detailviewframe.X = 415;
+	detailviewframe.X = 475;
 	detailviewframe.Y = 440;
-	detailviewframe.Width = 380
+    detailviewframe.WindowTexture = "Resources/sampler/resources/window.png"
+    detailviewframe.RectSize = 40
+    detailviewframe.BackgroundColor = 0xFFFFFF
+	detailviewframe.Width = 320
 	detailviewframe.Height = 150
-	detailviewframe.alpha = 155
+	detailviewframe.alpha = 255
 	detailviewframe.layer = 3
 	
 	self.frame:AddComponent(detailviewframe)
@@ -281,15 +212,15 @@ function ScheduleView:Init()
 end
 
 
-function ScheduleView:CreateButton(buttonName, buttonText)
+function ScheduleView:CreateButton(buttonText, event)
 	local newButton = Button()
 	newButton.Relative = true;
-	newButton.Name = buttonName;
-	newButton.Texture = "Resources/sampler/resources/button.png"	
+	newButton.Name = buttonText;
+	newButton.Texture = "Resources/sampler/resources/button/button.png"	
 	newButton.Layer = 3
 	newButton.X = 0;
 	newButton.Y = 0;
-	newButton.Width = 120;
+	newButton.Width = 100;
 	newButton.Height = 40;
 	newButton.State = {}
 	newButton.MouseDown = 
@@ -301,11 +232,13 @@ function ScheduleView:CreateButton(buttonName, buttonText)
 		function (button, luaevent, args)
 			if (button.State["mouseDown"]) then
 				button.Pushed = false;
-				self.selectedEvent(button, luaevent, args);
+                if (event~=nil) then 
+					event(button, luaevent, args);
+				end
 			end
 		end
 	newButton.Text = buttonText;
-	newButton.Font = self.font;
+	newButton.Font = GetFont("menu"); --menuFont
 	newButton.TextColor = 0xEEEEEE
 	return newButton;
 end
@@ -324,12 +257,10 @@ function ScheduleView:CreateSelectedButton(buttonName, buttonText)
 	newButton.MouseDown = 
 		function (newButton, luaevent, args)
 			newButton.State["mouseDown"] = true
-			--ewButton.Pushed = true
 		end
 	newButton.MouseUp = 
 		function (button, luaevent, args)
 			if (button.State["mouseDown"]) then
-				--button.Pushed = false;
 				self.selectedFocusEvent(button, luaevent, args);
 			end
 		end
@@ -452,9 +383,9 @@ function ScheduleView:CreateItem(id, text, price, icon)
 	
 	local button = Button();
 	button.Name = "text"
-	button.Width = 80;
+	button.Width = 90;
 	button.Height = 15;
-	button.X = 5;
+	button.X = 0;
 	button.Y = pic.Height;
 	button.font = GetFont("verysmall");
 	button.TextColor = 0xFFFFFF
@@ -466,9 +397,9 @@ function ScheduleView:CreateItem(id, text, price, icon)
 	
 	local priceButton = Button();
 	priceButton.Name = "price"
-	priceButton.Width = 80;
+	priceButton.Width = 90;
 	priceButton.Height = 15;
-	priceButton.X = 5;
+	priceButton.X = 0;
 	priceButton.Y = button.Y + button.Height;
 	priceButton.font = GetFont("verysmall");
 	priceButton.TextColor = 0xFFFFFF

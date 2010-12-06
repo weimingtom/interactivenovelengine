@@ -19,7 +19,7 @@ function Tabview:Init()
 	self.viewList = {}
 	self.tabCount = 0
 	
-	self.buttonWidth = 120;
+	self.buttonWidth = 100;
 	self.buttonHeight = 40;
 	
 	self.frame = View()
@@ -56,24 +56,13 @@ function Tabview:AddTab(name, view)
 	table.insert(self.tabList, name)
 	table.insert(self.viewList, view.name);
 	
-	local newButton = Button()
-	newButton.Relative = true;
-	newButton.Name = name;
-	newButton.Texture = "Resources/sampler/resources/button.png"	
-	newButton.Layer = 6;
-	newButton.X = 5 + self.tabCount * (self.buttonWidth + 2);
-	newButton.Y = 10;
-	newButton.pushed = true;
-	newButton.Width = self.buttonWidth;
-	newButton.Height = self.buttonHeight;
-	newButton.State = {}
-	newButton.Text = name;
-	newButton.Font = self.font
-	newButton.TextColor = 0xEEEEEE
-	newButton.MouseUp = 
+	local newButton = self:CreateButton(name, 
 		function (target, luaevent, args) 
 			self:ButtonClicked(target, luaevent, args);
-		end
+		end);
+	newButton.X = 20 + self.tabCount * (self.buttonWidth + 2);
+	newButton.Y = 15;
+	newButton.pushed = true;
 	self.frame:AddComponent(newButton);
 	
 	view.relative = true;
@@ -125,4 +114,35 @@ function Tabview:SetEnabledView(name)
 			view.visible = false;
 		end
 	end
+end
+
+function Tabview:CreateButton(buttonText, event)
+	local newButton = Button()
+	newButton.Relative = true;
+	newButton.Name = buttonText;
+	newButton.Texture = "Resources/sampler/resources/button/tabbutton.png"	
+	newButton.Layer = 1
+	newButton.X = 0;
+	newButton.Y = 0;
+	newButton.Width = 100;
+	newButton.Height = 40;
+	newButton.State = {}
+	newButton.MouseDown = 
+		function (newButton, luaevent, args)
+			newButton.State["mouseDown"] = true
+			newButton.Pushed = true
+		end
+	newButton.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				button.Pushed = false;
+                if (event~=nil) then 
+					event(button, luaevent, args);
+				end
+			end
+		end
+	newButton.Text = buttonText;
+	newButton.Font = GetFont("menu"); --menuFont
+	newButton.TextColor = 0xEEEEEE
+	return newButton;
 end
