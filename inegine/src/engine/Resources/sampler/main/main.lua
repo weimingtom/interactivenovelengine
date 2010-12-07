@@ -2,6 +2,7 @@
 require "Resources\\sampler\\inventory\\inventory"
 require "Resources\\sampler\\schedule\\schedule"
 require "Resources\\sampler\\schedule\\execution"
+require "Resources\\sampler\\schedule\\schedulepresenter"
 require "Resources\\sampler\\shopping\\shoplist"
 require "Resources\\sampler\\shopping\\shop"
 require "Resources\\sampler\\status\\status"
@@ -15,6 +16,8 @@ function Main:New()
 	setmetatable(o, self)
 	self.__index = self
 
+	self.gamestate = CurrentState();
+
     self:InitComponents()
    
 	return o
@@ -23,7 +26,7 @@ end
 --Component initialization
 function Main:InitComponents()
 	
-	local gamestate = CurrentState();
+	local gamestate = self.gamestate;
 
 	
 	local calendarBackground = SpriteBase();
@@ -183,6 +186,22 @@ end
 
 --mainmenu
 function Main:OpenSchedule()
+	local schedule = ScheduleView:New("scheduleView", self.gamestate);
+	schedule:Init();
+	
+	self.schedulePresenter = SchedulePresenter:New();
+	self.schedulePresenter:Init(self, schedule, scheduleManager);
+	self.schedulePresenter:SetClosingEvent(
+		function()
+			Trace("disposing schedule presenter!");
+			self.schedulePresenter = nil;
+		end
+	)
+	self.schedulePresenter:AddTestItems();
+end
+
+--mainmenu
+function Main:OpenScheduleDeprecated()
 	self:ToggleMainMenu(false);
 	local schedule = ScheduleView:New("scheduleView", CurrentState());
 	schedule:Init();

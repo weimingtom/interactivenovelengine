@@ -8,7 +8,6 @@ function LuaView:New (name, parent)
 	o.parent = parent;
 	o.name = name
 	self.disposed = false;
-	local gamestate = CurrentState();
 	
 	return o
 end

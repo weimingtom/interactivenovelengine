@@ -286,6 +286,18 @@ function ScheduleView:AddSelectedItem(id, icon)
 	self.selectedItemsView:Add(self:CreateSelectedItem(id, icon));
 end
 
+function ScheduleView:ClearEducationItems()
+	self.educationView:Clear();
+end
+
+function ScheduleView:ClearWorkItems()
+	self.workView:Clear();
+end
+
+function ScheduleView:ClearVacationItems()
+	self.vacationView:Clear();
+end
+
 function ScheduleView:RemoveSelectedItem(id)
 	self.selectedItemsView:Remove(id);
 end

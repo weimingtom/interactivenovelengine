@@ -1,5 +1,6 @@
 require "Resources\\sampler\\models\\calendar"
 require "Resources\\sampler\\models\\character"
+require "Resources\\sampler\\models\\schedulemanager"
 
 calendar = Calendar:New();
 calendar:SetYear(1217);
@@ -13,3 +14,5 @@ character:SetAge(12);
 character:SetGold(1000);
 character:SetStress(50);
 character:SetMana(100);
+
+scheduleManager = ScheduleManager:New();

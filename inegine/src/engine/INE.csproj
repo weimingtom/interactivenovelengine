@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F1C6583A-8DAC-453B-AC68-FD2BDD0F4C6A}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -171,6 +171,7 @@
     <None Include="Resources\sampler\communication\talk.lua" />
     <None Include="Resources\sampler\communication\talklist.lua" />
     <None Include="Resources\sampler\components\dialoguewindow.lua" />
+    <None Include="Resources\sampler\models\schedulemanager.lua" />
     <None Include="Resources\sampler\schedule\execution.lua" />
     <None Include="Resources\sampler\components\flowview.lua" />
     <None Include="Resources\sampler\components\tabview.lua" />
@@ -182,6 +183,7 @@
     <None Include="Resources\sampler\init.lua" />
     <None Include="Resources\sampler\resources\fonts\NanumGothicBold.ttf" />
     <None Include="Resources\sampler\resources\fonts\NanumMyeongjoBold.ttf" />
+    <None Include="Resources\sampler\schedule\schedulepresenter.lua" />
     <None Include="Resources\sampler\schedule\schedule.lua" />
     <None Include="Resources\sampler\intro\intro.lua" />
     <None Include="Resources\sampler\main\main.lua" />
@@ -191,6 +193,8 @@
     <None Include="Resources\sampler\shopping\shoplist.lua" />
     <None Include="Resources\sampler\status\status.lua" />
     <None Include="Resources\start.lua" />
+    <None Include="Resources\test\schedulemanagerTest.lua" />
+    <None Include="Resources\test\schedulePresenterTest.lua" />
     <None Include="Resources\test\mockview.lua" />
     <None Include="Resources\test\flowviewTest.lua" />
     <None Include="Resources\test\runtest.lua" />
