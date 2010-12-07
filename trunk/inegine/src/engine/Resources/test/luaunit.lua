@@ -50,7 +50,7 @@ function assertError(f, ...)
 	error( "No error generated", 2 )
 end
 
-function assertEquals(actual, expected)
+function assertEquals(expected, actual)
 	-- assert that two values are equal and calls error else
 	if  actual ~= expected  then
 		local function wrapValue( v )

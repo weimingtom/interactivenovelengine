@@ -40,7 +40,7 @@ function ExecutionView:Init()
 	statusWindow.relative = true;
 	statusWindow.width = 480;
 	statusWindow.height = 100;
-	statusWindow.x = (self.frame.width - statusWindow.width) / 2;
+	statusWindow.x = (self.frame.width - statusWindow.width) / 2 + 20;
 	statusWindow.y = dialogueWin.frame.y - statusWindow.height - 5;
 	statusWindow.alpha = 155
 	statusWindow.layer = 6;
@@ -56,7 +56,7 @@ function ExecutionView:Init()
 	animatedWindow.relative = true;
 	animatedWindow.width = 320;
 	animatedWindow.height = 240;
-	animatedWindow.x = (self.frame.width - animatedWindow.width) / 2;
+	animatedWindow.x = (self.frame.width - animatedWindow.width) / 2 + 20;
 	animatedWindow.y = statusWindow.y - animatedWindow.height - 5;
 	animatedWindow.alpha = 200
 	animatedWindow.layer = 6;
