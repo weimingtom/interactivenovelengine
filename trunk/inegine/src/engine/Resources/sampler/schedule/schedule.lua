@@ -48,7 +48,7 @@ function ScheduleView:Init()
 	local tabView = Tabview:New("tabView", GetFont("default"));
     self.tabView = tabView;
 	tabView.frame.relative = true
-	tabView.frame.X = 0;
+	tabView.frame.X = 15;
 	tabView.frame.Y = 0;
 	tabView.frame.Width = self.tabviewframe.Width;
 	tabView.frame.Height = self.tabviewframe.Height - 50;
