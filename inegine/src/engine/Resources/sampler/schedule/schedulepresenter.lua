@@ -5,9 +5,16 @@ function SchedulePresenter:New()
 	setmetatable(o, self)
 	self.__index = self
 
-	self.numPages = 0;
-	self.currentPage = 0;
 	self.pageItems = 8;
+
+	self.numEduPages = 0;
+	self.currentEduPage = 0;
+
+	self.numJobPages = 0;
+	self.currentJobPage = 0;
+
+	self.numVacPages = 0;
+	self.currentVacPage = 0;
 
 	self.selectedSchedules = {};
 	self.scheduleKeyMap = {};
@@ -30,7 +37,16 @@ function SchedulePresenter:Init(main, scheduleView, scheduleManager)
 	
 	main:ToggleMainMenu(false);
 	scheduleView:Show();
-	
+
+    self:RegisterEvents();
+    self:Update();
+end
+
+function SchedulePresenter:RegisterEvents()
+    local scheduleView = self.scheduleView;
+    local main = self.main;
+    local scheduleManager = self.scheduleManager;
+
 	scheduleView:SetClosingEvent( 
 		function()
 			if (self.closingEvent ~= nil) then
@@ -79,22 +95,73 @@ function SchedulePresenter:Init(main, scheduleView, scheduleManager)
 			scheduleView:Dispose();
 			self.main:OpenScheduleExecution();
 		end
-    )	
+    )
+
+    scheduleView:SetUpButtonEvent(
+        function()
+            local activeTab = scheduleView:GetActiveTab();
+            if (activeTab == "education") then
+                self:SetEduPage(-1);
+            elseif (activeTab == "work") then
+                self:SetJobPage(-1);
+            elseif (activeTab == "vacation") then
+                self:SetVacPage(-1);
+            end
+        end
+    )
+
+    scheduleView:SetDownButtonEvent(
+        function()
+            local activeTab = scheduleView:GetActiveTab();
+            if (activeTab == "education") then
+                self:SetEduPage(1);
+            elseif (activeTab == "work") then
+                self:SetJobPage(1);
+            elseif (activeTab == "vacation") then
+                self:SetVacPage(1);
+            end
+        end
+    )
 end
 
-function SchedulePresenter:AddTestItems()
+function SchedulePresenter:Update()
+    self:UpdateNumPages();
+    if (self.scheduleView ~= nil) then
+        self.scheduleView:ClearEducationItems();
+        self.scheduleView:ClearWorkItems();
+        self.scheduleView:ClearVacationItems();
+        self:AddItems();
+    end
+end
+
+function SchedulePresenter:UpdateNumPages()
+	self.numEduPages = math.ceil(self.scheduleManager.educationCount / self.pageItems);
+	self.numJobPages = math.ceil(self.scheduleManager.jobCount / self.pageItems);
+	self.numVacPages = math.ceil(self.scheduleManager.vacationCount / self.pageItems);
+end
+
+function SchedulePresenter:AddItems()
 	local scheduleView = self.scheduleView;
 	local scheduleList = ScheduleManager:GetSchedules("edu");
 	for i,v in ipairs(scheduleList) do
-		if (v.category == "edu") then
-			scheduleView:AddEducationItem(v.id, v.text, v.price .. "G", v.icon);
-		elseif (v.category == "job") then
-			scheduleView:AddWorkItem(v.id, v.text, v.price .. "G", v.icon);
-		elseif (v.category == "vac") then
-			scheduleView:AddVacationItem(v.id, v.text, v.price .. "G", v.icon);
-		end 
+	    if (self:ItemInPage(i, self.currentEduPage)) then
+            scheduleView:AddEducationItem(v.id, v.text, v.price .. "G", v.icon); 
+	    end
+    end
+    Trace(self.currentJobPage);
+	local scheduleList = ScheduleManager:GetSchedules("job");
+	for i,v in ipairs(scheduleList) do
+	    if (self:ItemInPage(i, self.currentJobPage)) then
+		    scheduleView:AddWorkItem(v.id, v.text, v.price .. "G", v.icon);
+        end
 	end
-	scheduleView:ClearEducationItems();
+
+	local scheduleList = ScheduleManager:GetSchedules("vac");
+	for i,v in ipairs(scheduleList) do
+	    if (self:ItemInPage(i, self.currentVacPage)) then
+		    scheduleView:AddVacationItem(v.id, v.text, v.price .. "G", v.icon);
+        end
+	end
 end
 
 function SchedulePresenter:SelectSchedule(scheduleID, key)
@@ -137,4 +204,61 @@ function table.removeItem(tbl, item)
             return;
         end
 	end
+end
+
+function SchedulePresenter:ItemInPage(index, page)
+    local itemPage = math.floor((index - 1) / self.pageItems);
+    if (page == itemPage) then
+        return true;
+    else
+        return false;
+    end
+end
+
+function SchedulePresenter:SetEduPage(modifier)
+    local oldpage = self.currentEduPage;
+    local page = self.currentEduPage + modifier;
+    if (page < 0) then
+        self.currentEduPage = 0;
+    elseif (page >= self.numEduPages) then
+        self.currentEduPage = self.numEduPages - 1;
+    else
+        self.currentEduPage = page;
+    end
+
+    if (oldpage ~= self.currentEduPage) then
+        self:Update();
+    end
+end
+
+function SchedulePresenter:SetJobPage(modifier)
+    local oldpage = self.currentJobPage;
+    local page = self.currentJobPage + modifier;
+    if (page < 0) then
+        self.currentJobPage = 0;
+    elseif (page >= self.numJobPages) then
+        self.currentJobPage = self.numJobPages - 1;
+    else
+        self.currentJobPage = page;
+    end
+
+    if (oldpage ~= self.currentJobPage) then
+        self:Update();
+    end
+end
+
+function SchedulePresenter:SetVacPage(modifier)
+    local oldpage = self.currentVacPage;
+    local page = self.currentVacPage + modifier;
+    if (page < 0) then
+        self.currentVacPage = 0;
+    elseif (page >= self.numVacPages) then
+        self.currentVacPage = self.numVacPages - 1;
+    else
+        self.currentVacPage = page;
+    end
+
+    if (oldpage ~= self.currentVacPage) then
+        self:Update();
+    end
 end

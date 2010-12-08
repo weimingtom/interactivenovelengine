@@ -46,6 +46,7 @@ function ScheduleView:Init()
 	
 	
 	local tabView = Tabview:New("tabView", GetFont("default"));
+    self.tabView = tabView;
 	tabView.frame.relative = true
 	tabView.frame.X = 0;
 	tabView.frame.Y = 0;
@@ -69,6 +70,29 @@ function ScheduleView:Init()
 	background.alpha = 255
 	background.layer = 4;
 	tabviewframe:AddComponent(background);
+
+    local upButton = self:CreateUpButton(
+        function()
+            if (self.upButtonEvent ~= nil) then
+                self.upButtonEvent();
+            end
+        end
+    );
+    upButton.x = background.width - 30 + background.x;
+    upButton.y = 10 + background.y;
+    tabviewframe:AddComponent(upButton);
+
+    local downButton = self:CreateDownButton(
+        function()
+            if (self.downButtonEvent ~= nil) then
+                self.downButtonEvent();
+            end
+        end
+    );
+    downButton.x = background.width - 30 + background.x;
+    downButton.y = background.height - 20 + background.y;
+    
+    tabviewframe:AddComponent(downButton);
 		
 	local educationView = Flowview:New("educationview")
 	educationView.frame.relative = true;
@@ -211,6 +235,63 @@ function ScheduleView:Init()
 	
 end
 
+function ScheduleView:CreateUpButton(event)
+	local newButton = Button()
+	newButton.Relative = true;
+	newButton.Name = "upButton";
+	newButton.Texture = "Resources/sampler/resources/up.png"	
+	newButton.Layer = 15
+	newButton.X = 0;
+	newButton.Y = 0;
+	newButton.Width = 18;
+	newButton.Height = 12;
+	newButton.State = {}
+	newButton.MouseDown = 
+		function (newButton, luaevent, args)
+			newButton.State["mouseDown"] = true
+			newButton.Pushed = true
+		end
+	newButton.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				button.Pushed = false;
+                if (event~=nil) then 
+					event(button, luaevent, args);
+				end
+			end
+		end
+	newButton.TextColor = 0xEEEEEE
+	return newButton;
+end
+
+function ScheduleView:CreateDownButton(event)
+	local newButton = Button()
+	newButton.Relative = true;
+	newButton.Name = "downButotn";
+	newButton.Texture = "Resources/sampler/resources/down.png"	
+	newButton.Layer = 15
+	newButton.X = 0;
+	newButton.Y = 0;
+	newButton.Width = 18;
+	newButton.Height = 12;
+	newButton.State = {}
+	newButton.MouseDown = 
+		function (newButton, luaevent, args)
+			newButton.State["mouseDown"] = true
+			newButton.Pushed = true
+		end
+	newButton.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				button.Pushed = false;
+                if (event~=nil) then 
+					event(button, luaevent, args);
+				end
+			end
+		end
+	newButton.TextColor = 0xEEEEEE
+	return newButton;
+end
 
 function ScheduleView:CreateButton(buttonText, event)
 	local newButton = Button()
@@ -337,6 +418,14 @@ function ScheduleView:SetSelectedFocusEvent(event)
 	self.selectedFocusEvent = event;
 end
 
+function ScheduleView:SetUpButtonEvent(event)
+    self.upButtonEvent = event;
+end
+
+function ScheduleView:SetDownButtonEvent(event)
+    self.downButtonEvent = event;
+end
+
 function ScheduleView:CreateSelectedItem(id, icon)	
 	local pic = Button();
 	pic.Name = id;
@@ -420,4 +509,8 @@ function ScheduleView:CreateItem(id, text, price, icon)
 	priceButton.VerticalAlignment = 1;
 	frame:AddComponent(priceButton);
 	return frame;
+end
+
+function ScheduleView:GetActiveTab()
+    return self.tabView:GetEnabledTab()
 end
