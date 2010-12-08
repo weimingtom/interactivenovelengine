@@ -114,6 +114,11 @@ function Tabview:SetEnabledView(name)
 			view.visible = false;
 		end
 	end
+    self.enabledTab = name;
+end
+
+function Tabview:GetEnabledTab()
+    return self.enabledTab;
 end
 
 function Tabview:CreateButton(buttonText, event)

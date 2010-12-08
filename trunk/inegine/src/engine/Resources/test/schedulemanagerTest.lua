@@ -6,16 +6,6 @@ TestScheduleManager = {}
 function TestScheduleManager:setUp()
 end
 
-function TestScheduleManager:testSelectSchedule()
-	local scheduleList = ScheduleManager:GetSchedules();
-	--table.print(scheduleList);
-	for i,v in ipairs(scheduleList) do 
-		print(v.category); 
-		print(v.text); 
-		print(v.price); 
-		print(v.icon);
-	end
-end
 
 function table.contains(tbl, item)
 	for i,v in ipairs(tbl) do 

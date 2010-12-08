@@ -5,9 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "INE", "INE.csproj", "{F1C65
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D4899743-322D-4A6D-9D3B-EDEA5387D182}"
 	ProjectSection(SolutionItems) = preProject
-		INEProject.vsmdi = INEProject.vsmdi
-		INEProject1.vsmdi = INEProject1.vsmdi
-		INEProject2.vsmdi = INEProject2.vsmdi
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
 EndProject
