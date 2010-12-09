@@ -21,8 +21,8 @@ function SchedulePresenter:New()
 	self.selectedScheduleCount = 0;
 	self.focusedScheduleID = nil;
     self.uniqueSequence = 0;
-    	
-    
+
+
 	return o
 end
 
@@ -34,7 +34,7 @@ function SchedulePresenter:Init(main, scheduleView, scheduleManager)
 	self.main = main;
 	self.scheduleView = scheduleView;
 	self.scheduleManager = scheduleManager;
-	
+
 	main:ToggleMainMenu(false);
 	scheduleView:Show();
 
@@ -47,17 +47,17 @@ function SchedulePresenter:RegisterEvents()
     local main = self.main;
     local scheduleManager = self.scheduleManager;
 
-	scheduleView:SetClosingEvent( 
+	scheduleView:SetClosingEvent(
 		function()
 			if (self.closingEvent ~= nil) then
 				self.closingEvent();
 			end
-		
+
 			scheduleView:Hide();
 			main:ToggleMainMenu(true);
 		end
 	);
-	
+
 	scheduleView:SetSelectedEvent(
 		function (button, luaevent, args)
 			Trace("select event called from " .. args);
@@ -65,11 +65,11 @@ function SchedulePresenter:RegisterEvents()
 		end
 	)
 
-	
+
 	scheduleView:SetSelectedFocusEvent(
 		function (button, luaevent, args)
 			Trace("focus selected event called from " .. args);
-            self.focusedScheduleID = args;          
+            self.focusedScheduleID = args;
             scheduleView:FocusSelectedItem(args);
             local scheduleID =  self.scheduleKeyMap[args];
             Trace(args);
@@ -78,14 +78,14 @@ function SchedulePresenter:RegisterEvents()
 	)
 
 	scheduleView:SetDeletingEvent(
-		function (button, luaevent, args)         
+		function (button, luaevent, args)
             if (self.focusedScheduleID ~= nil) then
                 self:DeselectSchedule(self.focusedScheduleID);
                 self.focusedScheduleID = nil;
             end
 		end
 	)
-	
+
     scheduleView:SetExecutingEvent(
 		function (button, luaevent, args)
 			scheduleView:Dispose();
@@ -141,7 +141,7 @@ function SchedulePresenter:AddItems()
 	local scheduleList = ScheduleManager:GetSchedules("edu");
 	for i,v in ipairs(scheduleList) do
 	    if (self:ItemInPage(i, self.currentEduPage)) then
-            scheduleView:AddEducationItem(v.id, v.text, v.price .. "G", v.icon); 
+            scheduleView:AddEducationItem(v.id, v.text, v.price .. "G", v.icon);
 	    end
     end
     Trace(self.currentJobPage);
@@ -163,7 +163,7 @@ end
 function SchedulePresenter:SelectSchedule(scheduleID)
 	if (self.selectedScheduleCount < 4) then
 		local key = self:GetKey();
-		self.scheduleView:AddSelectedItem(key, "Resources/sampler/resources/icon.png");
+		if (self.scheduleView ~= nil) then self.scheduleView:AddSelectedItem(key, "Resources/sampler/resources/icon.png"); end;
 		table.insert(self.selectedSchedules, scheduleID);
 		self.scheduleKeyMap[key] = scheduleID;
 		self.selectedScheduleCount = self.selectedScheduleCount + 1;
@@ -172,7 +172,7 @@ end
 
 function SchedulePresenter:DeselectSchedule(scheduleID)
 	if (self.selectedScheduleCount > 0) then
-        self.scheduleView:RemoveSelectedItem(scheduleID);
+        if (self.scheduleView ~= nil) then self.scheduleView:RemoveSelectedItem(scheduleID); end
 		table.removeItem(self.selectedSchedules, scheduleID);
 		if (table.contains(self.selectedSchedules, scheduleID)) then
 		else
@@ -188,7 +188,7 @@ function SchedulePresenter:GetKey()
 end
 
 function table.contains(tbl, item)
-	for i,v in ipairs(tbl) do 
+	for i,v in ipairs(tbl) do
 		if (item == v) then
             return true;
         end
@@ -197,7 +197,7 @@ function table.contains(tbl, item)
 end
 
 function table.removeItem(tbl, item)
-	for i,v in ipairs(tbl) do 
+	for i,v in ipairs(tbl) do
 		if (item == v) then
             table.remove(tbl, i)
             return;

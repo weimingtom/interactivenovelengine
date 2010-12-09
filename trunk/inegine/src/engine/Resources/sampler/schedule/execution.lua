@@ -5,28 +5,28 @@ ExecutionView = LuaView:New();
 
 function ExecutionView:Init()
 	local gamestate = CurrentState();
-	local parent = self.parent; 
+	local parent = self.parent;
 	local name = self.name;
-	
+
 	self.frame = View()
 	self.frame.Name = name
-	
+
 	self.frame.X = 0;
 	self.frame.Y = 0;
 	self.frame.Width = GetWidth();
 	self.frame.Height = GetHeight();
 	self.frame.alpha = 155
 	self.frame.layer = 10
-	
+
 	self.frame.Visible = false
 	self.frame.Enabled = false
 	self.frame.MouseLeave =
 		function(target, event, args)
-			Trace("mouse leave: " .. target.Name)	
+			Trace("mouse leave: " .. target.Name)
 		end
-	
+
 	parent:AddComponent(self.frame)
-			
+
 	local dialogueWin = DialogueWindow:New("dialogueWin", self.frame);
 	self.dialogueWin = dialogueWin;
 	dialogueWin:Init();
@@ -34,7 +34,7 @@ function ExecutionView:Init()
 	dialogueWin.frame.x = 0;
 	dialogueWin.frame.y = self.frame.height - dialogueWin.frame.height;
 	dialogueWin:Hide();
-		
+
 	local statusWindow = TextWindow()
 	statusWindow.name = "statusWindow"
 	statusWindow.relative = true;
@@ -50,7 +50,7 @@ function ExecutionView:Init()
 	self.statusWindow = statusWindow;
 	self.frame:AddComponent(statusWindow);
 	self:ShowStatus(false);
-	
+
 	local animatedWindow = TextWindow()
 	animatedWindow.name = "animatedwindow"
 	animatedWindow.relative = true;
@@ -63,7 +63,7 @@ function ExecutionView:Init()
 	self.frame:AddComponent(animatedWindow);
 	self.animatedWindow = animatedWindow;
 	self:ShowAnimationView(false);
-	
+
 end
 
 function ExecutionView:Dispose()
@@ -87,11 +87,11 @@ function ExecutionView:SetAnimation(animation)
 	animation.relative = true;
 	animation.x = (self.animatedWindow.width - animation.width) / 2
 	animation.y = (self.animatedWindow.height - animation.height) / 2;
-	
-	animation.AnimationOver = 
+
+	animation.AnimationOver =
 		function (animation, luaevent, args)
 			Trace(animation.name .. "animation over!")
-                if (self.animationOverEvent~=nil) then 
+                if (self.animationOverEvent~=nil) then
                     self.animationOverEvent(animation, luaevent, args);
                 end
 		end
@@ -130,15 +130,15 @@ function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, animati
 	self:ShowAnimationView(false);
 	self:ShowStatus(false);
 	self.dialogueWin:Hide();
-	
+
 	self:Show();
-	
+
 	self.dialogueWin:ClearDialogueText();
 	self.dialogueWin:Show();
 	self.dialogueWin:SetDialogueName(name);
 	self.dialogueWin:SetPortraitTexture(beforePortrait);
 	self.dialogueWin:SetDialogueText(beforeText);
-	
+
 	self.dialogueWin:SetDialogueOverEvent(
 		function ()
 			self.dialogueWin:Hide();
@@ -152,7 +152,7 @@ function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, animati
 			tempAnimation.Cols = 4;
 			tempAnimation.Layer = 10;
 			tempAnimation.Visible = true
-			
+
 			self:SetAnimation(tempAnimation);
 			self:SetAnimationOverEvent(
 				function()
@@ -163,7 +163,7 @@ function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, animati
 							self:ShowAnimationView(false);
 							self:ShowStatus(false);
 							self.dialogueWin:Hide();
-							
+
 							if (self.executionOverEvent ~= nil) then
 								self:executionOverEvent();
 							end
@@ -172,7 +172,7 @@ function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, animati
 					self.dialogueWin:ClearDialogueText();
 					self.dialogueWin:SetPortraitTexture(afterPortrait);
 					self.dialogueWin:Show();
-							
+
 					self.dialogueWin:SetDialogueText(afterText);
 
 				end

@@ -5,17 +5,14 @@ function ScheduleManager:New()
     local o = {}
 	setmetatable(o, self)
 	self.__index = self
-
     self.educationCount = 20;
     self.jobCount = 30;
     self.vacationCount = 40;
-	
 	return o
 end
 
 function ScheduleManager:GetSchedules(category)
 	local scheduleList = {};
-	
 	if (category == "edu") then
 		for i=1,self.educationCount do
 			local schedule = {};
