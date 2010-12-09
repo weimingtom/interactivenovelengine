@@ -137,7 +137,7 @@ function TestSchedule:testSetPage()
 
     self.schedule:SetEduPage(-3);
     assertEquals(0, self.schedule.currentEduPage);
-sd
+
     self.schedule:SetEduPage(10);
     assertEquals(self.schedule.numEduPages - 1, self.schedule.currentEduPage);
 end
