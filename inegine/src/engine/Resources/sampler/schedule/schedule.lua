@@ -91,7 +91,6 @@ function ScheduleView:Init()
     );
     downButton.x = background.width - 30 + background.x;
     downButton.y = background.height - 20 + background.y;
-    
     tabviewframe:AddComponent(downButton);
 		
 	local educationView = Flowview:New("educationview")
@@ -418,14 +417,6 @@ function ScheduleView:SetSelectedFocusEvent(event)
 	self.selectedFocusEvent = event;
 end
 
-function ScheduleView:SetUpButtonEvent(event)
-    self.upButtonEvent = event;
-end
-
-function ScheduleView:SetDownButtonEvent(event)
-    self.downButtonEvent = event;
-end
-
 function ScheduleView:CreateSelectedItem(id, icon)	
 	local pic = Button();
 	pic.Name = id;
@@ -513,4 +504,12 @@ end
 
 function ScheduleView:GetActiveTab()
     return self.tabView:GetEnabledTab()
+end
+
+function ScheduleView:SetUpButtonEvent(event)
+    self.upButtonEvent = event;
+end
+
+function ScheduleView:SetDownButtonEvent(event)
+    self.downButtonEvent = event;
 end

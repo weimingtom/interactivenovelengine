@@ -47,6 +47,27 @@ function InventoryView:Init()
 	background.layer = 6;
 	self.frame:AddComponent(background);
 	
+	    local upButton = self:CreateUpButton(
+        function()
+            if (self.upButtonEvent ~= nil) then
+                self.upButtonEvent();
+            end
+        end
+    );
+    upButton.x = background.width - 30 + background.x;
+    upButton.y = 10 + background.y;
+    self.frame:AddComponent(upButton);
+
+    local downButton = self:CreateDownButton(
+        function()
+            if (self.downButtonEvent ~= nil) then
+                self.downButtonEvent();
+            end
+        end
+    );
+    downButton.x = background.width - 30 + background.x;
+    downButton.y = background.height - 20 + background.y;
+    self.frame:AddComponent(downButton);
 	
 	local tabView = Tabview:New("tabView", GetFont("default"));
 	tabView.frame.relative = true
@@ -112,6 +133,64 @@ function InventoryView:Init()
 	self.closebutton = closeButton;
 	
 	self.frame:AddComponent(closeButton);
+end
+
+function InventoryView:CreateUpButton(event)
+	local newButton = Button()
+	newButton.Relative = true;
+	newButton.Name = "upButton";
+	newButton.Texture = "Resources/sampler/resources/up.png"	
+	newButton.Layer = 15
+	newButton.X = 0;
+	newButton.Y = 0;
+	newButton.Width = 18;
+	newButton.Height = 12;
+	newButton.State = {}
+	newButton.MouseDown = 
+		function (newButton, luaevent, args)
+			newButton.State["mouseDown"] = true
+			newButton.Pushed = true
+		end
+	newButton.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				button.Pushed = false;
+                if (event~=nil) then 
+					event(button, luaevent, args);
+				end
+			end
+		end
+	newButton.TextColor = 0xEEEEEE
+	return newButton;
+end
+
+function InventoryView:CreateDownButton(event)
+	local newButton = Button()
+	newButton.Relative = true;
+	newButton.Name = "downButotn";
+	newButton.Texture = "Resources/sampler/resources/down.png"	
+	newButton.Layer = 15
+	newButton.X = 0;
+	newButton.Y = 0;
+	newButton.Width = 18;
+	newButton.Height = 12;
+	newButton.State = {}
+	newButton.MouseDown = 
+		function (newButton, luaevent, args)
+			newButton.State["mouseDown"] = true
+			newButton.Pushed = true
+		end
+	newButton.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				button.Pushed = false;
+                if (event~=nil) then 
+					event(button, luaevent, args);
+				end
+			end
+		end
+	newButton.TextColor = 0xEEEEEE
+	return newButton;
 end
 
 
@@ -210,3 +289,10 @@ function InventoryView:SetSelectedEvent(event)
 	self.selectedEvent = event;
 end
 
+function InventoryView:SetUpButtonEvent(event)
+    self.upButtonEvent = event;
+end
+
+function InventoryView:SetDownButtonEvent(event)
+    self.downButtonEvent = event;
+end

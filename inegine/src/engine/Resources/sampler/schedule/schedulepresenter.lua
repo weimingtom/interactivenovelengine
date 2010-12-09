@@ -61,9 +61,6 @@ function SchedulePresenter:RegisterEvents()
 	scheduleView:SetSelectedEvent(
 		function (button, luaevent, args)
 			Trace("select event called from " .. args);
-			local iconKey = self:GetKey();
-			Trace(iconKey);
-            scheduleView:AddSelectedItem(iconKey, "Resources/sampler/resources/icon.png");
             self:SelectSchedule(args, iconKey);
 		end
 	)
@@ -83,7 +80,6 @@ function SchedulePresenter:RegisterEvents()
 	scheduleView:SetDeletingEvent(
 		function (button, luaevent, args)         
             if (self.focusedScheduleID ~= nil) then
-                scheduleView:RemoveSelectedItem(self.focusedScheduleID);
                 self:DeselectSchedule(self.focusedScheduleID);
                 self.focusedScheduleID = nil;
             end
@@ -164,8 +160,10 @@ function SchedulePresenter:AddItems()
 	end
 end
 
-function SchedulePresenter:SelectSchedule(scheduleID, key)
+function SchedulePresenter:SelectSchedule(scheduleID)
 	if (self.selectedScheduleCount < 4) then
+		local key = self:GetKey();
+		self.scheduleView:AddSelectedItem(key, "Resources/sampler/resources/icon.png");
 		table.insert(self.selectedSchedules, scheduleID);
 		self.scheduleKeyMap[key] = scheduleID;
 		self.selectedScheduleCount = self.selectedScheduleCount + 1;
@@ -174,6 +172,7 @@ end
 
 function SchedulePresenter:DeselectSchedule(scheduleID)
 	if (self.selectedScheduleCount > 0) then
+        self.scheduleView:RemoveSelectedItem(scheduleID);
 		table.removeItem(self.selectedSchedules, scheduleID);
 		if (table.contains(self.selectedSchedules, scheduleID)) then
 		else
