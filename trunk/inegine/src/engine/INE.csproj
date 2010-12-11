@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F1C6583A-8DAC-453B-AC68-FD2BDD0F4C6A}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -135,8 +135,11 @@
     <Compile Include="Effector\Graphics\Components\AbstractGUI.cs" />
     <Compile Include="Effector\Graphics\Components\Window\ImageWindow.cs" />
     <Compile Include="ResourceManager\AbstractResource.cs" />
+    <Compile Include="ResourceManager\CSVManager.cs" />
+    <Compile Include="ResourceManager\CSVReader.cs" />
     <Compile Include="ResourceManager\SoundManager.cs" />
     <Compile Include="ResourceManager\FontManager.cs" />
+    <Compile Include="ResourceManager\StringConverter.cs" />
     <Compile Include="ResourceManager\TextureManager.cs" />
     <Compile Include="ScriptManager\CodeGen.cs" />
     <Compile Include="ScriptManager\Parser.cs" />
@@ -157,6 +160,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <None Include="BaseScripts\csv.lua" />
     <None Include="BaseScripts\ESS.lua" />
     <None Include="BaseScripts\font.lua" />
     <None Include="BaseScripts\Init.lua" />
@@ -171,7 +175,10 @@
     <None Include="Resources\sampler\communication\talk.lua" />
     <None Include="Resources\sampler\communication\talklist.lua" />
     <None Include="Resources\sampler\components\dialoguewindow.lua" />
+    <None Include="Resources\sampler\init_csv.lua" />
+    <None Include="Resources\sampler\init_font.lua" />
     <None Include="Resources\sampler\models\schedulemanager.lua" />
+    <None Include="Resources\sampler\resources\data\schedule.csv" />
     <None Include="Resources\sampler\schedule\execution.lua" />
     <None Include="Resources\sampler\components\flowview.lua" />
     <None Include="Resources\sampler\components\tabview.lua" />

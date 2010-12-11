@@ -14,10 +14,6 @@ View = luanet.import_type("INovelEngine.Effector.View")
 ScriptEvents = luanet.import_type("INovelEngine.Script.ScriptEvents");
 ScriptManager = luanet.import_type("INovelEngine.Script.ScriptManager");
 
-Texture = luanet.import_type("INovelEngine.ResourceManager.INETexture");
-Font = luanet.import_type("INovelEngine.ResourceManager.INEFont");
-Sound = luanet.import_type("INovelEngine.ResourceManager.INESound");
-
 Supervisor = Supervisor()
 
 function dofile (filename)
@@ -61,6 +57,13 @@ function GetComponent(id)
     return CurrentState():GetComponent(id);
 end
 
+function DebugString()
+	local info = debug.getinfo(3)
+	local source = info.source;
+	return string.sub(source, 2) .. ":" .. info.currentline;
+end
+
 require "BaseScripts\\ESS"
 require "BaseScripts\\Selector"
 require "BaseScripts\\font"
+require "BaseScripts\\csv"
