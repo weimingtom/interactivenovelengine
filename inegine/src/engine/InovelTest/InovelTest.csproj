@@ -58,6 +58,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="INECsvTest.cs" />
+    <Compile Include="CSVReaderTest.cs" />
     <Compile Include="InovelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextNarratorTest.cs" />

@@ -26,6 +26,7 @@ namespace INovelEngine
         private List<GameState> stateList = new List<GameState>();
 
         private FontManager fontManager = new FontManager();
+        private CsvManager csvManager = new CsvManager();
 
         private static Queue<LuaEventHandler> defferedCallList = new Queue<LuaEventHandler>();
 
@@ -59,8 +60,9 @@ namespace INovelEngine
             SoundPlayer.SetVolume(50);
 
             ScriptManager.Init();
-            
+
             Resources.Add(fontManager);
+            Resources.Add(csvManager);
 
             /* load lua entry script */
             Lua_LoadScript("Resources/start.lua");
@@ -241,6 +243,7 @@ namespace INovelEngine
 
             ScriptManager.lua.RegisterFunction("Supervisor", this, this.GetType().GetMethod("Lua_Supervisor"));
             ScriptManager.lua.RegisterFunction("FontManager", this, this.GetType().GetMethod("Lua_FontManager"));
+            ScriptManager.lua.RegisterFunction("CsvManager", this, this.GetType().GetMethod("Lua_CsvManager"));
 
             ScriptManager.lua.RegisterFunction("Delay", this, this.GetType().GetMethod("Lua_DelayedCall"));
             ScriptManager.lua.RegisterFunction("LoadESS", this, this.GetType().GetMethod("Lua_LoadESS"));
@@ -266,9 +269,16 @@ namespace INovelEngine
             {
                 ScriptManager.DoLua(ScriptFile);
             }
+            catch (LuaInterface.LuaException e)
+            {
+                
+                Console.WriteLine(">" + e.Message);
+
+            }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(e.Message);
+                
             }
         }
 
@@ -412,6 +422,11 @@ namespace INovelEngine
         public FontManager Lua_FontManager()
         {
             return this.fontManager;
+        }
+
+        public CsvManager Lua_CsvManager()
+        {
+            return this.csvManager;
         }
 
         public void Lua_HideCursor()
