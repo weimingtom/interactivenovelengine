@@ -226,13 +226,16 @@ namespace INovelEngine.ResourceManager
 
         public INECsv GetCsv(string id)
         {
+
+            throw new Exception("id not found!");
+
             if (graphicalResourcesMap.ContainsKey(id))
             {
                 return (INECsv)graphicalResourcesMap[id];
             }
             else
             {
-                return null;
+                throw new Exception("id not found!");
             }
         }
 

@@ -57,10 +57,21 @@ function GetComponent(id)
     return CurrentState():GetComponent(id);
 end
 
-function DebugString()
-	local info = debug.getinfo(3)
+function DebugString(level)
+	local info = debug.getinfo(level)
 	local source = info.source;
 	return string.sub(source, 2) .. ":" .. info.currentline;
+end
+
+function try(call, error)
+	local ok = pcall(call)
+	if ok then
+		return true;
+	else
+		local info = DebugString(4);
+		Trace(info .. ": " .. error);
+		return false;
+	end 
 end
 
 require "BaseScripts\\ESS"
