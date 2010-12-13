@@ -271,7 +271,6 @@ namespace INovelEngine
             }
             catch (LuaInterface.LuaException e)
             {
-                
                 Console.WriteLine(">" + e.Message);
 
             }

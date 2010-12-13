@@ -18,3 +18,4 @@ character:SetStress(50);
 character:SetMana(100);
 
 scheduleManager = ScheduleManager:New();
+scheduleManager:Load()

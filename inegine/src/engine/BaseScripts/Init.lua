@@ -64,12 +64,17 @@ function DebugString(level)
 end
 
 function try(call, error)
-	local ok = pcall(call)
+	local ok, res = pcall(call)
 	if ok then
 		return true;
 	else
 		local info = DebugString(4);
-		Trace(info .. ": " .. error);
+        if (res ~= nil) then
+            Trace(info .. ": " .. error);
+            Trace("> " .. res:toString() .. "\n");
+        else
+		    Trace(info .. ": " .. error);
+        end
 		return false;
 	end 
 end
