@@ -37,12 +37,18 @@ namespace INovelEngine.ResourceManager
             this.Name = fileName;
             columns = new List<string>();
             rows = new List<List<object>>();
+            this.Encoding = "UTF-8";
         }
 
         public string FileName
         {
             get;
             set;
+        }
+
+        public string Encoding
+        {
+            get; set;
         }
 
         public void readColumns()
@@ -80,6 +86,22 @@ namespace INovelEngine.ResourceManager
             set
             {
             }
+        }
+
+        public int ColumnCount
+        {
+            get
+            {
+                return this.columns.Count;
+            }
+            set
+            {
+            }
+        }
+
+        public String GetColumn(int i)
+        {
+            return this.columns[i].Trim();
         }
 
         public String GetString(int row, int col)
@@ -139,11 +161,12 @@ namespace INovelEngine.ResourceManager
         public override void LoadContent()
         {
             base.LoadContent();
-
-            StreamReader streamReader = new StreamReader(this.FileName);
+            StreamReader streamReader = new StreamReader(this.FileName, System.Text.Encoding.GetEncoding(this.Encoding));
             String fileContent = streamReader.ReadToEnd();
+            Console.WriteLine(fileContent);
             streamReader.Close();
             fileContent = fileContent.Replace("\n", "\r\n");
+            Console.WriteLine(fileContent);
             csvReader = new CSVReader(fileContent);
             this.readColumns();
             this.readToEnd();
@@ -207,12 +230,13 @@ namespace INovelEngine.ResourceManager
 
         #region resource management
 
-        public void LoadCsv(string alias, string path)
+        public void LoadCsv(string alias, string path, string encoding)
         {
             if (graphicalResourcesMap.ContainsKey(alias)) return;
-            INECsv newFont = new INECsv(path);
-            newFont.Name = alias;
-            AddCsv(newFont);
+            INECsv newCsv = new INECsv(path);
+            newCsv.Name = alias;
+            newCsv.Encoding = encoding;
+            AddCsv(newCsv);
         }
 
         public void AddCsv(INECsv font)
@@ -226,8 +250,6 @@ namespace INovelEngine.ResourceManager
 
         public INECsv GetCsv(string id)
         {
-
-            throw new Exception("id not found!");
 
             if (graphicalResourcesMap.ContainsKey(id))
             {

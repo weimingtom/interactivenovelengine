@@ -1,4 +1,1 @@
-LoadCsv("scheduledata", "Resources\\Sampler\\resources\\data\\schedule.csv");
-
-local csv = GetCsv("scheduledata");
-Trace(csv:GetString(3, 1));
+LoadCsv("scheduledata", "Resources\\Sampler\\resources\\data\\schedule.csv", "ks_c_5601-1987");

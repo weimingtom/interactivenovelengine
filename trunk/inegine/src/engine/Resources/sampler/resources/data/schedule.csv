@@ -1,6 +1,16 @@
-F1,F2
-1,abc
-2,def
-3,fff
-4,ggg
-4,"""ggg"""
+category,id,name,price,icon
+edu,edu1,검술,100,Resources/sampler/resources/icon.png
+edu,edu2,마법,0,Resources/sampler/resources/icon.png
+edu,edu3,연금술,0,Resources/sampler/resources/icon.png
+edu,edu4,음악,0,Resources/sampler/resources/icon.png
+edu,edu5,발레,0,Resources/sampler/resources/icon.png
+edu,edu6,다도,0,Resources/sampler/resources/icon.png
+edu,edu7,역사,0,Resources/sampler/resources/icon.png
+edu,edu8,시문학,0,Resources/sampler/resources/icon.png
+edu,edu9,아버지와 공부,0,Resources/sampler/resources/icon.png
+edu,edu10,아버지와 운동,0,Resources/sampler/resources/icon.png
+edu,edu11,기초 상식,0,Resources/sampler/resources/icon.png
+edu,edu12,기초 체육,0,Resources/sampler/resources/icon.png
+edu,edu13,문과,0,Resources/sampler/resources/icon.png
+edu,edu14,체과,0,Resources/sampler/resources/icon.png
+edu,edu15,예과,0,Resources/sampler/resources/icon.png
