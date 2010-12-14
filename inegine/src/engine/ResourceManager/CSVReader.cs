@@ -123,7 +123,7 @@ namespace Com.StellmanGreene.CSVReader
             currentLine = builder.ToString();
             if (currentLine.EndsWith(NEWLINE))
                 currentLine = currentLine.Remove(currentLine.IndexOf(NEWLINE), NEWLINE.Length);
-
+            //currentLine = currentLine + ",0";
             // Build the list of objects in the line
             List<object> objects = new List<object>();
             while (currentLine != "")

@@ -55,9 +55,9 @@ namespace INovelEngine.ResourceManager
         {
             if (next())
             {
-                foreach (String col in row)
+                foreach (Object col in row)
                 {
-                    this.columns.Add(col);
+                    this.columns.Add(col.ToString());
                 }
                 this.row = null;
             }
@@ -163,10 +163,7 @@ namespace INovelEngine.ResourceManager
             base.LoadContent();
             StreamReader streamReader = new StreamReader(this.FileName, System.Text.Encoding.GetEncoding(this.Encoding));
             String fileContent = streamReader.ReadToEnd();
-            Console.WriteLine(fileContent);
             streamReader.Close();
-            fileContent = fileContent.Replace("\n", "\r\n");
-            Console.WriteLine(fileContent);
             csvReader = new CSVReader(fileContent);
             this.readColumns();
             this.readToEnd();
