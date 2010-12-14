@@ -201,6 +201,7 @@
     <None Include="Resources\sampler\status\statuspresenter.lua" />
     <None Include="Resources\sampler\status\status.lua" />
     <None Include="Resources\start.lua" />
+    <None Include="Resources\test\characterTest.lua" />
     <None Include="Resources\test\schedulemanagerTest.lua" />
     <None Include="Resources\test\schedulePresenterTest.lua" />
     <None Include="Resources\test\mockview.lua" />

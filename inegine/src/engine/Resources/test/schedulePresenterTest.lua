@@ -89,43 +89,18 @@ function table.print(tbl)
     return false;
 end
 
-function TestSchedule:testCalculatePageNums()
-    self.schedule.scheduleManager = ScheduleManager:New();
-    self.schedule:UpdateNumPages();
-
-	assertEquals(3, self.schedule.numEduPages);
-	assertEquals(4, self.schedule.numJobPages);
-	assertEquals(5, self.schedule.numVacPages);
-
-    assertEquals(true, self.schedule:ItemInPage(1, 0));
-    assertEquals(false, self.schedule:ItemInPage(1, 1));
-    assertEquals(true, self.schedule:ItemInPage(6, 0));
-    assertEquals(true, self.schedule:ItemInPage(8, 0));
-    assertEquals(false, self.schedule:ItemInPage(8, 1));
-    assertEquals(false, self.schedule:ItemInPage(9, 0));
-    assertEquals(true, self.schedule:ItemInPage(9, 1));
-    assertEquals(false, self.schedule:ItemInPage(9, 2));
-    assertEquals(true, self.schedule:ItemInPage(14, 1));
-    assertEquals(true, self.schedule:ItemInPage(16, 1));
-    assertEquals(false, self.schedule:ItemInPage(17, 1));
-    assertEquals(true, self.schedule:ItemInPage(17, 2));
-    assertEquals(false, self.schedule:ItemInPage(17, 3));
-end
-
 function TestSchedule:testSetPage()
     self.schedule.scheduleManager = ScheduleManager:New();
-    self.schedule:UpdateNumPages();
 
-	assertEquals(3, self.schedule.numEduPages);
-	assertEquals(4, self.schedule.numJobPages);
-	assertEquals(5, self.schedule.numVacPages);
+	self.schedule.numEduPages = 3;
+	self.schedule.currentEduPage = 0;
 
     self.schedule:SetEduPage(0);
     assertEquals(0, self.schedule.currentEduPage);
 
     self.schedule:SetEduPage(1);
     assertEquals(1, self.schedule.currentEduPage);
-
+    
     self.schedule:SetEduPage(1);
     assertEquals(2, self.schedule.currentEduPage);
 
