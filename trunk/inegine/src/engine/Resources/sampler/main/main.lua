@@ -6,6 +6,7 @@ require "Resources\\sampler\\schedule\\schedulepresenter"
 require "Resources\\sampler\\shopping\\shoplist"
 require "Resources\\sampler\\shopping\\shop"
 require "Resources\\sampler\\status\\status"
+require "Resources\\sampler\\status\\statuspresenter"
 require "Resources\\sampler\\communication\\talklist"
 require "Resources\\sampler\\communication\\talk"
 
@@ -297,20 +298,18 @@ function Main:TestTalk()
 end
 
 function Main:OpenStatus()
-	self:ToggleMainMenu(false);
-	self.statusView = StatusView:New("statusView", CurrentState());
-	local statusView = self.statusView;
+
+	local statusView = StatusView:New("statusView", self.gamestate);
 	statusView:Init();
-	statusView:SetClosingEvent( 
+	
+	self.statusPresenter = StatusPresenter:New();
+	self.statusPresenter:Init(self, statusView, character);
+	self.statusPresenter:SetClosingEvent(
 		function()
-			self:ShowTachie(true);
-			self:ToggleMainMenu(true);
+			Trace("disposing schedule presenter!");
+			self.statusPresenter = nil;
 		end
-	);
-	statusView:Show();
-	statusView:SetDescriptionText("TEST\nTEST2\nTEST3");
-	statusView:AddGraphItem("기품", "900", 50, 0x990000);
-	statusView:AddGraphItem("미모", "300", 100, 0x0099CC);
+	)
 end
 
 function Main:OpenShop()

@@ -198,6 +198,7 @@
     <None Include="Resources\sampler\components\luaview.lua" />
     <None Include="Resources\sampler\shopping\shop.lua" />
     <None Include="Resources\sampler\shopping\shoplist.lua" />
+    <None Include="Resources\sampler\status\statuspresenter.lua" />
     <None Include="Resources\sampler\status\status.lua" />
     <None Include="Resources\start.lua" />
     <None Include="Resources\test\schedulemanagerTest.lua" />
