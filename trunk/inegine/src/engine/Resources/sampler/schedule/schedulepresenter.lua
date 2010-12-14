@@ -97,11 +97,11 @@ function SchedulePresenter:RegisterEvents()
         function()
             local activeTab = scheduleView:GetActiveTab();
             if (activeTab == "education") then
-                self:SetEduPage(-1);
+                if (self:SetEduPage(-1)) then self:Update(); end
             elseif (activeTab == "work") then
-                self:SetJobPage(-1);
+                if (self:SetJobPage(-1)) then self:Update(); end
             elseif (activeTab == "vacation") then
-                self:SetVacPage(-1);
+                if (self:SetVacPage(-1)) then self:Update(); end
             end
         end
     )
@@ -110,11 +110,11 @@ function SchedulePresenter:RegisterEvents()
         function()
             local activeTab = scheduleView:GetActiveTab();
             if (activeTab == "education") then
-                self:SetEduPage(1);
+                if (self:SetEduPage(1)) then self:Update(); end
             elseif (activeTab == "work") then
-                self:SetJobPage(1);
+                if (self:SetJobPage(1)) then self:Update(); end
             elseif (activeTab == "vacation") then
-                self:SetVacPage(1);
+                if (self:SetVacPage(1)) then self:Update(); end
             end
         end
     )
@@ -225,7 +225,7 @@ function SchedulePresenter:SetEduPage(modifier)
     end
 
     if (oldpage ~= self.currentEduPage) then
-        self:Update();
+        return true;
     end
 end
 
@@ -241,7 +241,7 @@ function SchedulePresenter:SetJobPage(modifier)
     end
 
     if (oldpage ~= self.currentJobPage) then
-        self:Update();
+        return true;
     end
 end
 
@@ -257,6 +257,6 @@ function SchedulePresenter:SetVacPage(modifier)
     end
 
     if (oldpage ~= self.currentVacPage) then
-        self:Update();
+        return true;
     end
 end

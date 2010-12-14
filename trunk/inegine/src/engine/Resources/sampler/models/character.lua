@@ -6,6 +6,8 @@ function Character:New()
 	setmetatable(o, self)
 	self.__index = self
 	
+	self.status = {}
+	
 	self.firstname = 0;
 	self.lastname = 0;
 	self.age = 0;
@@ -86,4 +88,12 @@ end
 
 function Character:SetDress(image)
 
+end
+
+function Character:GetStatus(key)
+	return self.status[key];
+end
+
+function Character:SetStatus(key, value)
+	self.status[key] = value;
 end
