@@ -73,7 +73,7 @@ function SchedulePresenter:RegisterEvents()
             scheduleView:FocusSelectedItem(args);
             local scheduleID =  self.scheduleKeyMap[args];
             Trace(args);
-            scheduleView:SetDetailText("detailed explanation: " .. scheduleID);
+            scheduleView:SetDetailText(scheduleManager:GetSchedule(scheduleID).desc);
 		end
 	)
 

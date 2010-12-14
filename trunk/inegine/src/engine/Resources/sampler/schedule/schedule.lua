@@ -224,6 +224,9 @@ function ScheduleView:Init()
     detailviewframe.WindowTexture = "Resources/sampler/resources/window.png"
     detailviewframe.RectSize = 40
     detailviewframe.BackgroundColor = 0xFFFFFF
+    detailviewframe.linespacing = 10
+    detailviewframe.margin = 15
+    detailviewframe.leftmargin = 15
 	detailviewframe.Width = 320
 	detailviewframe.Height = 150
 	detailviewframe.alpha = 255
