@@ -17,6 +17,14 @@ function Calendar:New()
 	return o
 end
 
+function Calendar:SetUpdateEvent(event)
+	self.updateEvent = event;
+end
+
+function Calendar:Update()
+	if (self.updateEvent ~= nil) then self:updateEvent() end
+end
+
 function Calendar:SetModifier(modifier)
     self.modifier = modifier;
 end
@@ -33,14 +41,33 @@ function Calendar:SetDate(year, month, day)
     self.year = year;
     self.month = month;
     self.day = day;
+    self:Update();
 end
 
 function Calendar:GetYear()
 	return self.year;
 end
 
+function Calendar:GetModifiedYear()
+	return self.year + self.modifier;
+end
+
 function Calendar:GetWordMonth()
-	return self.month;
+	local month = math.max(1, math.min(12, self.month));
+	local monthNames = {};
+	monthNames[1] = "Jan"
+	monthNames[2] = "Feb"
+	monthNames[3] = "Mar"
+	monthNames[4] = "Apr"
+	monthNames[5] = "May"
+	monthNames[6] = "Jun"
+	monthNames[7] = "Jul"
+	monthNames[8] = "Aug"
+	monthNames[9] = "Sep"
+	monthNames[10] = "Oct"
+	monthNames[11] = "Nov"
+	monthNames[12] = "Dev"
+	return monthNames[month];
 end
 
 function Calendar:GetMonth()
@@ -57,6 +84,7 @@ end
 
 function Calendar:SetWeek(week)
     self.day = self:GetWeekDay(week);
+    self:Update();
 end
 
 function Calendar:GetWeekDay(week)
@@ -86,6 +114,7 @@ function Calendar:AdvanceWeek()
             self.month = 1;
         end
     end
+    self:Update();
 end
 
 function Calendar:AdvanceMonth()
@@ -95,6 +124,7 @@ function Calendar:AdvanceMonth()
         self.year = self.year + 1;
         self.month = 1;
     end
+    self:Update();
 end
 
 function Calendar:get_days_in_month(month, year)

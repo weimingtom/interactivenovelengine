@@ -21,7 +21,7 @@ function Main:New()
 	self.gamestate = CurrentState();
 
     self:InitComponents()
-   
+    self:RegisterEvents()
 	return o
 end
 
@@ -186,6 +186,10 @@ function Main:CreateButton(buttonText, event)
 	return newButton;
 end
 
+function Main:RegisterEvents()
+	calendar:SetUpdateEvent(self.InvalidateDate);
+end
+
 --mainmenu
 function Main:OpenSchedule()
 	local schedule = ScheduleView:New("scheduleView", self.gamestate);
@@ -215,43 +219,6 @@ function Main:OpenScheduleExecution()
 		end
 	)
 	self.executionPresenter:Init(self, execution, scheduleManager);
-end
-
-function Main:TestExecution(execution)
-	self:ShowTachie(false);
-	self:ToggleMainMenu(false);
-	execution:SetExecutionOverEvent(
-		function ()
-			calendar:AdvanceWeek()
-			self:InvalidateDate()
-			execution:SetExecutionOverEvent(
-				function ()
-			calendar:AdvanceWeek()
-			self:InvalidateDate()		
-					self:ShowTachie(true);
-					self:ToggleMainMenu(true);
-					execution:Dispose();
-					Trace("execution over!");
-				end
-			)
-			execution:ExecuteSchedule("강태공",
-									  "이번주는 사공일을 합니다.\n잘 부탁 드립니다.@",
-									  "Resources/sampler/resources/images/f3.png",
-									  "Resources/sampler/resources/cursor.png",
-									  "Resources/sampler/resources/cursor.png",
-									  "GOLD +0\nSTR +0, DEX +0, CON + 0",
-									  "이번주는 잘 안되었습니다!\n아버지가 슬퍼하실거에요.@",
-									  "Resources/sampler/resources/images/f1.png");
-		end
-	)
-	execution:ExecuteSchedule("강태공", "이번주는 사공일을 합니다.\n잘 부탁 드립니다.@",
-							  "Resources/sampler/resources/images/f3.png", 
-							  "Resources/sampler/resources/cursor.png",
-							  "Resources/sampler/resources/cursor.png",
-							  "GOLD +5,400\nSTR +10, DEX +10, CON + 10",
-							  "이번주는 잘 되었습니다!\n아버지도 기뻐하실거에요.@",
-							  "Resources/sampler/resources/images/f2.png");
-	Trace("executed!");
 end
 
 function Main:OpenCommunication()
@@ -436,7 +403,7 @@ end
 
 --datewindow
 function Main:InvalidateDate()
-	Main:SetDate(calendar:GetYear(), calendar:GetWordMonth(), calendar:GetDay(), calendar:GetWeek());
+	Main:SetDate(calendar:GetModifiedYear(), calendar:GetWordMonth(), calendar:GetDay(), calendar:GetWeek());
 end
 	
 --statuswindow
