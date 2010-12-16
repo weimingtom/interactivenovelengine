@@ -55,6 +55,7 @@ function ExecutionPresenter:RunSchedule()
         self.executionView:SetExecutionOverEvent(
 		    function ()
                 Trace("executed " .. scheduleName);
+				calendar:AdvanceWeek()
                 self:RunSchedule();
             end
         )

@@ -5,7 +5,8 @@ require "Resources\\sampler\\models\\schedulemanager"
 dofile("Resources/Sampler/init_csv.lua")
 
 calendar = Calendar:New();
-calendar:SetDate(1217, 6, 5);
+calendar:SetModifier(-2012);
+calendar:SetDate(2012, 1, 1);
 
 character = Character:New();
 character:SetFirstName("¾È³ª");

@@ -137,3 +137,25 @@ TestCalendar = {}
         assertEquals(1, self.cal:GetWeek())
         assertEquals(7, self.cal:GetWeekLength())
     end
+    
+    function TestCalendar:testUpdate()
+		local updated = false;
+		self.cal:SetUpdateEvent(function ()
+			updated = true;
+		end)
+		
+		self.cal:AdvanceWeek();
+        assertEquals(true, updated)
+        updated = false;
+        
+		self.cal:AdvanceMonth();
+        assertEquals(true, updated)
+        updated = false;
+        
+        self.cal:SetDate(1984, 2, 1);
+        assertEquals(true, updated)
+        updated = false;
+        
+        self.cal:SetWeek(1);
+        assertEquals(true, updated)
+	end
