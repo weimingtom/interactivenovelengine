@@ -6,12 +6,12 @@ using System.Resources;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("EmptyProject")]
-[assembly: AssemblyDescription("An empty project for use as a template for SlimDX samples.")]
+[assembly: AssemblyTitle("Inovel")]
+[assembly: AssemblyDescription("Interactive Novel Engine")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("SlimDX Group")]
-[assembly: AssemblyProduct("EmptyProject")]
-[assembly: AssemblyCopyright("Copyright ©  2008 SlimDX Group")]
+[assembly: AssemblyCompany("Studio 3.14")]
+[assembly: AssemblyProduct("Inovel")]
+[assembly: AssemblyCopyright("Copyright ©  2010 Studio 3.14")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

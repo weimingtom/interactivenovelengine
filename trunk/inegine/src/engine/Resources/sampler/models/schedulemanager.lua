@@ -67,3 +67,26 @@ function ScheduleManager:GetSchedule(id)
         end
     end
 end
+
+function ScheduleManager:SetSelectedSchedules(selectedSchedules)
+    self.selectedSchedules = selectedSchedules;
+end
+
+function ScheduleManager:GetSelectedSchedules()
+    return self.selectedSchedules;
+end
+
+function ScheduleManager:ProcessSchedule(id)
+    local schedule = self:GetSchedule(id);
+    local result = "GOLD +5,400\nSTR +10, DEX +10, CON + 10";
+    local success = false;
+
+    if (math.random() > 0.5) then
+        success = true;
+		result = "GOLD +5,400\nSTR +10, DEX +10, CON + 10";
+    else
+        success = false;
+		result = "GOLD +0\nSTR +0, DEX +0, CON + 0";
+    end    
+    return schedule.text, success, result;
+end

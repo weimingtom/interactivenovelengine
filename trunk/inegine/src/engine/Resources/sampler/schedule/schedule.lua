@@ -515,3 +515,6 @@ end
 function ScheduleView:SetDownButtonEvent(event)
     self.downButtonEvent = event;
 end
+function ScheduleView:EnableRun(enable)
+    self.executeButton.Enabled = enable;
+end

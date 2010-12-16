@@ -3,6 +3,7 @@ require "Resources\\sampler\\inventory\\inventory"
 require "Resources\\sampler\\schedule\\schedule"
 require "Resources\\sampler\\schedule\\execution"
 require "Resources\\sampler\\schedule\\schedulepresenter"
+require "Resources\\sampler\\schedule\\executionpresenter"
 require "Resources\\sampler\\shopping\\shoplist"
 require "Resources\\sampler\\shopping\\shop"
 require "Resources\\sampler\\status\\status"
@@ -203,8 +204,17 @@ end
 function Main:OpenScheduleExecution()
 	local execution = ExecutionView:New("executionView", CurrentState());
 	execution:Init();
-	self.execution = execution;
-	self:TestExecution(execution);
+
+	self.executionPresenter = ExecutionPresenter:New();
+	self.executionPresenter:SetClosingEvent(
+		function()
+			Trace("disposing execution presenter!");
+			self:ShowTachie(true);
+			self:ToggleMainMenu(true);
+			self.executionPresenter = nil;
+		end
+	)
+	self.executionPresenter:Init(self, execution, scheduleManager);
 end
 
 function Main:TestExecution(execution)
@@ -228,6 +238,7 @@ function Main:TestExecution(execution)
 									  "이번주는 사공일을 합니다.\n잘 부탁 드립니다.@",
 									  "Resources/sampler/resources/images/f3.png",
 									  "Resources/sampler/resources/cursor.png",
+									  "Resources/sampler/resources/cursor.png",
 									  "GOLD +0\nSTR +0, DEX +0, CON + 0",
 									  "이번주는 잘 안되었습니다!\n아버지가 슬퍼하실거에요.@",
 									  "Resources/sampler/resources/images/f1.png");
@@ -235,6 +246,7 @@ function Main:TestExecution(execution)
 	)
 	execution:ExecuteSchedule("강태공", "이번주는 사공일을 합니다.\n잘 부탁 드립니다.@",
 							  "Resources/sampler/resources/images/f3.png", 
+							  "Resources/sampler/resources/cursor.png",
 							  "Resources/sampler/resources/cursor.png",
 							  "GOLD +5,400\nSTR +10, DEX +10, CON + 10",
 							  "이번주는 잘 되었습니다!\n아버지도 기뻐하실거에요.@",
@@ -424,7 +436,7 @@ end
 
 --datewindow
 function Main:InvalidateDate()
-	Main:SetDate(calendar:GetYear(), calendar:GetMonth(), calendar:GetDay(), calendar:GetWeek());
+	Main:SetDate(calendar:GetYear(), calendar:GetWordMonth(), calendar:GetDay(), calendar:GetWeek());
 end
 	
 --statuswindow

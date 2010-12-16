@@ -36,8 +36,10 @@ function SchedulePresenter:Init(main, scheduleView, scheduleManager)
 	self.scheduleManager = scheduleManager;
 
 	main:ToggleMainMenu(false);
-	scheduleView:Show();
-
+	
+    scheduleView:EnableRun(false);
+    scheduleView:Show();
+    
     self:RegisterEvents();
     self:Update();
 end
@@ -89,6 +91,7 @@ function SchedulePresenter:RegisterEvents()
     scheduleView:SetExecutingEvent(
 		function (button, luaevent, args)
 			scheduleView:Dispose();
+            self.scheduleManager:SetSelectedSchedules(self.selectedSchedules);
 			self.main:OpenScheduleExecution();
 		end
     )
@@ -166,18 +169,26 @@ function SchedulePresenter:SelectSchedule(scheduleID)
 		table.insert(self.selectedSchedules, scheduleID);
 		self.scheduleKeyMap[key] = scheduleID;
 		self.selectedScheduleCount = self.selectedScheduleCount + 1;
+
+        if (self.selectedScheduleCount == 4) then 
+            self.scheduleView:EnableRun(true);
+        end
 	end
 end
 
 function SchedulePresenter:DeselectSchedule(scheduleID)
 	if (self.selectedScheduleCount > 0) then
         if (self.scheduleView ~= nil) then self.scheduleView:RemoveSelectedItem(scheduleID); end
-		table.removeItem(self.selectedSchedules, scheduleID);
-		if (table.contains(self.selectedSchedules, scheduleID)) then
+		table.removeItem(self.selectedSchedules, self.scheduleKeyMap[scheduleID]);
+		if (table.contains(self.selectedSchedules, self.scheduleKeyMap[scheduleID] )) then
 		else
 			self.scheduleKeyMap[scheduleID] = nil;
 		end
 		self.selectedScheduleCount = self.selectedScheduleCount - 1;
+        if (self.selectedScheduleCount < 4) then 
+            self.scheduleView:EnableRun(false);
+        end
+        self.scheduleView:SetDetailText("");
 	end
 end
 
