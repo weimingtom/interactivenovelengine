@@ -63,7 +63,7 @@ function SchedulePresenter:RegisterEvents()
 	scheduleView:SetSelectedEvent(
 		function (button, luaevent, args)
 			Trace("select event called from " .. args);
-            self:SelectSchedule(args, iconKey);
+            self:SelectSchedule(args);
 		end
 	)
 
@@ -75,7 +75,7 @@ function SchedulePresenter:RegisterEvents()
             scheduleView:FocusSelectedItem(args);
             local scheduleID =  self.scheduleKeyMap[args];
             Trace(args);
-            scheduleView:SetDetailText(scheduleManager:GetSchedule(scheduleID).desc);
+            scheduleView:SetDetailText(scheduleManager:GetItem(scheduleID).desc);
 		end
 	)
 
@@ -134,27 +134,27 @@ function SchedulePresenter:Update()
 end
 
 function SchedulePresenter:UpdateNumPages()
-	self.numEduPages = math.ceil(self.scheduleManager.educationCount / self.pageItems);
-	self.numJobPages = math.ceil(self.scheduleManager.jobCount / self.pageItems);
-	self.numVacPages = math.ceil(self.scheduleManager.vacationCount / self.pageItems);
+	self.numEduPages = math.ceil(self.scheduleManager:GetItemCount("edu") / self.pageItems);
+	self.numJobPages = math.ceil(self.scheduleManager:GetItemCount("job") / self.pageItems);
+	self.numVacPages = math.ceil(self.scheduleManager:GetItemCount("vac") / self.pageItems);
 end
 
 function SchedulePresenter:AddItems()
 	local scheduleView = self.scheduleView;
-	local scheduleList = scheduleManager:GetSchedules("edu");
+	local scheduleList = scheduleManager:GetItems("edu");
 	for i,v in ipairs(scheduleList) do
 	    if (self:ItemInPage(i, self.currentEduPage)) then
             scheduleView:AddEducationItem(v.id, v.text, v.price .. "G", v.icon);
 	    end
     end
-	local scheduleList = scheduleManager:GetSchedules("job");
+	local scheduleList = scheduleManager:GetItems("job");
 	for i,v in ipairs(scheduleList) do
 	    if (self:ItemInPage(i, self.currentJobPage)) then
 		    scheduleView:AddWorkItem(v.id, v.text, v.price .. "G", v.icon);
         end
 	end
 
-	local scheduleList = scheduleManager:GetSchedules("vac");
+	local scheduleList = scheduleManager:GetItems("vac");
 	for i,v in ipairs(scheduleList) do
 	    if (self:ItemInPage(i, self.currentVacPage)) then
 		    scheduleView:AddVacationItem(v.id, v.text, v.price .. "G", v.icon);
@@ -173,6 +173,8 @@ function SchedulePresenter:SelectSchedule(scheduleID)
         if (self.selectedScheduleCount == 4) then 
             self.scheduleView:EnableRun(true);
         end
+        
+        self.scheduleView:SetDetailText(self.scheduleManager:GetItem(scheduleID).desc);
 	end
 end
 
