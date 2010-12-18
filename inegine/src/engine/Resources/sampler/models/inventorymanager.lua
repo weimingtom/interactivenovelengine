@@ -65,11 +65,16 @@ end
 function InventoryManager:EquipItem(id)
 	Trace("Equipping " .. id);
 	
+	if (self.categoryMap[id] == "dress") then
+	    if (self.dressEquippedEvent ~= nil) then
+		    self.dressEquippedEvent(id);
+	    end
+
+        for i,v in ipairs(self:GetItems("dress")) do
+            self:UnequipItem(v);
+        end
+    end
 	self.equippedItems[id] = true;
-	
-	if (self.categoryMap[id] == "dress" and self.dressEquippedEvent ~= nil) then
-		self.dressEquippedEvent(id);
-	end
 end
 
 function InventoryManager:UnequipItem(id)

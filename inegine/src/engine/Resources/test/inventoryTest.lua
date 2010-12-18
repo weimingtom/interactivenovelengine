@@ -51,16 +51,42 @@ TestInventory = {}
         inventory:AddItem("testItem5", "cat3");
         inventory:AddItem("testItem6", "cat4");
         local items = inventory:GetItems("cat1");
-        table.contains(items, "testItem1");
-        table.contains(items, "testItem2");
-        table.contains(items, "testItem3");
-        table.contains(inventory:GetItems("cat2"), "testItem4");
-        table.contains(inventory:GetItems("cat3"), "testItem5");
-        table.contains(inventory:GetItems("cat4"), "testItem6");
+        assertEquals(true, table.contains(items, "testItem1"));
+        assertEquals(true, table.contains(items, "testItem2"));
+        assertEquals(true, table.contains(items, "testItem3"));
+        assertEquals(true, table.contains(inventory:GetItems("cat2"), "testItem4"));
+        assertEquals(true, table.contains(inventory:GetItems("cat3"), "testItem5"));
+        assertEquals(true, table.contains(inventory:GetItems("cat4"), "testItem6"));
     end
 
+    function TestInventory:testEquipDress()
+        local inventory = self.inventory;
+        inventory:AddItem("testItem1", "dress");
+        inventory:AddItem("testItem2", "dress");
+        inventory:AddItem("testItem3", "dress");
 
+        assertEquals(false, inventory:ItemEquipped("testItem1"));
+        assertEquals(false, inventory:ItemEquipped("testItem2"));
+        assertEquals(false, inventory:ItemEquipped("testItem3"));
 
+        inventory:EquipItem("testItem1");
+
+        assertEquals(true, inventory:ItemEquipped("testItem1"));
+        assertEquals(false, inventory:ItemEquipped("testItem2"));
+        assertEquals(false, inventory:ItemEquipped("testItem3"));
+
+        inventory:EquipItem("testItem2");
+
+        assertEquals(false, inventory:ItemEquipped("testItem1"));
+        assertEquals(true, inventory:ItemEquipped("testItem2"));
+        assertEquals(false, inventory:ItemEquipped("testItem3"));
+
+        inventory:EquipItem("testItem3");
+
+        assertEquals(false, inventory:ItemEquipped("testItem1"));
+        assertEquals(false, inventory:ItemEquipped("testItem2"));
+        assertEquals(true, inventory:ItemEquipped("testItem3"));
+    end
 
 function table.contains(tbl, item)
 	for i,v in ipairs(tbl) do
