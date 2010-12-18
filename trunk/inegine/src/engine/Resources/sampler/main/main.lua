@@ -189,8 +189,7 @@ end
 
 function Main:RegisterEvents()
 	calendar:SetUpdateEvent(function() self:InvalidateDate() end);
-	itemManager:SetDressEquippedEvent(function(id) self:EquipDress(id) end);
-	
+	inventoryManager:SetDressEquippedEvent(function(id) self:EquipDress(id) end);
 end
 
 --mainmenu
@@ -358,7 +357,7 @@ function Main:OpenInventory()
 	inventory:Init();
 	
 	self.inventoryPresenter = InventoryPresenter:New();
-	self.inventoryPresenter:Init(self, inventory, itemManager);
+	self.inventoryPresenter:Init(self, inventory, itemManager, inventoryManager);
 	self.inventoryPresenter:SetClosingEvent(
 		function()
 			Trace("disposing schedule presenter!");
@@ -480,5 +479,5 @@ CurrentState().state = mainView;
 main:InvalidateDate();
 main:InvalidateStatus();
 
-main:SetBackground("Resources/sampler/resources/images/room01.png");
+main:SetBackground("Resources/sampler/resources/images/room03.jpg");
 main:SetTachieBody("Resources/sampler/resources/images/1.png");

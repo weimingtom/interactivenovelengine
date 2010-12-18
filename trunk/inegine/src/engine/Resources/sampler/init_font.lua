@@ -2,7 +2,7 @@ LoadFont("default", "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf",
 LoadFont("menu", "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf", 13);
 GetFont("menu").TextEffect = 1
 
-LoadFont("smalldefault", "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf", 15);
+LoadFont("smalldefault", "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf", 12);
 
 LoadFont("date", "Resources\\sampler\\resources\\fonts\\NanumMyeongjoBold.ttf", 13);
 GetFont("date").LineSpacing = 13

@@ -5,8 +5,7 @@ function ItemManager:New()
     local o = {}
 	setmetatable(o, self)
 	self.__index = self
-	
-	self.equippedItems = {};
+
 	return o
 end
 
@@ -50,13 +49,13 @@ function ItemManager:ExtractItem(i)
 end
 
 function ItemManager:GetItems(category)
-	local scheduleList = {};
+	local itemList = {};
     for i=0, self.csv.Count-1 do
         if (category == self.csv:GetString(i, self.categoryIndex)) then
-			table.insert(scheduleList, self:ExtractItem(i));
+			table.insert(itemList, self:ExtractItem(i));
         end
     end
-	return scheduleList;
+	return itemList;
 end
 
 function ItemManager:GetItem(id)
@@ -65,34 +64,4 @@ function ItemManager:GetItem(id)
 			return self:ExtractItem(i);
         end
     end
-end
-
-function ItemManager:ItemEquipped(id)
-	if (self.equippedItems[id] ~= nil and self.equippedItems[id] == true) then
-		return true;
-	else
-		return false;
-	end
-end
-
-function ItemManager:EquipItem(id)
-	Trace("Equipping " .. id);
-	
-	local item = self:GetItem(id);
-	self.equippedItems[id] = true;
-	
-	if (self.dressEquippedEvent ~= nil) then
-		self.dressEquippedEvent(id);
-	end
-end
-
-function ItemManager:UnequipItem(id)
-	Trace("Unequipping " .. id);
-	
-	local item = self:GetItem(id);
-	self.equippedItems[id] = false;
-end
-
-function ItemManager:SetDressEquippedEvent(event)
-	self.dressEquippedEvent = event;
 end
