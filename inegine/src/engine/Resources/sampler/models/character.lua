@@ -66,30 +66,6 @@ function Character:SetMana(mana)
 	self.mana = mana;
 end
 
-function Character:GetBody()
-
-end
-
-function Character:SetBody(image)
-
-end
-
-function Character:GetHead()
-
-end
-
-function Character:SetHead(image)
-
-end
-
-function Character:GetDress()
-
-end
-
-function Character:SetDress(image)
-
-end
-
 function Character:GetStatus(key)
 	return self.status[key];
 end

@@ -25,10 +25,11 @@ function InventoryPresenter:SetClosingEvent(event)
 	self.closingEvent = event;
 end
 
-function InventoryPresenter:Init(main, inventoryView, itemManager)
+function InventoryPresenter:Init(main, inventoryView, itemManager, inventoryManager)
 	self.main = main;
 	self.inventoryView = inventoryView;
 	self.itemManager = itemManager;
+    self.inventoryManager = inventoryManager;
 
 	main:ToggleMainMenu(false);
 	main:SetTachiePosition(inventoryView.frame.X + inventoryView.frame.Width + 10);
@@ -49,6 +50,7 @@ function InventoryPresenter:RegisterEvents()
     local inventoryView = self.inventoryView;
     local main = self.main;
     local itemManager = self.itemManager;
+    local inventoryManager = self.inventoryManager;
 
 	inventoryView:SetClosingEvent(
 		function()
@@ -117,32 +119,35 @@ end
 
 function InventoryPresenter:AddItems()
 	local inventoryView = self.inventoryView;
-	local itemList = itemManager:GetItems("dress");
+	local itemList = self.inventoryManager:GetItems("dress");
 	for i,v in ipairs(itemList) do
 	    if (self:ItemInPage(i, self.currentDressPage)) then
-            inventoryView:AddDressItem(v.id, v.text, v.icon);
+            local item = self.itemManager:GetItem(v);
+            inventoryView:AddDressItem(item.id, item.text, item.icon);
 	    end
     end
-	local itemList = itemManager:GetItems("item");
+	local itemList = self.inventoryManager:GetItems("item");
 	for i,v in ipairs(itemList) do
 	    if (self:ItemInPage(i, self.currentItemPage)) then
-		    inventoryView:AddItemItem(v.id, v.text, v.icon);
+            local item = self.itemManager:GetItem(v);
+		    inventoryView:AddItemItem(item.id, item.text, item.icon);
         end
 	end
 
-	local itemList = itemManager:GetItems("furniture");
+	local itemList = self.inventoryManager:GetItems("furniture");
 	for i,v in ipairs(itemList) do
 	    if (self:ItemInPage(i, self.currentFurniturePage)) then
-		    inventoryView:AddFurnitureItem(v.id, v.text, v.icon);
+            local item = self.itemManager:GetItem(v);
+		    inventoryView:AddFurnitureItem(item.id, item.text, item.icon);
         end
 	end
 end
 
 function InventoryPresenter:SelectItem(itemID)
 	local item = self.itemManager:GetItem(itemID);
-	self.inventoryView:SelectItem(item.id, item.name, item.desc, item.icon, item.price);
+	self.inventoryView:SelectItem(item.id, item.text, item.desc, item.icon, item.price);
 	self.selectedItem = itemID;
-	if (self.itemManager:ItemEquipped(itemID)) then
+	if (self.inventoryManager:ItemEquipped(itemID)) then
 		self.inventoryView:SetEquipMode(false);
 	else
 		self.inventoryView:SetEquipMode(true);
@@ -152,11 +157,11 @@ end
 function InventoryPresenter:EquipItem()
 	if (self.selectedItem ~= nil) then
 		local itemID = self.selectedItem;
-		if (self.itemManager:ItemEquipped(itemID)) then
-			self.itemManager:UnequipItem(itemID);
+		if (self.inventoryManager:ItemEquipped(itemID)) then
+			self.inventoryManager:UnequipItem(itemID);
 			self:SelectItem(itemID);
 		else
-			self.itemManager:EquipItem(itemID);
+			self.inventoryManager:EquipItem(itemID);
 			self:SelectItem(itemID);
 		end	
 	end

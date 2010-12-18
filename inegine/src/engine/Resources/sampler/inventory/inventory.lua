@@ -56,7 +56,7 @@ function InventoryView:Init()
 	detailView.leftMargin = 90;
 	detailView.margin = 12;
 	detailView.font = GetFont("smalldefault");
-    detailView.linespacing = 10
+    detailView.linespacing = 5
 	detailView.x = 5;
 	detailView.y = background.y + background.height + 5;
     detailView.WindowTexture = "Resources/sampler/resources/window.png"
@@ -360,7 +360,7 @@ end
 function InventoryView:SelectItem(itemId, itemName, description, icon, price)
 	self.selectedIcon.texture = icon;
 	self.selectedIconText.text = price .. "G"
-	self.detailView.text = description;
+	self.detailView.text = itemName .. "\n" .. description;
 end
 
 function InventoryView:GetActiveTab()
