@@ -121,6 +121,7 @@ namespace INovelEngine.ResourceManager
 
         public override void Dispose()
         {
+            Console.WriteLine("disposing texture " + this.Name);
             Texture.Dispose();
         }
 

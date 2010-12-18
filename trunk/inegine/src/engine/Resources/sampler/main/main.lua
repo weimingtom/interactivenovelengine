@@ -1,5 +1,6 @@
 --Import
 require "Resources\\sampler\\inventory\\inventory"
+require "Resources\\sampler\\inventory\\inventorypresenter"
 require "Resources\\sampler\\schedule\\schedule"
 require "Resources\\sampler\\schedule\\execution"
 require "Resources\\sampler\\schedule\\schedulepresenter"
@@ -187,7 +188,9 @@ function Main:CreateButton(buttonText, event)
 end
 
 function Main:RegisterEvents()
-	calendar:SetUpdateEvent(self.InvalidateDate);
+	calendar:SetUpdateEvent(function() self:InvalidateDate() end);
+	itemManager:SetDressEquippedEvent(function(id) self:EquipDress(id) end);
+	
 end
 
 --mainmenu
@@ -351,54 +354,24 @@ function Main:OpenSystem()
 end
 
 function Main:OpenInventory()
-	self:ToggleMainMenu(false);
-	local inven = InventoryView:New("inventory", CurrentState());
-	inven:Init();
+	local inventory = InventoryView:New("inventory", self.gamestate);
+	inventory:Init();
 	
-	inven:SetClosingEvent( 
+	self.inventoryPresenter = InventoryPresenter:New();
+	self.inventoryPresenter:Init(self, inventory, itemManager);
+	self.inventoryPresenter:SetClosingEvent(
 		function()
-			Trace("inventory clicked!")
-			self.inventory = nil;
-			self:ToggleMainMenu(true);
-			self:CenterTachie();
-		end
-	);
-	
-	inven:SetSelectedEvent(
-		function (button, luaevent, args)
-			Trace("select event called from " .. args);
-			if (args == "dress1") then
-				Trace("changing dress to dress 1")
-				main:SetTachieBody("Resources/sampler/resources/images/1.png");
-				main:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
-			elseif (args == "dress2") then
-				Trace("changing dress to dress 2")
-				main:SetTachieBody("Resources/sampler/resources/images/2.png");
-				main:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
-			elseif (args == "dress3") then
-				Trace("changing dress to dress 3")
-				main:SetTachieBody("Resources/sampler/resources/images/3.png");
-				main:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
-			end
-
-            button.pushed = false; 
+			Trace("disposing schedule presenter!");
+			self.inventoryPresenter = nil;
 		end
 	)
-	
-	
-	--add test items
-	inven:AddDressItem("dress1", "Dress 1", "Resources/sampler/resources/icon.png");
-	inven:AddDressItem("dress2", "Dress 2", "Resources/sampler/resources/icon.png");
-	inven:AddDressItem("dress3", "Dress 2", "Resources/sampler/resources/icon.png");
-	
-	inven:AddItemItem("item1", "Item 1", "Resources/sampler/resources/icon.png");
-	
-	inven:AddFurnitureItem("furniture1", "Furniture 1", "Resources/sampler/resources/icon.png");
-	
-	self:SetTachiePosition(inven.frame.X + inven.frame.Width + 10);
-	inven:Show();
-	
-	self.inventory = inven;
+end
+
+
+function Main:EquipDress(id)
+	Trace("equipping item " .. id);
+	local tachiBodyImage = itemManager:GetItem(id).dressImage;
+	self:SetTachieBody(tachiBodyImage);
 end
 
 --datewindow
@@ -428,7 +401,7 @@ end
 
 --tachie
 function Main:SetTachieBody(filename)
-	if (GetComponent("tachie") ~= nil) then
+	if (self.tachieMargin ~= nil) then
 		RemoveComponent("tachie");
 	end
 	
@@ -436,10 +409,16 @@ function Main:SetTachieBody(filename)
 	tachie.Name = "tachie";
 	tachie.Texture = filename
 	tachie.Visible = true;
-	tachie.X = (GetWidth() - tachie.Width)/2;
-	tachie.Y = (GetHeight() - tachie.Height);
 	tachie.Layer = 2;
 	InitComponent(tachie);
+	
+	if (self.tachieMargin ~= nil) then
+		self:SetTachiePosition(self.tachieMargin);
+	else
+		self:CenterTachie();
+	end
+		
+	
 end
 
 function Main:SetTachieFace(filename)
@@ -457,15 +436,22 @@ function Main:ShowTachie(show)
 end
 
 function Main:SetTachiePosition(leftMargin)
-	GetComponent("tachie").X = leftMargin;
+	self.tachieMargin = leftMargin;
+	local tachie = GetComponent("tachie");
+	if (tachie ~= nil) then
+		tachie.X = leftMargin;
+		tachie.Y = (GetHeight() - tachie.Height);
+	end
 end
 
 function Main:CenterTachie()
 	local tachie = GetComponent("tachie");
 	if (tachie ~= nil) then
-		tachie.X = (GetWidth() - tachie.Width)/2;
+		self:SetTachiePosition((GetWidth() - tachie.Width)/2);
 	end
 end
+
+
 
 --private/helper functions
 function Main:ToggleMainMenu(enabled)

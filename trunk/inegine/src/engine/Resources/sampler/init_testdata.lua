@@ -1,6 +1,7 @@
 require "Resources\\sampler\\models\\calendar"
 require "Resources\\sampler\\models\\character"
 require "Resources\\sampler\\models\\schedulemanager"
+require "Resources\\sampler\\models\\itemmanager"
 
 dofile("Resources/Sampler/init_csv.lua")
 
@@ -18,3 +19,6 @@ character:SetMana(100);
 
 scheduleManager = ScheduleManager:New();
 scheduleManager:Load()
+
+itemManager = ItemManager:New();
+itemManager:Load();

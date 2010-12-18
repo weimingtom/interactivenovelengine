@@ -5,10 +5,6 @@ function ScheduleManager:New()
     local o = {}
 	setmetatable(o, self)
 	self.__index = self
-    self.educationCount = 0;
-    self.jobCount = 0;
-    self.vacationCount = 0;
-    self.descIndex = 0;
 	return o
 end
 
@@ -26,17 +22,19 @@ function ScheduleManager:Load()
             Trace(c .. " does not match anything");
         end
     end
-
-    for i=0, self.csv.Count-1 do
-        local c = self.csv:GetString(i, self.categoryIndex);
-        if ("edu" == c) then self.educationCount = self.educationCount + 1
-        elseif ("job" == c) then self.jobCount = self.jobCount + 1
-        elseif ("vac" == c) then self.vacationCount = self.vacationCount + 1
-        end
-    end
 end
 
-function ScheduleManager:GetSchedules(category)
+function ScheduleManager:GetItemCount(category)
+	local count = 0;
+	for i=0, self.csv.Count-1 do
+        local c = self.csv:GetString(i, self.categoryIndex);
+        if (category == c) then count = count + 1;
+        end
+    end
+    return count;
+end
+
+function ScheduleManager:GetItems(category)
 	local scheduleList = {};
     for i=0, self.csv.Count-1 do
         if (category == self.csv:GetString(i, self.categoryIndex)) then
@@ -53,7 +51,7 @@ function ScheduleManager:GetSchedules(category)
 	return scheduleList;
 end
 
-function ScheduleManager:GetSchedule(id)
+function ScheduleManager:GetItem(id)
     for i=0, self.csv.Count-1 do
         if (id == self.csv:GetString(i, self.idIndex)) then
             local schedule = {};
@@ -77,7 +75,7 @@ function ScheduleManager:GetSelectedSchedules()
 end
 
 function ScheduleManager:ProcessSchedule(id)
-    local schedule = self:GetSchedule(id);
+    local schedule = self:GetItem(id);
     local result = "GOLD +5,400\nSTR +10, DEX +10, CON + 10";
     local success = false;
 
