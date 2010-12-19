@@ -112,9 +112,9 @@ function InventoryPresenter:Update()
 end
 
 function InventoryPresenter:UpdateNumPages()
-	self.numDressPages = math.ceil(self.itemManager:GetItemCount("dress") / self.pageItems);
-	self.numItemPages = math.ceil(self.itemManager:GetItemCount("item") / self.pageItems);
-	self.numFurniturePages = math.ceil(self.itemManager:GetItemCount("furniture") / self.pageItems);
+	self.numDressPages = math.ceil(self.inventoryManager:GetItemCount("dress") / self.pageItems);
+	self.numItemPages = math.ceil(self.inventoryManager:GetItemCount("item") / self.pageItems);
+	self.numFurniturePages = math.ceil(self.inventoryManager:GetItemCount("furniture") / self.pageItems);
 end
 
 function InventoryPresenter:AddItems()

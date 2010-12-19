@@ -188,7 +188,7 @@ function InventoryView:Init()
 			self:Dispose();
 		end)
 	closeButton.Layer = 4;
-	closeButton.X = self.frame.width - 125;
+	closeButton.X = self.frame.width - 105;
 	closeButton.Y = self.frame.height - 45;
 	self.closebutton = closeButton;
 	
