@@ -87,25 +87,61 @@ function ShopView:Init()
 	self.itemListView = itemListView;
 	background:AddComponent(itemListView.frame);
 	
+		
+	local detailviewFrame = ImageWindow()
+	detailviewFrame.name = "detailviewFrame"
+	detailviewFrame.relative = true;
+	detailviewFrame.width = 215;
+	detailviewFrame.height = 230;
+	detailviewFrame.leftMargin = 20;
+	detailviewFrame.margin = 90;
+	detailviewFrame.font = GetFont("smalldefault");
+    detailviewFrame.linespacing = 10
+	detailviewFrame.x = 525;
+	detailviewFrame.y = 160;
+    detailviewFrame.WindowTexture = "Resources/sampler/resources/window.png"
+    detailviewFrame.RectSize = 40
+    detailviewFrame.backgroundColor = 0xFFFFFF
+	detailviewFrame.alpha = 255
+	detailviewFrame.layer = 6;
+	self.detailviewFrame = detailviewFrame;
+	self.frame:AddComponent(detailviewFrame);
 	
-	local detailviewframe = ImageWindow()
-	self.detailviewframe = detailviewframe;
-	detailviewframe.Name = "detailviewframe"
-	detailviewframe.font = GetFont("default");
-	detailviewframe.Width = 215
-	detailviewframe.Height = 230
-	detailviewframe.X = 525;
-	detailviewframe.Y = 160;
-    detailviewframe.WindowTexture = "Resources/sampler/resources/window.png"
-    detailviewframe.RectSize = 40
-    detailviewframe.BackgroundColor = 0xFFFFFF
-	detailviewframe.alpha = 255
-	detailviewframe.layer = 3
 	
-	self.frame:AddComponent(detailviewframe)
+	local pic = Button();
+	pic.Name = "picture";
+	pic.Visible = true;
+	pic.Width = 48;
+	pic.Height = 48;
+	pic.X = 20;
+	pic.Y = 10;
+	pic.State = {}
+	self.selectedIcon = pic;
+	self.detailviewFrame:AddComponent(pic);
+	
+	local button = Button();
+	button.Name = "text"
+	button.Width = 68;
+	button.Height = 21;
+	button.X = 10;
+	button.Y = 10 + pic.Height;
+	button.font = GetFont("verysmall");
+	button.TextColor = 0xFFFFFF
+	button.Text = text;
+	button.Alignment = 1;
+	button.VerticalAlignment = 1;
+	self.selectedIconText = button;
+	self.detailviewFrame:AddComponent(button);
+	
+
+	
+	
+	
+	
+	
 	
 	self.buyButton = self:CreateButton("buyButton", "Buy", 
-										 detailviewframe.x + detailviewframe.width - 105, background.y + background.height - 40, 6)
+										 detailviewFrame.x + detailviewFrame.width - 105, background.y + background.height - 40, 6)
 	self.buyButton.relative = true;
 	self.buyButton.MouseUp = 
 		function (button, luaevent, args)
@@ -121,7 +157,7 @@ function ShopView:Init()
 
 	
 	self.closeButton = self:CreateButton("closeButton", "Close", 
-										 detailviewframe.x + detailviewframe.width - 210, background.y + background.height - 40, 6)
+										 detailviewFrame.x + detailviewFrame.width - 210, background.y + background.height - 40, 6)
 	self.closeButton.relative = true;
 	self.closeButton.MouseUp = 
 		function (button, luaevent, args)
@@ -230,19 +266,25 @@ function ShopView:SetDialogueText(text)
 	self.dialogueWin:SetDialogueText(text);
 end
 
+function ShopView:SetDialogueName(name)
+	self.dialogueWin:SetDialogueName(name);
+end
 
 function ShopView:ShowDialogue(show)
 	self.dialogueWin.frame.Visible = show;
 	self.dialogueWin.frame.Enabled = show;
 end
 
+function ShopView:ClearItems()
+	self.itemListView:Clear();
+end
 
 function ShopView:AddItem(id, text, price, icon)
 	self.itemListView:Add(self:CreateItem(id, text, price, icon));
 end
 
 function ShopView:SetSelectedEvent(event)
-	self.selectedEvent = event;
+	self.selectedEvent = event;	
 end
 
 function ShopView:CreateItem(id, text, price, icon)
@@ -337,8 +379,10 @@ function ShopView:CreateItemButton(buttonName, buttonText)
 	return newButton;
 end
 
-function ShopView:SetDetailText(text)
-    self.detailviewframe.text = text;
+function ShopView:SelectItem(itemId, itemName, description, icon, price)
+	self.selectedIcon.texture = icon;
+	self.selectedIconText.text = price .. "G"
+	self.detailviewFrame.text = description;
 end
 
 function ShopView:SetUpButtonEvent(event)
@@ -347,4 +391,8 @@ end
 
 function ShopView:SetDownButtonEvent(event)
     self.downButtonEvent = event;
+end
+
+function ShopView:SetBuyMode(buy)
+	self.buyButton.enabled = buy;
 end

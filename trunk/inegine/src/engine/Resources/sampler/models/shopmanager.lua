@@ -1,6 +1,6 @@
-InventoryManager = {}
+ShopManager = {}
 
-function InventoryManager:New()
+function ShopManager:New()
     local o = {}
 	setmetatable(o, self)
 	self.__index = self
@@ -11,21 +11,21 @@ function InventoryManager:New()
 	return o
 end
 
-function InventoryManager:AddItem(id, category)
+function ShopManager:AddItem(id, category)
     table.insert(self.itemList, id);
     self.categoryMap[id] = category;
 end
 
-function InventoryManager:RemoveItem(id)
+function ShopManager:RemoveItem(id)
     table.removeItem(self.itemList, id);
     self.categoryMap[id] = nil;
 end
 
-function InventoryManager:ItemExists(id)
+function ShopManager:ItemExists(id)
     return table.contains(self.itemList, id);
 end
 
-function InventoryManager:GetItems(category)
+function ShopManager:GetItems(category)
 	local itemList = {};
 	for i,v in ipairs(self.itemList) do
         if (category == self.categoryMap[v]) then
@@ -35,7 +35,7 @@ function InventoryManager:GetItems(category)
 	return itemList;
 end
 
-function InventoryManager:GetItemCount(category)
+function ShopManager:GetItemCount(category)
 	local count = 0;
 	for i,v in ipairs(self.itemList) do
         if (category == self.categoryMap[v]) then
@@ -64,7 +64,7 @@ function table.removeItem(tbl, item)
 end
 
 
-function InventoryManager:ItemEquipped(id)
+function ShopManager:ItemEquipped(id)
 	if (self.equippedItems[id] ~= nil and self.equippedItems[id] == true) then
 		return true;
 	else
@@ -72,7 +72,7 @@ function InventoryManager:ItemEquipped(id)
 	end
 end
 
-function InventoryManager:EquipItem(id)
+function ShopManager:EquipItem(id)
 	Trace("Equipping " .. id);
 	
 	if (self.categoryMap[id] == "dress") then
@@ -87,12 +87,12 @@ function InventoryManager:EquipItem(id)
 	self.equippedItems[id] = true;
 end
 
-function InventoryManager:UnequipItem(id)
+function ShopManager:UnequipItem(id)
 	Trace("Unequipping " .. id);
 	
 	self.equippedItems[id] = false;
 end
 
-function InventoryManager:SetDressEquippedEvent(event)
+function ShopManager:SetDressEquippedEvent(event)
 	self.dressEquippedEvent = event;
 end

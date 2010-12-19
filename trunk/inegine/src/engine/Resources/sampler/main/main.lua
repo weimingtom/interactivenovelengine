@@ -7,6 +7,7 @@ require "Resources\\sampler\\schedule\\schedulepresenter"
 require "Resources\\sampler\\schedule\\executionpresenter"
 require "Resources\\sampler\\shopping\\shoplist"
 require "Resources\\sampler\\shopping\\shop"
+require "Resources\\sampler\\shopping\\shoppresenter"
 require "Resources\\sampler\\status\\status"
 require "Resources\\sampler\\status\\statuspresenter"
 require "Resources\\sampler\\communication\\talklist"
@@ -137,7 +138,7 @@ function Main:InitComponents()
 
 	local button5 = self:CreateButton("Shopping",
  		function (button, luaevent, args)
-			self:OpenShop();
+			self:OpenShopList();
 		end);
 	button5.X = 0;
 	button5.Y = 42 * 2;
@@ -293,7 +294,22 @@ function Main:OpenStatus()
 	)
 end
 
-function Main:OpenShop()
+function Main:OpenShop(shopName)
+	local shopView = ShopView:New("shopView", self.gamestate);
+	shopView:Init();
+	
+	self.shopPresenter = ShopPresenter:New();
+	self.shopPresenter:Init(self, shopView, itemManager, shopManager, inventoryManager, shopName);
+	self.shopPresenter:SetClosingEvent(
+		function()
+			Trace("disposing shop presenter!");
+			self.shopPresenter = nil;
+			self.shoplist:Show();
+		end
+	)
+end
+
+function Main:OpenShopList()
 	self:ToggleMainMenu(false);
 	self:ShowTachie(false);
 	local shoplist = ShopListView:New("shoplistview", CurrentState());
@@ -302,38 +318,40 @@ function Main:OpenShop()
 	shoplist:SetGreeting("Resources/sampler/resources/images/f2.png","규브", "쇼핑하실 곳을 선택해주세요.");
 	shoplist:SetShopSelectedEvent(
 		function(button, luaevent, arg)
+			Trace(arg);
 			shoplist:Hide();
-			local shop = ShopView:New("shop", CurrentState());
-			self.shop = shop;
-			shop:Init();
-			shop:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
-			shop:SetDialogueText("옷집에 오신것을 환영합니다.");	
-			shop:ShowDialogue(true);
-			shop:AddItem("item1", "item 1", "100G", "Resources/sampler/resources/icon.png");
-			shop:AddItem("item2", "item 2", "100G", "Resources/sampler/resources/icon.png");
-			shop:AddItem("item3", "item 3", "100G", "Resources/sampler/resources/icon.png");
-			
-			shop:SetSelectedEvent(
-				function(button, luaevent, args)
-					self.itemSelected = args;
-					shop:SetDetailText("SELECTED " .. args)
-				end
-			);
-			
-			shop:SetBuyingEvent(
-				function()
-					Trace("buying something!")
-					shop:ClearDialogueText();
-					shop:SetDialogueText(self.itemSelected .. " 를 구입하셨습니다.");	
-				end
-			);
-			shop:SetClosingEvent(
-				function()
-					shoplist:Show()
-					Trace("shop closing!")
-				end
-			);
-			shop:Show();
+			self:OpenShop(arg);
+			--local shop = ShopView:New("shop", CurrentState());
+			--self.shop = shop;
+			--shop:Init();
+			--shop:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+			--shop:SetDialogueText("옷집에 오신것을 환영합니다.");	
+			--shop:ShowDialogue(true);
+			--shop:AddItem("item1", "item 1", "100G", "Resources/sampler/resources/icon.png");
+			--shop:AddItem("item2", "item 2", "100G", "Resources/sampler/resources/icon.png");
+			--shop:AddItem("item3", "item 3", "100G", "Resources/sampler/resources/icon.png");
+			--
+			--shop:SetSelectedEvent(
+				--function(button, luaevent, args)
+					--self.itemSelected = args;
+					--shop:SetDetailText("SELECTED " .. args)
+				--end
+			--);
+			--
+			--shop:SetBuyingEvent(
+				--function()
+					--Trace("buying something!")
+					--shop:ClearDialogueText();
+					--shop:SetDialogueText(self.itemSelected .. " 를 구입하셨습니다.");	
+				--end
+			--);
+			--shop:SetClosingEvent(
+				--function()
+					--shoplist:Show()
+					--Trace("shop closing!")
+				--end
+			--);
+			--shop:Show();
 		end
 	)
 	shoplist:SetClosingEvent( 
