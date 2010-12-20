@@ -63,36 +63,18 @@ function table.removeItem(tbl, item)
 	end
 end
 
-
-function ShopManager:ItemEquipped(id)
-	if (self.equippedItems[id] ~= nil and self.equippedItems[id] == true) then
-		return true;
-	else
-		return false;
-	end
+function ShopManager:GetOwner(shop)
+	return "샬록"
 end
 
-function ShopManager:EquipItem(id)
-	Trace("Equipping " .. id);
-	
-	if (self.categoryMap[id] == "dress") then
-	    if (self.dressEquippedEvent ~= nil) then
-		    self.dressEquippedEvent(id);
-	    end
-
-        for i,v in ipairs(self:GetItems("dress")) do
-            self:UnequipItem(v);
-        end
-    end
-	self.equippedItems[id] = true;
+function ShopManager:GetOwnerImage(shop)
+	return "Resources/sampler/resources/images/f2.png"
 end
 
-function ShopManager:UnequipItem(id)
-	Trace("Unequipping " .. id);
-	
-	self.equippedItems[id] = false;
+function ShopManager:GetOwnerGreetings(shop)
+	return "어서오시게나"
 end
 
-function ShopManager:SetDressEquippedEvent(event)
-	self.dressEquippedEvent = event;
+function ShopManager:GetPurchaseMessage(shop)
+	return "고맙네"
 end

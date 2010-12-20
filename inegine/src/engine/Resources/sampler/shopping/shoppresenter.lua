@@ -30,9 +30,9 @@ function ShopPresenter:Init(main, shopView, itemManager, shopManager, inventoryM
 	main:ToggleMainMenu(false);
 	
 	shopView:SetBuyMode(false);
-	shopView:SetDialogueName("옷집 주인");
-	shopView:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
-	shopView:SetDialogueText("옷집에 오신것을 환영합니다.");	
+	shopView:SetDialogueName(shopManager:GetOwner(shopName));
+	shopView:SetPortraitTexture(shopManager:GetOwnerImage(shopName));
+	shopView:SetDialogueText(shopManager:GetOwnerGreetings(shopName));	
 	shopView:ShowDialogue(true);
 	
 	
@@ -172,8 +172,7 @@ function ShopPresenter:BuyItem()
 	Trace("buying " .. self.selectedItem)
 	local item = self.itemManager:GetItem(self.selectedItem);
 	self.shopView:ClearDialogueText();
-	self.shopView:SetDialogueText(item.text .. " 구입을 완료하셨습니다.");
+	self.shopView:SetDialogueText(self.shopManager:GetPurchaseMessage(self.shopName));
 	
 	self.inventoryManager:AddItem(item.id, item.category);
-		
 end
