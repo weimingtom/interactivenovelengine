@@ -174,10 +174,8 @@ function InventoryPresenter:EquipItem()
 		local itemID = self.selectedItem;
 		if (self.inventoryManager:ItemEquipped(itemID)) then
 			self.inventoryManager:UnequipItem(itemID);
-			self:SelectItem(itemID);
 		else
 			self.inventoryManager:EquipItem(itemID);
-			self:SelectItem(itemID);
 		end	
 	end
 end
