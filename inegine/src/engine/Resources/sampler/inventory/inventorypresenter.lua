@@ -66,7 +66,7 @@ function InventoryPresenter:RegisterEvents()
 
 	inventoryView:SetSelectedEvent(
 		function (button, luaevent, args)
-            self:SelectItem(args);
+            self:SelectItem(self:GetID(args));
 		end
 	)
 
@@ -157,12 +157,11 @@ function InventoryPresenter:GetID(key)
     return self.keyMap[key];
 end
 
-function InventoryPresenter:SelectItem(key)
-    local itemID = self:GetID(key);
-	local item = self.itemManager:GetItem(itemID);
+function InventoryPresenter:SelectItem(id)
+	local item = self.itemManager:GetItem(id);
 	self.inventoryView:SelectItem(item.id, item.text, item.desc, item.icon, item.price);
-	self.selectedItem = itemID;
-	if (self.inventoryManager:ItemEquipped(itemID)) then
+	self.selectedItem = id;
+	if (self.inventoryManager:ItemEquipped(id)) then
 		self.inventoryView:SetEquipMode(false);
 	else
 		self.inventoryView:SetEquipMode(true);
@@ -176,7 +175,8 @@ function InventoryPresenter:EquipItem()
 			self.inventoryManager:UnequipItem(itemID);
 		else
 			self.inventoryManager:EquipItem(itemID);
-		end	
+		end
+		self:SelectItem(itemID);
 	end
 end
 
