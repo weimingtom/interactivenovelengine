@@ -28,11 +28,11 @@ function ShopPresenter:Init(main, shopView, itemManager, shopManager, inventoryM
 	self.inventoryManager = inventoryManager;
 
 	main:ToggleMainMenu(false);
-	
+
 	shopView:SetBuyMode(false);
-	shopView:SetDialogueName(shopManager:GetOwner(shopName));
-	shopView:SetPortraitTexture(shopManager:GetOwnerImage(shopName));
-	shopView:SetDialogueText(shopManager:GetOwnerGreetings(shopName));	
+	shopView:SetDialogueName(shopManager:GetShop(shopName).owner);
+	shopView:SetPortraitTexture(shopManager:GetShop(shopName).portrait);
+	shopView:SetDialogueText(shopManager:GetShop(shopName).greetings);	
 	shopView:ShowDialogue(true);
 	
 	
@@ -110,8 +110,8 @@ end
 function ShopPresenter:AddItems()
 	local shopView = self.shopView;
 	local itemList = shopManager:GetItems(self.shopName);
-	for i,v in ipairs(itemList) do
-		local v = self.itemManager:GetItem(v);
+	for i,listing in ipairs(itemList) do
+		local v = self.itemManager:GetItem(listing.id);
 	    if (self:ItemInPage(i, self.currentPage)) then
             shopView:AddItem(v.id, v.text, v.price, v.icon);
 	    end
@@ -172,7 +172,7 @@ function ShopPresenter:BuyItem()
 	Trace("buying " .. self.selectedItem)
 	local item = self.itemManager:GetItem(self.selectedItem);
 	self.shopView:ClearDialogueText();
-	self.shopView:SetDialogueText(self.shopManager:GetPurchaseMessage(self.shopName));
+	self.shopView:SetDialogueText(self.shopManager:GetShop(self.shopName).buymessage);
 	
 	self.inventoryManager:AddItem(item.id, item.category);
 end
