@@ -34,6 +34,4 @@ inventoryManager:AddItem("item14", "item");
 inventoryManager:AddItem("item15", "furniture");
 
 shopManager = ShopManager:New();
-shopManager:AddItem("item1", "tailor");
-shopManager:AddItem("item2", "tailor");
-shopManager:AddItem("item3", "tailor");
+shopManager:Load();

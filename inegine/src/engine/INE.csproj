@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F1C6583A-8DAC-453B-AC68-FD2BDD0F4C6A}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -182,6 +182,8 @@
     <None Include="Resources\sampler\models\inventorymanager.lua" />
     <None Include="Resources\sampler\models\itemmanager.lua" />
     <None Include="Resources\sampler\models\schedulemanager.lua" />
+    <None Include="Resources\sampler\resources\data\shoplist.csv" />
+    <None Include="Resources\sampler\resources\data\shopdata.csv" />
     <None Include="Resources\sampler\resources\data\item.csv" />
     <None Include="Resources\sampler\resources\data\schedule.csv" />
     <None Include="Resources\sampler\schedule\execution.lua" />
@@ -267,6 +269,8 @@
     <Content Include="Resources\sampler\resources\images\musume.png" />
     <Content Include="Resources\sampler\resources\images\room01.png" />
     <Content Include="Resources\sampler\resources\images\room02.jpg" />
+    <Content Include="Resources\sampler\resources\images\room03.jpg" />
+    <Content Include="Resources\sampler\resources\images\room04.jpg" />
     <Content Include="Resources\sampler\resources\images\title.png" />
     <Content Include="Resources\sampler\resources\button.png" />
     <Content Include="Resources\sampler\resources\cursor.png" />

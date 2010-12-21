@@ -54,21 +54,21 @@ function ShopListView:Init()
 	self.villageimage = villageimage;
 	self.viewframe:AddComponent(villageimage);
 	
-	self.shop1Button = self:CreateButton("tailor", "옷집", 
+	self.shop1Button = self:CreateButton("shop1", "옷집", 
 										 self.viewframe.width - 125, 5+45*0, 4)
 	self.viewframe:AddComponent(self.shop1Button);
 	
 	
-	self.shop2Button = self:CreateButton("armory", "무기점", 
+	self.shop2Button = self:CreateButton("shop2", "무기점", 
 										 self.viewframe.width - 125, 5+45*1, 4)
 	self.viewframe:AddComponent(self.shop2Button);
 
 	
-	self.shop3Button = self:CreateButton("general", "잡화점", 
+	self.shop3Button = self:CreateButton("shop3", "잡화점", 
 										 self.viewframe.width - 125, 5+45*2, 4)
 	self.viewframe:AddComponent(self.shop3Button);
 
-	self.shop4Button = self:CreateButton("furniture", "가구점", 
+	self.shop4Button = self:CreateButton("shop4", "가구점", 
 										 self.viewframe.width - 125, 5+45*3, 4)
 	self.viewframe:AddComponent(self.shop4Button);
 

@@ -18,6 +18,9 @@ function InventoryPresenter:New()
 
 	self.focuseditemID = nil;
 
+    self.uniqueSequence = 0;
+    self.keyMap = {};
+
 	return o
 end
 
@@ -123,14 +126,14 @@ function InventoryPresenter:AddItems()
 	for i,v in ipairs(itemList) do
 	    if (self:ItemInPage(i, self.currentDressPage)) then
             local item = self.itemManager:GetItem(v);
-            inventoryView:AddDressItem(item.id, item.text, item.icon);
+            inventoryView:AddDressItem(self:GetKey(item.id), item.text, item.icon);
 	    end
     end
 	local itemList = self.inventoryManager:GetItems("item");
 	for i,v in ipairs(itemList) do
 	    if (self:ItemInPage(i, self.currentItemPage)) then
             local item = self.itemManager:GetItem(v);
-		    inventoryView:AddItemItem(item.id, item.text, item.icon);
+		    inventoryView:AddItemItem(self:GetKey(item.id), item.text, item.icon);
         end
 	end
 
@@ -138,12 +141,24 @@ function InventoryPresenter:AddItems()
 	for i,v in ipairs(itemList) do
 	    if (self:ItemInPage(i, self.currentFurniturePage)) then
             local item = self.itemManager:GetItem(v);
-		    inventoryView:AddFurnitureItem(item.id, item.text, item.icon);
+		    inventoryView:AddFurnitureItem(self:GetKey(item.id), item.text, item.icon);
         end
 	end
 end
 
-function InventoryPresenter:SelectItem(itemID)
+function InventoryPresenter:GetKey(id)
+	self.uniqueSequence = self.uniqueSequence + 1;
+	local key = "key" .. self.uniqueSequence;
+    self.keyMap[key] = id;
+    return key;
+end
+
+function InventoryPresenter:GetID(key)
+    return self.keyMap[key];
+end
+
+function InventoryPresenter:SelectItem(key)
+    local itemID = self:GetID(key);
 	local item = self.itemManager:GetItem(itemID);
 	self.inventoryView:SelectItem(item.id, item.text, item.desc, item.icon, item.price);
 	self.selectedItem = itemID;
