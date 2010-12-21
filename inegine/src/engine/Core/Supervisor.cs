@@ -277,7 +277,6 @@ namespace INovelEngine
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                
             }
         }
 
@@ -307,23 +306,22 @@ namespace INovelEngine
 
         public void Lua_CloseState()
         {
-            //if (stateStack.Count <= 1)
-            if (stateList.Count <= 1)
+            if (stateList.Count <= 0)
             {
-                throw new Exception("the base state cannot be removed!");
+                throw new Exception("no more state to be removed!");
             }
 
             GameState removedState = stateList[stateList.Count - 1];//stateStack.Pop();
             stateList.Remove(removedState);
             states.Remove(removedState.Name);
-
-
-            this.activeState = stateList[stateList.Count - 1];//stateStack.Peek();
-
-            SetStateNamespace();
-
             Resources.Remove(removedState);
             removedState.OnExiting();
+
+            if (stateList.Count > 0)
+            {
+                this.activeState = stateList[stateList.Count - 1];//stateStack.Peek();
+                SetStateNamespace();
+            }
         }
 
         public void AddState(GameState state)

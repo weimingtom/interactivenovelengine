@@ -9,7 +9,9 @@ namespace INovelEngine.Effector.Audio
     class SoundPlayer
     {
         [DllImport("winmm.dll")]
-        private static extern long mciSendString(string strCommand, StringBuilder strReturn, int iReturnLength, IntPtr hwndCallback);
+        private static extern int mciSendString(string strCommand, StringBuilder strReturn, int iReturnLength, IntPtr hwndCallback);
+        [DllImport("winmm.dll")]
+        private static extern bool mciGetErrorString(int fdwError, StringBuilder lpszErrorText, long cchErrorText);
 
         [DllImport("winmm.dll")]
         private static extern int waveOutGetVolume(IntPtr hwo, out uint dwVolume);
@@ -57,8 +59,11 @@ namespace INovelEngine.Effector.Audio
         {
 
             string commandString = "play \"" + file + "\"";
-            Console.WriteLine(commandString);
-            mciSendString(commandString, null, 0, IntPtr.Zero);
+            int mcierror = mciSendString(commandString, null, 0, IntPtr.Zero);
+            if (mcierror != 0)
+            {
+                throw new Exception("playing sound failed!");
+            }
         }
 
 

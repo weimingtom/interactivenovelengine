@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F1C6583A-8DAC-453B-AC68-FD2BDD0F4C6A}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -283,8 +283,8 @@
     <Content Include="Resources\sampler\resources\win.png" />
     <Content Include="Resources\sampler\resources\window.png" />
     <Content Include="Resources\sampler\resources\windows\dialoguewin.png" />
-    <Content Include="Resources\sampler\sound\intro.mp3" />
-    <Content Include="Resources\sampler\sound\rise.mp3" />
+    <Content Include="Resources\sampler\resources\sound\intro.mp3" />
+    <Content Include="Resources\sampler\resources\sound\rise.mp3" />
     <Content Include="SampleFramework.dll">
     </Content>
     <Content Include="zlib1.dll">
