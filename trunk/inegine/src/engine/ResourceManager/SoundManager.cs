@@ -103,10 +103,6 @@ namespace INovelEngine.ResourceManager
             Clock.AddTimeEvent(fadeOutEvent);
         }
 
-        public void Fadein(int delay)
-        {
-        }
-
         #region IResource Members
 
         public override void LoadContent()

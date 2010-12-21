@@ -10,6 +10,7 @@ AnimatedSprite = luanet.import_type("INovelEngine.Effector.AnimatedSprite")
 Button = luanet.import_type("INovelEngine.Effector.Button")
 Label = luanet.import_type("INovelEngine.Effector.Label")
 View = luanet.import_type("INovelEngine.Effector.View")
+Sound = luanet.import_type("INovelEngine.ResourceManager.INESound")
 
 ScriptEvents = luanet.import_type("INovelEngine.Script.ScriptEvents");
 ScriptManager = luanet.import_type("INovelEngine.Script.ScriptManager");
@@ -63,15 +64,17 @@ function DebugString(level)
 	return string.sub(source, 2) .. ":" .. info.currentline;
 end
 
-function try(call, error)
+function try(call, error, level)
+	if level == nil then level = 4 end;
 	local ok, res = pcall(call)
 	if ok then
 		return true;
 	else
-		local info = DebugString(4);
-        if (res ~= nil) then
+		local info = DebugString(level);
+			Trace(type("test"));
+        if (res ~= nil and type(res) == "string") then
             Trace(info .. ": " .. error);
-            Trace("> " .. res:toString() .. "\n");
+            Trace(" " .. res .. "\n");
         else
 		    Trace(info .. ": " .. error);
         end

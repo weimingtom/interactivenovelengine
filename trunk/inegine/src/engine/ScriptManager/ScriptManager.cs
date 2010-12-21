@@ -192,7 +192,16 @@ namespace INovelEngine.Script
         public static void WaitDo(float delay, LuaEventHandler Do)
         {
             TimeEvent eventToDo = new TimeEvent(1, (int)delay, delegate() { },
-                                                delegate() { Do(null, ScriptEvents.Etc, null); });
+                                                delegate() {
+                                                    try
+                                                    {
+                                                        Do(null, ScriptEvents.Etc, null);
+                                                    }
+                                                    catch (Exception e)
+                                                    {
+                                                        //Console.WriteLine(e.Message);
+                                                    }    
+                                                });
             Clock.AddTimeEvent(eventToDo);
         }
     }

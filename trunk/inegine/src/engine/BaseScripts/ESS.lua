@@ -24,8 +24,11 @@ function ResumeEss()
 	if (CurrentState().state["ess"] ~= nil) then
 		local success, msg = coroutine.resume(CurrentState().state["ess"])
 		if (success == false) then
-            Trace("runtime error on line " .. currentLine)
-			Trace("\"" .. EssLine(CurrentState().state["ess_path"], currentLine) .. "\"")
+            
+            Trace("error loading ESS script:" .. CurrentState().state["ess_path"] .. ":" .. currentLine)
+            --Trace(EssLine(CurrentState().state["ess_path"], currentLine))
+            Trace(msg);
+			
 			ESSOver()
 		end
 	end
@@ -82,11 +85,13 @@ end
 -- Scene & character managing functions
 
 function LoadSound(id, path)
-	local status, sound = pcall(Sound);
-    sound.Name = id
-    sound.FileName = path;
-    sound.Loop = false;
-	InitResource(sound)
+	try(function()
+		local sound = Sound();
+		sound.Name = id
+		sound.FileName = path;
+		sound.Loop = false;
+		InitResource(sound)	
+	end, "loading sound failed", 3);
 end
 
 function Load(id, image)
@@ -124,14 +129,14 @@ function Center(id)
 	end
 end
 
-function Play(id, delay)
+function Play(id)
 	local sound = GetResource(id)
-	if (sound ~= nil) then
-		if (delay == nil) then
-			sound:Play()
-		else
-			sound:Fadein(delay)
-		end 
+	if (sound ~= nil) then	
+		try(function()
+			if (delay == nil) then
+				sound:Play()
+			end
+		end, "playing sound " .. id  .. " failed", 3);
 	else
 		Trace("invalid id: " .. id);
 	end
