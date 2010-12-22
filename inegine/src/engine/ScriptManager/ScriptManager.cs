@@ -199,7 +199,7 @@ namespace INovelEngine.Script
                                                     }
                                                     catch (Exception e)
                                                     {
-                                                        //Console.WriteLine(e.Message);
+                                                        Console.WriteLine(e.Message);
                                                     }    
                                                 });
             Clock.AddTimeEvent(eventToDo);

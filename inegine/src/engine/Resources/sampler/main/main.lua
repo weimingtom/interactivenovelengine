@@ -82,7 +82,7 @@ function Main:InitComponents()
 	--statewin.RectSize = 40
 	statewin.BackgroundColor = 0xFFFFFF
 	
-	statewin.Font = GetFont("state") --defaultFont
+	statewin.Font = GetFont("calstate") --defaultFont
 	InitComponent(statewin)
 	
 	local menu = ImageWindow()
@@ -154,6 +154,14 @@ function Main:InitComponents()
 	button7.X = 0;
 	button7.Y = 42 * 3;	
 	menu:AddComponent(button7);
+
+	local button8 = self:CreateButton("Test", 
+ 		function (button, luaevent, args)
+			self:OpenEvent();
+		end);
+	button8.X = 100;
+	button8.Y = 42 * 3;	
+	menu:AddComponent(button8);
 	
 end
 
@@ -216,9 +224,8 @@ function Main:OpenScheduleExecution()
 	self.executionPresenter:SetClosingEvent(
 		function()
 			Trace("disposing execution presenter!");
-			self:ShowTachie(true);
-			self:ToggleMainMenu(true);
-			self.executionPresenter = nil;
+            
+            self:OpenEvent();
 		end
 	)
 	self.executionPresenter:Init(self, execution, scheduleManager);
@@ -321,37 +328,6 @@ function Main:OpenShopList()
 			Trace(arg);
 			shoplist:Hide();
 			self:OpenShop(arg);
-			--local shop = ShopView:New("shop", CurrentState());
-			--self.shop = shop;
-			--shop:Init();
-			--shop:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
-			--shop:SetDialogueText("옷집에 오신것을 환영합니다.");	
-			--shop:ShowDialogue(true);
-			--shop:AddItem("item1", "item 1", "100G", "Resources/sampler/resources/icon.png");
-			--shop:AddItem("item2", "item 2", "100G", "Resources/sampler/resources/icon.png");
-			--shop:AddItem("item3", "item 3", "100G", "Resources/sampler/resources/icon.png");
-			--
-			--shop:SetSelectedEvent(
-				--function(button, luaevent, args)
-					--self.itemSelected = args;
-					--shop:SetDetailText("SELECTED " .. args)
-				--end
-			--);
-			--
-			--shop:SetBuyingEvent(
-				--function()
-					--Trace("buying something!")
-					--shop:ClearDialogueText();
-					--shop:SetDialogueText(self.itemSelected .. " 를 구입하셨습니다.");	
-				--end
-			--);
-			--shop:SetClosingEvent(
-				--function()
-					--shoplist:Show()
-					--Trace("shop closing!")
-				--end
-			--);
-			--shop:Show();
 		end
 	)
 	shoplist:SetClosingEvent( 
@@ -384,6 +360,20 @@ function Main:OpenInventory()
 	)
 end
 
+function Main:OpenEvent()
+    Trace("event!");
+    
+    FadeOut(500)
+    Delay(500,
+    function() 
+        OpenState("event", "Resources/Sampler/event/eventstate.lua", "Resources/sampler/resources/event/testevent.ess",
+        function()
+			self:ShowTachie(true);
+			self:ToggleMainMenu(true);
+			self.executionPresenter = nil;
+        end)
+    end);
+end
 
 function Main:EquipDress(id)
 	Trace("equipping item " .. id);

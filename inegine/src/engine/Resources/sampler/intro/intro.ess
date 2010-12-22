@@ -1,4 +1,5 @@
 ﻿[테스트 스크립트 1]
+#FadeIn 500
 #Load "room", "Resources/sampler/resources/images/room02.jpg"
 #Load "logo", "Resources/sampler/resources/images/logo.png"
 #Load "title", "Resources/sampler/resources/images/title.png"
@@ -20,33 +21,7 @@
 #Wait 3000
 #Hide "title", 1500
 
-#Wait 3000
-#ShowCursor ""
-#Show "textwindow", 500
-#Name ""
--띵동띵동....@
-
--띵동띵동....@
-
-.
-.
-. @
-|시끄러운 현관벨 소리에 눈이 깨버리고 말았다.
-하하하.@
-#Alpha "room", 155
-#Show "room", 1000
-#Wait 500
-|-똑똑똑@
-#Name "???"
-|"들어가겠습니다"@
-#Show "musume1", 500
-#Name "Sampler"
-정체를 알수 없는 소녀가 갑자기 내 방에 들어섰다.@
-정체를 알수 없는 이유는 이 게임은 기술 데모이기 때문이다.@
-
-Game Over.@
+#FadeOut 1000
 #Stop "intro", 1000
-;#ScreenCrossFade 2000
 #Wait 1000
-#CloseState
-#LoadState "main", "Resources/sampler/main/main.lua"
+#FadeIn 1000

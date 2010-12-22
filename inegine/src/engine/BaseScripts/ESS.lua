@@ -2,6 +2,7 @@
 
 -- lua functions for managing ESS execution (called by lua/ESS scripts)
 function BeginESS(script)
+    EssOver = false;
     local currentState = CurrentState().state;
 	if (currentState.TextOut == nil or currentState.Clear == nil) then
 		Trace "ESS interface undefined!"
@@ -21,14 +22,11 @@ end
 
 -- todo: need more elaborate error tracking system...
 function ResumeEss()
-	if (CurrentState().state["ess"] ~= nil) then
+	if (true ~= EssOver and CurrentState().state ~= nil and CurrentState().state["ess"] ~= nil) then
 		local success, msg = coroutine.resume(CurrentState().state["ess"])
 		if (success == false) then
-            
-            Trace("error loading ESS script:" .. CurrentState().state["ess_path"] .. ":" .. currentLine)
-            --Trace(EssLine(CurrentState().state["ess_path"], currentLine))
-            Trace(msg);
-			
+            Trace("error at " .. CurrentState().state["ess_path"] .. ":" .. currentLine)
+            Trace("(" .. EssLine(CurrentState().state["ess_path"], currentLine) .. ")")	
 			ESSOver()
 		end
 	end
@@ -43,8 +41,10 @@ end
 --used to supress ESS over event when loading another ESS script  
 --from ESS script by exiting current ESS script and executing another
 SupressESSOver = false;
+EssOver = false;
 function ESSOver()
 	Trace("ESSOver called");
+    EssOver = true;
 	if (SupressESSOver) then
 		Trace("...ignoring ESSOver");
 		SupressESSOver = false;
@@ -76,7 +76,9 @@ function Clear() --called by ESS scripts to clear text
 end
 
 function ESSOverHandler() --called by ESS scripts when entire script is over
-	CurrentState().state:ESSOverHandler()
+	if (CurrentState().state ~= nil) then
+        CurrentState().state:ESSOverHandler()
+    end
 end
 
 -- ESS function synonyms (called by ESS as functions i.e. "#LoadScene "bgimg1", "Resources/daughterroom.png""
@@ -225,6 +227,10 @@ function SelectionOver(index)
 	CurrentState().state:SelectionOver(index)
 end
 
+function Portrait(image)
+    CurrentState().state:Portrait(image);
+end
+
 function Name(name)
 	CurrentState().state:Name(name)
 end
@@ -235,4 +241,27 @@ end
 
 function ShowCursor()
 	CurrentState().state:ShowCursor()
+end
+
+function HideDialogue()
+	CurrentState().state:HideDialogue()
+end
+
+function ShowDialogue()
+	CurrentState().state:ShowDialogue()
+end
+
+function FadeOutIn(duration, color)
+    if color == nil then color = 0xFFFFFF end
+    GetFader():FadeOutIn(GetWidth(), GetHeight(), duration, color);
+end
+
+function FadeOut(duration, color)
+    if color == nil then color = 0xFFFFFF end
+    GetFader():Fade(GetWidth(), GetHeight(), duration, false, color);
+end
+
+function FadeIn(duration, color)
+    if color == nil then color = 0xFFFFFF end
+    GetFader():Fade(GetWidth(), GetHeight(), duration, true, color);
 end

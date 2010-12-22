@@ -21,32 +21,34 @@ namespace INovelEngine.Effector
         {
         }
 
-        public override void LaunchTransition(int width, int height, float duration, bool isFadingIn, Color fadeColor)
+        public void Fade(int width, int height, float duration, bool isFadingIn, int fadeColor)
         {
-            base.LaunchTransition(width, height, duration, isFadingIn, fadeColor);
+            base.LaunchTransition(width, height, duration, isFadingIn, Color.FromArgb(fadeColor));
             linePath[0] = new Vector2(0, height / 2);
             linePath[1] = new Vector2(width, height / 2);
             thichkness = height;
         }
 
-        public void FadeOutIn(int width, int height, int duration, Color fadeColor)
+        public void FadeOutIn(int width, int height, int duration, int fadeColor)
         {
-            this.LaunchTransition(width, height, duration / 2, false, fadeColor);
+            this.LaunchTransition(width, height, duration / 2, false, Color.FromArgb(fadeColor));
+            Console.WriteLine("fading out!");
             Clock.AddTimeEvent(new TimeEvent(1, duration / 2, 
                 delegate()
                 {
-                    this.LaunchTransition(width, height, duration / 2, true, fadeColor);
+                    Console.WriteLine("fading in!");
+                    this.LaunchTransition(width, height, duration / 2, true, Color.FromArgb(fadeColor));
                 }
             ));
         }
 
-        public void FadeOutImmediate(int width, int height, Color fadeColor)
+        public void FadeOutImmediate(int width, int height, int fadeColor)
         {
             linePath[0] = new Vector2(0, height / 2);
             linePath[1] = new Vector2(width, height / 2);
             thichkness = height;
             fadedOut = true;
-            color = fadeColor;
+            color = Color.FromArgb(fadeColor);
         }
 
         public override void Draw()
@@ -55,7 +57,7 @@ namespace INovelEngine.Effector
 
             if (inTransition || fadedOut)
             {
-                line.Width = thichkness;
+                line.Width = (float)Math.Max(0.000001, thichkness); // FIXME;
                 line.Begin();
                 line.Draw(linePath, Color.FromArgb((int)(progress * 255), color));
                 line.End();
