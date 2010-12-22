@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F1C6583A-8DAC-453B-AC68-FD2BDD0F4C6A}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -84,6 +84,7 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
     <Reference Include="LuaInterface, Version=2.0.0.16708, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\LuaInterface.dll</HintPath>
@@ -135,6 +136,7 @@
     <Compile Include="Effector\Graphics\Components\AbstractGUI.cs" />
     <Compile Include="Effector\Graphics\Components\Window\ImageWindow.cs" />
     <Compile Include="ResourceManager\AbstractResource.cs" />
+    <Compile Include="ResourceManager\ArchiveManager.cs" />
     <Compile Include="ResourceManager\CSVManager.cs" />
     <Compile Include="ResourceManager\CSVReader.cs" />
     <Compile Include="ResourceManager\SoundManager.cs" />
@@ -242,6 +244,7 @@
     <Content Include="freetype6.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="ICSharpCode.SharpZipLib.dll" />
     <Content Include="lua51.dll" />
     <Content Include="LuaInterface.dll" />
     <Content Include="msvcm90.dll">

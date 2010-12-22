@@ -488,4 +488,4 @@ main:InvalidateDate();
 main:InvalidateStatus();
 
 main:SetBackground("Resources/sampler/resources/images/room03.jpg");
-main:SetTachieBody("Resources/sampler/resources/images/1.png");
+main:SetTachieBody("zip://Resources/test.zip|test/test2/1.png");
