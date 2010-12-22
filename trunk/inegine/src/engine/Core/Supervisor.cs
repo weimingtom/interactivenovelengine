@@ -28,6 +28,8 @@ namespace INovelEngine
         private FontManager fontManager = new FontManager();
         private CsvManager csvManager = new CsvManager();
 
+        private FadingTransition fadingTransition = new FadingTransition();
+
         private static Queue<LuaEventHandler> defferedCallList = new Queue<LuaEventHandler>();
 
         public Device Device
@@ -63,6 +65,7 @@ namespace INovelEngine
 
             Resources.Add(fontManager);
             Resources.Add(csvManager);
+            Resources.Add(fadingTransition);
 
             /* load lua entry script */
             Lua_LoadScript("Resources/start.lua");
@@ -167,6 +170,8 @@ namespace INovelEngine
                     Console.WriteLine(e.Message);
                 }
             }
+
+            fadingTransition.Update();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -190,6 +195,7 @@ namespace INovelEngine
             //}
 
 
+            fadingTransition.Draw();
             Device.EndScene();
         }
 
@@ -255,6 +261,7 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("ShowWinCursor", this, this.GetType().GetMethod("Lua_ShowCursor"));
             ScriptManager.lua.RegisterFunction("HideWinCursor", this, this.GetType().GetMethod("Lua_HideCursor"));
 
+            ScriptManager.lua.RegisterFunction("GetFader", this, this.GetType().GetMethod("Lua_GetFader"));
 
         }
 
@@ -435,6 +442,11 @@ namespace INovelEngine
         public void Lua_ShowCursor()
         {
             Cursor.Show();
+        }
+
+        public FadingTransition Lua_GetFader()
+        {
+            return this.fadingTransition;
         }
 
         #endregion

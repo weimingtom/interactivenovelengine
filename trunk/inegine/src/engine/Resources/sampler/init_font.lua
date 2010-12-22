@@ -11,6 +11,9 @@ GetFont("date").TextEffect = 1
 LoadFont("state", "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf", 12);
 GetFont("state").LineSpacing = 5
 
+LoadFont("calstate", "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf", 11);
+GetFont("calstate").LineSpacing = 7
+
 LoadFont("dialogue", "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf", 17);
 GetFont("dialogue").LineSpacing = 10;
 GetFont("dialogue").TextEffect = 1;

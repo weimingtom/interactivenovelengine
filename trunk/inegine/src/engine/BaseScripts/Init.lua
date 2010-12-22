@@ -17,6 +17,14 @@ ScriptManager = luanet.import_type("INovelEngine.Script.ScriptManager");
 
 Supervisor = Supervisor()
 
+function OpenState(name, script, arg, closingEvt)
+    argument = arg;
+    closingEvent = closingEvt;
+    LoadState(name, script);
+    argument = nil;
+    closingEvent = nil;
+end
+
 function dofile (filename)
 	local f = assert(loadfile(filename))
 	return f()
