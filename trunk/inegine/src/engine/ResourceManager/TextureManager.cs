@@ -50,7 +50,15 @@ namespace INovelEngine.ResourceManager
         {
             try
             {
-                Bitmap bitmap = new Bitmap(fileName);
+                Bitmap bitmap;
+                if (ArchiveManager.IsURI(fileName))
+                {
+                    bitmap = new Bitmap(ArchiveManager.GetStream(fileName));
+                }
+                else
+                {
+                    bitmap = new Bitmap(fileName);
+                }
                 scaledBitmap = bitmap;
                 this.Width = bitmap.Width;
                 this.Height = bitmap.Height;
