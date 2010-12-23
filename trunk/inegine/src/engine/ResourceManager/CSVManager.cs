@@ -161,7 +161,15 @@ namespace INovelEngine.ResourceManager
         public override void LoadContent()
         {
             base.LoadContent();
-            StreamReader streamReader = new StreamReader(this.FileName, System.Text.Encoding.GetEncoding(this.Encoding));
+            StreamReader streamReader;
+            if (ArchiveManager.IsURI(this.FileName))
+            {
+                streamReader = new StreamReader(ArchiveManager.GetStream(this.FileName), System.Text.Encoding.GetEncoding(this.Encoding));
+            }
+            else
+            {
+                streamReader = new StreamReader(this.FileName, System.Text.Encoding.GetEncoding(this.Encoding));
+            } 
             String fileContent = streamReader.ReadToEnd();
             streamReader.Close();
             csvReader = new CSVReader(fileContent);

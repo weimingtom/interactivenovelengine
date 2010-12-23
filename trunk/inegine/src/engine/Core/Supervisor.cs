@@ -68,7 +68,8 @@ namespace INovelEngine
             Resources.Add(fadingTransition);
 
             /* load lua entry script */
-            Lua_LoadScript("Resources/start.lua");
+            //Lua_LoadScript("Resources/start.lua");
+            Lua_LoadScript("zip://Resources/test.zip|start.lua");
             
 
             this.Window.FormBorderStyle = FormBorderStyle.FixedSingle;
