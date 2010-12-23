@@ -1,5 +1,6 @@
 --Import
-require "Resources\\sampler\\inventory\\inventory"
+--require "Resources\\sampler\\inventory\\inventory"
+LoadScript "zip://Resources/test.zip|inventory.lua"
 require "Resources\\sampler\\inventory\\inventorypresenter"
 require "Resources\\sampler\\schedule\\schedule"
 require "Resources\\sampler\\schedule\\execution"
@@ -366,7 +367,8 @@ function Main:OpenEvent()
     FadeOut(500)
     Delay(500,
     function() 
-        OpenState("event", "Resources/Sampler/event/eventstate.lua", "Resources/sampler/resources/event/testevent.ess",
+        --OpenState("event", "Resources/Sampler/event/eventstate.lua", "Resources/sampler/resources/event/testevent.ess",
+        OpenState("event", "Resources/Sampler/event/eventstate.lua", "zip://Resources/test.zip|testevent.ess",
         function()
 			self:ShowTachie(true);
 			self:ToggleMainMenu(true);

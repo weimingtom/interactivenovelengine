@@ -215,6 +215,7 @@
     <None Include="Resources\sampler\status\statuspresenter.lua" />
     <None Include="Resources\sampler\status\status.lua" />
     <None Include="Resources\start.lua" />
+    <None Include="Resources\test.zip" />
     <None Include="Resources\test\characterTest.lua" />
     <None Include="Resources\test\inventoryTest.lua" />
     <None Include="Resources\test\tempTest.lua" />

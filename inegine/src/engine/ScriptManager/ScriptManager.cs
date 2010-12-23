@@ -4,6 +4,8 @@ using System.Text;
 using INovelEngine.Core;
 using LuaInterface;
 using INovelEngine.StateManager;
+using INovelEngine.ResourceManager;
+using System.IO;
 
 namespace INovelEngine.Script
 {
@@ -144,9 +146,6 @@ namespace INovelEngine.Script
         {
             try
             {
-                /* load initialization script */
-
-                /* todo: support loading from package */
                 lua.DoFile("BaseScripts/Init.lua");
             }
             catch (Exception e)
@@ -157,14 +156,30 @@ namespace INovelEngine.Script
 
         public static void DoLua(String path)
         {
-            /* todo: implement loading from package */
-            lua.DoFile(path);    
+            if (ArchiveManager.IsURI(path))
+            {
+                StreamReader reader = new StreamReader(ArchiveManager.GetStream(path), Encoding.Default);
+                string script = reader.ReadToEnd();
+                lua.DoString(script);
+            }
+            else
+            {
+                lua.DoFile(path);
+            }   
         }
 
         public static String ParseESS(String path)
         {
-            /* todo: support loading from package */
-            Scanner scanner = new Scanner(path);
+            Scanner scanner;
+            if (ArchiveManager.IsURI(path))
+            {
+                scanner = new Scanner(ArchiveManager.GetStream(path));
+            }
+            else
+            {
+                scanner = new Scanner(path);
+            } 
+            
             Parser parser = new Parser(scanner);
             parser.gen = new CodeGenerator();
             parser.Parse();
@@ -173,15 +188,20 @@ namespace INovelEngine.Script
 
         public static String GetESSLine(String path, int line)
         {
-            /* todo: support loading from package */
-            /* todo: cache? */
+            // Read the file and display it line by line.
+            System.IO.StreamReader reader;
+            if (ArchiveManager.IsURI(path))
+            {
+                reader = new System.IO.StreamReader(ArchiveManager.GetStream(path));
+            }
+            else
+            {
+                reader = new System.IO.StreamReader(path);
+            } 
+           
             int counter = 0;
             string buffer;
-
-            // Read the file and display it line by line.
-            System.IO.StreamReader file =
-               new System.IO.StreamReader(path);
-            while ((buffer = file.ReadLine()) != null && counter < line - 1)
+            while ((buffer = reader.ReadLine()) != null && counter < line - 1)
             {
                 counter++;
             }
