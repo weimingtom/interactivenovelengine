@@ -200,6 +200,15 @@ end
 function Main:RegisterEvents()
 	calendar:SetUpdateEvent(function() self:InvalidateDate() end);
 	inventoryManager:SetDressEquippedEvent(function(id) self:EquipDress(id) end);
+	CurrentState().KeyDown = function(handler, luaevent, args) 
+		self:KeyDown(handler, luaevent, args);
+	end
+end
+
+function Main:KeyDown(handler, luaevent, args)
+	if (self.keyDownEvent ~= nil) then
+		self.keyDownEvent(handler, luaevent, args);
+	end
 end
 
 --mainmenu
@@ -481,7 +490,9 @@ function Main:SetState(firstname, lastname, age, gold, stress, mana)
 										.. gold .. "\nStress " .. stress .. "%\nMana " .. mana .."%";
 end
 
-
+function Main:SetKeyDownEvent(event)
+	self.keyDownEvent = event;
+end
 main = Main:New();
 CurrentState().state = main;
 
