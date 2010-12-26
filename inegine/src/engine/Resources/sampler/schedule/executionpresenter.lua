@@ -6,12 +6,12 @@ function ExecutionPresenter:New()
 	self.__index = self
 	return o
 end
-
 function ExecutionPresenter:SetClosingEvent(event)
 	self.closingEvent = event;
 end
 
 function ExecutionPresenter:Init(main, executionView, scheduleManager)
+	self.test = "TEST!";
 	self.main = main;
 	self.executionView = executionView;
 	self.scheduleManager = scheduleManager;
@@ -24,10 +24,34 @@ function ExecutionPresenter:Init(main, executionView, scheduleManager)
     self:Update();
 end
 
+function ExecutionPresenter:Close()
+	if (self.closingEvent ~= nil) then
+		self.closingEvent();
+	end
+    self:DeregisterEvents();
+end
+
 function ExecutionPresenter:RegisterEvents()
+	Trace("registering execution presenter events!");
     local executionView = self.executionView;
     local main = self.main;
     local scheduleManager = self.scheduleManager;
+    
+    main:SetKeyDownEvent(function(handler, luaevent, args) self:HandleKeyDown(handler, luaevent, args) end)
+end
+
+function ExecutionPresenter:HandleKeyDown(handler, luaevent, args)
+	local code = args[0];
+	Trace("key down! : " .. code);
+	Trace(" test = " .. self.test);
+	if (code == 32) then --space
+		self.executionView:Advance();
+	end
+end
+
+function ExecutionPresenter:DeregisterEvents()
+	Trace("deregistering execution presenter events!");
+    main:SetKeyDownEvent(nil)
 end
 
 function ExecutionPresenter:Update()
@@ -45,9 +69,7 @@ function ExecutionPresenter:RunSchedule()
     if (self.currentScheduleIndex > #(self.selectedSchedules)) then
         Trace("execution over!");
         self.executionView:Dispose();
-		if (self.closingEvent ~= nil) then
-			self.closingEvent();
-		end
+		self:Close();
     else
         local scheduleName, success, result = self.scheduleManager:ProcessSchedule(self.selectedSchedules[self.currentScheduleIndex]);
         Trace("executing " .. scheduleName);

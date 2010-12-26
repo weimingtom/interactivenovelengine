@@ -193,3 +193,7 @@ function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, baseAni
 		end
 	)
 end
+
+function ExecutionView:Advance()
+	self.dialogueWin:Advance();
+end
