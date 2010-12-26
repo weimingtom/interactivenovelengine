@@ -3,4 +3,4 @@ SetIcon("Resources/sampler/resources/test.ico");
 SetSize(800, 600);
 SetVolume(50);
 
-dofile "Resources/Sampler/init.lua"
+LoadScript "Resources/Sampler/init.lua"

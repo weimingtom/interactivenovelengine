@@ -1,4 +1,4 @@
-require "Resources\\sampler\\components\\luaview"
+LoadScript "Resources\\sampler\\components\\luaview.lua"
 
 ShopListView = LuaView:New();
 

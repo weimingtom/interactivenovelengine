@@ -1,7 +1,7 @@
 -- schedule UI component implemented in lua
-require "Resources\\sampler\\components\\luaview"
-require "Resources\\sampler\\components\\tabview"
-require "Resources\\sampler\\components\\flowview"
+LoadScript "Resources\\sampler\\components\\luaview.lua"
+LoadScript "Resources\\sampler\\components\\tabview.lua"
+LoadScript "Resources\\sampler\\components\\flowview.lua"
 
 ScheduleView = LuaView:New();
 

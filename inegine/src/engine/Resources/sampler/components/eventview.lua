@@ -1,4 +1,4 @@
-require "Resources\\sampler\\components\\dialoguewindow"
+LoadScript "Resources\\sampler\\components\\dialoguewindow.lua"
 
 --GUI initialization
 
@@ -103,4 +103,8 @@ function EventView:DoEvent(script)
     if (script ~= nil) then
         BeginESS(script);
     end
+end
+
+function EventView:Advance()
+	self.dialogueWin:Advance();
 end

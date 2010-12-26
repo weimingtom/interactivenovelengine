@@ -34,18 +34,22 @@ function ScheduleManager:GetItemCount(category)
     return count;
 end
 
+function ScheduleManager:ExtractItem(i)
+    local item = {};
+    item.category = self.csv:GetString(i, self.categoryIndex);
+    item.id = self.csv:GetString(i, self.idIndex);
+    item.text = self.csv:GetString(i, self.nameIndex);
+    item.price = self.csv:GetString(i, self.priceIndex);
+    item.icon = self.csv:GetString(i, self.iconIndex);
+    item.desc = self.csv:GetString(i, self.descIndex);
+    return item;
+end
+
 function ScheduleManager:GetItems(category)
 	local scheduleList = {};
     for i=0, self.csv.Count-1 do
         if (category == self.csv:GetString(i, self.categoryIndex)) then
-            local schedule = {};
-            schedule.category = self.csv:GetString(i, self.categoryIndex);
-            schedule.id = self.csv:GetString(i, self.idIndex);
-            schedule.text = self.csv:GetString(i, self.nameIndex);
-            schedule.price = self.csv:GetString(i, self.priceIndex);
-            schedule.icon = self.csv:GetString(i, self.iconIndex);
-            schedule.desc = self.csv:GetString(i, self.descIndex);
-			table.insert(scheduleList, schedule);
+			table.insert(scheduleList, self:ExtractItem(i));
         end
     end
 	return scheduleList;
@@ -55,13 +59,7 @@ function ScheduleManager:GetItem(id)
     for i=0, self.csv.Count-1 do
         if (id == self.csv:GetString(i, self.idIndex)) then
             local schedule = {};
-            schedule.category = self.csv:GetString(i, self.categoryIndex);
-            schedule.id = self.csv:GetString(i, self.idIndex);
-            schedule.text = self.csv:GetString(i, self.nameIndex);
-            schedule.price = self.csv:GetString(i, self.priceIndex);
-            schedule.icon = self.csv:GetString(i, self.iconIndex);
-            schedule.desc = self.csv:GetString(i, self.descIndex);
-			return schedule;
+			return self:ExtractItem(i);
         end
     end
 end

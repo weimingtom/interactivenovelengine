@@ -5,8 +5,6 @@ require "Resources\\sampler\\models\\itemmanager"
 require "Resources\\sampler\\models\\inventorymanager"
 require "Resources\\sampler\\models\\shopmanager"
 
-dofile("Resources/Sampler/init_csv.lua")
-
 calendar = Calendar:New();
 calendar:SetModifier(-2012);
 calendar:SetDate(2012, 1, 1);
@@ -26,9 +24,6 @@ itemManager = ItemManager:New();
 itemManager:Load();
 
 inventoryManager = InventoryManager:New();
---inventoryManager:AddItem("item1", "dress");
---inventoryManager:AddItem("item2", "dress");
---inventoryManager:AddItem("item3", "dress");
 inventoryManager:AddItem("item13", "item");
 inventoryManager:AddItem("item14", "item");
 inventoryManager:AddItem("item15", "furniture");

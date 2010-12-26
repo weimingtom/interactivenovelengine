@@ -164,6 +164,7 @@ namespace INovelEngine.Script
             }
             else
             {
+                path = path.Replace("/", "\\");
                 lua.DoFile(path);
             }   
         }
