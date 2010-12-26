@@ -90,7 +90,7 @@ function try(call, error, level)
 	end 
 end
 
-require "BaseScripts\\ESS"
-require "BaseScripts\\Selector"
-require "BaseScripts\\font"
-require "BaseScripts\\csv"
+LoadScript "BaseScripts/Selector.lua"
+LoadScript "BaseScripts/ESS.lua"
+LoadScript "BaseScripts/font.lua"
+LoadScript "BaseScripts/csv.lua"

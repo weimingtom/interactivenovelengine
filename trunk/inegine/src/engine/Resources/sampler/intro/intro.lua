@@ -1,4 +1,4 @@
-require "Resources\\sampler\\components\\eventview"
+LoadScript "Resources\\sampler\\components\\eventview.lua"
 
 intro = EventView:New();
 CurrentState().state = intro;

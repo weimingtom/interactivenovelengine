@@ -1,3 +1,4 @@
+dofile("Resources/Sampler/init_csv.lua")
 dofile("Resources/Sampler/init_testdata.lua")
 dofile("Resources/Sampler/init_font.lua");
 

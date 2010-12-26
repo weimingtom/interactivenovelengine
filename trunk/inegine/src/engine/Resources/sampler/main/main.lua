@@ -1,18 +1,18 @@
 --Import
 --require "Resources\\sampler\\inventory\\inventory"
 LoadScript "zip://Resources/test.zip|inventory.lua"
-require "Resources\\sampler\\inventory\\inventorypresenter"
-require "Resources\\sampler\\schedule\\schedule"
-require "Resources\\sampler\\schedule\\execution"
-require "Resources\\sampler\\schedule\\schedulepresenter"
-require "Resources\\sampler\\schedule\\executionpresenter"
-require "Resources\\sampler\\shopping\\shoplist"
-require "Resources\\sampler\\shopping\\shop"
-require "Resources\\sampler\\shopping\\shoppresenter"
-require "Resources\\sampler\\status\\status"
-require "Resources\\sampler\\status\\statuspresenter"
-require "Resources\\sampler\\communication\\talklist"
-require "Resources\\sampler\\communication\\talk"
+LoadScript "Resources\\sampler\\inventory\\inventorypresenter.lua"
+LoadScript "Resources\\sampler\\schedule\\schedule.lua"
+LoadScript "Resources\\sampler\\schedule\\execution.lua"
+LoadScript "Resources\\sampler\\schedule\\schedulepresenter.lua"
+LoadScript "Resources\\sampler\\schedule\\executionpresenter.lua"
+LoadScript "Resources\\sampler\\shopping\\shoplist.lua"
+LoadScript "Resources\\sampler\\shopping\\shop.lua"
+LoadScript "Resources\\sampler\\shopping\\shoppresenter.lua"
+LoadScript "Resources\\sampler\\status\\status.lua"
+LoadScript "Resources\\sampler\\status\\statuspresenter.lua"
+LoadScript "Resources\\sampler\\communication\\talklist.lua"
+LoadScript "Resources\\sampler\\communication\\talk.lua"
 
 Main = {}
 
@@ -483,7 +483,7 @@ end
 
 
 main = Main:New();
-CurrentState().state = mainView;
+CurrentState().state = main;
 
 --extra actions
 main:InvalidateDate();

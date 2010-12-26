@@ -1,5 +1,5 @@
 -- schedule UI component implemented in lua
-require "Resources\\sampler\\components\\luaview"
+LoadScript "Resources\\sampler\\components\\luaview.lua"
 
 ExecutionView = LuaView:New();
 

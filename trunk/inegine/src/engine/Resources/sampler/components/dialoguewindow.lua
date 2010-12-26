@@ -1,4 +1,4 @@
-require "Resources\\sampler\\components\\luaview"
+LoadScript "Resources\\sampler\\components\\luaview.lua"
 
 DialogueWindow = LuaView:New();
 
@@ -122,4 +122,8 @@ end
 
 function DialogueWindow:SetDialogueOverEvent(event)
 	self.dialogueOverEvent = event;
+end
+
+function DialogueWindow:Advance()
+    self.dialogueWin:AdvanceText();
 end
