@@ -159,3 +159,11 @@ TestCalendar = {}
         self.cal:SetWeek(1);
         assertEquals(true, updated)
 	end
+
+
+    function TestCalendar:testSave()
+        self.cal:SetModifier(-2012);
+        self.cal:SetDate(2012, 3, 19);
+        local saveString = self.cal:Save("calendar");
+        print(saveString);
+    end

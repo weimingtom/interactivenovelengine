@@ -11,7 +11,6 @@ function ExecutionPresenter:SetClosingEvent(event)
 end
 
 function ExecutionPresenter:Init(main, executionView, scheduleManager)
-	self.test = "TEST!";
 	self.main = main;
 	self.executionView = executionView;
 	self.scheduleManager = scheduleManager;
@@ -43,7 +42,6 @@ end
 function ExecutionPresenter:HandleKeyDown(handler, luaevent, args)
 	local code = args[0];
 	Trace("key down! : " .. code);
-	Trace(" test = " .. self.test);
 	if (code == 32) then --space
 		self.executionView:Advance();
 	end

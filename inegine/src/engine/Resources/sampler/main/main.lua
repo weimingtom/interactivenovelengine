@@ -517,8 +517,5 @@ main:InvalidateStatus();
 
 main:SetBackground("Resources/sampler/resources/images/room03.jpg");
 
-inventoryManager:AddItem("item1", "dress");
-inventoryManager:EquipItem("item1");
-
 saveManager = SaveManager:New();
 saveManager:Load();

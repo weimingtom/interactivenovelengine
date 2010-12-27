@@ -29,6 +29,10 @@ function Calendar:SetModifier(modifier)
     self.modifier = modifier;
 end
 
+function Calendar:GetModifier()
+    return self.modifier;
+end
+
 function Calendar:SetWeekLength(days)
     self.weekLength = days;
 end
@@ -145,4 +149,11 @@ function Calendar:get_days_in_month(month, year)
   end
 
   return d  
+end
+
+function Calendar:Save(target)
+    local saveString = [[local self = ]] .. target .. [[;]]
+    saveString = saveString .. "\n" .. [[self:SetModifier(]] ..  self:GetModifier() ..  [[)]];  
+    saveString = saveString .. "\n" .. [[self:SetDate(]] ..  self:GetYear() .. "," ..  self:GetMonth() .. "," .. self:GetDay() .. [[)]];    
+    return saveString;
 end
