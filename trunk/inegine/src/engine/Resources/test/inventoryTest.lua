@@ -108,7 +108,8 @@ TestInventory = {}
         inventory:AddItem("testItem3", "cat3");
         inventory:EquipItem("testItem3");
 
-        local saveString = inventory:Save();
+        local saveString = inventory:Save("inventory");
+        print(saveString);
     end
 
 function table.contains(tbl, item)

@@ -109,10 +109,8 @@ function InventoryManager:GetCategories()
     return categories;
 end
 
-function InventoryManager:Save()
-    local saveString = [[
-local self = ... ;
-    ]]
+function InventoryManager:Save(target)
+    local saveString = [[local self = ]] .. target .. [[;]]
     local categories = self:GetCategories();
 	for i,v in ipairs(categories) do
 		local items = self:GetItems(v);
@@ -124,15 +122,4 @@ local self = ... ;
         end
 	end      
     return saveString;
-end
-
-function InventoryManager:Load(data)
-    Trace("loading saved inventory data!");
-    Trace(data);
-    assert(loadstring(data))(self);
-
-    local categories = self:GetCategories();
-	for i,v in ipairs(categories) do
-        Trace(v);
-    end
 end
