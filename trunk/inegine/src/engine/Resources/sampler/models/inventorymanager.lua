@@ -7,12 +7,16 @@ function InventoryManager:New()
 	
 	self.itemList = {};
     self.categoryMap = {};    
+    self.categoryList = {};    
 	self.equippedItems = {};
 	return o
 end
 
 function InventoryManager:AddItem(id, category)
     table.insert(self.itemList, id);
+    if (table.contains(self.categoryList, category) == false) then
+        table.insert(self.categoryList, category);
+    end
     self.categoryMap[id] = category;
 end
 
@@ -95,4 +99,40 @@ end
 
 function InventoryManager:SetDressEquippedEvent(event)
 	self.dressEquippedEvent = event;
+end
+
+function InventoryManager:GetCategories()
+    local categories = {};
+	for i,v in ipairs(self.categoryList) do
+		table.insert(categories, v);
+	end    
+    return categories;
+end
+
+function InventoryManager:Save()
+    local saveString = [[
+local self = ... ;
+    ]]
+    local categories = self:GetCategories();
+	for i,v in ipairs(categories) do
+		local items = self:GetItems(v);
+	    for l,k in ipairs(items) do
+            saveString = saveString .. "\n" .. [[self:AddItem("]] .. k .. [[","]] .. v .. [[");]];
+            if (self:ItemEquipped(k)) then
+                saveString = saveString .. "\n" .. [[self:EquipItem("]] .. k .. [[");]];
+            end
+        end
+	end      
+    return saveString;
+end
+
+function InventoryManager:Load(data)
+    Trace("loading saved inventory data!");
+    Trace(data);
+    assert(loadstring(data))(self);
+
+    local categories = self:GetCategories();
+	for i,v in ipairs(categories) do
+        Trace(v);
+    end
 end

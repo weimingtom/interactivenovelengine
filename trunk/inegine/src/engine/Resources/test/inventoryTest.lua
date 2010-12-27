@@ -88,6 +88,29 @@ TestInventory = {}
         assertEquals(true, inventory:ItemEquipped("testItem3"));
     end
 
+
+    function TestInventory:testGetCategories()
+        local inventory = self.inventory;
+        inventory:AddItem("testItem1", "cat1");
+        inventory:AddItem("testItem2", "cat2");
+        inventory:AddItem("testItem3", "cat3");
+
+        local categoryList = inventory:GetCategories();
+        assertEquals(true, table.contains(categoryList, "cat1"));
+        assertEquals(true, table.contains(categoryList, "cat2"));
+        assertEquals(true, table.contains(categoryList, "cat3"));
+    end
+
+    function TestInventory:testSave()
+        local inventory = self.inventory;
+        inventory:AddItem("testItem1", "cat1");
+        inventory:AddItem("testItem2", "cat2");
+        inventory:AddItem("testItem3", "cat3");
+        inventory:EquipItem("testItem3");
+
+        local saveString = inventory:Save();
+    end
+
 function table.contains(tbl, item)
 	for i,v in ipairs(tbl) do
 		if (item == v) then

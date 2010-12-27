@@ -1,5 +1,3 @@
--- ESS font manager module
-
 function LoadCsv(alias, path, encoding)
 	try(function() CsvManager():LoadCsv(alias, path, encoding) end, "loading csv failed");
 end

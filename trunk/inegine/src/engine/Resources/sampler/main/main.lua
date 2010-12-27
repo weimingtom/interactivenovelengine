@@ -13,6 +13,8 @@ LoadScript "Resources\\sampler\\status\\status.lua"
 LoadScript "Resources\\sampler\\status\\statuspresenter.lua"
 LoadScript "Resources\\sampler\\communication\\talklist.lua"
 LoadScript "Resources\\sampler\\communication\\talk.lua"
+LoadScript "Resources\\sampler\\save\\saveview.lua"
+LoadScript "Resources\\sampler\\save\\savepresenter.lua"
 
 Main = {}
 
@@ -151,7 +153,10 @@ function Main:InitComponents()
 	menu:AddComponent(button6);
 	
 	
-	local button7 = self:CreateButton("System", nil);
+	local button7 = self:CreateButton("System", 
+ 		function (button, luaevent, args)
+			self:OpenSystem();
+		end);
 	button7.X = 0;
 	button7.Y = 42 * 3;	
 	menu:AddComponent(button7);
@@ -354,6 +359,16 @@ function Main:OpenGoddess()
 end
 
 function Main:OpenSystem()
+	local saveView = SaveView:New("saveView", CurrentState());
+	saveView:Init();
+	self.savePresenter = SavePresenter:New();
+	self.savePresenter:Init(self, saveView, saveManager);
+	self.savePresenter:SetClosingEvent(
+		function()
+			Trace("disposing save presenter!");
+			self.savePresenter = nil;
+		end
+	)
 end
 
 function Main:OpenInventory()
@@ -501,4 +516,9 @@ main:InvalidateDate();
 main:InvalidateStatus();
 
 main:SetBackground("Resources/sampler/resources/images/room03.jpg");
-main:SetTachieBody("zip://Resources/test.zip|test/test2/1.png");
+
+inventoryManager:AddItem("item1", "dress");
+inventoryManager:EquipItem("item1");
+
+saveManager = SaveManager:New();
+saveManager:Load();

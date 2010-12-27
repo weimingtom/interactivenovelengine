@@ -68,7 +68,7 @@ end
 
 function DebugString(level)
 	local info = debug.getinfo(level)
-	local source = info.source;
+	local source = info.short_src;
 	return string.sub(source, 2) .. ":" .. info.currentline;
 end
 
@@ -90,7 +90,7 @@ function try(call, error, level)
 	end 
 end
 
-LoadScript "BaseScripts/Selector.lua"
 LoadScript "BaseScripts/ESS.lua"
 LoadScript "BaseScripts/font.lua"
 LoadScript "BaseScripts/csv.lua"
+LoadScript "BaseScripts/save.lua"
