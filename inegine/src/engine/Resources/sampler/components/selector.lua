@@ -1,19 +1,19 @@
 -- selection UI component implemented in lua
+Selector = LuaView:New();
 
-Selector = {}
+function Selector:Init()
+	local gamestate = CurrentState();	
+	local parent = self.parent;
+	local font = GetFont("default"); 
+	self.font = font;
+	local name = self.name;
 
-function Selector:New (name, font)
-	local o = {}   -- create object if user does not provide one
-	setmetatable(o, self)
-	self.__index = self
-	self.name = name
 	self.selectionList = {}
 	self.selectionCount = 0
 	self.SelectionHeight = 50
 	self.Margin = 10
 	self.SelectedIndex = -1
 	self.Layer = 0
-	local gamestate = CurrentState();
 	
 	--self.frame = TextWindow()
 	self.frame = ImageWindow()
@@ -23,12 +23,13 @@ function Selector:New (name, font)
 	self.frame.Height = 240
 	self.frame.X = (GetWidth() - self.frame.Width) / 2;
 	self.frame.Y = (GetHeight() - self.frame.Height) / 2;
-	self.frame.Layer = 0
+	self.frame.Layer = 10
 	self.frame.LineSpacing = 20
 	self.frame.Visible = false
 	self.frame.Enabled = false
 	self.frame.Font = font
-	self.frame.WindowTexture = "Resources/win.png"
+    --self.frame.RectSize = 40;
+	--self.frame.WindowTexture = "Resources/sampler/resources/window.png"
 	self.frame.MouseLeave =
 		function(selectionWindow, event, args)
 			Trace("mouse leave: " .. selectionWindow.Name)	
@@ -38,8 +39,6 @@ function Selector:New (name, font)
 	
 	self.nextx = self.Margin
 	self.nexty = self.Margin
-	
-	return o
 end
 
 

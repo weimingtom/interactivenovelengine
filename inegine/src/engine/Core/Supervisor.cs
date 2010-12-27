@@ -265,6 +265,9 @@ namespace INovelEngine
 
             ScriptManager.lua.RegisterFunction("GetFader", this, this.GetType().GetMethod("Lua_GetFader"));
 
+            ScriptManager.lua.RegisterFunction("SaveData", this, this.GetType().GetMethod("Lua_SaveData"));
+            ScriptManager.lua.RegisterFunction("LoadData", this, this.GetType().GetMethod("Lua_LoadData"));
+
         }
 
         public void SetStateNamespace()
@@ -285,7 +288,7 @@ namespace INovelEngine
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("]" + e.Message);
             }
         }
 
@@ -451,6 +454,15 @@ namespace INovelEngine
             return this.fadingTransition;
         }
 
+        public void Lua_SaveData(String data, String path)
+        {
+            SaveManager.SaveData(data, path);
+        }
+
+        public String Lua_LoadData(String path)
+        {
+            return SaveManager.LoadData(path);
+        }
         #endregion
 
     }

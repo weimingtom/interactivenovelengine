@@ -4,6 +4,8 @@ require "Resources\\sampler\\models\\schedulemanager"
 require "Resources\\sampler\\models\\itemmanager"
 require "Resources\\sampler\\models\\inventorymanager"
 require "Resources\\sampler\\models\\shopmanager"
+require "Resources\\sampler\\models\\savemanager"
+
 
 calendar = Calendar:New();
 calendar:SetModifier(-2012);
@@ -23,10 +25,7 @@ scheduleManager:Load()
 itemManager = ItemManager:New();
 itemManager:Load();
 
-inventoryManager = InventoryManager:New();
-inventoryManager:AddItem("item13", "item");
-inventoryManager:AddItem("item14", "item");
-inventoryManager:AddItem("item15", "furniture");
-
 shopManager = ShopManager:New();
 shopManager:Load();
+
+inventoryManager = InventoryManager:New();
