@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F1C6583A-8DAC-453B-AC68-FD2BDD0F4C6A}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -219,6 +219,8 @@
     <None Include="Resources\sampler\shopping\shoplist.lua" />
     <None Include="Resources\sampler\status\statuspresenter.lua" />
     <None Include="Resources\sampler\status\status.lua" />
+    <None Include="Resources\sampler\tachie\tachie.lua" />
+    <None Include="Resources\sampler\tachie\tachiepresenter.lua" />
     <None Include="Resources\start.lua" />
     <None Include="Resources\test.zip" />
     <None Include="Resources\test\characterTest.lua" />

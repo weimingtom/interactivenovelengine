@@ -14,11 +14,16 @@ function SaveManager:Save()
     saveData = saveData .. inventoryManager:Save("inventoryManager");
     saveData = saveData .. calendar:Save("calendar");
     SaveString(saveData, self.saveFile);
+    Trace("saving : " .. saveData);
 end
 
 function SaveManager:Load()
     local loadData = LoadString(self.saveFile);
+    Trace("loading : " .. loadData);
     if (loadData ~= nil) then 
         assert(loadstring(loadData))();
+		return true;
+    else
+		return false;
     end
 end
