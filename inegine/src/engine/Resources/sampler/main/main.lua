@@ -204,7 +204,7 @@ end
 
 function Main:RegisterEvents()
 	calendar:SetUpdateEvent(function() self:InvalidateDate() end);
-	inventoryManager:SetDressEquippedEvent(function(id) self:EquipDress(id) end);
+	inventoryManager:SetDressEquippedEvent(function() self:EquipDress() end);
 	CurrentState().KeyDown = function(handler, luaevent, args) 
 		self:KeyDown(handler, luaevent, args);
 	end
@@ -401,12 +401,6 @@ function Main:OpenEvent()
     end);
 end
 
-function Main:EquipDress(id)
-	Trace("equipping item " .. id);
-	local tachiBodyImage = itemManager:GetItem(id).dressImage;
-	self:SetTachieBody(tachiBodyImage);
-end
-
 --datewindow
 function Main:InvalidateDate()
 	Main:SetDate(calendar:GetModifiedYear(), calendar:GetWordMonth(), calendar:GetDay(), calendar:GetWeek());
@@ -433,25 +427,31 @@ function Main:SetBackground(filename)
 end
 
 --tachie
+function Main:EquipDress()
+	local id = inventoryManager.equippedDress;
+	Trace("equipping dress to tachie " .. id);
+	local tachiBodyImage = itemManager:GetItem(id).dressImage;
+	self:SetTachieBody(tachiBodyImage);
+end
+
 function Main:SetTachieBody(filename)
-	if (self.tachieMargin ~= nil) then
-		RemoveComponent("tachie");
+	local tachie = GetComponent("tachie");
+	if (tachie == nil) then
+		local tachie = SpriteBase();
+		tachie.Name = "tachie";
+		tachie.Texture = filename
+		tachie.Visible = true;
+		tachie.Layer = 2;
+		InitComponent(tachie);
+	else
+		tachie.Texture = filename;
 	end
-	
-	local tachie = SpriteBase();
-	tachie.Name = "tachie";
-	tachie.Texture = filename
-	tachie.Visible = true;
-	tachie.Layer = 2;
-	InitComponent(tachie);
 	
 	if (self.tachieMargin ~= nil) then
 		self:SetTachiePosition(self.tachieMargin);
 	else
 		self:CenterTachie();
 	end
-		
-	
 end
 
 function Main:SetTachieFace(filename)
@@ -516,6 +516,4 @@ main:InvalidateDate();
 main:InvalidateStatus();
 
 main:SetBackground("Resources/sampler/resources/images/room03.jpg");
-
-saveManager = SaveManager:New();
-saveManager:Load();
+main:EquipDress();

@@ -9,10 +9,15 @@ function InventoryManager:New()
     self.categoryMap = {};    
     self.categoryList = {};    
 	self.equippedItems = {};
+	self.equippedDress = nil;
+	
 	return o
 end
 
 function InventoryManager:AddItem(id, category)
+	if (category == nil) then
+		category = itemManager:GetItem(id).category;
+	end
     table.insert(self.itemList, id);
     if (table.contains(self.categoryList, category) == false) then
         table.insert(self.categoryList, category);
@@ -80,12 +85,14 @@ function InventoryManager:EquipItem(id)
 	Trace("Equipping " .. id);
 	
 	if (self.categoryMap[id] == "dress") then
+		Trace("setting dress!");
+		self.equippedDress = id;
 	    if (self.dressEquippedEvent ~= nil) then
-		    self.dressEquippedEvent(id);
+		    self.dressEquippedEvent();
 	    end
 
         for i,v in ipairs(self:GetItems("dress")) do
-            self:UnequipItem(v);
+            if (v ~= id) then self:UnequipItem(v); end
         end
     end
 	self.equippedItems[id] = true;
@@ -109,8 +116,16 @@ function InventoryManager:GetCategories()
     return categories;
 end
 
+function InventoryManager:Clear()
+	self.itemList = {};
+    self.categoryMap = {};    
+    self.categoryList = {};    
+	self.equippedItems = {};
+	self.equippedDress = nil;	
+end
+
 function InventoryManager:Save(target)
-    local saveString = [[local self = ]] .. target .. [[;]]
+    local saveString = "\nlocal self = " .. target .. ";\nself:Clear();\n"
     local categories = self:GetCategories();
 	for i,v in ipairs(categories) do
 		local items = self:GetItems(v);
@@ -121,5 +136,5 @@ function InventoryManager:Save(target)
             end
         end
 	end      
-    return saveString;
+    return saveString .. "\n";
 end

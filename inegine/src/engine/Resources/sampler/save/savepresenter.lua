@@ -58,6 +58,12 @@ function SavePresenter:RegisterEvents()
 		end
 	);
 
+	saveView:SetLoadEvent(
+		function()
+			self:Load();
+		end
+	);
+	
 end
 
 function SavePresenter:Update()
@@ -71,4 +77,8 @@ end
 
 function SavePresenter:Save()
     self.saveManager:Save();
+end
+
+function SavePresenter:Load()
+    self.saveManager:Load();
 end
