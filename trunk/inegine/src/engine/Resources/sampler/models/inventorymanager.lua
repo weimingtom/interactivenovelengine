@@ -125,16 +125,17 @@ function InventoryManager:Clear()
 end
 
 function InventoryManager:Save(target)
-    local saveString = "\nlocal self = " .. target .. ";\nself:Clear();\n"
+    local saveString = target .. " = InventoryManager:New()\n";
+    saveString = saveString .. "local self = " .. target .. "\n"
     local categories = self:GetCategories();
 	for i,v in ipairs(categories) do
 		local items = self:GetItems(v);
 	    for l,k in ipairs(items) do
-            saveString = saveString .. "\n" .. [[self:AddItem("]] .. k .. [[","]] .. v .. [[");]];
+            saveString = saveString .. [[self:AddItem("]] .. k .. [[","]] .. v .. [[");]] .. "\n";
             if (self:ItemEquipped(k)) then
-                saveString = saveString .. "\n" .. [[self:EquipItem("]] .. k .. [[");]];
+                saveString = saveString .. [[self:EquipItem("]] .. k .. [[");]] .. "\n";
             end
         end
 	end      
-    return saveString .. "\n";
+    return saveString;
 end

@@ -152,8 +152,10 @@ function Calendar:get_days_in_month(month, year)
 end
 
 function Calendar:Save(target)
-    local saveString = [[local self = ]] .. target .. [[;]]
-    saveString = saveString .. "\n" .. [[self:SetModifier(]] ..  self:GetModifier() ..  [[)]];  
-    saveString = saveString .. "\n" .. [[self:SetDate(]] ..  self:GetYear() .. "," ..  self:GetMonth() .. "," .. self:GetDay() .. [[)]];    
+    local saveString = target .. " = Calendar:New()\n";
+    saveString = saveString .. "local self = " .. target .. "\n"
+    saveString = saveString .. [[self:SetModifier(]] ..  self:GetModifier() ..  [[)]] .. "\n";  
+    saveString = saveString .. [[self:SetDate(]] ..  self:GetYear() .. "," 
+							..  self:GetMonth() .. "," .. self:GetDay() .. [[)]] .. "\n";    
     return saveString;
 end
