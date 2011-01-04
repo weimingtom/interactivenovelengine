@@ -49,6 +49,7 @@ function SavePresenter:RegisterEvents()
 	saveView:SetSelectedEvent(
 		function (id)
             Trace(id);
+			self.selectedID = id;
 		end
 	)
 
@@ -68,17 +69,27 @@ end
 
 function SavePresenter:Update()
     self.saveView:Clear();
-    self.saveView:AddSlot("1", "비어있음");
-    self.saveView:AddSlot("2", "비어있음");
-    self.saveView:AddSlot("3", "비어있음");
-    self.saveView:AddSlot("4", "비어있음");
-    self.saveView:AddSlot("5", "비어있음");
+    local ids = saveManager:GetRecordIDs();
+    local itemCount = 1;
+    for i,v in ipairs(ids) do
+		self.saveView:AddSlot(v, saveManager:GetRecordDescription(v));
+		itemCount = itemCount + 1;
+	end
+	
+	for i=itemCount,5 do
+		self.saveView:AddSlot("save_" .. i, "empty");
+	end
 end
 
 function SavePresenter:Save()
-    self.saveManager:Save();
+    if (self.selectedID ~= nil) then 
+		self.saveManager:Save(self.selectedID, os.date("%m/%d %H:%M:%S"));
+		self:Update();
+	end
 end
 
 function SavePresenter:Load()
-    self.saveManager:Load();
+    if (self.selectedID ~= nil) then
+		self.saveManager:Load(self.selectedID);
+    end
 end

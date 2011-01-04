@@ -15,7 +15,7 @@ function InventoryManager:New()
 end
 
 function InventoryManager:AddItem(id, category)
-	if (category == nil) then
+	if (category == nil and itemManager ~= nil) then
 		category = itemManager:GetItem(id).category;
 	end
     table.insert(self.itemList, id);

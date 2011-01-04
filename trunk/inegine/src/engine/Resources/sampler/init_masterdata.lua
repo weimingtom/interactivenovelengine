@@ -18,3 +18,4 @@ shopManager:Load();
 
 --save manager
 saveManager = SaveManager:New();
+saveManager:Init();
