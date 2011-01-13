@@ -54,11 +54,11 @@ function ExecutionView:Init()
 	local animatedWindow = TextWindow()
 	animatedWindow.name = "animatedwindow"
 	animatedWindow.relative = true;
-	animatedWindow.width = 320;
-	animatedWindow.height = 240;
+	animatedWindow.width = 330;
+	animatedWindow.height = 250;
 	animatedWindow.x = (self.frame.width - animatedWindow.width) / 2 + 20;
 	animatedWindow.y = statusWindow.y - animatedWindow.height - 5;
-	animatedWindow.alpha = 200
+	animatedWindow.alpha = 155
 	animatedWindow.layer = 6;
 	self.frame:AddComponent(animatedWindow);
 	self.animatedWindow = animatedWindow;
@@ -85,9 +85,8 @@ end
 function ExecutionView:SetAnimation(animation)
 	animation.name = "currentanimation"
 	animation.relative = true;
-	animation.x = (self.animatedWindow.width - animation.width) / 2
-	animation.y = (self.animatedWindow.height - animation.height) / 2;
-
+    animation.x = 5;
+    animation.y = 5;
 	animation.AnimationOver =
 		function (animation, luaevent, args)
 			Trace(animation.name .. "animation over!")
@@ -97,7 +96,7 @@ function ExecutionView:SetAnimation(animation)
 		end
 	self.animatedWindow:RemoveComponent("currentanimation");
 	self.animatedWindow:AddComponent(animation);
-	animation:Begin(100, 0, 10);
+	animation:Begin(200, 0);
 end
 
 function ExecutionView:SetAnimationOverEvent(event)
@@ -126,7 +125,7 @@ function ExecutionView:SetExecutionOverEvent(event)
 	self.executionOverEvent = event;
 end
 
-function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, baseAnimation, resultAnimation, resultText, afterText, afterPortrait)
+function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, baseAnimation, resultText, afterText, afterPortrait)
 	self:ShowAnimationView(false);
 	self:ShowStatus(false);
 	self.dialogueWin:Hide();
@@ -143,53 +142,35 @@ function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, baseAni
 		function ()
 			self.dialogueWin:Hide();
 			self:ShowAnimationView(true);
-			local tempAnimation = AnimatedSprite();
-			tempAnimation.Name = "scheduleAnimation"
-			tempAnimation.Texture = baseAnimation
-			tempAnimation.Width = 32;
-			tempAnimation.Height = 48;
-			tempAnimation.Rows = 4;
-			tempAnimation.Cols = 4;
-			tempAnimation.Layer = 10;
-			tempAnimation.Visible = true
 
-			self:SetAnimation(tempAnimation);
-			self:SetAnimationOverEvent(
-				function()
-			        local tempAnimation = AnimatedSprite();
-			        tempAnimation.Name = "scheduleAnimation"        
-			        tempAnimation.Texture = resultAnimation
-			        tempAnimation.Width = 32;
-			        tempAnimation.Height = 48;
-			        tempAnimation.Rows = 4;
-			        tempAnimation.Cols = 4;
-			        tempAnimation.Layer = 10;
-			        tempAnimation.Visible = true
-			        self:SetAnimation(tempAnimation);
-			        self:SetAnimationOverEvent(
-				        function()
-	                        self:ShowStatus(true);
-					        self:SetStatusText(resultText);
-					        self.dialogueWin:SetDialogueOverEvent(
-						        function ()
-							        self:ShowAnimationView(false);
-							        self:ShowStatus(false);
-							        self.dialogueWin:Hide();
+	        local tempAnimation = AnimatedSprite();
+	        tempAnimation.Name = "scheduleAnimation"        
+	        tempAnimation.Texture = baseAnimation
+	        tempAnimation.Layer = 10;
+	        tempAnimation.Visible = true
+	        self:SetAnimation(tempAnimation);
+	        self:SetAnimationOverEvent(
+		        function()
+                    self:ShowStatus(true);
+			        self:SetStatusText(resultText);
+			        self.dialogueWin:SetDialogueOverEvent(
+				        function ()
+					        self:ShowAnimationView(false);
+					        self:ShowStatus(false);
+					        self.dialogueWin:Hide();
 
-							        if (self.executionOverEvent ~= nil) then
-								        self:executionOverEvent();
-							        end
-						        end
-					        )
-					        self.dialogueWin:ClearDialogueText();
-					        self.dialogueWin:SetPortraitTexture(afterPortrait);
-					        self.dialogueWin:Show();
-
-					        self.dialogueWin:SetDialogueText(afterText);
+					        if (self.executionOverEvent ~= nil) then
+						        self:executionOverEvent();
+					        end
 				        end
-			        );
-				end
-			);
+			        )
+			        self.dialogueWin:ClearDialogueText();
+			        self.dialogueWin:SetPortraitTexture(afterPortrait);
+			        self.dialogueWin:Show();
+
+			        self.dialogueWin:SetDialogueText(afterText);
+		        end
+	        );
 		end
 	)
 end

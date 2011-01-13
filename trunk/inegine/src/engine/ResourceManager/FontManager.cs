@@ -126,6 +126,7 @@ namespace INovelEngine.ResourceManager
 
         public override void Dispose()
         {
+            Console.WriteLine("disposing font - " + this.Name);
             Font.Dispose();
         }
 

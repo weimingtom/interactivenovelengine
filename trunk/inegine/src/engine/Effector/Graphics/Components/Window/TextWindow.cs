@@ -411,6 +411,10 @@ namespace INovelEngine.Effector
 
         public override void Dispose()
         {
+            if (Cursor != null)
+            {
+                Cursor.Dispose();
+            }
             line.Dispose();
             base.Dispose();
         }

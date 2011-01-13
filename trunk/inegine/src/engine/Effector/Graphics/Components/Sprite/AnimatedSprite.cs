@@ -82,6 +82,8 @@ namespace INovelEngine.Effector
                 int colnum = this._frame % Cols;
                 this.sourceArea.Y = rownum * tileHeight;
                 this.sourceArea.X = colnum * tileWidth;
+
+
             }
         }
 
@@ -111,6 +113,7 @@ namespace INovelEngine.Effector
             int id = this.updateEvent.timeID;
             this.updateEvent = null;
             this.inAnimation = false;
+            this.Frame = this.endFrame;
             if (this.AnimationOver != null)
                 try
                 {
@@ -125,6 +128,11 @@ namespace INovelEngine.Effector
         public void Begin(int interval)
         {
             Begin(interval, this.startFrame, this.endFrame);
+        }
+
+        public void Begin(int interval, int startFrame)
+        {
+            Begin(interval, startFrame, this.Cols * this.Rows - 1, false);
         }
 
         public void Begin(int interval, int startFrame, int endFrame)
@@ -173,6 +181,21 @@ namespace INovelEngine.Effector
             }
             this.updateEvent = null;
             inAnimation = false;
+        }
+
+        /// <summary>
+        /// Allows the resource to load any short-term graphical content.
+        /// </summary>
+        public override void LoadContent()
+        {
+            base.LoadContent();
+            if (this.textureManager.Rows != -1)
+            {
+                this.Rows = this.textureManager.Rows;
+                this.Cols = this.textureManager.Cols;
+                this.Width = this.textureManager.Width;
+                this.Height = this.textureManager.Height;
+            }
         }
     }
 }
