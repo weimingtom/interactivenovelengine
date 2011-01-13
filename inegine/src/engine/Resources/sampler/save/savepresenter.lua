@@ -84,6 +84,7 @@ end
 function SavePresenter:Save()
     if (self.selectedID ~= nil) then 
 		self.saveManager:Save(self.selectedID, os.date("%m/%d %H:%M:%S"));
+        self.selectedID = nil;
 		self:Update();
 	end
 end
@@ -91,5 +92,6 @@ end
 function SavePresenter:Load()
     if (self.selectedID ~= nil) then
 		self.saveManager:Load(self.selectedID);
+        self.selectedID = nil;
     end
 end
