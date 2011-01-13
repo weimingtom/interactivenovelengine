@@ -69,8 +69,9 @@ function ExecutionPresenter:RunSchedule()
         self.executionView:Dispose();
 		self:Close();
     else
-        local scheduleName, success, result = self.scheduleManager:ProcessSchedule(self.selectedSchedules[self.currentScheduleIndex]);
+        local scheduleName, success, result, animation = self.scheduleManager:ProcessSchedule(self.selectedSchedules[self.currentScheduleIndex]);
         Trace("executing " .. scheduleName);
+        Trace("ani:" .. animation);
 
         self.executionView:SetExecutionOverEvent(
 		    function ()
@@ -91,8 +92,7 @@ function ExecutionPresenter:RunSchedule()
 
 	    self.executionView:ExecuteSchedule("규브", "이번주의 일정은 " ..  scheduleName .. "입니다.\n열심히 하세요.@",
 							      "Resources/sampler/resources/images/f3.png", 
-							      "Resources/sampler/resources/cursor.png",
-							      "Resources/sampler/resources/cursor.png",
+							      animation,
 							      result,
 							      dialog2,
 							      portrait2);

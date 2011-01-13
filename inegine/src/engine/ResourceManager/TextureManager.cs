@@ -17,6 +17,8 @@ namespace INovelEngine.ResourceManager
         public Texture Texture;
         public int Width;
         public int Height;
+        public int Rows;
+        public int Cols;
 
         private Device device;
 
@@ -57,20 +59,33 @@ namespace INovelEngine.ResourceManager
                 {
                     bitmap = new Bitmap(fileName);
                 }
-                scaledBitmap = bitmap;
+
                 this.Width = bitmap.Width;
                 this.Height = bitmap.Height;
 
-                int newWidth = ClosestPower2(bitmap.Width);
-                int newHeight = ClosestPower2(bitmap.Height);
-
-                if (!(bitmap.Width == newWidth && bitmap.Height == newHeight))
+                if (fileName.EndsWith(".gif")) // for gif animations
                 {
-                    scaledBitmap = new Bitmap(newWidth, newHeight);
+                    scaledBitmap = ConvertGifToImage(bitmap);
+                }
+                else
+                {
+                    Rows = -1;
+                    Cols = -1;
 
-                    using (Graphics g = Graphics.FromImage((Image)scaledBitmap))
-                        g.DrawImage(bitmap, 0, 0, bitmap.Width, bitmap.Height);
-                    bitmap.Dispose();
+                    int newWidth = ClosestPower2(bitmap.Width);
+                    int newHeight = ClosestPower2(bitmap.Height);
+                    if (!(bitmap.Width == newWidth && bitmap.Height == newHeight))
+                    {
+                        scaledBitmap = new Bitmap(newWidth, newHeight);
+
+                        using (Graphics g = Graphics.FromImage((Image) scaledBitmap))
+                            g.DrawImage(bitmap, 0, 0, bitmap.Width, bitmap.Height);
+                        bitmap.Dispose();
+                    }
+                    else
+                    {
+                        scaledBitmap = bitmap;
+                    }
                 }
             }
             catch (Exception)
@@ -78,6 +93,29 @@ namespace INovelEngine.ResourceManager
                 throw new TextureLoadError(fileName);
             }
         }
+
+        private Bitmap ConvertGifToImage(Bitmap bitmap)
+        {
+            FrameDimension dimension = new FrameDimension(bitmap.FrameDimensionsList[0]);
+            int frameCount = bitmap.GetFrameCount(dimension);
+            this.Rows = frameCount;
+            this.Cols = 1;
+
+            Bitmap scaledBitmap = new Bitmap(ClosestPower2(bitmap.Width), ClosestPower2(bitmap.Height * frameCount));
+
+            using (Graphics g = Graphics.FromImage((Image)scaledBitmap))
+            {
+                for (int i=0; i < frameCount; i++)
+                {
+                    bitmap.SelectActiveFrame(dimension, i);
+                    g.DrawImage(bitmap, 0, i * bitmap.Height, bitmap.Width, bitmap.Height);
+                }
+            }
+            bitmap.Dispose();
+
+            return scaledBitmap;
+        }
+
 
         #region IResource Members
 
@@ -106,7 +144,7 @@ namespace INovelEngine.ResourceManager
                     this.Texture = Texture.FromMemory(device, bitmapData);
                     Console.WriteLine("...loaded " + this.fileName);
                 }
-
+                
                 scaledBitmap.Dispose();
                 scaledBitmap = null;
             }

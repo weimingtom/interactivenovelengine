@@ -72,7 +72,7 @@ namespace INovelEngine.StateManager
 
         public void Dispose()
         {
-            Console.WriteLine("disposing game state!");
+            Console.WriteLine("disposing game state - " + this.Name);
             graphicalResources.Dispose();
         }
 

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Windows.Forms;
 using INovelEngine.Effector;
 using INovelEngine.Effector.Audio;
 using SampleFramework;
+using SlimDX;
 using SlimDX.Direct3D9;
 using INovelEngine.Core;
 using INovelEngine.StateManager;
@@ -89,7 +91,20 @@ namespace INovelEngine
         {
             Console.WriteLine("disposing supervisor!");
             base.Dispose(disposing);
-        }  
+
+            DumpObjects();
+
+            Console.WriteLine("supervisor disposed!");
+        }
+  
+        public static void DumpObjects()
+        {
+            ReadOnlyCollection<ComObject> table = ObjectTable.Objects;
+            foreach (ComObject obj in table)
+            {
+                Console.WriteLine(obj.GetType().ToString() + ":" + obj.CreationTime.ToString());
+            }
+        }
  
         private void InitDevice()
         {

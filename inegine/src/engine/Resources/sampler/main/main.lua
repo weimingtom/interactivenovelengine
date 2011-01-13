@@ -391,8 +391,7 @@ function Main:OpenEvent()
     FadeOut(500)
     Delay(500,
     function() 
-        --OpenState("event", "Resources/Sampler/event/eventstate.lua", "Resources/sampler/resources/event/testevent.ess",
-        OpenState("event", "Resources/Sampler/event/eventstate.lua", "zip://Resources/test.zip|testevent.ess",
+        OpenState("event", "Resources/Sampler/event/eventstate.lua", "Resources/sampler/resources/event/testevent.ess",
         function()
 			self:ShowTachie(true);
 			self:ToggleMainMenu(true);

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F1C6583A-8DAC-453B-AC68-FD2BDD0F4C6A}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -287,6 +287,7 @@
     <Content Include="Resources\sampler\resources\images\room02.jpg" />
     <Content Include="Resources\sampler\resources\images\room03.jpg" />
     <Content Include="Resources\sampler\resources\images\room04.jpg" />
+    <Content Include="Resources\sampler\resources\images\success_ani.gif" />
     <Content Include="Resources\sampler\resources\images\title.png" />
     <Content Include="Resources\sampler\resources\button.png" />
     <Content Include="Resources\sampler\resources\cursor.png" />
