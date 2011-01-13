@@ -281,6 +281,7 @@
     <Content Include="Resources\sampler\resources\images\f1.png" />
     <Content Include="Resources\sampler\resources\images\f2.png" />
     <Content Include="Resources\sampler\resources\images\f3.png" />
+    <Content Include="Resources\sampler\resources\images\failure_ani.gif" />
     <Content Include="Resources\sampler\resources\images\logo.png" />
     <Content Include="Resources\sampler\resources\images\musume.png" />
     <Content Include="Resources\sampler\resources\images\room01.png" />
