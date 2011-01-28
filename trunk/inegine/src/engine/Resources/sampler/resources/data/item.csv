@@ -1,4 +1,4 @@
-category,id,name,price,icon,dressImage,desc
+category,id,text,price,icon,dressImage,desc
 dress,item1,메이드복,100,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/1.png,"보통의 메이드복
 STR +1, MANA -1
 일잘하게 보인다"
