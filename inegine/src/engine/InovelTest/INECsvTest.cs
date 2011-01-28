@@ -7,7 +7,7 @@ using System.Data;
 using Com.StellmanGreene.CSVReader;
 using INovelEngine.ResourceManager;
 
-namespace InovelTest
+namespace InovelTest.ResourceManager
 {
     /// <summary>
     /// Summary description for InovelTest
@@ -102,27 +102,27 @@ namespace InovelTest
         {
             ineCsv.readColumns();
             ineCsv.readToEnd();
-            Assert.AreEqual(1, ineCsv.GetInt(0, 0));
-            Assert.AreEqual(1.0f, ineCsv.GetFloat(0, 0));
-            Assert.AreEqual("1", ineCsv.GetString(0, 0));
-            Assert.AreEqual("abc", ineCsv.GetString(0, 1));
-            Assert.AreEqual(3.14f, ineCsv.GetFloat(3, 0));
-            Assert.AreEqual("3.14", ineCsv.GetString(3, 0));
-            Assert.AreEqual("ggg", ineCsv.GetString(3, 1));
+            Assert.AreEqual(1, ineCsv.GetInt(0, "F1"));
+            Assert.AreEqual(1.0f, ineCsv.GetFloat(0, "F1"));
+            Assert.AreEqual("1", ineCsv.GetString(0, "F1"));
+            Assert.AreEqual("abc", ineCsv.GetString(0, "F2"));
+            Assert.AreEqual(3.14f, ineCsv.GetFloat(3, "F1"));
+            Assert.AreEqual("3.14", ineCsv.GetString(3, "F1"));
+            Assert.AreEqual("ggg", ineCsv.GetString(3, "F2"));
 
-            Assert.AreEqual(true, ineCsv.GetBoolean(4, 1));
-            Assert.AreEqual(false, ineCsv.GetBoolean(5, 1));
-            Assert.AreEqual(true, ineCsv.GetBoolean(6, 1));
-            Assert.AreEqual(false, ineCsv.GetBoolean(7, 1));
-            Assert.AreEqual(true, ineCsv.GetBoolean(8, 1));
-            Assert.AreEqual(false, ineCsv.GetBoolean(9, 1));
-            Assert.AreEqual(false, ineCsv.GetBoolean(10, 1));
-            Assert.AreEqual(true, ineCsv.GetBoolean(11, 1));
-            Assert.AreEqual(false, ineCsv.GetBoolean(12, 1));
-            Assert.AreEqual("테스트", ineCsv.GetString(13, 1));
-            Assert.AreEqual("ウィキペディア", ineCsv.GetString(14, 1));
-            Assert.AreEqual("g,gg", ineCsv.GetString(15, 1));
-            Assert.AreEqual("\"g,gg", ineCsv.GetString(16, 1));
+            Assert.AreEqual(true, ineCsv.GetBoolean(4, "F2"));
+            Assert.AreEqual(false, ineCsv.GetBoolean(5, "F2"));
+            Assert.AreEqual(true, ineCsv.GetBoolean(6, "F2"));
+            Assert.AreEqual(false, ineCsv.GetBoolean(7, "F2"));
+            Assert.AreEqual(true, ineCsv.GetBoolean(8, "F2"));
+            Assert.AreEqual(false, ineCsv.GetBoolean(9, "F2"));
+            Assert.AreEqual(false, ineCsv.GetBoolean(10, "F2"));
+            Assert.AreEqual(true, ineCsv.GetBoolean(11, "F2"));
+            Assert.AreEqual(false, ineCsv.GetBoolean(12, "F2"));
+            Assert.AreEqual("테스트", ineCsv.GetString(13, "F2"));
+            Assert.AreEqual("ウィキペディア", ineCsv.GetString(14, "F2"));
+            Assert.AreEqual("g,gg", ineCsv.GetString(15, "F2"));
+            Assert.AreEqual("\"g,gg", ineCsv.GetString(16, "F2"));
             
         }
 

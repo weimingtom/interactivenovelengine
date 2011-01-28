@@ -10,27 +10,12 @@ end
 
 function ScheduleManager:Load()
     self.csv = GetCsv("scheduledata");
-    for i=0, self.csv.ColumnCount-1 do
-        local c = self.csv:GetColumn(i);
-        Trace("c == " .. c);
-        if c == "category" then self.categoryIndex = i;
-        elseif c == "id" then self.idIndex = i;
-        elseif c == "name" then self.nameIndex = i;
-        elseif c == "price" then self.priceIndex = i;
-        elseif c == "icon" then self.iconIndex = i;
-        elseif c == "desc" then self.descIndex = i;
-        elseif c == "successani" then self.successIndex = i;
-        elseif c == "failureani" then self.failureIndex = i;
-        else 
-            Trace(c .. " does not match anything");
-        end
-    end
 end
 
 function ScheduleManager:GetItemCount(category)
 	local count = 0;
 	for i=0, self.csv.Count-1 do
-        local c = self.csv:GetString(i, self.categoryIndex);
+        local c = self.csv:GetString(i, "category");
         if (category == c) then count = count + 1;
         end
     end
@@ -39,21 +24,21 @@ end
 
 function ScheduleManager:ExtractItem(i)
     local item = {};
-    item.category = self.csv:GetString(i, self.categoryIndex);
-    item.id = self.csv:GetString(i, self.idIndex);
-    item.text = self.csv:GetString(i, self.nameIndex);
-    item.price = self.csv:GetString(i, self.priceIndex);
-    item.icon = self.csv:GetString(i, self.iconIndex);
-    item.desc = self.csv:GetString(i, self.descIndex);
-    item.successani = self.csv:GetString(i, self.successIndex);
-    item.failureani = self.csv:GetString(i, self.failureIndex);
+    item.category = self.csv:GetString(i, "category");
+    item.id = self.csv:GetString(i, "id");
+    item.text = self.csv:GetString(i, "name");
+    item.price = self.csv:GetString(i, "price");
+    item.icon = self.csv:GetString(i, "icon");
+    item.desc = self.csv:GetString(i, "desc");
+    item.successani = self.csv:GetString(i, "successani");
+    item.failureani = self.csv:GetString(i, "failureani");
     return item;
 end
 
 function ScheduleManager:GetItems(category)
 	local scheduleList = {};
     for i=0, self.csv.Count-1 do
-        if (category == self.csv:GetString(i, self.categoryIndex)) then
+        if (category == self.csv:GetString(i, "category")) then
 			table.insert(scheduleList, self:ExtractItem(i));
         end
     end
@@ -62,7 +47,7 @@ end
 
 function ScheduleManager:GetItem(id)
     for i=0, self.csv.Count-1 do
-        if (id == self.csv:GetString(i, self.idIndex)) then
+        if (id == self.csv:GetString(i, "id")) then
             local schedule = {};
 			return self:ExtractItem(i);
         end

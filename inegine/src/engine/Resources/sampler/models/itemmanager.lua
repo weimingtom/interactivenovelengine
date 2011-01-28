@@ -11,25 +11,12 @@ end
 
 function ItemManager:Load()
     self.csv = GetCsv("itemdata");
-    for i=0, self.csv.ColumnCount-1 do
-        local c = self.csv:GetColumn(i);
-        if c == "category" then self.categoryIndex = i;
-        elseif c == "id" then self.idIndex = i;
-        elseif c == "name" then self.nameIndex = i;
-        elseif c == "price" then self.priceIndex = i;
-        elseif c == "icon" then self.iconIndex = i;
-        elseif c == "desc" then self.descIndex = i;
-        elseif c == "dressImage" then self.dressImageIndex = i;
-        else 
-            Trace(c .. " does not match anything");
-        end
-    end
 end
 
 function ItemManager:GetItemCount(category)
 	local count = 0;
 	for i=0, self.csv.Count-1 do
-        local c = self.csv:GetString(i, self.categoryIndex);
+        local c = self.csv:GetString(i, "category");
         if (category == c) then count = count + 1;
         end
     end
@@ -38,20 +25,20 @@ end
 
 function ItemManager:ExtractItem(i)
     local item = {};
-    item.category = self.csv:GetString(i, self.categoryIndex);
-    item.id = self.csv:GetString(i, self.idIndex);
-    item.text = self.csv:GetString(i, self.nameIndex);
-    item.price = self.csv:GetString(i, self.priceIndex);
-    item.icon = self.csv:GetString(i, self.iconIndex);
-    item.desc = self.csv:GetString(i, self.descIndex);
-    item.dressImage = self.csv:GetString(i, self.dressImageIndex);
+    item.category = self.csv:GetString(i, "category");
+    item.id = self.csv:GetString(i, "id");
+    item.text = self.csv:GetString(i, "text");
+    item.price = self.csv:GetString(i, "price");
+    item.icon = self.csv:GetString(i, "icon");
+    item.desc = self.csv:GetString(i, "desc");
+    item.dressImage = self.csv:GetString(i, "dressImage");
     return item;
 end
 
 function ItemManager:GetItems(category)
 	local itemList = {};
     for i=0, self.csv.Count-1 do
-        if (category == self.csv:GetString(i, self.categoryIndex)) then
+        if (category == self.csv:GetString(i, "category")) then
 			table.insert(itemList, self:ExtractItem(i));
         end
     end
@@ -60,7 +47,7 @@ end
 
 function ItemManager:GetItem(id)
     for i=0, self.csv.Count-1 do
-        if (id == self.csv:GetString(i, self.idIndex)) then
+        if (id == self.csv:GetString(i, "id")) then
 			return self:ExtractItem(i);
         end
     end

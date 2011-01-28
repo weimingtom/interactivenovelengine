@@ -20,6 +20,7 @@ namespace INovelEngine.ResourceManager
     {
         public CSVReader csvReader;
         public List<String> columns;
+        private Dictionary<String, int> columnMap;
         private List<Object> row;
         private List<List<Object>> rows;
 
@@ -27,17 +28,19 @@ namespace INovelEngine.ResourceManager
         {
             this.Type = INovelEngine.Effector.ResourceType.General;
             columns = new List<string>();
+            columnMap = new Dictionary<string, int>();
             rows = new List<List<object>>();
         }
 
         public INECsv(string fileName)
         {
             this.Type = INovelEngine.Effector.ResourceType.General;
-            this.FileName = fileName;
-            this.Name = fileName;
             columns = new List<string>();
+            columnMap = new Dictionary<string, int>();
             rows = new List<List<object>>();
             this.Encoding = "UTF-8";
+            this.FileName = fileName;
+            this.Name = fileName;
         }
 
         public string FileName
@@ -55,10 +58,18 @@ namespace INovelEngine.ResourceManager
         {
             if (next())
             {
-                foreach (Object col in row)
+                for (int i = 0; i < row.Count; i++)
                 {
-                    this.columns.Add(col.ToString());
+                    this.columns.Add(row[i].ToString());
+                    this.columnMap[row[i].ToString()] = i;
                 }
+
+                //this.row = null;
+
+                //foreach (Object col in row)
+                //{
+                //    this.columns.Add(col.ToString());
+                //}
                 this.row = null;
             }
         }
@@ -104,15 +115,27 @@ namespace INovelEngine.ResourceManager
             return this.columns[i].Trim();
         }
 
-        public String GetString(int row, int col)
+        public int GetColumnID(String columnName)
         {
-            Object obj = this.rows[row][col];
+            if (this.columnMap.ContainsKey(columnName))
+            {
+                return this.columnMap[columnName];
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        public String GetString(int row, String col)
+        {
+            Object obj = this.rows[row][GetColumnID(col)];
             return obj.ToString();
         }
 
-        public int GetInt(int row, int col)
+        public int GetInt(int row, String col)
         {
-            Object obj = this.rows[row][col];
+            Object obj = this.rows[row][GetColumnID(col)];
             if (obj.GetType().ToString().Equals("System.Byte"))
             {
                 return (int)((Byte)obj);
@@ -123,9 +146,9 @@ namespace INovelEngine.ResourceManager
             }
         }
 
-        public float GetFloat(int row, int col)
+        public float GetFloat(int row, String col)
         {
-            Object obj = this.rows[row][col];
+            Object obj = this.rows[row][GetColumnID(col)];
             if (obj.GetType().ToString().Equals("System.Single"))
             {
                 return (float)obj;
@@ -140,9 +163,9 @@ namespace INovelEngine.ResourceManager
             }
         }
 
-        public Boolean GetBoolean(int row, int col)
+        public Boolean GetBoolean(int row, String col)
         {
-            Object obj = this.rows[row][col];
+            Object obj = this.rows[row][GetColumnID(col)];
             String condition = obj.ToString().ToLower();
             if (condition.Equals("true") || condition.Equals("yes")
                 || condition.Equals("y") || condition.Equals("o")
@@ -196,10 +219,10 @@ namespace INovelEngine.ResourceManager
 
 
 
-    public class CsvManager : IResource // font manager is a graphical resource itself
+    public class CsvManager : IResource
     {
-        protected ResourceCollection graphicalResources = new ResourceCollection();
-        protected Dictionary<String, AbstractResource> graphicalResourcesMap = new Dictionary<string, AbstractResource>();
+        protected ResourceCollection resources = new ResourceCollection();
+        protected Dictionary<String, AbstractResource> resourcesMap = new Dictionary<string, AbstractResource>();
 
 
         #region IResource Members for managing graphical resources
@@ -207,17 +230,17 @@ namespace INovelEngine.ResourceManager
         public void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
             Console.WriteLine("initializing csv manager!");
-            graphicalResources.Initialize(graphicsDeviceManager);
+            resources.Initialize(graphicsDeviceManager);
         }
 
         public void LoadContent()
         {
-            graphicalResources.LoadContent();
+            resources.LoadContent();
         }
 
         public void UnloadContent()
         {
-            graphicalResources.UnloadContent();
+            resources.UnloadContent();
         }
 
         #endregion
@@ -228,7 +251,7 @@ namespace INovelEngine.ResourceManager
         public void Dispose()
         {
             Console.WriteLine("disposing csv manager!");
-            graphicalResources.Dispose();
+            resources.Dispose();
         }
 
         #endregion
@@ -237,28 +260,28 @@ namespace INovelEngine.ResourceManager
 
         public void LoadCsv(string alias, string path, string encoding)
         {
-            if (graphicalResourcesMap.ContainsKey(alias)) return;
+            if (resourcesMap.ContainsKey(alias)) return;
             INECsv newCsv = new INECsv(path);
             newCsv.Name = alias;
             newCsv.Encoding = encoding;
             AddCsv(newCsv);
         }
 
-        public void AddCsv(INECsv font)
+        public void AddCsv(INECsv csv)
         {
-            if (graphicalResourcesMap.ContainsKey(font.Name)) return;
+            if (resourcesMap.ContainsKey(csv.Name)) return;
 
-            graphicalResources.Add(font);
-            graphicalResourcesMap[font.Name] = font;
+            resources.Add(csv);
+            resourcesMap[csv.Name] = csv;
         }
 
 
         public INECsv GetCsv(string id)
         {
 
-            if (graphicalResourcesMap.ContainsKey(id))
+            if (resourcesMap.ContainsKey(id))
             {
-                return (INECsv)graphicalResourcesMap[id];
+                return (INECsv)resourcesMap[id];
             }
             else
             {
@@ -268,11 +291,11 @@ namespace INovelEngine.ResourceManager
 
         public void RemoveCsv(string id)
         {
-            if (graphicalResourcesMap.ContainsKey(id))
+            if (resourcesMap.ContainsKey(id))
             {
-                INECsv font = (INECsv)graphicalResourcesMap[id];
-                graphicalResources.Remove(font);
-                graphicalResourcesMap.Remove(id);
+                INECsv font = (INECsv)resourcesMap[id];
+                resources.Remove(font);
+                resourcesMap.Remove(id);
                 font.Dispose();
             }
         }
