@@ -1,0 +1,4 @@
+category,id,condition,script
+post,testevent1,M > 2,Resources/sampler/resources/event/testevent.ess
+post,testevent2,M > 2,Resources/sampler/resources/event/testevent.ess
+post,testevent3,M > 2,Resources/sampler/resources/event/testevent.ess

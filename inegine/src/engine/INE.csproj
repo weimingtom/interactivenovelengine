@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F1C6583A-8DAC-453B-AC68-FD2BDD0F4C6A}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -181,6 +181,8 @@
     <None Include="Resources\sampler\components\dialoguewindow.lua" />
     <None Include="Resources\sampler\components\eventview.lua" />
     <None Include="Resources\sampler\init_newgame.lua" />
+    <None Include="Resources\sampler\models\eventmanager.lua" />
+    <None Include="Resources\sampler\resources\data\eventlist.csv" />
     <None Include="Resources\sampler\startgame.lua" />
     <None Include="Resources\sampler\event\eventstate.lua" />
     <None Include="Resources\sampler\init_csv.lua" />
@@ -223,6 +225,7 @@
     <None Include="Resources\sampler\status\status.lua" />
     <None Include="Resources\sampler\tachie\tachie.lua" />
     <None Include="Resources\sampler\tachie\tachiepresenter.lua" />
+    <None Include="Resources\sampler\condition\conditionmanager.lua" />
     <None Include="Resources\start.lua" />
     <None Include="Resources\test.zip" />
     <None Include="Resources\test\characterTest.lua" />

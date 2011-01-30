@@ -69,7 +69,7 @@ end
 function DebugString(level)
 	local info = debug.getinfo(level)
 	local source = info.short_src;
-	return string.sub(source, 2) .. ":" .. info.currentline;
+	return string.sub(source, 1) .. ":" .. info.currentline;
 end
 
 function try(call, error, level)

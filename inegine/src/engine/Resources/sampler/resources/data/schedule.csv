@@ -1,19 +1,19 @@
-category,id,name,price,icon,successani,failureani,desc
-edu,edu1,검술,100,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"검술입니다.
+category,id,name,price,condition,icon,successani,failureani,desc
+edu,edu1,검술,100,,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"검술입니다.
 검술입니다. 테스트. 테스트. 테스트.
 STR +1, MANA -1"
-edu,edu2,마법,0,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,테스트
-edu,edu3,연금술,0,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트,
+edu,edu2,마법,0,,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,테스트
+edu,edu3,연금술,0,,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트,
 테스트"
-edu,edu4,음악,0,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
-edu,edu5,발레,0,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
-edu,edu6,다도,0,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
-edu,edu7,역사,0,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
-edu,edu8,시문학,0,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
-edu,edu9,아버지와 공부,0,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
-edu,edu10,아버지와 운동,0,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
-edu,edu11,기초 상식,0,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
-edu,edu12,기초 체육,0,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
-edu,edu13,문과,0,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
-edu,edu14,체과,0,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
-edu,edu15,예과,0,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
+edu,edu4,음악,0,,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
+edu,edu5,발레,0,,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
+edu,edu6,다도,0,,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
+edu,edu7,역사,0,,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
+edu,edu8,시문학,0,,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
+edu,edu9,아버지와 공부,0,,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
+edu,edu10,아버지와 운동,0,,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
+edu,edu11,기초 상식,0,,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
+edu,edu12,기초 체육,0,,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
+edu,edu13,문과,0,,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
+edu,edu14,체과,0,,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
+edu,edu15,예과,0,,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"테스트, 테스트"
