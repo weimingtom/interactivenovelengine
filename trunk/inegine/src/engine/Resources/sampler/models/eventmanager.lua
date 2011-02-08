@@ -48,3 +48,30 @@ function EventManager:GetItem(id)
         end
     end
 end
+
+function EventManager:GetPostEvents()
+	local eventList = {}
+	local candidates = self:GetItems("post");
+	for i,v in ipairs(candidates) do
+		if (self:TestCondition(v.condition)) then
+			table.insert(eventList, v)
+			Trace(v.id .. " true");
+		else
+			Trace(v.id .. " false");
+		end
+	end
+	return eventList;
+end
+
+function EventManager:TestCondition(condition)
+	--M = month, S = affinity
+	local conditionString = "local M, S = ...;\n" 
+	conditionString = conditionString .. "return " .. condition;
+	local conditionFunction = assert(loadstring(conditionString));
+	
+	--TODO: temporary
+	local affinityTable = {};
+	affinityTable.lucy = 80;
+	
+	return conditionFunction(calendar:GetMonth(), affinityTable);
+end

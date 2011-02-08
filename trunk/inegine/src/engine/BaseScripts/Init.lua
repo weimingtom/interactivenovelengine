@@ -20,7 +20,7 @@ Supervisor = Supervisor()
 function OpenState(name, script, arg, closingEvt)
     argument = arg;
     closingEvent = closingEvt;
-    LoadState(name, script);
+    LoadState(name, script); --create a new state using script
     argument = nil;
     closingEvent = nil;
 end

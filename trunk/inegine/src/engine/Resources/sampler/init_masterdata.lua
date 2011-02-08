@@ -18,7 +18,7 @@ shopManager = ShopManager:New();
 shopManager:Load();
 
 eventManager = EventManager:New();
-EventManager:Load();
+eventManager:Load();
 
 --save manager
 saveManager = SaveManager:New();

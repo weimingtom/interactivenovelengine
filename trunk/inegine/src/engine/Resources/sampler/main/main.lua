@@ -1,6 +1,6 @@
 --Import
---require "Resources\\sampler\\inventory\\inventory"
-LoadScript "zip://Resources/test.zip|inventory.lua"
+LoadScript "Resources\\sampler\\inventory\\inventory"
+--LoadScript "zip://Resources/test.zip|inventory.lua"
 LoadScript "Resources\\sampler\\inventory\\inventorypresenter.lua"
 LoadScript "Resources\\sampler\\schedule\\schedule.lua"
 LoadScript "Resources\\sampler\\schedule\\execution.lua"
@@ -163,7 +163,7 @@ function Main:InitComponents()
 
 	local button8 = self:CreateButton("Test", 
  		function (button, luaevent, args)
-			self:OpenEvent();
+			self:PostScheduleTrigger();
 		end);
 	button8.X = 100;
 	button8.Y = 42 * 3;	
@@ -239,8 +239,7 @@ function Main:OpenScheduleExecution()
 	self.executionPresenter:SetClosingEvent(
 		function()
 			Trace("disposing execution presenter!");
-            
-            self:OpenEvent();
+            self:PostScheduleTrigger();
 		end
 	)
 	self.executionPresenter:Init(self, execution, scheduleManager);
@@ -385,21 +384,6 @@ function Main:OpenInventory()
 	)
 end
 
-function Main:OpenEvent()
-    Trace("event!");
-    
-    FadeOut(500)
-    Delay(500,
-    function() 
-        OpenState("event", "Resources/Sampler/event/eventstate.lua", "Resources/sampler/resources/event/testevent.ess",
-        function()
-			self:ShowTachie(true);
-			self:ToggleMainMenu(true);
-			self.executionPresenter = nil;
-        end)
-    end);
-end
-
 --datewindow
 function Main:InvalidateDate()
 	Main:SetDate(calendar:GetModifiedYear(), calendar:GetWordMonth(), calendar:GetDay(), calendar:GetWeek());
@@ -409,6 +393,35 @@ end
 function Main:InvalidateStatus()
 	Main:SetState(character:GetFirstName(), character:GetLastName(), character:GetAge(), character:GetGold(),
 				  character:GetStress(), character:GetMana());
+end
+
+--event functions
+function Main:PostScheduleTrigger()
+	self.eventList = eventManager:GetPostEvents();
+	self:ProcessEvents();
+end
+
+function Main:ProcessEvents()
+	local events = self.eventList;
+	if (table.getn(events) > 0) then
+		local nextItem = table.remove(events);
+		Trace("executing event: " .. nextItem.id);
+		self:OpenEvent(nextItem.script); --post-schedule trigger
+	end
+end
+
+function Main:OpenEvent(eventScript)
+    FadeOut(500)
+    Delay(500,
+    function() 
+        OpenState("event", "Resources/Sampler/event/eventstate.lua", eventScript,
+        function()
+			self:ShowTachie(true);
+			self:ToggleMainMenu(true);
+			self.executionPresenter = nil;
+			self:ProcessEvents();
+        end)
+    end);
 end
 
 --wallpaper
@@ -507,6 +520,9 @@ end
 function Main:SetKeyDownEvent(event)
 	self.keyDownEvent = event;
 end
+
+
+--entry point
 main = Main:New();
 CurrentState().state = main;
 
