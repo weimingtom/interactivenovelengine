@@ -10,7 +10,8 @@ function EventView:New()
 	self.__index = self
 
     self:InitComponents()
-   
+    self:InitHandlers()
+    
 	return o
 end
 
@@ -73,6 +74,16 @@ end
 
 function EventView:Portrait(image)
     self.dialogueWin:SetPortraitTexture(image)
+end
+
+function EventView:InitHandlers()
+	CurrentState().KeyDown = function(handler, luaevent, args)
+		Trace("key down : " .. args[0]);
+		local code = args[0];
+		if (code == 32) then --space
+			self:Advance();
+		end
+	end
 end
 
 function EventView:InitComponents()
