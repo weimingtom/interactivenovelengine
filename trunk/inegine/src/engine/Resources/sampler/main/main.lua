@@ -1,5 +1,5 @@
 --Import
-LoadScript "Resources\\sampler\\inventory\\inventory"
+LoadScript "Resources\\sampler\\inventory\\inventory.lua"
 --LoadScript "zip://Resources/test.zip|inventory.lua"
 LoadScript "Resources\\sampler\\inventory\\inventorypresenter.lua"
 LoadScript "Resources\\sampler\\schedule\\schedule.lua"
