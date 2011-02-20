@@ -90,15 +90,6 @@ function EventView:InitComponents()
 	local gamestate = CurrentState();
 	self.gamestate = gamestate;
 	--init font
-	LoadFont("default", "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf", 17);
-	--LoadFont("default", "c:\\windows\\fonts\\gulim.ttc", 12, "c:\\windows\\fonts\\gulim.ttc", 10) --ruby font
-	GetFont("default").LineSpacing = 10;
-	GetFont("default").TextEffect = 1;
-	
-	LoadFont("small", "Resources\\sampler\\resources\\fonts\\NanumMyeongjoBold.ttf", 15);
-	--LoadFont("small", "c:\\windows\\fonts\\meiryo.ttc", 15);
-	GetFont("small").LineSpacing = 10;
-	GetFont("small").TextEffect = 0;
 	
 	local dialogueWin = DialogueWindow:New("dialogueWin", self.gamestate);
 	self.dialogueWin = dialogueWin;

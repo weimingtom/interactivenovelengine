@@ -25,6 +25,7 @@ namespace INovelEngine.Effector
             : base()
         {
             RectSize = 16;
+            BackgroundColor = 0xFFFFFF;
         }
 
         public int RectSize

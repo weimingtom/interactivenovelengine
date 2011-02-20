@@ -175,6 +175,18 @@ namespace INovelEngine.Effector
             set { _alpha = value; }
         }
 
+        public void Hide()
+        {
+            this.Visible = false;
+            this.Enabled = false;
+        }
+
+        public void Show()
+        {
+            this.Visible = true;
+            this.Enabled = true;
+        }
+
         public void FadeIn(float duration)
         {
             LaunchTransition(duration, true);

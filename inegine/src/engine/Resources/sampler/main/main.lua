@@ -1,3 +1,4 @@
+--main state
 --Import
 LoadScript "Resources\\sampler\\inventory\\inventory.lua"
 --LoadScript "zip://Resources/test.zip|inventory.lua"
@@ -163,7 +164,7 @@ function Main:InitComponents()
 
 	local button8 = self:CreateButton("Test", 
  		function (button, luaevent, args)
-			self:PostScheduleTrigger();
+			self:OpenEvent("Resources/sampler/resources/event/testevent.ess");
 		end);
 	button8.X = 100;
 	button8.Y = 42 * 3;	
