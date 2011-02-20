@@ -181,6 +181,8 @@
     <None Include="Resources\sampler\components\dialoguewindow.lua" />
     <None Include="Resources\sampler\components\eventview.lua" />
     <None Include="Resources\sampler\init_newgame.lua" />
+    <None Include="Resources\sampler\intro\makingstate.lua" />
+    <None Include="Resources\sampler\intro\titlestate.lua" />
     <None Include="Resources\sampler\models\eventmanager.lua" />
     <None Include="Resources\sampler\resources\data\eventlist.csv" />
     <None Include="Resources\sampler\startgame.lua" />

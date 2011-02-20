@@ -6,7 +6,8 @@ function DialogueWindow:Init()
 	local gamestate = CurrentState();
 	
 	local parent = self.parent;
-	local font = GetFont("default")
+	--local font = GetFont("default")
+	local font = GetFont("japanese")
 	local name = self.name;
 	
 	self.frame = View()

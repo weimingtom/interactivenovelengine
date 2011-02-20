@@ -165,8 +165,20 @@ namespace INovelEngine.Script
             else
             {
                 path = path.Replace("/", "\\");
-                lua.DoFile(path);
+                string script = File.ReadAllText(path, Encoding.UTF8);
+                lua.DoString(script);
+                //lua.DoFile(path)
             }   
+        }
+
+        public static Object Pop()
+        {
+            return lua.Pop();
+        }
+
+        public static void Push(Object obj)
+        {
+            lua.Push(obj);
         }
 
         public static String ParseESS(String path)

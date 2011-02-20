@@ -1,3 +1,5 @@
+--intro state
+
 LoadScript "Resources\\sampler\\components\\eventview.lua"
 
 intro = EventView:New();

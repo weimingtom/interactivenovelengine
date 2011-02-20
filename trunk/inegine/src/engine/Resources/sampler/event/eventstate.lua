@@ -1,3 +1,5 @@
+--event state
+
 LoadScript "Resources\\sampler\\components\\eventview.lua"
 
 event = EventView:New(); --initialize event view using current state
