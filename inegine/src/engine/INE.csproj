@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F1C6583A-8DAC-453B-AC68-FD2BDD0F4C6A}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -121,6 +121,12 @@
   <ItemGroup>
     <Compile Include="Core\Exceptions.cs" />
     <Compile Include="Core\LogManager.cs" />
+    <Compile Include="Core\TextInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\TextInput.Designer.cs">
+      <DependentUpon>TextInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="Effector\Audio\SoundPlayer.cs" />
     <Compile Include="Effector\Graphics\Components\Button\Button.cs" />
     <Compile Include="Effector\Graphics\Components\IComponentManager.cs" />
@@ -152,6 +158,9 @@
     <Compile Include="Core\Supervisor.cs" />
     <Compile Include="Core\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Core\TextInput.resx">
+      <DependentUpon>TextInput.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

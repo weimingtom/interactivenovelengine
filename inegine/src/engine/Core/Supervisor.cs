@@ -274,6 +274,7 @@ namespace INovelEngine
 
             ScriptManager.lua.RegisterFunction("SetVolume", this, this.GetType().GetMethod("Lua_SetVolume"));
 
+            ScriptManager.lua.RegisterFunction("GetInput", this, this.GetType().GetMethod("Lua_GetInput"));
 
             ScriptManager.lua.RegisterFunction("ShowWinCursor", this, this.GetType().GetMethod("Lua_ShowCursor"));
             ScriptManager.lua.RegisterFunction("HideWinCursor", this, this.GetType().GetMethod("Lua_HideCursor"));
@@ -478,6 +479,20 @@ namespace INovelEngine
         {
             return SaveManager.LoadData(path);
         }
+
+        public String Lua_GetInput(int x, int y)
+        {
+            String result = "";
+            using (TextInput inputForm = new TextInput())
+            {
+                inputForm.Location = this.Window.PointToScreen(new Point(x, y));
+                
+                inputForm.ShowDialog();
+                result = inputForm.value;
+            }
+            return result;
+        }
+
         #endregion
 
     }

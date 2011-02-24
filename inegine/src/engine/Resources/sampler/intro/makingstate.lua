@@ -57,9 +57,25 @@ function MakingState:InitComponents()
 	--textWindow.RectSize = 40;
 	
 	self.frame:AddComponent(textWindow)
-	
+
+	local textButton = Button()
+    self.textButton = textButton;
+	textButton.Name = "text"
+	textButton.Relative = true;
+	textButton.Text = "__________"
+	textButton.font = GetFont("japanese");
+	textButton.Layer = 6;
+	textButton.Width = 350;
+	textButton.Height = 20;
+	textButton.X = 0
+	textButton.Y = textWindow.Height / 2 - textButton.Height;
+	textButton.State = {}
+	textButton.TextColor = 0xFFFFFF;
+	textWindow:AddComponent(textButton);
+
 	local okButton = Button()
-	okButton.Name = "ok"
+	self.okButton = okButton;
+    okButton.Name = "ok"
 	okButton.Relative = true;
 	okButton.Text = "決定"
 	okButton.font = GetFont("japanese");
@@ -84,6 +100,7 @@ function MakingState:InitComponents()
 	textWindow:AddComponent(okButton);
 	
 	local previousButton = Button()
+    self.previousButton = previousButton;
 	previousButton.Name = "prev"
 	previousButton.Relative = true;
 	previousButton.Text = "前に戻る"
@@ -103,7 +120,7 @@ function MakingState:InitComponents()
 		function (button, luaevent, args)
 			if (button.State["mouseDown"]) then
 				button.Pushed = false;
-			end
+            end
 		end
 	previousButton.TextColor = 0xFFFFFF;
 	textWindow:AddComponent(previousButton);
@@ -129,6 +146,12 @@ function MakingState:KeyDown(handler, luaevent, args)
 	if (self.keyDownEvent ~= nil) then
 		self.keyDownEvent(handler, luaevent, args);
 	end
+end
+
+function MakingState:HandlePrev()
+    if (self.prevEvent ~= nil) then
+        self.prevEvent();
+    end
 end
 
 function MakingState:SetBackground(filename)
@@ -176,6 +199,25 @@ function MakingState:CreateButton(buttonText, event)
 	return newButton;
 end
 
+function MakingState:SetOKEvent(event)
+	self.okButton.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				button.Pushed = false;
+                event();
+            end
+		end    
+end
+
+function MakingState:SetPrevEvent(event)
+	self.previousButton.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				button.Pushed = false;
+                event();
+            end
+		end    
+end
 function MakingState:Test()
 	self.textWindow:Show();
 	self.talkWindow:Show();
@@ -183,10 +225,35 @@ function MakingState:Test()
 	self.talkWindow:SetDialogueName("규브");
 	self.talkWindow:SetDialogueText("あなたの娘がどんな子なのか、教えて頂けますか");
 	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+	self.textButton.Text = "__________"
+	self.textButton.MouseDown = 
+		function (newButton, luaevent, args)
+			newButton.State["mouseDown"] = true
+            Trace("mouse down!");
+            local text = GetInput(self.textWindow.X + self.textButton.X + 80, self.textWindow.Y + self.textButton.Y);
+            if (text == "") then
+                Trace("[" .. text .. "]");
+	            self.textButton.Text = "__________"
+            else
+                self.textButton.text = text;
+            end
+		end
+    self:SetOKEvent(
+        function()
+            Trace("OK!");  
+        end
+    );
+    self:SetPrevEvent(
+        function()
+            Trace("Cancel!");  
+        end
+    );
 end
 
 --entry point
-CurrentState().state = MakingState:New();
 
+makingState = MakingState:New();
+CurrentState().state = makingState;
+makingState.test = "hi";
 --extra actions
-CurrentState().state:Test();
+makingState:Test();
