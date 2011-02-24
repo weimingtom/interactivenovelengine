@@ -58,21 +58,6 @@ function MakingState:InitComponents()
 	
 	self.frame:AddComponent(textWindow)
 
-	local textButton = Button()
-    self.textButton = textButton;
-	textButton.Name = "text"
-	textButton.Relative = true;
-	textButton.Text = "__________"
-	textButton.font = GetFont("japanese");
-	textButton.Layer = 6;
-	textButton.Width = 350;
-	textButton.Height = 20;
-	textButton.X = 0
-	textButton.Y = textWindow.Height / 2 - textButton.Height;
-	textButton.State = {}
-	textButton.TextColor = 0xFFFFFF;
-	textWindow:AddComponent(textButton);
-
 	local okButton = Button()
 	self.okButton = okButton;
     okButton.Name = "ok"
@@ -218,13 +203,31 @@ function MakingState:SetPrevEvent(event)
             end
 		end    
 end
-function MakingState:Test()
+
+function MakingState:AskFirstName()
 	self.textWindow:Show();
 	self.talkWindow:Show();
 	self.textWindow.text = "娘の名前を教えてください";
 	self.talkWindow:SetDialogueName("규브");
-	self.talkWindow:SetDialogueText("あなたの娘がどんな子なのか、教えて頂けますか");
+    self.talkWindow:ClearDialogueText();
+	self.talkWindow:SetDialogueText("まず、名前は？ ");
 	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+
+	local textButton = Button()
+    self.textButton = textButton;
+	textButton.Name = "text"
+	textButton.Relative = true;
+	textButton.Text = "__________"
+	textButton.font = GetFont("japanese");
+	textButton.Layer = 6;
+	textButton.Width = 350;
+	textButton.Height = 20;
+	textButton.X = 0
+	textButton.Y = self.textWindow.Height / 2 - self.textButton.Height;
+	textButton.State = {}
+	textButton.TextColor = 0xFFFFFF;
+	self.textWindow:AddComponent(textButton);
+
 	self.textButton.Text = "__________"
 	self.textButton.MouseDown = 
 		function (newButton, luaevent, args)
@@ -240,7 +243,9 @@ function MakingState:Test()
 		end
     self:SetOKEvent(
         function()
-            Trace("OK!");  
+            Trace("OK!");
+	        self.textWindow:RemoveComponent("text");  
+            self:AskLastName();
         end
     );
     self:SetPrevEvent(
@@ -250,10 +255,114 @@ function MakingState:Test()
     );
 end
 
+function MakingState:AskLastName()
+	self.textWindow:Show();
+	self.talkWindow:Show();
+	self.textWindow.text = "娘の苗字を教えてください。";
+	self.talkWindow:SetDialogueName("규브");
+    self.talkWindow:ClearDialogueText();
+	self.talkWindow:SetDialogueText("娘の苗字も教えて頂けましょうか？ ");
+	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+
+	local textButton = Button()
+    self.textButton = textButton;
+	textButton.Name = "text"
+	textButton.Relative = true;
+	textButton.Text = "__________"
+	textButton.font = GetFont("japanese");
+	textButton.Layer = 6;
+	textButton.Width = 350;
+	textButton.Height = 20;
+	textButton.X = 0
+	textButton.Y = self.textWindow.Height / 2 - self.textButton.Height;
+	textButton.State = {}
+	textButton.TextColor = 0xFFFFFF;
+	self.textWindow:AddComponent(textButton);
+
+	self.textWindow:AddComponent(textButton);
+	self.textButton.Text = "__________"
+	self.textButton.MouseDown = 
+		function (newButton, luaevent, args)
+			newButton.State["mouseDown"] = true
+            Trace("mouse down!");
+            local text = GetInput(self.textWindow.X + self.textButton.X + 80, self.textWindow.Y + self.textButton.Y);
+            if (text == "") then
+                Trace("[" .. text .. "]");
+	            self.textButton.Text = "__________"
+            else
+                self.textButton.text = text;
+            end
+		end
+    self:SetOKEvent(
+        function()
+            Trace("OK!"); 
+	        self.textWindow:RemoveComponent("text");  
+            self:AskBirthday();
+        end
+    );
+    self:SetPrevEvent(
+        function()
+            Trace("Cancel!");  
+        end
+    );
+end
+
+function MakingState:AskBirthday()
+	self.textWindow:Show();
+	self.talkWindow:Show();
+	self.textWindow.text = "娘の誕生日を教えてください。";
+	self.talkWindow:SetDialogueName("규브");
+    self.talkWindow:ClearDialogueText();
+	self.talkWindow:SetDialogueText("なるほど。\nでは、娘の誕生日は？");
+	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+
+	local textButton = Button()
+    self.textButton = textButton;
+	textButton.Name = "text"
+	textButton.Relative = true;
+	textButton.Text = "__________"
+	textButton.font = GetFont("japanese");
+	textButton.Layer = 6;
+	textButton.Width = 350;
+	textButton.Height = 20;
+	textButton.X = 0
+	textButton.Y = self.textWindow.Height / 2 - self.textButton.Height;
+	textButton.State = {}
+	textButton.TextColor = 0xFFFFFF;
+	self.textWindow:AddComponent(textButton);
+
+	self.textButton.Text = "__________"
+	self.textButton.MouseDown = 
+		function (newButton, luaevent, args)
+			newButton.State["mouseDown"] = true
+            Trace("mouse down!");
+            local text = GetInput(self.textWindow.X + self.textButton.X + 80, self.textWindow.Y + self.textButton.Y);
+            if (text == "") then
+                Trace("[" .. text .. "]");
+	            self.textButton.Text = "__________"
+            else
+                self.textButton.text = text;
+            end
+		end
+    self:SetOKEvent(
+        function()
+            Trace("OK!"); 
+	        self.textWindow:RemoveComponent("text");  
+        end
+    );
+    self:SetPrevEvent(
+        function()
+            Trace("Cancel!");  
+        end
+    );
+end
+
+
+
 --entry point
 
 makingState = MakingState:New();
 CurrentState().state = makingState;
 makingState.test = "hi";
 --extra actions
-makingState:Test();
+makingState:AskFirstName();
