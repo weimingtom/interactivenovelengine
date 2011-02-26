@@ -1,5 +1,6 @@
 LoadFont("default", "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf", 17);
 LoadFont("japanese", "Resources\\sampler\\resources\\fonts\\\meiryo.ttc", 17);
+GetFont("japanese").LineSpacing = 10;
 
 LoadFont("menu", "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf", 13);
 GetFont("menu").TextEffect = 1
