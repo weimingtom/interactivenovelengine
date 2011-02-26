@@ -30,37 +30,51 @@
         {
             this.textBox = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // textBox
             // 
-            this.textBox.Location = new System.Drawing.Point(12, 12);
+            this.textBox.Location = new System.Drawing.Point(10, 13);
             this.textBox.Name = "textBox";
-            this.textBox.Size = new System.Drawing.Size(126, 21);
+            this.textBox.Size = new System.Drawing.Size(109, 20);
+            this.textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(textBox_KeyPress);
             this.textBox.TabIndex = 0;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(145, 12);
+            this.button1.Location = new System.Drawing.Point(10, 39);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(30, 21);
+            this.button1.Size = new System.Drawing.Size(50, 23);
             this.button1.TabIndex = 1;
             this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // button2
+            // 
+            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.button2.Location = new System.Drawing.Point(69, 39);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(50, 23);
+            this.button2.TabIndex = 2;
+            this.button2.Text = "Cancel";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
             // TextInput
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(187, 45);
+            this.CancelButton = this.button2;
+            this.ClientSize = new System.Drawing.Size(129, 75);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "TextInput";
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -70,5 +84,6 @@
 
         private System.Windows.Forms.TextBox textBox;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }

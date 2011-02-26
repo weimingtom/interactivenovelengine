@@ -480,15 +480,21 @@ namespace INovelEngine
             return SaveManager.LoadData(path);
         }
 
-        public String Lua_GetInput(int x, int y)
+        public String Lua_GetInput(Boolean numeric)
         {
             String result = "";
             using (TextInput inputForm = new TextInput())
             {
-                inputForm.Location = this.Window.PointToScreen(new Point(x, y));
-                
-                inputForm.ShowDialog();
-                result = inputForm.value;
+                inputForm.numeric = numeric;
+                DialogResult dialogResult = inputForm.ShowDialog();
+                if (dialogResult == DialogResult.Cancel)
+                {
+                    result = null;
+                }
+                else
+                {
+                    result = inputForm.value;
+                }
             }
             return result;
         }
