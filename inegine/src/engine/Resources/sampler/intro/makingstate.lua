@@ -721,8 +721,14 @@ function MakingState:PromptFinish()
 		function()
 			Trace("finished!");
 			self:ApplyConfiguration();
-			CloseState();
-			OpenState("main", "Resources/Sampler/main/main.lua");
+			
+		    FadeOut(500)
+			Delay(500,
+			function()
+				CloseState();
+				OpenState("main", "Resources/Sampler/main/main.lua");
+				FadeIn(500)
+			end);
 		end);
 end
 
