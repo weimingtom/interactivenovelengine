@@ -20,6 +20,11 @@ shopManager:Load();
 eventManager = EventManager:New();
 eventManager:Load();
 
+--calendar
+calendar = Calendar:New();
+calendar:SetModifier(-2012);
+calendar:SetDate(0, 1, 1);
+
 --save manager
 saveManager = SaveManager:New();
 saveManager:Init();
