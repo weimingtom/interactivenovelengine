@@ -91,13 +91,15 @@ function SaveManager:Load(id)
     Trace("loading : " .. loadData);
     if (loadData ~= nil) then 
 		Trace("closing state");
-		CloseState() -- TODO: change to CleatStates()
-		Trace("applying saved data");       
-        assert(loadstring(loadData))();
-        
-        
-        
-		OpenState("main", "Resources/Sampler/main/main.lua");
+		
+		assert(loadstring(loadData))();
+		FadeOut(500)
+		Delay(500,
+		function()
+			CloseState();
+			OpenState("main", "Resources/Sampler/main/main.lua");
+			FadeIn(500)
+		end);
 		return true;
     else
 		return false;
