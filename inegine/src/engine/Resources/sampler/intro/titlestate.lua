@@ -1,5 +1,10 @@
 ﻿--title state
 --Import
+LoadScript "Resources\\sampler\\save\\saveview.lua"
+LoadScript "Resources\\sampler\\save\\savepresenter.lua"
+LoadScript "Resources\\sampler\\models\\calendar.lua"
+LoadScript "Resources\\sampler\\models\\character.lua"
+LoadScript "Resources\\sampler\\models\\inventorymanager.lua"
 
 TitleState = {}
 
@@ -22,6 +27,17 @@ function TitleState:InitComponents()
 	
 	self:SetBackground("Resources/sampler/resources/images/title.jpg");
 	
+	local view = View();
+	self.view = view;
+	view.name = "view";
+	view.x = 0;
+	view.y = 0;
+	view.Width = GetWidth();
+	view.Height = GetHeight();
+	AddComponent(view);
+	view:Show();
+	view.Layer = 10;
+	
 	local titleText = Label();
 	titleText.Name = "title";
 	titleText.X = 75;
@@ -34,25 +50,26 @@ function TitleState:InitComponents()
 	titleText.Font = GetFont("verylarge");
 	titleText.TextColor = 0xEEEEEE
 	titleText.Layer = 3
-	AddComponent(titleText);	
+	view:AddComponent(titleText);	
 	
 	local newGameButton = self:CreateButton("New Game",
 		function (button, luaevent, args)
 			Trace("new game button clicked!");
 			CloseState();
-			OpenState("making", "Resources/Sampler/intro/makingstate.lua");
+			LoadScript("Resources/Sampler/startgame.lua");
 		end);
 	newGameButton.X = 550;
 	newGameButton.Y = 300;
-	AddComponent(newGameButton);
+	view:AddComponent(newGameButton);
 	
 	local continueButton = self:CreateButton("Continue Game",
 		function (button, luaevent, args)
 			Trace("continue button clicked!");
+			self:OpenSystem();
 		end);
 	continueButton.X = 550;
 	continueButton.Y = 350;
-	AddComponent(continueButton);
+	view:AddComponent(continueButton);
 	
 	local omakeButton = self:CreateButton("Omake",
 		function (button, luaevent, args)
@@ -60,7 +77,7 @@ function TitleState:InitComponents()
 		end);
 	omakeButton.X = 550;
 	omakeButton.Y = 400;
-	AddComponent(omakeButton);
+	view:AddComponent(omakeButton);
 	
 	
 	local exitButton = self:CreateButton("Exit",
@@ -69,7 +86,7 @@ function TitleState:InitComponents()
 		end);
 	exitButton.X = 550;
 	exitButton.Y = 450;
-	AddComponent(exitButton);
+	view:AddComponent(exitButton);
 end
 
 function TitleState:RegisterEvents()
@@ -127,6 +144,22 @@ function TitleState:CreateButton(buttonText, event)
 	newButton.Font = GetFont("bigmenu");
 	newButton.TextColor = 0xEEEEEE
 	return newButton;
+end
+
+function TitleState:OpenSystem()
+	self.view:Hide();
+	local saveView = SaveView:New("saveView", CurrentState());
+	saveView.showSave = false;
+	saveView:Init();
+	self.savePresenter = SavePresenter:New();
+	self.savePresenter:Init(saveView, saveManager);
+	self.savePresenter:SetClosingEvent(
+		function()
+			Trace("disposing save presenter!");
+			self.savePresenter = nil;
+			self.view:Show();
+		end
+	)
 end
 
 

@@ -165,7 +165,7 @@ namespace INovelEngine.Script
             else
             {
                 path = path.Replace("/", "\\");
-                string script = File.ReadAllText(path, Encoding.UTF8);
+                string script = File.ReadAllText(path, Encoding.Default);
                 lua.DoString(script);
                 //lua.DoFile(path)
             }   

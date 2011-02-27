@@ -70,8 +70,9 @@ end
 
 function SaveManager:GenerateSaveString()
     local saveData = "";
-    saveData = saveData .. inventoryManager:Save("inventoryManager");
     saveData = saveData .. calendar:Save("calendar");
+    saveData = saveData .. character:Save("character");
+    saveData = saveData .. inventoryManager:Save("inventoryManager");
     return saveData;
 end
 
@@ -89,9 +90,14 @@ function SaveManager:Load(id)
     local loadData = LoadString(self:GenerateSaveFileName(id));
     Trace("loading : " .. loadData);
     if (loadData ~= nil) then 
-		CloseState() -- TODO: change to CleatStates()!
+		Trace("closing state");
+		CloseState() -- TODO: change to CleatStates()
+		Trace("applying saved data");       
         assert(loadstring(loadData))();
-		LoadScript("Resources/Sampler/startgame.lua")
+        
+        
+        
+		OpenState("main", "Resources/Sampler/main/main.lua");
 		return true;
     else
 		return false;

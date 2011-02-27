@@ -720,6 +720,9 @@ function MakingState:PromptFinish()
 	self.talkWindow:SetDialogueOverEvent(
 		function()
 			Trace("finished!");
+			self:ApplyConfiguration();
+			CloseState();
+			OpenState("main", "Resources/Sampler/main/main.lua");
 		end);
 end
 
@@ -737,6 +740,15 @@ function MakingState:PromptReset()
 		end);
 end
 
+
+function MakingState:ApplyConfiguration()
+	character:SetFirstName(self.daughterName);
+	character:SetLastName(self.lastName);
+	character:SetBirthday(self.month, self.day);
+	character:SetBloodtype(self.bloodType);
+	character:SetFatherName(self.fatherName);
+	character:SetFatherBirthday(self.fatherMonth, self.fatherDay);
+end
 
 --entry point
 

@@ -9,7 +9,6 @@ function InventoryManager:New()
     self.categoryMap = {};    
     self.categoryList = {};    
 	self.equippedItems = {};
-	self.equippedDress = nil;
 	
 	return o
 end
@@ -86,7 +85,7 @@ function InventoryManager:EquipItem(id)
 	
 	if (self.categoryMap[id] == "dress") then
 		Trace("setting dress!");
-		self.equippedDress = id;
+		character:SetDress(id);
 	    if (self.dressEquippedEvent ~= nil) then
 		    self.dressEquippedEvent();
 	    end

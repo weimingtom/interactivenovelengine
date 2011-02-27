@@ -77,15 +77,18 @@ function SaveView:Init()
     self.loadButton.y = saveLoadWindow.y + saveLoadWindow.height + 5
 	self.frame:AddComponent(self.loadButton);
 
-	self.saveButton = self:CreateButton("saveButton", "Save", 
-        function (button, luaevent, args)
-            if (self.saveEvent ~= nil) then
-                self.saveEvent();
-            end
-		end)
-    self.saveButton.x = saveLoadWindow.x + saveLoadWindow.width - 110 - 110 * 2;
-    self.saveButton.y = saveLoadWindow.y + saveLoadWindow.height + 5
-	self.frame:AddComponent(self.saveButton);
+	if (self.showSave == nil or self.showSave == true) then
+
+		self.saveButton = self:CreateButton("saveButton", "Save", 
+			function (button, luaevent, args)
+				if (self.saveEvent ~= nil) then
+					self.saveEvent();
+				end
+			end)
+		self.saveButton.x = saveLoadWindow.x + saveLoadWindow.width - 110 - 110 * 2;
+		self.saveButton.y = saveLoadWindow.y + saveLoadWindow.height + 5
+		self.frame:AddComponent(self.saveButton);
+	end
 end
 
 function SaveView:CreateButton(buttonName, buttonText, event)
