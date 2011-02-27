@@ -42,18 +42,18 @@ function Calendar:SetWeekNumber(weeks)
 end
 
 function Calendar:SetDate(year, month, day)
-    self.year = year;
+    self.year = year - self.modifier;
     self.month = month;
     self.day = day;
     self:Update();
 end
 
 function Calendar:GetYear()
-	return self.year;
+	return self.year  + self.modifier;
 end
 
-function Calendar:GetModifiedYear()
-	return self.year + self.modifier;
+function Calendar:GetUnmodifiedYear()
+	return self.year;
 end
 
 function Calendar:GetWordMonth()
@@ -149,6 +149,24 @@ function Calendar:get_days_in_month(month, year)
   end
 
   return d  
+end
+
+function Calendar:Validate(year, month, day)
+	local actualYear = year - self.modifier;
+	
+	if (year == nil or month == nil or day == nil) then
+		return false;
+	end
+	
+	if (month > 12 or month < 1) then
+		return false;
+	end
+	local days = self:get_days_in_month(month, actualYear);
+	if (day > days or day < 1) then
+		return false;
+	end
+	
+	return true;
 end
 
 function Calendar:Save(target)

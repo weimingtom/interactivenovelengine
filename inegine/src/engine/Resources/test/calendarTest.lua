@@ -167,3 +167,35 @@ TestCalendar = {}
         local saveString = self.cal:Save("calendar");
         print(saveString);
     end
+    
+	function TestCalendar:testValidate()
+		assertEquals(true, self.cal:Validate(1984, 3, 19));
+		assertEquals(true, self.cal:Validate(1984, 3, 1));
+		assertEquals(true, self.cal:Validate(1984, 3, 31));
+		assertEquals(false, self.cal:Validate(1984, 3, 32));
+		assertEquals(true, self.cal:Validate(1984, 2, 28));
+		assertEquals(true, self.cal:Validate(1984, 2, 29));
+	end
+
+    function TestCalendar:testGetSetDateWithModifier()
+        self.cal:SetModifier(-1984);
+		assertEquals(0, self.cal:GetYear())
+		assertEquals(1984, self.cal:GetUnmodifiedYear())
+        assertEquals(3, self.cal:GetMonth())
+        assertEquals(1, self.cal:GetDay())
+        assertEquals(1, self.cal:GetWeek())
+
+        
+        self.cal:SetWeek(1)
+        assertEquals(1, self.cal:GetDay())
+        self.cal:SetWeek(2)
+        assertEquals(8, self.cal:GetDay())
+        self.cal:SetWeek(3)
+        assertEquals(15, self.cal:GetDay())
+        self.cal:SetWeek(4)
+        assertEquals(22, self.cal:GetDay())
+        self.cal:SetWeek(5)
+        assertEquals(22, self.cal:GetDay())
+        assertEquals(4, self.cal:GetWeek())
+
+    end

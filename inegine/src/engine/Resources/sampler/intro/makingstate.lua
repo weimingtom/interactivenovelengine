@@ -14,6 +14,7 @@ function MakingState:New()
 
     self:InitComponents()
     self:RegisterEvents()
+    self:ResetValues();
     
 	return o
 end
@@ -123,13 +124,15 @@ end
 
 function MakingState:RegisterEvents()
 	CurrentState().KeyDown = function(handler, luaevent, args) 
-		self:KeyDown(handler, luaevent, args);
+		self:KeyDown(handler, luaevent, args)
 	end
 end
 
 function MakingState:KeyDown(handler, luaevent, args)
-	if (self.keyDownEvent ~= nil) then
-		self.keyDownEvent(handler, luaevent, args);
+	Trace("key down : " .. args[0]);
+	local code = args[0];
+	if (code == 32) then --space
+		self.talkWindow:Advance();
 	end
 end
 
@@ -190,13 +193,31 @@ function MakingState:SetPrevEvent(event)
 		end    
 end
 
+function MakingState:ResetValues()
+    self.daughterName = nil;
+    self.lastName = nil;
+    self.month = nil;
+    self.day = nil;
+    self.bloodType = nil
+    self.fatherName = nil;
+    self.fatherMonth = nil;
+    self.fatherDay = nil;
+end
+
 function MakingState:PromptFirstName()
+	self.textWindow.Height = 200;
+	self.okButton.text = "決定";
+	self.previousButton.Y = self.textWindow.Height - self.previousButton.Height * 1.5;
+	self.previousButton.text = "前に戻る";
+	self.okButton.Y = self.textWindow.Height - self.okButton.Height * 1.5;
+	self.previousButton.enabled = false;
+	
 	self.textWindow:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName("규브");
 	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
-	self.talkWindow:SetDialogueText("あなたの娘がどんな子なのか、教えて頂けますか？@まず、名前は？@");
+	self.talkWindow:SetDialogueText("あなたの娘がどんな子なのか、教えて頂けますか？@\nまず、名前は？@");
 	self.talkWindow:SetDialogueOverEvent(
 		function()
 			self:AskFirstName();
@@ -209,6 +230,8 @@ function MakingState:AskFirstName()
 	self.textWindow:Clear();
 	self.textWindow.text = "娘の名前を教えてください";
 	
+    self.daughterName = nil;
+    
 	local textButton = self:CreateButton("text", "__________",
 										 0, self.textWindow.Height / 2 - 10,
 										 350, 20);
@@ -221,18 +244,22 @@ function MakingState:AskFirstName()
             local text = GetInput(false);
             if (text ~= nil) then
                 self.textButton.text = text;
+                self.daughterName = text;
             end
 		end
     
     self:SetOKEvent(
         function()
-            Trace("OK!");
-	        self.textWindow:RemoveComponent("text");  
-            self:PromptLastName();
+            if (self.daughterName ~= nil) then 
+				Trace("OK!");
+				self.textWindow:RemoveComponent("text");  
+				self:PromptLastName();
+			end
         end
     );
     self:SetPrevEvent(
         function()
+			self.textWindow:RemoveComponent("text");  
             Trace("Cancel!");  
         end
     );
@@ -241,6 +268,7 @@ end
 function MakingState:PromptLastName()
 	self.textWindow:Hide();
 	self.talkWindow:Show();
+	
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName("규브");
 	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
@@ -254,8 +282,11 @@ end
 function MakingState:AskLastName()
 	self.textWindow:Show();
 	self.talkWindow:Hide();
+	self.previousButton.enabled = true;
 	self.textWindow.text = "娘の苗字を教えてください。";
 
+    self.lastName = nil
+    
 	local textButton = self:CreateButton("text", "__________",
 										 0, self.textWindow.Height / 2 - 10,
 										 350, 20);
@@ -267,20 +298,25 @@ function MakingState:AskLastName()
             local text = GetInput(false);
             if (text ~= nil) then
                 self.textButton.text = text;
+                self.lastName = text;
             end
 		end
 	self.textWindow:AddComponent(textButton);
 	
     self:SetOKEvent(
         function()
-            Trace("OK!"); 
-	        self.textWindow:RemoveComponent("text");  
-            self:PromptBirthday();
+            if (self.lastName ~= nil) then 
+				Trace("OK!"); 
+				self.textWindow:RemoveComponent("text");  
+				self:PromptBirthday();
+			end
         end
     );
     self:SetPrevEvent(
         function()
             Trace("Cancel!");  
+			self.textWindow:RemoveComponent("text");  
+			self:PromptFirstName();
         end
     );
 end
@@ -302,7 +338,10 @@ function MakingState:AskBirthday()
 	self.textWindow:Show();
 	self.talkWindow:Hide();
 	self.textWindow.text = "娘の誕生日を教えてください。";
-
+	
+    self.month = nil;
+    self.day = nil
+	
 	local textButton = self:CreateButton("month", "__",
 										 85, self.textWindow.Height / 2 - 10,
 										 50, 20);
@@ -312,8 +351,11 @@ function MakingState:AskBirthday()
 			newButton.State["mouseDown"] = true
             Trace("mouse down!");
             local text = GetInput(true);
-            if (text ~= nil) then
+            if (text ~= nil and self:CheckBirthday(tonumber(text), 1)) then
                 self.monthButton.text = text;
+                self.dayButton.text = "__";
+                self.month = text;
+                self.day = nil;
             end
 		end
 	self.textWindow:AddComponent(textButton);
@@ -331,9 +373,12 @@ function MakingState:AskBirthday()
 		function (newButton, luaevent, args)
 			newButton.State["mouseDown"] = true
             Trace("mouse down!");
-            local text = GetInput(true);
-            if (text ~= nil) then
-                self.dayButton.text = text;
+            if (self.monthButton.text ~= "__") then
+				local text = GetInput(true);
+				if (text ~= nil and self:CheckBirthday(tonumber(self.monthButton.text), tonumber(text))) then
+					self.dayButton.text = text;
+					self.day = text;
+				end
             end
 		end
 	self.textWindow:AddComponent(textButton);
@@ -347,19 +392,30 @@ function MakingState:AskBirthday()
 
     self:SetOKEvent(
         function()
-            Trace("OK!"); 
-	        self.textWindow:RemoveComponent("month");
-	        self.textWindow:RemoveComponent("monthLabel");
-	        self.textWindow:RemoveComponent("day");
-	        self.textWindow:RemoveComponent("dayLabel");  
-	        self:PromptBloodType();
+			if (self:CheckBirthday(tonumber(self.month), tonumber(self.day))) then
+				Trace("OK!"); 
+				self.textWindow:RemoveComponent("month");
+				self.textWindow:RemoveComponent("monthLabel");
+				self.textWindow:RemoveComponent("day");
+				self.textWindow:RemoveComponent("dayLabel");  
+				self:PromptBloodType();
+	        end
         end
     );
     self:SetPrevEvent(
         function()
-            Trace("Cancel!");  
+            Trace("Cancel!");
+        	self.textWindow:RemoveComponent("month");
+			self.textWindow:RemoveComponent("monthLabel");
+			self.textWindow:RemoveComponent("day");
+			self.textWindow:RemoveComponent("dayLabel");  
+            self:PromptLastName();  
         end
     );
+end
+
+function MakingState:CheckBirthday(month, day)
+	return calendar:Validate(0, month, day);
 end
 
 function MakingState:PromptBloodType()
@@ -380,13 +436,15 @@ function MakingState:AskBloodType()
 	self.talkWindow:Hide();
 	self.textWindow.text = "娘の血液型は？";
 
+    self.bloodType = nil;
+
 	local oButton = self:CreateButton("O", "O",
 										 75, self.textWindow.Height / 2 - 10,
 										 25, 20);
     self.oButton = oButton;
 	self.textWindow:AddComponent(oButton);
 	oButton.TextColor = 0xFF0000;
-	self.selectedBlood = "O";
+	self.bloodType = "O";
 	
 	local aButton = self:CreateButton("A", "A",
 										 125, self.textWindow.Height / 2 - 10,
@@ -413,7 +471,7 @@ function MakingState:AskBloodType()
             aButton.TextColor = 0xFF0000;
             bButton.TextColor = 0xFFFFFF;
             abButton.TextColor = 0xFFFFFF;
-			self.selectedBlood = "A";
+			self.bloodType = "A";
 		end
 	self.bButton.MouseDown = 
 		function (newButton, luaevent, args)
@@ -421,7 +479,7 @@ function MakingState:AskBloodType()
             aButton.TextColor = 0xFFFFFF;
             bButton.TextColor = 0xFF0000;
             abButton.TextColor = 0xFFFFFF;
-			self.selectedBlood = "B";
+			self.bloodType = "B";
 		end
 	self.abButton.MouseDown = 
 		function (newButton, luaevent, args)
@@ -429,7 +487,7 @@ function MakingState:AskBloodType()
             aButton.TextColor = 0xFFFFFF;
             bButton.TextColor = 0xFFFFFF;
             abButton.TextColor = 0xFF0000;
-			self.selectedBlood = "AB";
+			self.bloodType = "AB";
 		end
 	self.oButton.MouseDown = 
 		function (newButton, luaevent, args)
@@ -437,22 +495,29 @@ function MakingState:AskBloodType()
             aButton.TextColor = 0xFFFFFF;
             bButton.TextColor = 0xFFFFFF;
             abButton.TextColor = 0xFFFFFF;
-			self.selectedBlood = "O";
+			self.bloodType = "O";
 		end
 	
     self:SetOKEvent(
         function()
-            Trace("OK!"); 
-	        self.textWindow:RemoveComponent("A");
-	        self.textWindow:RemoveComponent("B");
-	        self.textWindow:RemoveComponent("AB");
-	        self.textWindow:RemoveComponent("O");
-            self:PromptFatherName();
+            if (self.bloodType ~= nil) then
+				Trace("OK!"); 
+				self.textWindow:RemoveComponent("A");
+				self.textWindow:RemoveComponent("B");
+				self.textWindow:RemoveComponent("AB");
+				self.textWindow:RemoveComponent("O");
+				self:PromptFatherName();
+			end
         end
     );
     self:SetPrevEvent(
         function()
-            Trace("Cancel!");  
+            Trace("Cancel!");
+			self.textWindow:RemoveComponent("A");
+			self.textWindow:RemoveComponent("B");
+			self.textWindow:RemoveComponent("AB");
+			self.textWindow:RemoveComponent("O");
+            self:PromptBirthday();
         end
     );
 end
@@ -475,6 +540,8 @@ function MakingState:AskFatherName()
 	self.talkWindow:Hide();
 	self.textWindow.text = "あなたの名前は？";
 
+    self.fatherName = nil;
+    
 	local textButton = self:CreateButton("text", "__________",
 										 0, self.textWindow.Height / 2 - 10,
 										 350, 20);
@@ -486,20 +553,25 @@ function MakingState:AskFatherName()
             local text = GetInput(false);
             if (text ~= nil) then
                 self.textButton.text = text;
+                self.fatherName = text;
             end
 		end
 	self.textWindow:AddComponent(textButton);
 	
     self:SetOKEvent(
         function()
-            Trace("OK!"); 
-	        self.textWindow:RemoveComponent("text");  
-            self:AskFatherBirthday();
+            if (self.fatherName ~= nil) then 
+				Trace("OK!"); 
+				self.textWindow:RemoveComponent("text");  
+				self:PromptFatherBirthday();
+			end
         end
     );
     self:SetPrevEvent(
         function()
-            Trace("Cancel!");  
+            Trace("Cancel!"); 
+			self.textWindow:RemoveComponent("text");  
+            self:PromptBloodType();
         end
     );
 end
@@ -522,6 +594,9 @@ function MakingState:AskFatherBirthday()
 	self.talkWindow:Show();
 	self.textWindow.text = "あなたの誕生日を教えてください";
 
+    self.fatherMonth = nil;
+    self.fatherDay = nil;
+
 	local textButton = self:CreateButton("month", "__",
 										 85, self.textWindow.Height / 2 - 10,
 										 50, 20);
@@ -531,8 +606,11 @@ function MakingState:AskFatherBirthday()
 			newButton.State["mouseDown"] = true
             Trace("mouse down!");
             local text = GetInput(true);
-            if (text ~= nil) then
+            if (text ~= nil and self:CheckBirthday(tonumber(text), 1)) then
                 self.monthButton.text = text;
+                self.dayButton.text = "__";
+                self.fatherMonth = text;
+                self.fatherDay = nil;
             end
 		end
 	self.textWindow:AddComponent(textButton);
@@ -551,9 +629,10 @@ function MakingState:AskFatherBirthday()
 			newButton.State["mouseDown"] = true
             Trace("mouse down!");
             local text = GetInput(true);
-            if (text ~= nil) then
-                self.dayButton.text = text;
-            end
+			if (text ~= nil and self:CheckBirthday(tonumber(self.fatherMonth), tonumber(text))) then
+				self.dayButton.text = text;
+				self.fatherDay = text;
+			end
 		end
 	self.textWindow:AddComponent(textButton);
 	
@@ -566,25 +645,103 @@ function MakingState:AskFatherBirthday()
 
     self:SetOKEvent(
         function()
-            Trace("OK!"); 
-	        self.textWindow:RemoveComponent("month");
-	        self.textWindow:RemoveComponent("monthLabel");
-	        self.textWindow:RemoveComponent("day");
-	        self.textWindow:RemoveComponent("dayLabel");  
-	        self:AskFirstName();
+            if (self:CheckBirthday(tonumber(self.fatherMonth), tonumber(self.fatherDay))) then	
+				Trace("OK!"); 
+				self.textWindow:RemoveComponent("month");
+				self.textWindow:RemoveComponent("monthLabel");
+				self.textWindow:RemoveComponent("day");
+				self.textWindow:RemoveComponent("dayLabel");  
+				self:PromptSummary();
+			end
         end
     );
     self:SetPrevEvent(
         function()
             Trace("Cancel!");  
+			self.textWindow:RemoveComponent("month");
+			self.textWindow:RemoveComponent("monthLabel");
+			self.textWindow:RemoveComponent("day");
+			self.textWindow:RemoveComponent("dayLabel"); 
+            self:PromptFatherName();
         end
     );
 end
+
+function MakingState:PromptSummary()
+	self.textWindow:Hide();
+	self.talkWindow:Show();
+    self.talkWindow:ClearDialogueText();
+	self.talkWindow:SetDialogueName("규브");
+	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+	self.talkWindow:SetDialogueText("これで間違いありませんか？@");
+	self.talkWindow:SetDialogueOverEvent(
+		function()
+			self:Summary();
+		end);
+end
+
+function MakingState:Summary()
+	self.textWindow.Height = 300;
+	self.okButton.text = "はい";
+	self.okButton.Y = self.textWindow.Height - self.okButton.Height * 1.5;
+	self.previousButton.text = "いいえ";
+	self.previousButton.Y = self.textWindow.Height - self.previousButton.Height * 1.5;
+	self.textWindow:Show();
+	self.talkWindow:Hide();
+	self.textWindow.text = "娘の名前 : " .. self.daughterName .. "\n" ..
+	"苗字 : " .. self.lastName .. "\n" ..
+	"誕生日 : " .. self.month .. "月" ..  self.day .. "日\n" ..
+	"血液型 : " .. self.bloodType .. "\n" ..
+	"あなたの名前 : " .. self.fatherName .. "\n" ..
+	"あなたの誕生日 :" .. self.fatherMonth .. "月" ..  self.fatherDay .. "日\n" ..
+	"\n以上で宜しいですか？";
+	
+    self:SetOKEvent(
+        function()
+            Trace("OK!");  
+            self:PromptFinish();
+        end
+    );
+    self:SetPrevEvent(
+        function()
+            Trace("Cancel!");
+            self:PromptReset();
+        end
+    );
+end
+
+function MakingState:PromptFinish()
+	self.textWindow:Hide();
+	self.talkWindow:Show();
+    self.talkWindow:ClearDialogueText();
+	self.talkWindow:SetDialogueName("규브");
+	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+	self.talkWindow:SetDialogueText("分かりました\nでは、あなたの娘の物語を始めましょう。@");
+	self.talkWindow:SetDialogueOverEvent(
+		function()
+			Trace("finished!");
+		end);
+end
+
+function MakingState:PromptReset()
+	self.textWindow:Hide();
+	self.talkWindow:Show();
+    self.talkWindow:ClearDialogueText();
+	self.talkWindow:SetDialogueName("규브");
+	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+	self.talkWindow:SetDialogueText("間違ったところを指摘してくれれば、やり直せます。@");
+	self.talkWindow:SetDialogueOverEvent(
+		function()
+		    self:ResetValues();
+			self:PromptFirstName();
+		end);
+end
+
 
 --entry point
 
 makingState = MakingState:New();
 CurrentState().state = makingState;
+
 --extra actions
---makingState:AskFirstName();
-makingState:PromptBirthday();
+makingState:PromptFirstName();

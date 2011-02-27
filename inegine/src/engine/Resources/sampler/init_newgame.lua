@@ -3,10 +3,6 @@ LoadScript "Resources\\sampler\\models\\character.lua"
 LoadScript "Resources\\sampler\\models\\inventorymanager.lua"
 
 --game models
-calendar = Calendar:New();
-calendar:SetModifier(-2012);
-calendar:SetDate(2012, 1, 1);
-
 character = Character:New();
 character:SetFirstName("¾È³ª");
 character:SetLastName("±è");
