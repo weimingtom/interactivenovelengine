@@ -12,13 +12,9 @@ function SavePresenter:SetClosingEvent(event)
 	self.closingEvent = event;
 end
 
-function SavePresenter:Init(main, saveView, saveManager)
-	self.main = main;
+function SavePresenter:Init(saveView, saveManager)
 	self.saveView = saveView;
 	self.saveManager = saveManager;
-
-	self.main:ToggleMainMenu(false);
-	self.main:ShowTachie(false);
 	
     saveView:Show();
     
@@ -28,9 +24,6 @@ end
 
 function SavePresenter:Finalize()
 	self.saveView:Hide();
-
-	self.main:ToggleMainMenu(true);
-	self.main:ShowTachie(true);
 end
 
 function SavePresenter:RegisterEvents()
@@ -83,7 +76,8 @@ end
 
 function SavePresenter:Save()
     if (self.selectedID ~= nil) then 
-		self.saveManager:Save(self.selectedID, os.date("%m/%d %H:%M:%S"));
+		self.saveManager:Save(self.selectedID, character:GetLastName() .. "," .. 
+			character:GetFirstName() .. "(" .. os.date("%m/%d %H:%M:%S") .. ")");
         self.selectedID = nil;
 		self:Update();
 	end

@@ -361,11 +361,18 @@ end
 function Main:OpenSystem()
 	local saveView = SaveView:New("saveView", CurrentState());
 	saveView:Init();
+	
+	self:ToggleMainMenu(false);
+	self:ShowTachie(false);
+
+	
 	self.savePresenter = SavePresenter:New();
-	self.savePresenter:Init(self, saveView, saveManager);
+	self.savePresenter:Init(saveView, saveManager);
 	self.savePresenter:SetClosingEvent(
 		function()
 			Trace("disposing save presenter!");
+			self:ToggleMainMenu(true);
+			self:ShowTachie(true);
 			self.savePresenter = nil;
 		end
 	)
@@ -387,7 +394,7 @@ end
 
 --datewindow
 function Main:InvalidateDate()
-	Main:SetDate(calendar:GetModifiedYear(), calendar:GetWordMonth(), calendar:GetDay(), calendar:GetWeek());
+	Main:SetDate(calendar:GetYear(), calendar:GetWordMonth(), calendar:GetDay(), calendar:GetWeek());
 end
 	
 --statuswindow
@@ -441,7 +448,7 @@ end
 
 --tachie
 function Main:EquipDress()
-	local id = inventoryManager.equippedDress;
+	local id = character:GetDress();
 	Trace("equipping dress to tachie " .. id);
 	local tachiBodyImage = itemManager:GetItem(id).dressImage;
 	self:SetTachieBody(tachiBodyImage);
