@@ -24,3 +24,13 @@ TestCharacter = {}
 		assertEquals(2, character:GetStatus("int"))
 		assertEquals(3, character:GetStatus("cha"))
     end
+
+    function TestCharacter:testSave()
+		local character = self.character;
+		character:SetStatus("con", 1);
+		character:SetStatus("int", 2);
+		character:SetStatus("cha", 3);
+
+        local saveString = character:Save("character");
+        print(saveString);
+    end
