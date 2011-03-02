@@ -25,6 +25,14 @@ function Character:New()
 	return o
 end
 
+function Character:SetStatus(key, value)
+    self.status[key] = value;
+end
+
+function Character:GetStatus(key, value)
+    return self.status[key];
+end
+
 function Character:GetFirstName()
 	return self.firstName;
 end
@@ -131,5 +139,10 @@ function Character:Save(target)
     saveString = saveString .. [[self:SetBloodtype("]] .. self:GetBloodtype() .. [[");]] .. "\n";
     saveString = saveString .. [[self:SetFatherName("]] .. self:GetFatherName() .. [[");]] .. "\n";
     saveString = saveString .. [[self:SetDress("]] .. self:GetDress() .. [[");]] .. "\n";
+    
+	for i,v in pairs(self.status) do
+        saveString = saveString .. "self:SetStatus(\"" .. i .. "\"," .. v .. ")\n";
+    end
+    
     return saveString;
 end

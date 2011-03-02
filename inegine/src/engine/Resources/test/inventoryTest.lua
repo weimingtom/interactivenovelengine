@@ -61,6 +61,8 @@ TestInventory = {}
 
     function TestInventory:testEquipDress()
         local inventory = self.inventory;
+        character = Character:New();
+
         inventory:AddItem("testItem1", "dress");
         inventory:AddItem("testItem2", "dress");
         inventory:AddItem("testItem3", "dress");
