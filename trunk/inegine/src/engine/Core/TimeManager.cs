@@ -33,6 +33,13 @@ namespace INovelEngine.Core
             timeEventList.Remove(timeEvent);
             timeEventList.Sort();
         }
+        
+        static public void EndTimeEvent(TimeEvent timeEvent)
+        {
+            if (timeEvent.EndCall != null) timeEvent.EndCall();
+            timeEventList.Remove(timeEvent);
+            timeEventList.Sort();
+        }
 
         static private void ExecuteEvents()
         {

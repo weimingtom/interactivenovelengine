@@ -83,6 +83,7 @@ function ExecutionView:Hide()
 end
 
 function ExecutionView:SetAnimation(animation)
+	self.animation = animation;
 	animation.name = "currentanimation"
 	animation.relative = true;
     animation.x = 5;
@@ -176,5 +177,9 @@ function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, baseAni
 end
 
 function ExecutionView:Advance()
+	if (self.animation ~= nil) then
+		self.animation:Stop();
+	end
+	
 	self.dialogueWin:Advance();
 end
