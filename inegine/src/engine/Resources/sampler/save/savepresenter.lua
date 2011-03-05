@@ -76,8 +76,8 @@ end
 
 function SavePresenter:Save()
     if (self.selectedID ~= nil) then 
-		self.saveManager:Save(self.selectedID, character:GetLastName() .. "," .. 
-			character:GetFirstName() .. "(" .. os.date("%m/%d %H:%M:%S") .. ")");
+		self.saveManager:Save(self.selectedID, character:GetLastName() .. ", " .. 
+			character:GetFirstName() .. " (" .. os.date("%m/%d %H:%M:%S") .. ")");
         self.selectedID = nil;
 		self:Update();
 	end

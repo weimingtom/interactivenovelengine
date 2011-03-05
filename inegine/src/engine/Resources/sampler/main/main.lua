@@ -93,7 +93,7 @@ function Main:InitComponents()
 	menu.Name = "mainmenu"
 	menu.Alpha = 155
 	menu.Width = 250
-	menu.Height = 42*4
+	menu.Height = 42*5
 	menu.X = 50;
 	menu.Y = 160;
 	menu.Layer = 5
@@ -162,13 +162,22 @@ function Main:InitComponents()
 	button7.Y = 42 * 3;	
 	menu:AddComponent(button7);
 
-	local button8 = self:CreateButton("Test", 
+	local button8 = self:CreateButton("Log", 
  		function (button, luaevent, args)
-			self:OpenEvent("Resources/sampler/resources/event/testevent.ess");
+			OpenState("log", "Resources/Sampler/log/logstate.lua");
+			--self:OpenEvent("Resources/sampler/resources/event/testevent.ess");
 		end);
 	button8.X = 100;
 	button8.Y = 42 * 3;	
 	menu:AddComponent(button8);
+	
+	local button9 = self:CreateButton("Test", 
+ 		function (button, luaevent, args)
+			self:OpenEvent("Resources/sampler/resources/event/testevent.ess");
+		end);
+	button9.X = 0;
+	button9.Y = 42 * 4;	
+	menu:AddComponent(button9);
 	
 end
 
@@ -415,6 +424,9 @@ function Main:ProcessEvents()
 		local nextItem = table.remove(events);
 		Trace("executing event: " .. nextItem.id);
 		self:OpenEvent(nextItem.script); --post-schedule trigger
+	else
+		self:ShowTachie(true);
+		self:ToggleMainMenu(true);
 	end
 end
 
@@ -424,8 +436,6 @@ function Main:OpenEvent(eventScript)
     function() 
         OpenState("event", "Resources/Sampler/event/eventstate.lua", eventScript,
         function()
-			self:ShowTachie(true);
-			self:ToggleMainMenu(true);
 			self.executionPresenter = nil;
 			self:ProcessEvents();
         end)

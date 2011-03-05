@@ -42,9 +42,19 @@ function LogManager:SetName(name, face)
 end
 
 function LogManager:SetLine(line)
+	line = string.gsub(line, "@", "");
+	line = string.gsub(line, "|", "");
+    
+    Trace("[".. line .. "]");
+    
+    if (string.len(line) <= 0) then
+		return;
+	end
+    
     self.currentLine.line = line;
     self.state = 2;
     self:pushLine();
+    
 end
 
 function LogManager:GetSize()
@@ -60,6 +70,25 @@ function LogManager:GetLine(line)
     return self.logTable[line];
 end
 
+
+function LogManager:Save(target)
+    local saveString = target .. " = LogManager:New()\n";
+    saveString = saveString .. "local self = " .. target .. "\n"
+    for i=0, self:GetSize() - 1 do
+		local line = logManager:GetLine(i);
+        if (line.date ~= nil) then
+            saveString = saveString .. "self:SetDate(" .. line.date.year .. "," .. 
+				line.date.month .. "," .. line.date.week .. ");";
+        elseif (line.name ~= nil and line.line ~= nil) then
+			saveString = saveString .. "self:SetName([[" .. line.name .. "]],[[" .. 
+				line.face .. "]]);";
+			saveString = saveString .. "self:SetLine([[" .. line.line .. "]]);";
+        elseif (line.line ~= nil) then
+			saveString = saveString .. "self:SetLine([[" .. line.line .. "]]);";
+        end
+    end
+    return saveString;
+end
 
 function table.contains(tbl, item)
 	for i,v in ipairs(tbl) do
