@@ -2,9 +2,6 @@
 --Import
 LoadScript "Resources\\sampler\\save\\saveview.lua"
 LoadScript "Resources\\sampler\\save\\savepresenter.lua"
-LoadScript "Resources\\sampler\\models\\calendar.lua"
-LoadScript "Resources\\sampler\\models\\character.lua"
-LoadScript "Resources\\sampler\\models\\inventorymanager.lua"
 
 TitleState = {}
 

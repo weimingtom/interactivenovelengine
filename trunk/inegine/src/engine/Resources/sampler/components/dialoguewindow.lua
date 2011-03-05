@@ -107,10 +107,19 @@ function DialogueWindow:SetPortraitTexture(texture)
 	self.portrait.X = (self.background.x - self.portrait.Width) / 2;
 	self.portrait.y = self.frame.Height - self.background.Height - 20 + 
 					  ((self.background.Height - self.portrait.Height) / 2);
+	self.portrait:Show();
 end
 
 function DialogueWindow:ClearDialogueText()
 	self.dialogueWin:Clear()
+end
+
+function DialogueWindow:ClearPortraitTexture()
+	self.portrait:Hide();
+end
+
+function DialogueWindow:ClearDialogueName()
+	self.namewin.Text = "";
 end
 
 function DialogueWindow:SetDialogueText(text)

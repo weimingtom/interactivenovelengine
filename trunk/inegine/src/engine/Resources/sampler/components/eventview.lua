@@ -27,6 +27,7 @@ end
 
 function EventView:TextOut(value) --called by ESS scripts to output text
     self.dialogueWin:SetDialogueText(value);
+    logManager:SetLine(value);
 	YieldESS();
 end
 
@@ -43,8 +44,17 @@ function EventView:ESSOverHandler() --called by ESS scripts when entire script i
     end
 end
 
-function EventView:Name(name)
+function EventView:Nar()
+    self.dialogueWin:ClearDialogueName();
+    self.dialogueWin:ClearPortraitTexture();
+	logManager:SetName(nil);
+end
+
+function EventView:Name(name, portrait)
     self.dialogueWin:SetDialogueName(name);
+    self.dialogueWin:SetPortraitTexture(portrait);
+    
+    logManager:SetName(name, portrait);
 end
 
 function EventView:CursorHandler(state, luaevent, args)
@@ -70,10 +80,6 @@ end
 
 function EventView:ShowDialogue()
     self.dialogueWin:Show();
-end
-
-function EventView:Portrait(image)
-    self.dialogueWin:SetPortraitTexture(image)
 end
 
 function EventView:InitHandlers()
@@ -103,6 +109,9 @@ end
 
 function EventView:DoEvent(script)
     if (script ~= nil) then
+		--log date
+		logManager:SetDate(calendar:GetYear(), calendar:GetMonth(), calendar:GetWeek());
+		
         BeginESS(script);
     end
 end

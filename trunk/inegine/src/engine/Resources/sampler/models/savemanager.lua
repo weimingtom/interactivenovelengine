@@ -73,6 +73,7 @@ function SaveManager:GenerateSaveString()
     saveData = saveData .. calendar:Save("calendar");
     saveData = saveData .. character:Save("character");
     saveData = saveData .. inventoryManager:Save("inventoryManager");
+    saveData = saveData .. logManager:Save("logManager");
     return saveData;
 end
 
@@ -87,6 +88,11 @@ function SaveManager:Save(id, description)
 end
 
 function SaveManager:Load(id)
+	LoadScript "Resources\\sampler\\models\\calendar.lua"
+	LoadScript "Resources\\sampler\\models\\character.lua"
+	LoadScript "Resources\\sampler\\models\\inventorymanager.lua"
+	LoadScript "Resources\\sampler\\models\\logmanager.lua"
+	
     local loadData = LoadString(self:GenerateSaveFileName(id));
     Trace("loading : " .. loadData);
     if (loadData ~= nil) then 

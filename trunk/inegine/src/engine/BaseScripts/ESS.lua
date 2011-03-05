@@ -227,12 +227,12 @@ function SelectionOver(index)
 	CurrentState().state:SelectionOver(index)
 end
 
-function Portrait(image)
-    CurrentState().state:Portrait(image);
+function Name(name, image)
+	CurrentState().state:Name(name, image)
 end
 
-function Name(name)
-	CurrentState().state:Name(name)
+function Nar()
+	CurrentState().state:Nar()
 end
 
 function HideCursor()
