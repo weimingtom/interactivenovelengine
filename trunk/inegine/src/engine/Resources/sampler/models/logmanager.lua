@@ -44,9 +44,7 @@ end
 function LogManager:SetLine(line)
 	line = string.gsub(line, "@", "");
 	line = string.gsub(line, "|", "");
-    
-    Trace("[".. line .. "]");
-    
+	 
     if (string.len(line) <= 0) then
 		return;
 	end
