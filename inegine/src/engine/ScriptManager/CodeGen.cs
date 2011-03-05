@@ -213,8 +213,8 @@ namespace INovelEngine.Script
         /* todo: toggle for debug/production mode? */
         public void SetDebugInfo(int row, int col)
         {   
-            compiledScript.Append("currentLine = " + row + "; ");
-            compiledScript.Append("currentCol = " + col + ";\n");
+            //compiledScript.Append("currentLine = " + row + "; ");
+            //compiledScript.Append("currentCol = " + col + ";\n");
         }
     }
 

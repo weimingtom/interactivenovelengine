@@ -2,10 +2,13 @@
 #FadeIn 500
 #Load "street", "Resources/sampler/resources/images/room04.jpg"
 #LoadCharacter "musume1", "Resources/sampler/resources/images/1.png"
-#Show "street", 500
 #ShowDialogue
-#Nar
-|집에 가다가 넘어졌다.@
+#if 1==1
+#goto TEST
+#elseif 3 < 4
+#return
+#end
+|[r=HOME]집[/r]에 가다가 넘어졌다.@
 #Name "안나", "Resources/sampler/resources/images/f1.png"
 #Show "musume1", 100
 |아파... 흑흑흑...
@@ -16,3 +19,5 @@
 #FadeOut 1000
 #Wait 1000
 #FadeIn 1000
+TEST:
+|음..테스트@

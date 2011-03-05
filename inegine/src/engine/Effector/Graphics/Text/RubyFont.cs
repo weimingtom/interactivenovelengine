@@ -73,6 +73,7 @@ namespace INovelEngine.Effector.Graphics.Text
                         //_rubyFont.DrawString(sprite, _rubyString, _rubyX, 0);
                         Size rubyStringSize = _rubyFont.Measure(_rubyString);
                         int pos = _rubyX + (penx - _rubyX - rubyStringSize.Width) / 2;
+                        _rubyFont.Color = this.Color;
                         _rubyFont.DrawString(sprite, _rubyString, _x + pos, _y + _rubyY - rubyStringSize.Height - 5);
 
                     }

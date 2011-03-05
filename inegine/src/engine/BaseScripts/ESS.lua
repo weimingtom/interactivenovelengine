@@ -25,8 +25,8 @@ function ResumeEss()
 	if (true ~= EssOver and CurrentState().state ~= nil and CurrentState().state["ess"] ~= nil) then
 		local success, msg = coroutine.resume(CurrentState().state["ess"])
 		if (success == false) then
-            Trace("error at " .. CurrentState().state["ess_path"] .. ":" .. currentLine)
-            Trace("(" .. EssLine(CurrentState().state["ess_path"], currentLine) .. ")")	
+            --Trace("error at " .. CurrentState().state["ess_path"] .. ":" .. currentLine)
+            --Trace("(" .. EssLine(CurrentState().state["ess_path"], currentLine) .. ")")	
 			ESSOver()
 		end
 	end
@@ -76,8 +76,9 @@ function Clear() --called by ESS scripts to clear text
 end
 
 function ESSOverHandler() --called by ESS scripts when entire script is over
-	if (CurrentState().state ~= nil) then
-        CurrentState().state:ESSOverHandler()
+	local state = CurrentState().state;
+	if (state ~= nil and state.ESSOverHandler ~= nil) then 
+		state:ESSOverHandler()
     end
 end
 

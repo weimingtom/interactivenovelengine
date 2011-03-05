@@ -45,31 +45,22 @@ namespace INovelEngine.Effector
             {
                 case TilePositions.UPLEFT:
                     return 0;
-                    break;
                 case TilePositions.UPCENTER:
                     return RectSize;
-                    break;
                 case TilePositions.UPRIGHT:
                     return RectSize * 2;
-                    break;
                 case TilePositions.CENTERLEFT:
                     return 0;
-                    break;
                 case TilePositions.CENTER:
                     return RectSize;
-                    break;
                 case TilePositions.CENTERRIGHT:
                     return RectSize * 2;
-                    break;
                 case TilePositions.DOWNLEFT:
                     return 0;
-                    break;
                 case TilePositions.DOWNCENTER:
                     return RectSize;
-                    break;
                 case TilePositions.DOWNRIGHT:
                     return RectSize * 2;
-                    break;
             }
             return 0;
         }
@@ -80,31 +71,22 @@ namespace INovelEngine.Effector
             {
                 case TilePositions.UPLEFT:
                     return 0;
-                    break;
                 case TilePositions.UPCENTER:
                     return 0;
-                    break;
                 case TilePositions.UPRIGHT:
                     return 0;
-                    break;
                 case TilePositions.CENTERLEFT:
                     return RectSize;
-                    break;
                 case TilePositions.CENTER:
                     return RectSize;
-                    break;
                 case TilePositions.CENTERRIGHT:
                     return RectSize;
-                    break;
                 case TilePositions.DOWNLEFT:
                     return RectSize * 2;
-                    break;
                 case TilePositions.DOWNCENTER:
                     return RectSize * 2;
-                    break;
                 case TilePositions.DOWNRIGHT:
                     return RectSize * 2;
-                    break;
             }
             return 0;
         }
