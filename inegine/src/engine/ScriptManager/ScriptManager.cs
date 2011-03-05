@@ -160,14 +160,13 @@ namespace INovelEngine.Script
             {
                 StreamReader reader = new StreamReader(ArchiveManager.GetStream(path), Encoding.Default);
                 string script = reader.ReadToEnd();
-                lua.DoString(script);
+                lua.DoString(script, path);
             }
             else
             {
                 path = path.Replace("/", "\\");
                 string script = File.ReadAllText(path, Encoding.Default);
-                lua.DoString(script);
-                //lua.DoFile(path)
+                lua.DoString(script, path);
             }   
         }
 
