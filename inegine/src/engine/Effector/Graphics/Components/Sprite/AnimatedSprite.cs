@@ -173,11 +173,11 @@ namespace INovelEngine.Effector
             inAnimation = true;
         }
 
-        public void StopAnimation()
+        public void Stop()
         {
             if (this.updateEvent != null)
             {
-                Clock.RemoveTimeEvent(this.updateEvent);
+                Clock.EndTimeEvent(this.updateEvent);
             }
             this.updateEvent = null;
             inAnimation = false;
