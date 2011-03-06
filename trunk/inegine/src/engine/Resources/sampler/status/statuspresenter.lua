@@ -50,6 +50,6 @@ end
 function StatusPresenter:AddItems()
 	local descriptionText = self.character:GetFirstName() .. ", " .. self.character:GetLastName();
 	self.statusView:SetDescriptionText(descriptionText);
-	self.statusView:AddGraphItem("기품", "900", 50, 0x990000);
-	self.statusView:AddGraphItem("미모", "300", 100, 0x0099CC);
+	self.statusView:AddGraphItem("체력", character:Read("hp"), character:Get("hp"), 0xBBBBBB);
+	self.statusView:AddGraphItem("의지", character:Read("will"), character:Get("will"), 0xBBBBBB);
 end

@@ -7,30 +7,36 @@ function Character:New()
 	self.__index = self
 	
 	self.status = {}
+		
+	self:SetFatherBirthday(1, 1);
+	self:SetBirthday(1, 1);
+	self:SetBloodtype("A");
+	self:SetFatherName("");
+	self:SetDress("");
+
+	self:Set("age", 12);
+	self:Set("gold", 1000);
 	
-	self.firstname = "";
-	self.lastname = "";
-	self.age = 10;
-	self.gold = 0;
-	self.stress = 0;
-	self.mana = 0;
-	self.month = 1;
-	self.day = 1;
-	self.fatherMonth = 1;
-	self.fatherDay = 1;
-	self.bloodtype = "A";
-	self.fatherName = "";
-	self.dress = "";
-	
+	--status
+	self:Set("hp", 100);
+	self:Set("will", 20);
+	self:Set("stress", 0);
+	--abilities
+		
 	return o
 end
 
-function Character:SetStatus(key, value)
+function Character:Set(key, value)
     self.status[key] = value;
 end
 
-function Character:GetStatus(key, value)
+function Character:Get(key)
     return self.status[key];
+end
+
+function Character:Read(key, digits)
+	if (digits == nil) then digits = 0; end
+	return string.format("%." .. (digits) .. "f", self.status[key])
 end
 
 function Character:GetFirstName()
@@ -47,38 +53,6 @@ end
 
 function Character:SetLastName(lastName)
 	self.lastName = lastName;
-end
-
-function Character:GetAge()
-	return self.age;
-end
-
-function Character:SetAge(age)
-	self.age = age;
-end
-
-function Character:GetGold()
-	return self.gold;
-end
-
-function Character:SetGold(gold)
-	self.gold = gold;
-end
-
-function Character:GetStress()
-	return self.stress;
-end
-
-function Character:SetStress(stress)
-	self.stress = stress;
-end
-
-function Character:GetMana()
-	return self.mana;
-end
-
-function Character:SetMana(mana)
-	self.mana = mana;
 end
 
 function Character:GetBirthday()
@@ -128,10 +102,6 @@ function Character:Save(target)
     saveString = saveString .. "local self = " .. target .. "\n"
     saveString = saveString .. [[self:SetFirstName("]] .. self:GetFirstName() .. [[");]] .. "\n";
     saveString = saveString .. [[self:SetLastName("]] .. self:GetLastName() .. [[");]] .. "\n";
-    saveString = saveString .. [[self:SetAge("]] .. self:GetAge() .. [[");]] .. "\n";
-    saveString = saveString .. [[self:SetGold("]] .. self:GetGold() .. [[");]] .. "\n";
-    saveString = saveString .. [[self:SetStress("]] .. self:GetStress() .. [[");]] .. "\n";
-    saveString = saveString .. [[self:SetMana("]] .. self:GetMana() .. [[");]] .. "\n";
     local mon, day = self:GetBirthday();
     saveString = saveString .. [[self:SetBirthday("]] .. mon .. "," .. day .. [[");]] .. "\n";
     local mon, day = self:GetFatherBirthday();
@@ -141,7 +111,7 @@ function Character:Save(target)
     saveString = saveString .. [[self:SetDress("]] .. self:GetDress() .. [[");]] .. "\n";
     
 	for i,v in pairs(self.status) do
-        saveString = saveString .. "self:SetStatus(\"" .. i .. "\"," .. v .. ")\n";
+        saveString = saveString .. "self:Set(\"" .. i .. "\"," .. v .. ")\n";
     end
     
     return saveString;
