@@ -4,13 +4,11 @@ LoadScript "Resources\\sampler\\models\\inventorymanager.lua"
 LoadScript "Resources\\sampler\\models\\logmanager.lua"
 
 --game models
-character = Character:New();
-character:SetDress(item1);
-character:SetAge(12);
-character:SetGold(1000);
-character:SetStress(50);
-character:SetMana(100);
 
+--character initialization
+character = Character:New();
+	
+--inventory initialization
 inventoryManager = InventoryManager:New();
 inventoryManager:AddItem("item1");
 inventoryManager:EquipItem("item1");

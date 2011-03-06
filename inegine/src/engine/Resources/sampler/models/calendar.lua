@@ -128,6 +128,7 @@ function Calendar:AdvanceMonth()
         self.year = self.year + 1;
         self.month = 1;
     end
+    self:SetWeek(1);
     self:Update();
 end
 

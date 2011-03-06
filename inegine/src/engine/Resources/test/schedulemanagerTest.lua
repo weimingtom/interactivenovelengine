@@ -4,7 +4,15 @@ require('luaunit')
 TestScheduleManager = {}
 
 function TestScheduleManager:setUp()
+	self.schedule = ScheduleManager:New();
 end
+
+function TestScheduleManager:testGetRates()
+	local schedule = self.schedule;
+	assertEquals(0.9, schedule:GetEduRate(0.75, 65, 12))
+	assertEquals(0.99, schedule:GetEduRate(0.75, 255, 16))
+end
+
 
 
 function table.contains(tbl, item)

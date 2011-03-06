@@ -65,18 +65,15 @@ end
 
 function ExecutionPresenter:RunSchedule()
     if (self.currentScheduleIndex > #(self.selectedSchedules)) then
-        Trace("execution over!");
+		calendar:AdvanceMonth()
         self.executionView:Dispose();
 		self:Close();
     else
         local scheduleName, success, result, animation = self.scheduleManager:ProcessSchedule(self.selectedSchedules[self.currentScheduleIndex]);
-        Trace("executing " .. scheduleName);
-        Trace("ani:" .. animation);
-
+        
         self.executionView:SetExecutionOverEvent(
 		    function ()
-                Trace("executed " .. scheduleName);
-				calendar:AdvanceWeek()
+        		calendar:AdvanceWeek()
                 self:RunSchedule();
             end
         )

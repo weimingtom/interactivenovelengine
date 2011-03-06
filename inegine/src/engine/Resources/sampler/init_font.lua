@@ -25,7 +25,6 @@ GetFont("calstate").LineSpacing = 7
 LoadFont("dialogue", "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf", 17, "Resources\\sampler\\resources\\fonts\\NanumGothicBold.ttf", 10);
 GetFont("dialogue").LineSpacing = 10;
 GetFont("dialogue").TextEffect = 1;
-GetFont("dialogue").RubyColor = 0xFFFFFF;
 
 LoadFont("small", "Resources\\sampler\\resources\\fonts\\NanumMyeongjoBold.ttf", 15);
 GetFont("small").LineSpacing = 10;

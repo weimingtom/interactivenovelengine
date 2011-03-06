@@ -8,28 +8,28 @@ TestCharacter = {}
 		local character = self.character;
 		character:SetFirstName("¾È³ª");
 		character:SetLastName("±è");
-		character:SetAge(12);
-		character:SetGold(1000);
-		character:SetStress(50);
-		character:SetMana(100);
+		character:Set("age", 12);
+		character:Set("gold", 1000);
+		character:Set("stress", 50);
+		character:Set("mana", 100);
     end
 
 
     function TestCharacter:testGetSetStatus()
 		local character = self.character;
-		character:SetStatus("con", 1);
-		character:SetStatus("int", 2);
-		character:SetStatus("cha", 3);
-		assertEquals(1, character:GetStatus("con"))
-		assertEquals(2, character:GetStatus("int"))
-		assertEquals(3, character:GetStatus("cha"))
+		character:Set("con", 1);
+		character:Set("int", 2);
+		character:Set("cha", 3);
+		assertEquals(1, character:Get("con"))
+		assertEquals(2, character:Get("int"))
+		assertEquals(3, character:Get("cha"))
     end
 
     function TestCharacter:testSave()
 		local character = self.character;
-		character:SetStatus("con", 1);
-		character:SetStatus("int", 2);
-		character:SetStatus("cha", 3);
+		character:Set("con", 1);
+		character:Set("int", 2);
+		character:Set("cha", 3);
 
         local saveString = character:Save("character");
         print(saveString);

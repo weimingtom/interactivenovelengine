@@ -7,6 +7,8 @@ function SchedulePresenter:New()
 
 	self.pageItems = 8;
 
+	self.numSchedules = 3; --number of schedules per month
+
 	self.numEduPages = 0;
 	self.currentEduPage = 0;
 
@@ -163,14 +165,14 @@ function SchedulePresenter:AddItems()
 end
 
 function SchedulePresenter:SelectSchedule(scheduleID)
-	if (self.selectedScheduleCount < 4) then
+	if (self.selectedScheduleCount < self.numSchedules) then
 		local key = self:GetKey();
 		if (self.scheduleView ~= nil) then self.scheduleView:AddSelectedItem(key, "Resources/sampler/resources/icon.png"); end;
 		table.insert(self.selectedSchedules, scheduleID);
 		self.scheduleKeyMap[key] = scheduleID;
 		self.selectedScheduleCount = self.selectedScheduleCount + 1;
 
-        if (self.selectedScheduleCount == 4) then 
+        if (self.selectedScheduleCount == self.numSchedules) then 
             self.scheduleView:EnableRun(true);
         end
         
@@ -187,7 +189,7 @@ function SchedulePresenter:DeselectSchedule(scheduleID)
 			self.scheduleKeyMap[scheduleID] = nil;
 		end
 		self.selectedScheduleCount = self.selectedScheduleCount - 1;
-        if (self.selectedScheduleCount < 4) then 
+        if (self.selectedScheduleCount < self.numSchedules) then 
             self.scheduleView:EnableRun(false);
         end
         self.scheduleView:SetDetailText("");
