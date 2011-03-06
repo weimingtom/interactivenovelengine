@@ -17,6 +17,9 @@ TestCharacter = {}
 		assertEquals(1, character:Get("int"))
 		assertEquals(2, character:Get("cha"))
 		assertEquals(3, character:Get("wis"))
+		
+		character:Inc("wis", 100);
+		assertEquals(103, character:Get("wis"))
     end
 
     function TestCharacter:testSave()

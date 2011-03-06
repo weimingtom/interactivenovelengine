@@ -1,2 +1,5 @@
-category,id,name,price,condition,icon,successani,failureani,desc
-edu,edu1,아버지와 공부,5,,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"아버지와 공부 합니다."
+category,id,name,price,condition,ability,icon,successani,failureani,desc
+edu,edu1,아버지와 공부,5,,will,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"아버지와 거실에서 공부 한다."
+edu,edu2,아버지와 운동,5,,will,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"아버지와 공원에서 가벼운 운동을 한다."
+job,job1,가사,0,,will,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"집안일을 도운다."
+job,job2,과수원,0,,hp,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/success_ani.gif,Resources/sampler/resources/images/failure_ani.gif,"집안일을 도운다."

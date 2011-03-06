@@ -32,6 +32,7 @@ function ScheduleManager:ExtractItem(i)
     item.price = self.csv:GetString(i, "price");
     item.icon = self.csv:GetString(i, "icon");
     item.desc = self.csv:GetString(i, "desc");
+    item.ability = self.csv:GetString(i, "ability");
     item.successani = self.csv:GetString(i, "successani");
     item.failureani = self.csv:GetString(i, "failureani");
     return item;
@@ -60,27 +61,23 @@ function ScheduleManager:GetItem(id)
 end
 
 function ScheduleManager:GetSuccessEffect(id)
-    for i=0, self.csv.Count-1 do
-		if (id == self.csv_success:GetString(i, "id")) then
-			local item = {};
-			--success
-			item.hp = self.csv_success:GetFloat(i, "health");
-			item.stress = self.csv_success:GetFloat(i, "stress");
-			return item;
-		end
-	end
+	return self:GetEffect(id, self.csv_success);
 end
 
 function ScheduleManager:GetFailureEffect(id)
-    for i=0, self.csv.Count-1 do
-		if (id == self.csv_failure:GetString(i, "id")) then
+	return self:GetEffect(id, self.csv_failure);
+end
+
+function ScheduleManager:GetEffect(id, csv)
+    for i=0, csv.Count-1 do
+		if (id == csv:GetString(i, "id")) then
 			local item = {};
-			--failure
-			item.hp = self.csv_failure:GetFloat(i, "health");
-			item.stress = self.csv_failure:GetFloat(i, "stress");
+			item.hp = csv:GetFloat(i, "hp");
+			item.stress = csv:GetFloat(i, "stress");
+			item.gold = csv:GetFloat(i, "gold");
 			return item;
 		end
-    end
+	end
 end
 
 function ScheduleManager:SetSelectedSchedules(selectedSchedules)
@@ -104,9 +101,11 @@ function ScheduleManager:ProcessSchedule(id)
     local effect = self:EmptyEffect();
 	
     if (schedule.category == "edu") then
-		rate = 0.5;--self:GetEduRate(BASE_RATE, character:Get("will"), character:Get("stress"));
+		rate = self:GetEduRate(BASE_EDU_RATE, character:Get("will"), character:Get("stress"));
     elseif (schedule.category == "job") then
-		rate = 1;
+		character:Inc(schedule.id, 1);
+		rate = self:GetJobRate(BASE_JOB_RATE, character:Get(schedule.ability), 
+			character:Get(schedule.id), character:Get("stress"));
     elseif (schedule.category == "vac") then
 		rate = 1;
 	else
@@ -147,31 +146,36 @@ end
 
 function ScheduleManager:EmptyEffect()
 	local effect = {};
-	effect.hp = 0;
-	effect.stress = 0;
 	return effect;
 end
 
-function ScheduleManager:SaveEffect(buffer, effect)
-	buffer.hp = buffer.hp + effect.hp;
-	buffer.stress = buffer.stress + effect.stress;
+function ScheduleManager:SaveEffect(target, source)
+	for i,v in pairs(source) do
+		if (target[i] == nil) then
+			target[i] = 0;
+		end
+		
+		target[i] = source[i] + target[i];
+	end
 end
 
 function ScheduleManager:ApplyEffect(effect)
-	character:Set("hp", character:Get("hp") + effect.hp);
-	character:Set("stress", character:Get("stress") + effect.stress); 
+	for i,v in pairs(effect) do
+		character:Inc(i, v);
+	end
 end
 
 function ScheduleManager:ComposeString(header, effect)
 	local result = header;
-	result = result .. "HEALTH : " .. character:Read("hp", 1) .. " (" .. self:GenString(effect.hp) .. ")";
-	result = result .. "\nSTRESS : " .. character:Read("stress", 1) .. " (" .. self:GenString(effect.stress) .. ")";
+	result = result .. "체력 : " .. character:Read("hp", 1) .. " (" .. self:GenString(effect.hp) .. ")";
+	result = result .. "\n스트레스 : " .. character:Read("stress", 1) .. " (" .. self:GenString(effect.stress) .. ")";
+	result = result .. "\n골드 : " .. character:Read("gold", 0) .. " (" .. self:GenString(effect.gold) .. ")";
 	return result;
 end
 
 function ScheduleManager:GenString(value)
 	if (value == nil or value == 0) then
-		return " ";
+		return "0";
 	else
 		if (value > 0) then
 			value = string.format("%." .. (1) .. "f", value)
@@ -180,7 +184,7 @@ function ScheduleManager:GenString(value)
 			value = string.format("%." .. (1) .. "f", value)
 			return value;
 		else
-			return " ";
+			return "0";
 		end
 	end
 end
@@ -211,9 +215,28 @@ function ScheduleManager:GetStressRate(stress)
 	end
 end
 
+function ScheduleManager:GetHistoryRate(history)
+	if (history > 30) then
+		return 0.3;
+	else
+		return history / 100;
+	end
+end
+
 function ScheduleManager:GetEduRate(base, will, stress)
 	local rate = base;
 	rate = rate + self:GetBaseRate(will);
+	rate = rate + self:GetStressRate(stress);
+	if (rate > 0.99) then rate = 0.99; end
+	if (rate < 0.25) then rate = 0.25; end
+	return rate;
+end
+
+function ScheduleManager:GetJobRate(base, ability, history, stress)
+	Trace(base .. "," .. ability .. "," .. history .. "," .. stress);
+	local rate = base;
+	rate = rate + self:GetBaseRate(ability);
+	rate = rate + self:GetHistoryRate(history);
 	rate = rate + self:GetStressRate(stress);
 	if (rate > 0.99) then rate = 0.99; end
 	if (rate < 0.25) then rate = 0.25; end

@@ -5,7 +5,8 @@ LoadScript "Resources\\sampler\\models\\savemanager.lua"
 LoadScript "Resources\\sampler\\models\\eventmanager.lua"
 
 --parameters
-BASE_RATE = 0.75;
+BASE_EDU_RATE = 0.75;
+BASE_JOB_RATE = 0.60;
 
 --game master data
 scheduleManager = ScheduleManager:New();

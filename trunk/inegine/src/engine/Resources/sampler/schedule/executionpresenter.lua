@@ -92,7 +92,10 @@ function ExecutionPresenter:RunSchedule()
 							      animation,
 							      result,
 							      dialog2,
-							      portrait2);
+							      portrait2,
+							      function()
+									self.main:InvalidateStatus();
+							      end);
         self.currentScheduleIndex = self.currentScheduleIndex + 1;
     end 
 end

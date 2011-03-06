@@ -409,7 +409,7 @@ end
 --statuswindow
 function Main:InvalidateStatus()
 	Main:SetState(character:GetFirstName(), character:GetLastName(), character:Read("age"), character:Read("gold"),
-				  character:Read("stress", 1));
+				  character:Read("stress", 1), character:Read("mana", 1));
 end
 
 --event functions
@@ -529,10 +529,10 @@ function Main:SetDate(year, month, day, week)
 									   .. "Week " ..  week;
 end
 
-function Main:SetState(firstname, lastname, age, gold, stress)
+function Main:SetState(firstname, lastname, age, gold, stress, mana)
 	GetComponent("statedisplay").text = firstname .. " " 
 										.. lastname .. "\nAge " .. age .. "\nGold "
-										.. gold .. "\nStress " .. stress .. "%";
+										.. gold .. "\nStress " .. stress .. "\nMana " .. mana;
 end
 
 function Main:SetKeyDownEvent(event)

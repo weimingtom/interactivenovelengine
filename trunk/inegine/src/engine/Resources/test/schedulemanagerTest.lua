@@ -11,8 +11,29 @@ function TestScheduleManager:testGetRates()
 	local schedule = self.schedule;
 	assertEquals(0.9, schedule:GetEduRate(0.75, 65, 12))
 	assertEquals(0.99, schedule:GetEduRate(0.75, 255, 16))
+	assertEquals(0.99, schedule:GetJobRate(0.60, 201, 41, 49));
+	assertEquals(0.76, schedule:GetJobRate(0.60, 50, 1, 20));
+	assertEquals(0.25, schedule:GetJobRate(0.60, 50, 5, 95));
 end
 
+function TestScheduleManager:testCopyEffect()
+	local schedule = self.schedule;
+	target = {};
+	source = {};
+	
+	source.stress = 100;
+	source.hp = 100;
+	
+	schedule:SaveEffect(target, source);
+	
+	assertEquals(100, target.stress);
+	assertEquals(100, target.hp);
+	
+	schedule:SaveEffect(source, source);
+	
+	assertEquals(200, source.stress);
+	assertEquals(200, source.hp);
+end
 
 
 function table.contains(tbl, item)

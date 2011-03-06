@@ -48,7 +48,9 @@ function StatusPresenter:Update()
 end
 
 function StatusPresenter:AddItems()
-	local descriptionText = self.character:GetFirstName() .. ", " .. self.character:GetLastName();
+	local descriptionText = self.character:GetFirstName() .. ", " .. self.character:GetLastName() .. "\n";
+	local month, day = self.character:GetBirthday();
+	descriptionText = descriptionText .. month .. "¿ù " .. day .. "ÀÏ " .. self.character:GetBloodtype() .. "Çü\n";
 	self.statusView:SetDescriptionText(descriptionText);
 	
 	
