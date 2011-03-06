@@ -7,7 +7,7 @@ LoadScript "Resources\\sampler\\models\\logmanager.lua"
 
 --character initialization
 character = Character:New();
-	
+
 --inventory initialization
 inventoryManager = InventoryManager:New();
 inventoryManager:AddItem("item1");

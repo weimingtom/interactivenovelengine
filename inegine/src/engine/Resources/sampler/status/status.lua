@@ -151,7 +151,7 @@ function StatusView:CreateGraphItem(key, value, percentage, color)
 	textButton.Alignment = 0;
 	textButton.X = 0;
 	textButton.Y = 2;
-	textButton.Width = 50;
+	textButton.Width = 100;
 	textButton.Height = 10;
 	textButton.Text = key;
 	textButton.Font = GetFont("state");
