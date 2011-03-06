@@ -126,7 +126,7 @@ function ExecutionView:SetExecutionOverEvent(event)
 	self.executionOverEvent = event;
 end
 
-function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, baseAnimation, resultText, afterText, afterPortrait)
+function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, baseAnimation, resultText, afterText, afterPortrait, result)
 	self:ShowAnimationView(false);
 	self:ShowStatus(false);
 	self.dialogueWin:Hide();
@@ -152,6 +152,9 @@ function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, baseAni
 	        self:SetAnimation(tempAnimation);
 	        self:SetAnimationOverEvent(
 		        function()
+					if (result ~= nil) then
+						result();
+					end
                     self:ShowStatus(true);
 			        self:SetStatusText(resultText);
 			        self.dialogueWin:SetDialogueOverEvent(

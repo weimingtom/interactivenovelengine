@@ -9,6 +9,7 @@ function Character:New()
 	self.status = {}
 	self.max = {}
 	self.min = {}
+	self.trigger = {}
 	
 	self:Initialize();	
 	
@@ -16,6 +17,7 @@ function Character:New()
 end
 
 function Character:Initialize()
+	--profile
 	self:SetFirstName("");
 	self:SetLastName("");
 	self:SetFatherBirthday(1, 1);
@@ -23,11 +25,10 @@ function Character:Initialize()
 	self:SetBloodtype("A");
 	self:SetFatherName("");
 	self:SetDress("");
-
 	self:Add("age", 12, 0, 999);
 	self:Add("gold", 1000, -3000, 99999);
 	
-	--status
+	--abilities
 	self:Add("hp", 100, 0, 999);
 	self:Add("will", 20, 0, 999);
 	self:Add("int", 20, 0, 999);
@@ -38,6 +39,7 @@ function Character:Initialize()
 	self:Add("rep", 20, 0, 999);
 	self:Add("stress", 0, 0, 100);
 	self:Add("mana", 0, 0, 100);
+	--skills
 	self:Add("sword", 0, 0, 300);
 	self:Add("magic", 0, 0, 300);
 	self:Add("alchemy", 0, 0, 300);
@@ -46,13 +48,21 @@ function Character:Initialize()
 	self:Add("cooking", 0, 0, 300);
 	self:Add("logic", 0, 0, 300);
 	self:Add("wis", 0, 0, 300);
-	--abilities
+	--job histories
+	self:Add("edu1", 0, 0, 999);
+	self:Add("edu2", 0, 0, 999);
+	self:Add("job1", 0, 0, 999);
+	self:Add("job2", 0, 0, 999);
 end
 
 function Character:Add(key, value, min, max)
     self.status[key] = value;
     self.min[key] = min;
     self.max[key] = max;
+end
+
+function Character:Inc(key, value)
+	self:Set(key, self:Get(key) + value);
 end
 
 function Character:Set(key, value)
@@ -69,6 +79,11 @@ function Character:Set(key, value)
 	end
 
     self.status[key] = value;
+    
+    if (self.trigger[key] ~= nil) then
+		Trace("trigger event executed!");
+		self.trigger[key]();
+	end
 end
 
 function Character:GetRatio(key)
@@ -140,6 +155,11 @@ end
 
 function Character:SetDress(id)
 	self.dress = id;
+end
+
+
+function Character:SetTriggerEvent(status, event)
+	self.trigger[status] = event;
 end
 
 function Character:Save(target)
