@@ -26,6 +26,10 @@ function Main:New()
 
 	self.gamestate = CurrentState();
 
+	--event toggle (reset each month)
+	self.musumeEventAvailable = true;
+	self.goddessEventAvailable = true;
+
     self:InitComponents()
     self:RegisterEvents()
 	return o
@@ -256,55 +260,95 @@ function Main:OpenScheduleExecution()
 end
 
 function Main:OpenCommunication()
-	self:ShowTachie(false);
-	self:ToggleMainMenu(false);
+	self:Disable();
 	local talkListView = TalkListView:New("talkListView", CurrentState());
-	talkListView:Init();
-	talkListView:SetGreeting("Resources/sampler/resources/images/f2.png","규브", "따님과 대화하실 내용을 선택해주세요.");
 	self.talkListView = talkListView;
 	
+	talkListView:Init();
+	talkListView:SetGreeting("Resources/sampler/resources/images/f2.png","규브", "따님과 대화하실 내용을 선택해주세요.");
+	
+	
+	self.musumeevents = eventManager:GetMusumeEvents();
+	self.goddessevents = eventManager:GetGoddessEvents();
+	
+	if (table.getn(self.musumeevents) > 0 and self.musumeEventAvailable) then
+		talkListView:ToggleMusumeEvent();	
+	end
+	
+	if (table.getn(self.goddessevents) > 0 and self.goddessEventAvailable) then
+		talkListView:ToggleGoddessEvent();	
+	end
+
 	talkListView:SetTalkSelectedEvent(
 		function(button, luaevent, args)
+	
+			if (button.Name == "musumeButton") then
+				Trace("musume button!");		
+				if (table.getn(self.musumeevents) > 0 and self.musumeEventAvailable) then			
+					self.eventList = self.musumeevents
+					self:ProcessEvents();
+					self.musumeEventAvailable = false;
+				else	
+					self:MusumeTalk();
+				end
+			else
+				Trace("goddess button!");		
+				if (table.getn(self.goddessevents) > 0 and self.goddessEventAvailable) then
+					self.eventList = self.goddessevents
+					self:ProcessEvents();
+					self.goddessEventAvailable = false;
+				else
+					self:GoddessTalk();
+				end
+			end
+			self.musumeevents = nil;
+			self.goddessevents = nil;
 			talkListView:Dispose();
-			self:TestTalk();
 		end
 	)
 	
 	talkListView:SetClosingEvent( 
 		function()
 			Trace("closing talk list view");
-			self:ShowTachie(true);
-			self:ToggleMainMenu(true);
+			self:Enable();
 		end
 	);
 	talkListView:Show();
 end
 
-function Main:TestTalk()
-	self:ShowTachie(false);
-	self:ToggleMainMenu(false);
+function Main:MusumeTalk()
+	local line = talkManager:GetMusumeLine();
+	self:NormalTalk(line.pic, line.name, line.line);
+end
+
+function Main:GoddessTalk()
+	local line = talkManager:GetGoddessLine();
+	self:NormalTalk(line.pic, line.name, line.line);
+end
+
+function Main:NormalTalk(pic, name, line)
+	self:Disable();
 	local talkView = TalkView:New("talkView", CurrentState());
 	self.talkView = talkView;
 	talkView:Init();
+	self:SetKeyDownEvent(
+		function()
+			talkView:Advance()
+		end
+	)
 	
-	talkView:SetTalk("Resources/sampler/resources/images/f2.png","규브", "따님이 이야기하고 싶어하지 않네요.@");
+	talkView:SetTalk(pic, name, line);
 	talkView:SetTalkOverEvent(
 		function()
-			talkView:SetTalk("Resources/sampler/resources/images/f3.png","규브", "제 월급이나 올려주시죠?@");
-			talkView:SetTalkOverEvent(
-				function()
-					talkView:Dispose();
-					self:ShowTachie(true);
-					self:ToggleMainMenu(true);
-				end
-			)
+			talkView:Dispose();
+			self:SetKeyDownEvent(nil);
+			self:Enable();
 		end
 	)
 	
 	talkView:SetClosingEvent( 
 		function()
-			self:ShowTachie(true);
-			self:ToggleMainMenu(true);
+			self:Enable();
 		end
 	);
 	talkView:Show();
@@ -341,8 +385,7 @@ function Main:OpenShop(shopName)
 end
 
 function Main:OpenShopList()
-	self:ToggleMainMenu(false);
-	self:ShowTachie(false);
+	self:Disable();
 	local shoplist = ShopListView:New("shoplistview", CurrentState());
 	self.shoplist = shoplist;
 	shoplist:Init();
@@ -357,8 +400,7 @@ function Main:OpenShopList()
 	shoplist:SetClosingEvent( 
 		function()
 			Trace("shop closing!")
-			self:ShowTachie(true);
-			self:ToggleMainMenu(true);
+			self:Enable();
 		end
 	);
 	shoplist:Show();
@@ -371,8 +413,7 @@ function Main:OpenSystem()
 	local saveView = SaveView:New("saveView", CurrentState());
 	saveView:Init();
 	
-	self:ToggleMainMenu(false);
-	self:ShowTachie(false);
+	self:Disable();
 
 	
 	self.savePresenter = SavePresenter:New();
@@ -380,8 +421,7 @@ function Main:OpenSystem()
 	self.savePresenter:SetClosingEvent(
 		function()
 			Trace("disposing save presenter!");
-			self:ToggleMainMenu(true);
-			self:ShowTachie(true);
+			self:Enable();
 			self.savePresenter = nil;
 		end
 	)
@@ -403,43 +443,52 @@ end
 
 --datewindow
 function Main:InvalidateDate()
-	Main:SetDate(calendar:GetYear(), calendar:GetWordMonth(), calendar:GetDay(), calendar:GetWeek());
+	self:SetDate(calendar:GetYear(), calendar:GetWordMonth(), calendar:GetDay(), calendar:GetWeek());
+	--reset talk event toggle
+	self.musumeEventAvailable = true;
+	self.goddessEventAvailable = true;
 end
 	
 --statuswindow
 function Main:InvalidateStatus()
-	Main:SetState(character:GetFirstName(), character:GetLastName(), character:Read("age"), character:Read("gold"),
+	self:SetState(character:GetFirstName(), character:GetLastName(), character:Read("age"), character:Read("gold"),
 				  character:Read("stress", 1), character:Read("mana", 1));
 end
 
 --event functions
 function Main:PostScheduleTrigger()
+	self.executionPresenter = nil;
 	self.eventList = eventManager:GetPostEvents();
 	self:ProcessEvents();
 end
 
-function Main:ProcessEvents()
+function Main:ProcessEvents(first)
+	local delay = 0;
+	if (first == nil) then
+		FadeOut(1000)
+		delay = 1000;
+	end
+	
 	local events = self.eventList;
 	if (table.getn(events) > 0) then
 		local nextItem = table.remove(events);
 		Trace("executing event: " .. nextItem.id);
-		self:OpenEvent(nextItem.script); --post-schedule trigger
+		Delay(delay,
+			function()
+				self:OpenEvent(nextItem.script);
+			end
+		)
 	else
-		self:ShowTachie(true);
-		self:ToggleMainMenu(true);
+		FadeIn(1000)
+		self:Enable();
 	end
 end
 
 function Main:OpenEvent(eventScript)
-    FadeOut(500)
-    Delay(500,
-    function() 
-        OpenState("event", "Resources/Sampler/event/eventstate.lua", eventScript,
-        function()
-			self.executionPresenter = nil;
-			self:ProcessEvents();
-        end)
-    end);
+    OpenState("event", "Resources/Sampler/event/eventstate.lua", eventScript,
+    function()     
+		self:ProcessEvents(false);		
+    end)
 end
 
 --wallpaper
@@ -517,6 +566,16 @@ end
 
 
 --private/helper functions
+function Main:Enable()
+	self:ShowTachie(true);
+	self:ToggleMainMenu(true);
+end
+
+function Main:Disable()
+	self:ShowTachie(false);
+	self:ToggleMainMenu(false);
+end
+
 function Main:ToggleMainMenu(enabled)
 	GetComponent("mainmenu").enabled = enabled;
 	GetComponent("mainmenu").visible = enabled;

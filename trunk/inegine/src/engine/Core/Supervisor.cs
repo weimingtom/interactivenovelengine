@@ -334,6 +334,7 @@ namespace INovelEngine
 
         public void Lua_CloseState()
         {
+
             if (stateList.Count <= 0)
             {
                 throw new Exception("no more state to be removed!");

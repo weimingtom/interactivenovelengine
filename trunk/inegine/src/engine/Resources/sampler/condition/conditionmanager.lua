@@ -1,19 +1,13 @@
 ConditionManager = {}
 
-function ConditionManager:New()
-    local o = {}
-	setmetatable(o, self)
-	self.__index = self
+function ConditionManager:Evaluate(condition)	--M = month, S = affinity
+	local conditionString = "local M, S = ...;\n" 
+	conditionString = conditionString .. "return " .. condition;
+	local conditionFunction = assert(loadstring(conditionString));
 	
-	return o
-end
-
-function ConditionManager:Init(calendar, character)
-	self.flagtable = {};
-	self.calendar = calendar;
-	self.character = character;
-end
-
-function ConditionManager:Evaluate(condition)
-	return false;
+	--TODO: temporary
+	local affinityTable = {};
+	affinityTable.lucy = 80;
+	
+	return conditionFunction(calendar:GetMonth(), affinityTable);
 end
