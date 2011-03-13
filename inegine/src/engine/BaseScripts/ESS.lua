@@ -258,6 +258,7 @@ function FadeOutIn(duration, color)
 end
 
 function FadeOut(duration, color)
+	Trace(">>>fading out!");
     if color == nil then color = 0xFFFFFF end
     GetFader():Fade(GetWidth(), GetHeight(), duration, false, color);
 end

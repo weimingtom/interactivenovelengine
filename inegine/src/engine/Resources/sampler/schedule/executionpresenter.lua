@@ -15,7 +15,7 @@ function ExecutionPresenter:Init(main, executionView, scheduleManager)
 	self.executionView = executionView;
 	self.scheduleManager = scheduleManager;
 
-	main:ShowTachie(false);
+	main:Disable();
 	main:ToggleMainMenu(false);
 	executionView:Show();
 

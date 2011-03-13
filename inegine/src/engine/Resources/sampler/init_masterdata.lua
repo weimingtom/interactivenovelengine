@@ -3,6 +3,8 @@ LoadScript "Resources\\sampler\\models\\itemmanager.lua"
 LoadScript "Resources\\sampler\\models\\shopmanager.lua"
 LoadScript "Resources\\sampler\\models\\savemanager.lua"
 LoadScript "Resources\\sampler\\models\\eventmanager.lua"
+LoadScript "Resources\\sampler\\models\\talkmanager.lua"
+LoadScript "Resources\\sampler\\condition\\conditionmanager.lua"
 
 --parameters
 BASE_EDU_RATE = 0.75;
@@ -20,6 +22,9 @@ shopManager:Load();
 
 eventManager = EventManager:New();
 eventManager:Load();
+
+talkManager = TalkManager:New();
+talkManager:Load();
 
 --save manager
 saveManager = SaveManager:New();

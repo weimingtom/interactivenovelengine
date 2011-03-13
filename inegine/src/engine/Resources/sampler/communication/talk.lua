@@ -36,7 +36,6 @@ function TalkView:Init()
 	dialogueWin.frame.x = 0;
 	dialogueWin.frame.y = self.frame.height - dialogueWin.frame.height;
 	dialogueWin:Hide();
-	
 end
 
 function TalkView:SetTalk(portrait, name, text)	
@@ -49,4 +48,8 @@ end
 
 function TalkView:SetTalkOverEvent(event)
 	self.dialogueWin:SetDialogueOverEvent(event);
+end
+
+function TalkView:Advance()
+	self.dialogueWin:Advance();
 end

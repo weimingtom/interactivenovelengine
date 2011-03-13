@@ -192,8 +192,10 @@
     <None Include="Resources\sampler\intro\makingstate.lua" />
     <None Include="Resources\sampler\intro\titlestate.lua" />
     <None Include="Resources\sampler\log\logstate.lua" />
+    <None Include="Resources\sampler\models\talkmanager.lua" />
     <None Include="Resources\sampler\models\logmanager.lua" />
     <None Include="Resources\sampler\models\eventmanager.lua" />
+    <None Include="Resources\sampler\resources\data\talklist.csv" />
     <None Include="Resources\sampler\resources\data\schedule_failure.csv" />
     <None Include="Resources\sampler\resources\data\schedule_success.csv" />
     <None Include="Resources\sampler\resources\data\eventlist.csv" />
