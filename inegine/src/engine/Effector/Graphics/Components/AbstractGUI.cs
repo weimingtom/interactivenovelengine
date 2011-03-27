@@ -271,6 +271,11 @@ namespace INovelEngine.Effector
 
         public void AddComponent(AbstractGUIComponent component)
         {
+            if (component.Name == null || component.Name.Length == 0)
+            {
+                component.Name = System.Guid.NewGuid().ToString();
+            }
+
             if (componentMap.ContainsKey(component.Name)) return;
 
             component.Parent = this;
@@ -356,6 +361,10 @@ namespace INovelEngine.Effector
                 case ScriptEvents.MouseUp:
                     if (mouseDownLocked != null) handler = mouseDownLocked;
                     mouseDownLocked = null;
+                    break;
+                case ScriptEvents.MouseDoubleClick:
+                    handler = GetCollidingComponent((int)args[0], (int)args[1]);
+                    if (handler == null) handler = this;
                     break;
                 case ScriptEvents.MouseClick:
                     handler = GetCollidingComponent((int)args[0], (int)args[1]);

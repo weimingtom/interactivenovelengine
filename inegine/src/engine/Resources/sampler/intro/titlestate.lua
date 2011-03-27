@@ -47,6 +47,11 @@ function TitleState:InitComponents()
 	titleText.Font = GetFont("verylarge");
 	titleText.TextColor = 0xEEEEEE
 	titleText.Layer = 3
+	titleText.MouseDoubleClick = 
+		function (newButton, luaevent, args)
+			Trace("double click!");
+		end
+	titleText.enabled = true;
 	view:AddComponent(titleText);	
 	
 	local newGameButton = self:CreateButton("New Game",

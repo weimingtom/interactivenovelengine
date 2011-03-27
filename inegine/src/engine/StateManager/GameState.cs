@@ -272,6 +272,10 @@ namespace INovelEngine.StateManager
                     if (mouseDownLocked != null) handler = mouseDownLocked;
                     mouseDownLocked = null;
                     break;
+                case ScriptEvents.MouseDoubleClick:
+                    handler = GetCollidingComponent((int)args[0], (int)args[1]);
+                    if (handler == null) handler = this;
+                    break;
                 case ScriptEvents.MouseClick:
                     handler = GetCollidingComponent((int)args[0], (int)args[1]);
                     if (handler == null) handler = this;

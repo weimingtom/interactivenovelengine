@@ -26,10 +26,10 @@ namespace INovelEngine
     static class Program
     {
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             using (Supervisor game = new Supervisor())
-                game.Run();
+                game.Run();        
         }
     }
 }
