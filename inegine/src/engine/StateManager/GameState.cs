@@ -103,6 +103,11 @@ namespace INovelEngine.StateManager
 
         public void AddResource(AbstractResource resource)
         {
+            if (resource.Name == null || resource.Name.Length == 0)
+            {
+                resource.Name = System.Guid.NewGuid().ToString();
+            }
+
             if (resource.Type == INovelEngine.Effector.ResourceType.Graphical)
             {
                 if (graphicalResourcesMap.ContainsKey(resource.Name)) return;
@@ -163,6 +168,11 @@ namespace INovelEngine.StateManager
 
         public void AddComponent(AbstractGUIComponent component)
         {
+            if (component.Name == null || component.Name.Length == 0)
+            {
+                component.Name = System.Guid.NewGuid().ToString();
+            }
+
             if (componentMap.ContainsKey(component.Name)) return;
 
             component.ManagingState = this;
