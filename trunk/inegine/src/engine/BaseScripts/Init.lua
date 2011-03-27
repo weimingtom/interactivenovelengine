@@ -31,10 +31,6 @@ function dofile (filename)
 end
 
 function InitResource(resource)
-	if (resource.name == nil) then
-		Trace "Resource name undefined!"
-		return
-	end	
     CurrentState():AddResource(resource);
 end;
 
@@ -51,10 +47,6 @@ function InitComponent(component)
 end
 
 function AddComponent(component)
-	if (component.name == nil) then
-		Trace "Component name undefined!"
-		return
-	end	
     CurrentState():AddComponent(component);
 end;
 
