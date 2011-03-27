@@ -1,4 +1,6 @@
 LoadScript "Resources\\sampler\\components\\luaview.lua"
+LoadScript "Resources\\sampler\\components\\dialoguewindow.lua"
+LoadScript "Resources\\sampler\\components\\flowview.lua"
 
 ShopView = LuaView:New();
 
@@ -35,23 +37,136 @@ function ShopView:Init()
 	dialogueWin.frame.x = 0;
 	dialogueWin.frame.y = self.frame.height - dialogueWin.frame.height;
 	dialogueWin:Hide();
+	
+	-------------------
+	-- commit window --
+	-------------------
+	local commitWindow = ImageWindow()
+	self.commitWindow = commitWindow;
+	--commitWindow.Name = "commitWindow"
+	commitWindow.relative = true;
+	commitWindow.width = 300;
+	commitWindow.height = 200;
+	commitWindow.x = (GetWidth() - commitWindow.width) / 3;
+	commitWindow.y = (GetHeight() - commitWindow.height) / 2;
+    commitWindow.WindowTexture = "Resources/sampler/resources/window.png"
+    commitWindow.RectSize = 40
+	commitWindow.alpha = 255
+	commitWindow.layer = 9;
+	commitWindow:Hide();
+	self.frame:AddComponent(commitWindow);
+	
+	local label = Label();
+	label.text = "BUY?";
+	label.font = GetFont("default");
+	label.width = 100;
+	label.height = 50;
+	label.x = (commitWindow.width - label.width) / 2;
+	label.y = 0;
+	label.TextColor = 0xFFFFFF;
+	commitWindow:AddComponent(label);
+	
+	local itemNameLabel = Label();
+	self.itemNameLabel = itemNameLabel;
+	itemNameLabel.text = "teirqwe";
+	itemNameLabel.font = GetFont("default");
+	itemNameLabel.width = 200;
+	itemNameLabel.height = 50;
+	itemNameLabel.x = (commitWindow.width - itemNameLabel.width) / 2;
+	itemNameLabel.y = 50;
+	itemNameLabel.TextColor = 0xFFFFFF;
+	commitWindow:AddComponent(itemNameLabel);
+	
+	local countLabel = Label();
+	self.countLabel = countLabel;
+	countLabel.text = "10";
+	countLabel.font = GetFont("default");
+	countLabel.width = 30;
+	countLabel.height = 30;
+	countLabel.x = 50;
+	countLabel.y = 100;
+	countLabel.TextColor = 0xFFFFFF;
+	commitWindow:AddComponent(countLabel);
+	
+	
+	local upButton = self:CreateUpButton(
+        function()
+            if (self.upCountButtonEvent ~= nil) then
+                self.upCountButtonEvent();
+            end
+        end
+    );
+    upButton.x = 20;
+    upButton.y = 100;
+    commitWindow:AddComponent(upButton);
+
+    local downButton = self:CreateDownButton(
+        function()
+            if (self.downCountButtonEvent ~= nil) then
+                self.downCountButtonEvent();
+            end
+        end
+    );
+    downButton.x = 20;
+    downButton.y = 120;
+    commitWindow:AddComponent(downButton);
+
+	local priceLabel = Label();
+	self.priceLabel = priceLabel;
+	priceLabel.text = "1000G";
+	priceLabel.font = GetFont("default");
+	priceLabel.width = 150;
+	priceLabel.height = 30;
+	priceLabel.x = 120;
+	priceLabel.y = 100;
+	priceLabel.TextColor = 0xFFFFFF;
+	commitWindow:AddComponent(priceLabel);
+		
+		
+	local okButton = self:CreateButton("okButton", "Buy", 50, commitWindow.height - 45, 6)
+	self.commitokButton = okButton;
+	okButton.relative = true;
+	okButton.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				button.Pushed = false
+				self:CloseCommitWindow();
+				self:buyingEvent();
+			end
+		end
+	commitWindow:AddComponent(okButton);
+		
+	local closeButton = self:CreateButton("closeButton", "Cancel", okButton.x + okButton.width + 10,
+	 commitWindow.height - 45, 6)
+	self.commitCloseButton = closeButton;
+	closeButton.relative = true;
+	closeButton.MouseUp = 
+		function (button, luaevent, args)
+			if (button.State["mouseDown"]) then
+				button.Pushed = false
+				self:CloseCommitWindow();
+			end
+		end
+	commitWindow:AddComponent(closeButton);
+		
+		
 		
 	local background = ImageWindow()
+	self.background = background;
 	background.name = "backround"
 	background.relative = true;
 	background.width = 465;
 	background.height = 270;
 	background.x = 50;
-	background.y = 160;--dialogueWin.frame.y - background.height - 10;
+	background.y = 160;
     background.WindowTexture = "Resources/sampler/resources/window.png"
     background.RectSize = 40
     background.BackgroundColor = 0xFFFFFF
 	background.alpha = 255
 	background.layer = 6;
 	self.frame:AddComponent(background);
-		self.frame:AddComponent(background);
-	
-	    local upButton = self:CreateUpButton(
+		
+	local upButton = self:CreateUpButton(
         function()
             if (self.upButtonEvent ~= nil) then
                 self.upButtonEvent();
@@ -132,29 +247,6 @@ function ShopView:Init()
 	button.VerticalAlignment = 1;
 	self.selectedIconText = button;
 	self.detailviewFrame:AddComponent(button);
-	
-
-	
-	
-	
-	
-	
-	
-	self.buyButton = self:CreateButton("buyButton", "Buy", 
-										 detailviewFrame.x + detailviewFrame.width - 105, background.y + background.height - 40, 6)
-	self.buyButton.relative = true;
-	self.buyButton.MouseUp = 
-		function (button, luaevent, args)
-			if (button.State["mouseDown"]) then
-				button.Pushed = false
-				Trace("button click!")
-				if (self.buyingEvent ~= nil) then 
-					self:buyingEvent();
-				end
-			end
-		end
-	self.frame:AddComponent(self.buyButton);
-
 	
 	self.closeButton = self:CreateButton("closeButton", "Close", 
 										 detailviewFrame.x + detailviewFrame.width - 210, background.y + background.height - 40, 6)
@@ -254,6 +346,10 @@ function ShopView:SetBuyingEvent(event)
 	self.buyingEvent = event;
 end
 
+function ShopView:SetCommitEvent(event)
+	self.commitEvent = event;
+end
+
 function ShopView:SetPortraitTexture(texture)
 	self.dialogueWin:SetPortraitTexture(texture);
 end
@@ -317,6 +413,13 @@ function ShopView:CreateItem(id, text, price, icon)
 				self.selectedEvent(button, luaevent, id);
 			end
 		end
+	pic.MouseDoubleClick =
+		function (button, luaevent, args)
+			Trace("double click!")
+			self.selectedEvent(button, luaevent, id);
+			self:commitEvent(button, luaevent, id);
+		end
+
 	frame:AddComponent(pic);
 	
 	local button = Button();
@@ -393,6 +496,21 @@ function ShopView:SetDownButtonEvent(event)
     self.downButtonEvent = event;
 end
 
-function ShopView:SetBuyMode(buy)
-	self.buyButton.enabled = buy;
+function ShopView:SetCountUpButtonEvent(event)
+    self.upCountButtonEvent = event;
+end
+
+function ShopView:SetCountDownButtonEvent(event)
+    self.downCountButtonEvent = event;
+end
+
+function ShopView:OpenCommitWindow(itemName, count, price)
+	self.priceLabel.text = price .. "G";
+	self.countLabel.text = count;
+	self.itemNameLabel.text = itemName;
+	self.commitWindow:Show();
+end
+
+function ShopView:CloseCommitWindow()
+	self.commitWindow:Hide();
 end

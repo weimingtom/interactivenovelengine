@@ -12,6 +12,9 @@ function ShopPresenter:New()
 
 	self.selectedItem = nil;
 	self.shopName = nil;
+	
+	self.itemCount = 0;
+	
 	return o
 end
 
@@ -29,7 +32,7 @@ function ShopPresenter:Init(main, shopView, itemManager, shopManager, inventoryM
 
 	main:ToggleMainMenu(false);
 
-	shopView:SetBuyMode(false);
+	--shopView:SetBuyMode(false);
 	shopView:SetDialogueName(shopManager:GetShop(shopName).owner);
 	shopView:SetPortraitTexture(shopManager:GetShop(shopName).portrait);
 	shopView:SetDialogueText(shopManager:GetShop(shopName).greetings);	
@@ -87,11 +90,33 @@ function ShopPresenter:RegisterEvents()
 		end
 	);
 	
+	shopView:SetCommitEvent(
+		function(button, luaevent, args)
+			self:AskCount(args);
+		end
+	);
+	
 	shopView:SetBuyingEvent(
 		function()
 			self:BuyItem();
 		end
 	);
+	
+	shopView:SetCountUpButtonEvent(
+        function()
+            self.itemCount = self.itemCount + 1;
+            self:RefreshCount();
+        end
+    )
+
+    shopView:SetCountDownButtonEvent(
+        function()
+			if (self.itemCount > 1) then
+				self.itemCount = self.itemCount - 1;
+				self:RefreshCount();
+			end
+        end
+    )
 	
 end
 
@@ -116,13 +141,6 @@ function ShopPresenter:AddItems()
             shopView:AddItem(v.id, v.text, v.price, v.icon);
 	    end
     end
-end
-
-function ShopPresenter:SelectItem(itemID)
-	local item = self.itemManager:GetItem(itemID);
-	self.shopView:SelectItem(item.id, item.name, item.desc, item.icon, item.price);
-	self.shopView:SetBuyMode(true);
-	self.selectedItem = itemID;
 end
 
 function table.contains(tbl, item)
@@ -168,11 +186,26 @@ function ShopPresenter:SetPage(modifier)
     end
 end
 
+function ShopPresenter:SelectItem(itemID)
+	local item = self.itemManager:GetItem(itemID);
+	self.shopView:SelectItem(item.id, item.text, item.desc, item.icon, item.price);
+	self.selectedItem = itemID;
+end
+
+function ShopPresenter:AskCount()
+	self.itemCount = 1;
+	self:RefreshCount();
+end
+
+function ShopPresenter:RefreshCount()
+	local item = self.itemManager:GetItem(self.selectedItem);
+	self.shopView:OpenCommitWindow(item.text, self.itemCount, self.itemCount * item.price);
+end
+
 function ShopPresenter:BuyItem()
 	Trace("buying " .. self.selectedItem)
 	local item = self.itemManager:GetItem(self.selectedItem);
 	self.shopView:ClearDialogueText();
 	self.shopView:SetDialogueText(self.shopManager:GetShop(self.shopName).buymessage);
-	
 	self.inventoryManager:AddItem(item.id, item.category);
 end

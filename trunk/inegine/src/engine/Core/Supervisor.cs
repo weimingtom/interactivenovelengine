@@ -54,6 +54,7 @@ namespace INovelEngine
             Window.MouseUp += new MouseEventHandler(Window_MouseUp);
             Window.MouseMove += new MouseEventHandler(Window_MouseMove);
             Window.MouseClick += new MouseEventHandler(Window_MouseClick);
+            Window.MouseDoubleClick += new MouseEventHandler(Window_MouseDoubleClick);
 
             // init device
             InitDevice();
@@ -70,8 +71,8 @@ namespace INovelEngine
             Resources.Add(fadingTransition);
 
             /* load lua entry script */
-            //Lua_LoadScript("Resources/start.lua");
-            Lua_LoadScript("zip://Resources/test.zip|start.lua");
+            Lua_LoadScript("Resources/start.lua");
+            //Lua_LoadScript("zip://Resources/test.zip|start.lua");
             
 
             this.Window.FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -79,7 +80,12 @@ namespace INovelEngine
 
 #if DEBUG
             Clock.AddTimeEvent(new TimeEvent(1000, displayFPS));
-#endif         
+#endif
+
+#if DEBUG
+            LuaConsole luaConsole = new LuaConsole();
+            luaConsole.Show();
+#endif
         }
 
         protected override void OnExiting(EventArgs e)
@@ -123,7 +129,7 @@ namespace INovelEngine
             GraphicsDeviceManager.ChangeDevice(settings);
         }
 
-        #region Keyboard Input Handler
+        #region Input Handler
 
         void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -150,6 +156,11 @@ namespace INovelEngine
             if (activeState != null) activeState.SendEvent(ScriptEvents.MouseClick, e.X, e.Y);
         }
 
+
+        void Window_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (activeState != null) activeState.SendEvent(ScriptEvents.MouseDoubleClick, e.X, e.Y);
+        }
 
 
         #endregion
