@@ -6,27 +6,44 @@ function InventoryManager:New()
 	self.__index = self
 	
 	self.itemList = {};
-    self.categoryMap = {};    
+    self.categoryMap = {};
+    self.countMap = {};    
     self.categoryList = {};    
 	self.equippedItems = {};
 	
 	return o
 end
 
-function InventoryManager:AddItem(id, category)
+function InventoryManager:AddItem(id, category, count)
 	if (category == nil and itemManager ~= nil) then
 		category = itemManager:GetItem(id).category;
 	end
-    table.insert(self.itemList, id);
-    if (table.contains(self.categoryList, category) == false) then
-        table.insert(self.categoryList, category);
+
+    if (count == nil) then
+        count = 1;
     end
-    self.categoryMap[id] = category;
+
+    if (table.contains(self.itemList, id) == false) then
+        table.insert(self.itemList, id);    
+        if (table.contains(self.categoryList, category) == false) then
+            table.insert(self.categoryList, category);
+        end
+        self.categoryMap[id] = category;
+        self.countMap[id] = count;
+    else
+        self.countMap[id] = self.countMap[id] + count;
+    end
 end
 
 function InventoryManager:RemoveItem(id)
-    table.removeItem(self.itemList, id);
-    self.categoryMap[id] = nil;
+    if (table.contains(self.itemList, id)) then
+        if (self.countMap[id] == 1) then
+            table.removeItem(self.itemList, id);
+            self.categoryMap[id] = nil;
+        else
+            self.countMap[id] = self.countMap[id] - 1;
+        end
+    end
 end
 
 function InventoryManager:ItemExists(id)
@@ -43,7 +60,11 @@ function InventoryManager:GetItems(category)
 	return itemList;
 end
 
-function InventoryManager:GetItemCount(category)
+function InventoryManager:GetItemCount(id)
+	return self.countMap[id];
+end
+
+function InventoryManager:GetCategoryCount(category)
 	local count = 0;
 	for i,v in ipairs(self.itemList) do
         if (category == self.categoryMap[v]) then
@@ -130,7 +151,11 @@ function InventoryManager:Save(target)
 	for i,v in ipairs(categories) do
 		local items = self:GetItems(v);
 	    for l,k in ipairs(items) do
-            saveString = saveString .. [[self:AddItem("]] .. k .. [[","]] .. v .. [[");]] .. "\n";
+            local itemCount = self:GetItemCount(k);
+            saveString = saveString .. "self:AddItem(\"" .. k .. 
+                                        "\",\"" .. v ..
+                                        "\"," .. itemCount ..
+                                         ");" .. "\n";
             if (self:ItemEquipped(k)) then
                 saveString = saveString .. [[self:EquipItem("]] .. k .. [[");]] .. "\n";
             end

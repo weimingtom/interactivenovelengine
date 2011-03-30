@@ -38,7 +38,7 @@ function ShopManager:GetItems(category)
 	return itemList;
 end
 
-function ShopManager:GetItemCount(category)
+function ShopManager:GetCategoryCount(category)
 	local count = 0;
 	for i=0, self.csv.Count-1 do
         local c = self.csv:GetString(i, "category");

@@ -136,9 +136,9 @@ function SchedulePresenter:Update()
 end
 
 function SchedulePresenter:UpdateNumPages()
-	self.numEduPages = math.ceil(self.scheduleManager:GetItemCount("edu") / self.pageItems);
-	self.numJobPages = math.ceil(self.scheduleManager:GetItemCount("job") / self.pageItems);
-	self.numVacPages = math.ceil(self.scheduleManager:GetItemCount("vac") / self.pageItems);
+	self.numEduPages = math.ceil(self.scheduleManager:GetCategoryCount("edu") / self.pageItems);
+	self.numJobPages = math.ceil(self.scheduleManager:GetCategoryCount("job") / self.pageItems);
+	self.numVacPages = math.ceil(self.scheduleManager:GetCategoryCount("vac") / self.pageItems);
 end
 
 function SchedulePresenter:AddItems()

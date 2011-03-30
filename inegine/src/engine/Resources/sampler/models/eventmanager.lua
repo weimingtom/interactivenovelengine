@@ -12,7 +12,7 @@ function EventManager:Load()
     self.csv = GetCsv("eventlist");
 end
 
-function EventManager:GetItemCount(category)
+function EventManager:GetCategoryCount(category)
 	local count = 0;
 	for i=0, self.csv.Count-1 do
         local c = self.csv:GetString(i, "category");

@@ -14,7 +14,7 @@ function ScheduleManager:Load()
     self.csv_failure = GetCsv("schedulefailure");
 end
 
-function ScheduleManager:GetItemCount(category)
+function ScheduleManager:GetCategoryCount(category)
 	local count = 0;
 	for i=0, self.csv.Count-1 do
         local c = self.csv:GetString(i, "category");
