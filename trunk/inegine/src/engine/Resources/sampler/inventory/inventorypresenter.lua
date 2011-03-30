@@ -115,9 +115,9 @@ function InventoryPresenter:Update()
 end
 
 function InventoryPresenter:UpdateNumPages()
-	self.numDressPages = math.ceil(self.inventoryManager:GetItemCount("dress") / self.pageItems);
-	self.numItemPages = math.ceil(self.inventoryManager:GetItemCount("item") / self.pageItems);
-	self.numFurniturePages = math.ceil(self.inventoryManager:GetItemCount("furniture") / self.pageItems);
+	self.numDressPages = math.ceil(self.inventoryManager:GetCategoryCount("dress") / self.pageItems);
+	self.numItemPages = math.ceil(self.inventoryManager:GetCategoryCount("item") / self.pageItems);
+	self.numFurniturePages = math.ceil(self.inventoryManager:GetCategoryCount("furniture") / self.pageItems);
 end
 
 function InventoryPresenter:AddItems()
@@ -159,7 +159,8 @@ end
 
 function InventoryPresenter:SelectItem(id)
 	local item = self.itemManager:GetItem(id);
-	self.inventoryView:SelectItem(item.id, item.text, item.desc, item.icon, item.price);
+    local itemCount = self.inventoryManager:GetItemCount(id);
+	self.inventoryView:SelectItem(item.id, item.text, item.desc, item.icon, item.price, itemCount);
 	self.selectedItem = id;
 	if (self.inventoryManager:ItemEquipped(id)) then
 		self.inventoryView:SetEquipMode(false);

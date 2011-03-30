@@ -13,7 +13,7 @@ function ItemManager:Load()
     self.csv = GetCsv("itemdata");
 end
 
-function ItemManager:GetItemCount(category)
+function ItemManager:GetCategoryCount(category)
 	local count = 0;
 	for i=0, self.csv.Count-1 do
         local c = self.csv:GetString(i, "category");

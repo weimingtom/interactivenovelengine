@@ -12,7 +12,7 @@ function TalkManager:Load()
     self.csv = GetCsv("talklist");
 end
 
-function TalkManager:GetItemCount(category)
+function TalkManager:GetCategoryCount(category)
 	local count = 0;
 	for i=0, self.csv.Count-1 do
         local c = self.csv:GetString(i, "category");

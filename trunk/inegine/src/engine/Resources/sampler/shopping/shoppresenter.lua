@@ -129,7 +129,7 @@ function ShopPresenter:Update()
 end
 
 function ShopPresenter:UpdateNumPages()
-	self.numPages = math.ceil(self.shopManager:GetItemCount(self.shopName) / self.pageItems);
+	self.numPages = math.ceil(self.shopManager:GetCategoryCount(self.shopName) / self.pageItems);
 end
 
 function ShopPresenter:AddItems()
@@ -207,5 +207,5 @@ function ShopPresenter:BuyItem()
 	local item = self.itemManager:GetItem(self.selectedItem);
 	self.shopView:ClearDialogueText();
 	self.shopView:SetDialogueText(self.shopManager:GetShop(self.shopName).buymessage);
-	self.inventoryManager:AddItem(item.id, item.category);
+	self.inventoryManager:AddItem(item.id, item.category, self.itemCount);
 end

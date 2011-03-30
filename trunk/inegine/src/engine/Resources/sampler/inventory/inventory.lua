@@ -357,10 +357,10 @@ function InventoryView:SetDownButtonEvent(event)
     self.downButtonEvent = event;
 end
 
-function InventoryView:SelectItem(itemId, itemName, description, icon, price)
+function InventoryView:SelectItem(itemId, itemName, description, icon, price, count)
 	self.selectedIcon.texture = icon;
 	self.selectedIconText.text = price .. "G"
-	self.detailView.text = itemName .. "\n" .. description;
+	self.detailView.text = itemName .. "x" .. count .. "\n" .. description;
 end
 
 function InventoryView:GetActiveTab()
