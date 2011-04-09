@@ -1,6 +1,7 @@
 require('luaunit')
 dofile "../sampler/models/savemanager.lua"
 dofile "../sampler/models/logmanager.lua"
+dofile "../sampler/common/observer.lua"
 
 TestTemp = {}
 
@@ -78,6 +79,21 @@ function TestTemp:testLog()
             print("    " .. line.line);
         end
     end
+end
+
+function TestTemp:testObserver()
+	alice = {}
+	alice.name = "TEST"
+	function alice:slot(param )
+	  print(self.name, param )
+	end
+	bob = {}
+	bob.alert = Observer.signal()
+
+	bob.alert:register(alice, alice.slot)
+	bob.alert("Hi there")
+	bob.alert:deregister(alice)
+	--bob.alert( "Hello?" )
 end
 
 function table.contains(tbl, item)

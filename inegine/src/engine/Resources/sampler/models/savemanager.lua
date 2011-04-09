@@ -87,6 +87,16 @@ function SaveManager:Save(id, description)
     self:SaveRecords();
 end
 
+function SaveManager:Title()
+	FadeOut(500)
+	Delay(500,
+	function()
+		CloseState();
+		OpenState("title", "Resources/Sampler/intro/titlestate.lua");
+		FadeIn(500)
+	end);
+end
+
 function SaveManager:Load(id)
 	LoadScript "Resources\\sampler\\models\\calendar.lua"
 	LoadScript "Resources\\sampler\\models\\character.lua"

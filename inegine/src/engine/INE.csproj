@@ -181,6 +181,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <None Include="Resources\sampler\common\observer.lua" />
     <None Include="BaseScripts\save.lua" />
     <None Include="BaseScripts\csv.lua" />
     <None Include="BaseScripts\ESS.lua" />

@@ -32,6 +32,16 @@ function ItemManager:ExtractItem(i)
     item.icon = self.csv:GetString(i, "icon");
     item.desc = self.csv:GetString(i, "desc");
     item.dressImage = self.csv:GetString(i, "dressImage");
+    item.hp = self.csv:GetString(i, "hp");
+    item.will = self.csv:GetString(i, "will");
+    item.int = self.csv:GetString(i, "int");
+    item.cha = self.csv:GetString(i, "cha");
+    item.grace = self.csv:GetString(i, "grace");
+    item.moral = self.csv:GetString(i, "moral");
+    item.sense = self.csv:GetString(i, "sense");
+    item.rep = self.csv:GetString(i, "rep");
+    item.stress = self.csv:GetString(i, "stress");
+    item.mana = self.csv:GetString(i, "mana");
     return item;
 end
 

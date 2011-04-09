@@ -75,6 +75,7 @@ function ScheduleManager:GetEffect(id, csv)
 			item.hp = csv:GetFloat(i, "hp");
 			item.stress = csv:GetFloat(i, "stress");
 			item.gold = csv:GetFloat(i, "gold");
+			--TODO: other abilities!
 			return item;
 		end
 	end

@@ -89,6 +89,20 @@ function SaveView:Init()
 		self.saveButton.y = saveLoadWindow.y + saveLoadWindow.height + 5
 		self.frame:AddComponent(self.saveButton);
 	end
+
+	if (self.showTitle == nil or self.showTitle == true) then
+
+		self.titleButton = self:CreateButton("titleButton", "Title", 
+			function (button, luaevent, args)
+				if (self.titleEvent ~= nil) then
+					self.titleEvent();
+				end
+			end)
+		self.titleButton.x = saveLoadWindow.x + saveLoadWindow.width - 110 - 110 * 3;
+		self.titleButton.y = saveLoadWindow.y + saveLoadWindow.height + 5
+		self.frame:AddComponent(self.titleButton);
+	end
+
 end
 
 function SaveView:CreateButton(buttonName, buttonText, event)
@@ -170,6 +184,10 @@ end
 
 function SaveView:SetLoadEvent(event)
     self.loadEvent = event;
+end
+
+function SaveView:SetTitleEvent(event)
+    self.titleEvent = event;
 end
 
 function SaveView:Clear()
