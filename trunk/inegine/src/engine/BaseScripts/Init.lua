@@ -32,7 +32,7 @@ end
 
 function InitResource(resource)
     CurrentState():AddResource(resource);
-end;
+end
 
 function RemoveResource(id)
     return CurrentState():RemoveResource(id);

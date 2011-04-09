@@ -72,8 +72,6 @@ namespace INovelEngine
 
             /* load lua entry script */
             Lua_LoadScript("Resources/start.lua");
-            //Lua_LoadScript("zip://Resources/test.zip|start.lua");
-            
 
             this.Window.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.Window.MaximizeBox = false;

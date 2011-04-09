@@ -12,7 +12,11 @@ function SavePresenter:SetClosingEvent(event)
 	self.closingEvent = event;
 end
 
-function SavePresenter:Init(saveView, saveManager)
+function SavePresenter:SetTitleEvent(event)
+	self.titleEvent = event;
+end
+
+function SavePresenter:Init(saveView, saveManager, main)
 	self.saveView = saveView;
 	self.saveManager = saveManager;
 	
@@ -58,6 +62,12 @@ function SavePresenter:RegisterEvents()
 		end
 	);
 	
+	saveView:SetTitleEvent(
+		function()
+			self:Title();
+		end
+	);
+	
 end
 
 function SavePresenter:Update()
@@ -88,4 +98,11 @@ function SavePresenter:Load()
 		self.saveManager:Load(self.selectedID);
         self.selectedID = nil;
     end
+end
+
+function SavePresenter:Title()
+	if (self.titleEvent ~= nil) then
+		self.titleEvent();
+		self.saveManager:Title();
+	end
 end

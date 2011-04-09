@@ -425,6 +425,11 @@ function Main:OpenSystem()
 			self.savePresenter = nil;
 		end
 	)
+	self.savePresenter:SetTitleEvent(
+		function()
+			Trace("going back to title!");
+		end
+	)
 end
 
 function Main:OpenInventory()

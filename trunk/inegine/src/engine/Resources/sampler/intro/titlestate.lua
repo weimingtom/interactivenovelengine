@@ -152,6 +152,7 @@ function TitleState:OpenSystem()
 	self.view:Hide();
 	local saveView = SaveView:New("saveView", CurrentState());
 	saveView.showSave = false;
+	saveView.showTitle = false;
 	saveView:Init();
 	self.savePresenter = SavePresenter:New();
 	self.savePresenter:Init(saveView, saveManager);
