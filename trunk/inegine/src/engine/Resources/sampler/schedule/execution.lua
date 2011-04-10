@@ -4,6 +4,13 @@ LoadScript "Resources\\sampler\\components\\luaview.lua"
 ExecutionView = LuaView:New();
 
 function ExecutionView:Init()
+	StopSounds(1000);
+    
+    self:InitComponents();
+end
+
+function ExecutionView:InitComponents()
+   
 	local gamestate = CurrentState();
 	local parent = self.parent;
 	local name = self.name;
@@ -126,7 +133,7 @@ function ExecutionView:SetExecutionOverEvent(event)
 	self.executionOverEvent = event;
 end
 
-function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, baseAnimation, resultText, afterText, afterPortrait, result)
+function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, baseAnimation, resultText, afterText, afterPortrait, sound, result)
 	self:ShowAnimationView(false);
 	self:ShowStatus(false);
 	self.dialogueWin:Hide();
@@ -155,6 +162,7 @@ function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, baseAni
 					if (result ~= nil) then
 						result();
 					end
+					GetSound(sound):Play();
                     self:ShowStatus(true);
 			        self:SetStatusText(resultText);
 			        self.dialogueWin:SetDialogueOverEvent(

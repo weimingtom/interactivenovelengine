@@ -29,6 +29,7 @@ namespace INovelEngine
 
         private FontManager fontManager = new FontManager();
         private CsvManager csvManager = new CsvManager();
+        private SoundManager soundManager = new SoundManager();
 
         private FadingTransition fadingTransition = new FadingTransition();
 
@@ -61,13 +62,13 @@ namespace INovelEngine
 
             this.RegisterLuaGlue();
 
-            SoundPlayer.Init();
-            SoundPlayer.SetVolume(50);
+            SoundPlayer.SetVolume(100);
 
             ScriptManager.Init();
 
             Resources.Add(fontManager);
             Resources.Add(csvManager);
+            Resources.Add(soundManager);
             Resources.Add(fadingTransition);
 
             /* load lua entry script */
@@ -108,6 +109,11 @@ namespace INovelEngine
             {
                 Console.WriteLine(obj.GetType().ToString() + ":" + obj.CreationTime.ToString());
             }
+
+#if DEBUG
+            MessageBox.Show("Terminating INE");
+#endif
+
         }
  
         private void InitDevice()
@@ -275,6 +281,7 @@ namespace INovelEngine
 
             ScriptManager.lua.RegisterFunction("Supervisor", this, this.GetType().GetMethod("Lua_Supervisor"));
             ScriptManager.lua.RegisterFunction("FontManager", this, this.GetType().GetMethod("Lua_FontManager"));
+            ScriptManager.lua.RegisterFunction("SoundManager", this, this.GetType().GetMethod("Lua_SoundManager"));
             ScriptManager.lua.RegisterFunction("CsvManager", this, this.GetType().GetMethod("Lua_CsvManager"));
 
             ScriptManager.lua.RegisterFunction("Delay", this, this.GetType().GetMethod("Lua_DelayedCall"));
@@ -462,6 +469,11 @@ namespace INovelEngine
         public CsvManager Lua_CsvManager()
         {
             return this.csvManager;
+        }
+
+        public SoundManager Lua_SoundManager()
+        {
+            return this.soundManager;
         }
 
         public void Lua_HideCursor()

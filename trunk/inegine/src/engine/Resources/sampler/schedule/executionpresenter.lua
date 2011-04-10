@@ -79,12 +79,15 @@ function ExecutionPresenter:RunSchedule()
         )
         local dialog2 = "";
         local portrait2 = "";
+        local sound = "";
         if (success) then
             dialog2 = "이번주는 잘 되었습니다!\n아버지도 기뻐하실거에요.@"
             portrait2 = "Resources/sampler/resources/images/f2.png"
+            sound = "failure";
         else
             dialog2 = "이번주는 잘 안되었습니다!\n아버지가 슬퍼하실거에요.@"
             portrait2 = "Resources/sampler/resources/images/f1.png"
+            sound = "failure";
         end
 
 	    self.executionView:ExecuteSchedule("규브", "이번주의 일정은 " ..  scheduleName .. "입니다.\n열심히 하세요.@",
@@ -93,6 +96,7 @@ function ExecutionPresenter:RunSchedule()
 							      result,
 							      dialog2,
 							      portrait2,
+							      sound,
 							      function()
 									self.main:InvalidateStatus();
 							      end);

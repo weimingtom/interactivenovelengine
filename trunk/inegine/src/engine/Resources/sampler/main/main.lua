@@ -32,6 +32,9 @@ function Main:New()
 
     self:InitComponents()
     self:RegisterEvents()
+    
+    StopSounds(1000);
+	    
 	return o
 end
 

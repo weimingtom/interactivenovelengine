@@ -181,6 +181,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
+    <None Include="BaseScripts\sound.lua" />
     <None Include="Resources\sampler\common\observer.lua" />
     <None Include="BaseScripts\save.lua" />
     <None Include="BaseScripts\csv.lua" />
@@ -199,6 +200,7 @@
     <None Include="Resources\sampler\communication\talklist.lua" />
     <None Include="Resources\sampler\components\dialoguewindow.lua" />
     <None Include="Resources\sampler\components\eventview.lua" />
+    <None Include="Resources\sampler\init_sound.lua" />
     <None Include="Resources\sampler\intro\makingstate.lua" />
     <None Include="Resources\sampler\intro\titlestate.lua" />
     <None Include="Resources\sampler\log\logstate.lua" />
@@ -297,6 +299,7 @@
     </Content>
     <Content Include="Resources\sampler\resources\after.png" />
     <Content Include="Resources\sampler\resources\before.png" />
+    <Content Include="Resources\sampler\resources\box.png" />
     <Content Include="Resources\sampler\resources\button\button.png" />
     <Content Include="Resources\sampler\resources\button\button2.png" />
     <Content Include="Resources\sampler\resources\button\tabbutton.png" />
@@ -324,14 +327,14 @@
     <Content Include="Resources\sampler\resources\images\village.png" />
     <Content Include="Resources\sampler\resources\left.png" />
     <Content Include="Resources\sampler\resources\right.png" />
+    <Content Include="Resources\sampler\resources\sound\failure.mp3" />
+    <Content Include="Resources\sampler\resources\sound\opening.mp3" />
     <Content Include="Resources\sampler\resources\test.ico" />
     <Content Include="Resources\sampler\resources\up.png" />
     <Content Include="Resources\sampler\resources\whitewin.png" />
     <Content Include="Resources\sampler\resources\win.png" />
     <Content Include="Resources\sampler\resources\window.png" />
     <Content Include="Resources\sampler\resources\windows\dialoguewin.png" />
-    <Content Include="Resources\sampler\resources\sound\intro.mp3" />
-    <Content Include="Resources\sampler\resources\sound\rise.mp3" />
     <Content Include="SampleFramework.dll">
     </Content>
     <Content Include="zlib1.dll">

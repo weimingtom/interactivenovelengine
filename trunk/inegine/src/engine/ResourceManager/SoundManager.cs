@@ -46,6 +46,7 @@ namespace INovelEngine.ResourceManager
 
         public void Play()
         {
+            Console.WriteLine("playing sound " + this.Name);
             SoundPlayer.PlaySound(this.FileName, Loop);
         }
 
@@ -87,6 +88,7 @@ namespace INovelEngine.ResourceManager
         private void FadeOutOver()
         {
             this.Stop();
+            this.Volume = oldVolume;
         }
 
         TimeEvent fadeOutEvent;
@@ -128,6 +130,105 @@ namespace INovelEngine.ResourceManager
             SoundPlayer.StopSound(FileName);
             SoundPlayer.CloseSound(FileName);
             base.Dispose();
+        }
+
+        #endregion
+    }
+
+    public class SoundManager : IResource // sound manager is a graphical resource itself
+    {
+        protected ResourceCollection resources = new ResourceCollection();
+        protected Dictionary<String, AbstractResource> resourcesMap = new Dictionary<string, AbstractResource>();
+
+
+        #region IResource Members for managing resources
+
+        public void Initialize(GraphicsDeviceManager graphicsDeviceManager)
+        {
+            Console.WriteLine("initializing sound manager!");
+            resources.Initialize(graphicsDeviceManager);
+        }
+
+        public void LoadContent()
+        {
+            resources.LoadContent();
+        }
+
+        public void UnloadContent()
+        {
+            resources.UnloadContent();
+        }
+
+        #endregion
+
+
+        #region IDisposable Members
+
+        public void Dispose()
+        {
+            Console.WriteLine("disposing sound manager!");
+            resources.Dispose();
+        }
+
+        #endregion
+
+        #region resource management
+
+        public void LoadSound(string alias, string path)
+        {
+            if (resourcesMap.ContainsKey(alias)) return;
+            INESound newSound = new INESound(path);
+            newSound.Name = alias;
+            AddSound(newSound);
+        }
+
+        public void AddSound(INESound sound)
+        {
+            if (resourcesMap.ContainsKey(sound.Name)) return;
+
+            resources.Add(sound);
+            resourcesMap[sound.Name] = sound;
+        }
+
+
+        public INESound GetSound(string id)
+        {
+            if (resourcesMap.ContainsKey(id))
+            {
+                return (INESound)resourcesMap[id];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void Stop()
+        {
+            foreach (INESound sound in this.resources)
+            {
+                sound.Stop();
+            }
+        }
+        
+        public void Fade(int fadeDuration)
+        {
+            Console.WriteLine("fading out all sounds in " + fadeDuration + "ms");
+            foreach (INESound sound in this.resources)
+            {
+                sound.Fadeout(fadeDuration);
+            }
+        }
+
+        public void RemoveResource(string id)
+        {
+            if (resourcesMap.ContainsKey(id))
+            {
+                INESound sound = (INESound)resourcesMap[id];
+                resources.Remove(sound);
+                resourcesMap.Remove(id);
+                sound.Dispose();
+            }
         }
 
         #endregion
