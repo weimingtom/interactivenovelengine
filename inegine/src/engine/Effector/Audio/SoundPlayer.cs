@@ -37,12 +37,6 @@ namespace INovelEngine.Effector.Audio
             mciSendString(commandString, null, 0, IntPtr.Zero);
         }
 
-
-        public static void Init()
-        { 
-        
-        }
-
         public static void LoadSound(string file)
         {
             Console.WriteLine("loading " + file);
@@ -57,11 +51,13 @@ namespace INovelEngine.Effector.Audio
 
         public static void PlaySound(string file, Boolean loop)
         {
-
-            string commandString = "play \"" + file + "\"";
+            StopSound(file);
+            string commandString = "play \"" + file + "\" from 0";
+            Console.WriteLine(commandString);
             int mcierror = mciSendString(commandString, null, 0, IntPtr.Zero);
             if (mcierror != 0)
             {
+                Console.WriteLine("playing sound " + file + " failed!");
                 throw new Exception("playing sound failed!");
             }
         }

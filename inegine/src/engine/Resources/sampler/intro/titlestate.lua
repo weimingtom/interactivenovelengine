@@ -15,6 +15,8 @@ function TitleState:New()
     self:InitComponents()
     self:RegisterEvents()
     
+    GetSound("sound1"):Play();
+    
 	return o
 end
 

@@ -85,4 +85,5 @@ end
 LoadScript "BaseScripts/ESS.lua"
 LoadScript "BaseScripts/font.lua"
 LoadScript "BaseScripts/csv.lua"
+LoadScript "BaseScripts/sound.lua"
 LoadScript "BaseScripts/save.lua"
