@@ -390,10 +390,16 @@ function InventoryView:SetEquipEvent(event)
 end
 
 function InventoryView:SetEquipMode(equip)
+	self:ShowEquip(true);
 	self.equipButton.enabled = true;
 	if (equip) then
 		self.equipButton.text = "Equip";
 	else
 		self.equipButton.text = "Unequip";
 	end
+end
+
+function InventoryView:ShowEquip(enable)
+	self.equipButton.visible = enable;
+	self.equipButton.enabled = enable;
 end

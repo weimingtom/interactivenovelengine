@@ -10,7 +10,7 @@ function Character:New()
 	self.max = {}
 	self.min = {}
 	self.trigger = {}
-	
+	self.dress = nil;
 	self:Initialize();	
 	
 	return o
@@ -91,12 +91,30 @@ function Character:GetRatio(key)
 end
 
 function Character:Get(key)
-    return self.status[key];
+    local base = self.status[key];
+    local effective = base;
+    if (inventoryManager ~= nil) then
+		local itemlist = inventoryManager:GetItems("item");
+		
+		if (self.dress ~= nil and self.dress ~= "") then
+			table.insert(itemlist, self.dress);
+		end
+		for i,v in pairs(itemlist) do
+			local item = itemManager:GetItem(v);
+			local itemCount = inventoryManager:GetItemCount(v);
+			assert(item ~= nil);
+			if (item[key] ~= nil) then
+				effective = effective + itemCount * item[key];
+			end
+		end
+    end
+    
+    return effective;
 end
 
 function Character:Read(key, digits)
 	if (digits == nil) then digits = 0; end
-	return string.format("%." .. (digits) .. "f", self.status[key])
+	return string.format("%." .. (digits) .. "f", self:Get(key))
 end
 
 function Character:GetFirstName()

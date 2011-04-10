@@ -162,11 +162,16 @@ function InventoryPresenter:SelectItem(id)
     local itemCount = self.inventoryManager:GetItemCount(id);
 	self.inventoryView:SelectItem(item.id, item.text, item.desc, item.icon, item.price, itemCount);
 	self.selectedItem = id;
-	if (self.inventoryManager:ItemEquipped(id)) then
-		self.inventoryView:SetEquipMode(false);
+	if (item.category == "dress") then
+		--enable equipping for dress items only
+		if (self.inventoryManager:ItemEquipped(id)) then
+			self.inventoryView:SetEquipMode(false);
+		else
+			self.inventoryView:SetEquipMode(true);
+		end	
 	else
-		self.inventoryView:SetEquipMode(true);
-	end	
+		self.inventoryView:ShowEquip(false);
+	end
 end
 
 function InventoryPresenter:EquipItem()
