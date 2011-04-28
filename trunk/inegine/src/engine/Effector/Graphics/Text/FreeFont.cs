@@ -68,7 +68,7 @@ namespace INovelEngine.Effector.Graphics.Text
         public string Name;
         public TagType Type;
         public string Value;
-        public Boolean IsEnding = false;
+        public bool IsEnding = false;
 
         public enum TagType
         {
@@ -80,7 +80,7 @@ namespace INovelEngine.Effector.Graphics.Text
 
         public Tag(string token)
         {
-            String name = "";
+            string name = "";
             if (token[1] == '/') // ending tag
             {
                 name = token.Substring(2, token.Length - 3);
@@ -160,17 +160,17 @@ namespace INovelEngine.Effector.Graphics.Text
         protected readonly List<GlyphHolder> _glyphList;
 
         private string _prevString;
-        private Boolean _prevWrap;
+        private bool _prevWrap;
         private int _prevWrapWidth;
         protected bool _spaceFirstLine;
 
         protected readonly Stack<Color> _colorStack;
 
         private Color _color = Color.Black;
-        public Boolean Wrap = false;
+        public bool Wrap = false;
         private int _wrapWidth = 100;
 
-        protected Boolean _wrapLock = false;
+        protected bool _wrapLock = false;
         protected int _lockPos = -1;
         protected int _lockHeight = -1;
         protected int _lockWidth = -1;
@@ -227,7 +227,7 @@ namespace INovelEngine.Effector.Graphics.Text
         }
 
 
-        public void ProcessString(String str)
+        public void ProcessString(string str)
         {
             if (_prevString == null || _prevString != str || _prevWrap != Wrap || (Wrap == true && _prevWrapWidth != WrapWidth))
             {
@@ -245,7 +245,7 @@ namespace INovelEngine.Effector.Graphics.Text
         }
 
         // parse markup tags - outputs str (without tags) and tag list
-        private Dictionary<int, Tag> ParseTags(ref String str)
+        private Dictionary<int, Tag> ParseTags(ref string str)
         {
             Dictionary<int, Tag> temptagList = new Dictionary<int, Tag>();
 
@@ -256,7 +256,7 @@ namespace INovelEngine.Effector.Graphics.Text
 
             while (tagPosition > -1 && interval > 0)
             {
-                String tag = str.Substring(tagPosition, interval);
+                string tag = str.Substring(tagPosition, interval);
 
                 if (tag.Length > 2) // tag longer than "[]"
                 {
@@ -274,7 +274,7 @@ namespace INovelEngine.Effector.Graphics.Text
             return temptagList;
         }
 
-        private void CreateDisplayList(String str)
+        private void CreateDisplayList(string str)
         {
             _glyphList.Clear();
 
@@ -282,7 +282,7 @@ namespace INovelEngine.Effector.Graphics.Text
             GlyphHolder lastLineBreak = null;
 
             int tagStartPosition = -1;
-            Boolean tagStarted = false;
+            bool tagStarted = false;
 
             _maxWidth = 0;
             _maxHeight = 0;
@@ -398,7 +398,7 @@ namespace INovelEngine.Effector.Graphics.Text
             _maxHeight += currentMaxHeight;
         }
 
-        public Size Measure(String str, int wrapWidth)
+        public Size Measure(string str, int wrapWidth)
         {
             bool tempWrap = Wrap;
             Wrap = true;
@@ -411,7 +411,7 @@ namespace INovelEngine.Effector.Graphics.Text
             return size;
         }
 
-        public Size Measure(String str)
+        public Size Measure(string str)
         {
             Size size = new Size();
             CreateDisplayList(str);
@@ -420,7 +420,7 @@ namespace INovelEngine.Effector.Graphics.Text
             return size;
         }
 
-        public void DrawString(Sprite sprite, String str, int x, int y)
+        public void DrawString(Sprite sprite, string str, int x, int y)
         {
             ProcessString(str);
             _x = x;
@@ -495,7 +495,7 @@ namespace INovelEngine.Effector.Graphics.Text
                         if (tag.Value.Length == 7 && tag.Value[0] == '#')
                         {
                             // hex color value
-                            String color = "FF" + tag.Value.Substring(1);
+                            string color = "FF" + tag.Value.Substring(1);
                             this._color = System.Drawing.Color.FromArgb(Convert.ToInt32(color, 16));
                         }
                     }

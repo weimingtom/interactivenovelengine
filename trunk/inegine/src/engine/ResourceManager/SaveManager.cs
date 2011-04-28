@@ -12,7 +12,7 @@ namespace INovelEngine.ResourceManager
             File.WriteAllText(path, EncodeDecode(data));
         }
 
-        public static String LoadData(string path)
+        public static string LoadData(string path)
         {
             return EncodeDecode(File.ReadAllText(path));
         }

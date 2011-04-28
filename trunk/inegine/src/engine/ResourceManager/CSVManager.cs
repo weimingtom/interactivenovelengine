@@ -19,8 +19,8 @@ namespace INovelEngine.ResourceManager
     public class INECsv : AbstractResource 
     {
         public CSVReader csvReader;
-        public List<String> columns;
-        private Dictionary<String, int> columnMap;
+        public List<string> columns;
+        private Dictionary<string, int> columnMap;
         private List<Object> row;
         private List<List<Object>> rows;
 
@@ -110,12 +110,12 @@ namespace INovelEngine.ResourceManager
             }
         }
 
-        public String GetColumn(int i)
+        public string GetColumn(int i)
         {
             return this.columns[i].Trim();
         }
 
-        public int GetColumnID(String columnName)
+        public int GetColumnID(string columnName)
         {
             if (this.columnMap.ContainsKey(columnName))
             {
@@ -127,13 +127,13 @@ namespace INovelEngine.ResourceManager
             }
         }
 
-        public String GetString(int row, String col)
+        public string GetString(int row, string col)
         {
             Object obj = this.rows[row][GetColumnID(col)];
             return obj.ToString();
         }
 
-        public int GetInt(int row, String col)
+        public int GetInt(int row, string col)
         {
             Object obj = this.rows[row][GetColumnID(col)];
             if (obj.GetType().ToString().Equals("System.Byte"))
@@ -146,7 +146,7 @@ namespace INovelEngine.ResourceManager
             }
         }
 
-        public float GetFloat(int row, String col)
+        public float GetFloat(int row, string col)
         {
             Object obj = this.rows[row][GetColumnID(col)];
             if (obj.GetType().ToString().Equals("System.Single"))
@@ -163,10 +163,10 @@ namespace INovelEngine.ResourceManager
             }
         }
 
-        public Boolean GetBoolean(int row, String col)
+        public bool GetBoolean(int row, string col)
         {
             Object obj = this.rows[row][GetColumnID(col)];
-            String condition = obj.ToString().ToLower();
+            string condition = obj.ToString().ToLower();
             if (condition.Equals("true") || condition.Equals("yes")
                 || condition.Equals("y") || condition.Equals("o")
                 || condition.Equals("1"))
@@ -193,7 +193,7 @@ namespace INovelEngine.ResourceManager
             {
                 streamReader = new StreamReader(this.FileName, System.Text.Encoding.GetEncoding(this.Encoding));
             } 
-            String fileContent = streamReader.ReadToEnd();
+            string fileContent = streamReader.ReadToEnd();
             streamReader.Close();
             csvReader = new CSVReader(fileContent);
             this.readColumns();
@@ -222,7 +222,7 @@ namespace INovelEngine.ResourceManager
     public class CsvManager : IResource
     {
         protected ResourceCollection resources = new ResourceCollection();
-        protected Dictionary<String, AbstractResource> resourcesMap = new Dictionary<string, AbstractResource>();
+        protected Dictionary<string, AbstractResource> resourcesMap = new Dictionary<string, AbstractResource>();
 
 
         #region IResource Members for managing graphical resources

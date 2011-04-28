@@ -49,7 +49,7 @@ namespace INovelEngine.Effector.Audio
             mciSendString("close \"" + file + "\"", null, 0, IntPtr.Zero);
         }
 
-        public static void PlaySound(string file, Boolean loop)
+        public static void PlaySound(string file, bool loop)
         {
             StopSound(file);
             string commandString = "play \"" + file + "\" from 0";

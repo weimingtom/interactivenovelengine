@@ -10,8 +10,8 @@ namespace INovelEngine.Core
 {
     public partial class TextInput : Form
     {
-        public String value;
-        public Boolean numeric;
+        public string value;
+        public bool numeric;
 
         public TextInput()
         {
