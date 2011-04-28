@@ -1,7 +1,7 @@
 ﻿[테스트 스크립트 1]
 #FadeIn 1000
-#Load "street", "Resources/sampler/resources/images/room04.jpg"
-#LoadCharacter "musume1", "Resources/sampler/resources/images/1.png"
+#Load "street", "resources/images/room04.jpg"
+#LoadCharacter "musume1", "resources/images/1.png"
 #Show "street", 100
 #ShowDialogue
 #if 1==1
@@ -10,7 +10,7 @@
 #return
 #end
 |[r=HOME]집[/r]에 가다가 넘어졌다.@
-#Name "안나", "Resources/sampler/resources/images/f1.png"
+#Name "안나", "resources/images/f1.png"
 #Show "musume1", 100
 |아파... 흑흑흑...
 어떻게 하지? 젠장...

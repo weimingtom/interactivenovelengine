@@ -1,6 +1,6 @@
 --intro state
 
-LoadScript "Resources\\sampler\\components\\eventview.lua"
+LoadScript "components\\eventview.lua"
 
 intro = EventView:New();
 CurrentState().state = intro;

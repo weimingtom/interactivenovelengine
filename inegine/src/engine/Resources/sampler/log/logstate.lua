@@ -1,7 +1,7 @@
 ﻿--title state
 --Import
-LoadScript "Resources\\sampler\\models\\logmanager.lua"
-LoadScript "Resources\\sampler\\components\\flowview.lua"
+LoadScript "models\\logmanager.lua"
+LoadScript "components\\flowview.lua"
 
 LogState = {}
 
@@ -27,7 +27,7 @@ end
 function LogState:InitComponents()
 	local gamestate = self.gamestate;
 	
-	self:SetBackground("Resources/sampler/resources/images/title.jpg");
+	self:SetBackground("resources/images/title.jpg");
 	
 	local view = View();
 	self.view = view;
@@ -47,7 +47,7 @@ function LogState:InitComponents()
 	background.height = self.view.height - 150;
 	background.x = 50;
 	background.y = 50;
-    background.WindowTexture = "Resources/sampler/resources/parchmentwindow.png"
+    background.WindowTexture = "resources/parchmentwindow.png"
     background.RectSize = 40
     background.BackgroundColor = 0xFFFFFF
 	background.alpha = 255
@@ -218,7 +218,7 @@ function LogState:CreateBox()
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = "boxButton";
-	newButton.Texture = "Resources/sampler/resources/box.png"
+	newButton.Texture = "resources/box.png"
 	newButton.Layer = 15
 	newButton.X = 0;
 	newButton.Y = 0;
@@ -231,7 +231,7 @@ function LogState:CreateUpButton(event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = "upButton";
-	newButton.Texture = "Resources/sampler/resources/up.png"
+	newButton.Texture = "resources/up.png"
 	newButton.Layer = 15
 	newButton.X = 0;
 	newButton.Y = 0;
@@ -260,7 +260,7 @@ function LogState:CreateDownButton(event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = "downButotn";
-	newButton.Texture = "Resources/sampler/resources/down.png"
+	newButton.Texture = "resources/down.png"
 	newButton.Layer = 15
 	newButton.X = 0;
 	newButton.Y = 0;
@@ -290,7 +290,7 @@ function LogState:CreateButton(buttonText, event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = buttonText;
-	newButton.Texture = "Resources/sampler/resources/button/button.png"	
+	newButton.Texture = "resources/button/button.png"	
 	newButton.Layer = 3
 	newButton.X = 0;
 	newButton.Y = 0;

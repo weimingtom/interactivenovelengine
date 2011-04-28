@@ -1,11 +1,11 @@
 ﻿[테스트 스크립트 1]
 #FadeIn 500
-#Load "room", "Resources/sampler/resources/images/room02.jpg"
-#Load "logo", "Resources/sampler/resources/images/logo.png"
-#Load "title", "Resources/sampler/resources/images/title.png"
-#LoadCharacter "musume1", "Resources/sampler/resources/before.png" 
-#LoadCharacter "musume2", "Resources/sampler/resources/after.png"
-#LoadSound "intro", "Resources/sampler/resources/sound/intro.mp3"
+#Load "room", "resources/images/room02.jpg"
+#Load "logo", "resources/images/logo.png"
+#Load "title", "resources/images/title.png"
+#LoadCharacter "musume1", "resources/before.png" 
+#LoadCharacter "musume2", "resources/after.png"
+#LoadSound "intro", "resources/sound/intro.mp3"
 #Volume "intro", 20
 #Wait 100
 #Play "intro"

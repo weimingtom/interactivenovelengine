@@ -1,7 +1,7 @@
 ﻿--title state
 --Import
-LoadScript "Resources\\sampler\\save\\saveview.lua"
-LoadScript "Resources\\sampler\\save\\savepresenter.lua"
+LoadScript "save\\saveview.lua"
+LoadScript "save\\savepresenter.lua"
 
 TitleState = {}
 
@@ -24,7 +24,7 @@ end
 function TitleState:InitComponents()
 	local gamestate = self.gamestate;
 	
-	self:SetBackground("Resources/sampler/resources/images/title.jpg");
+	self:SetBackground("resources/images/title.jpg");
 	
 	local view = View();
 	self.view = view;
@@ -60,7 +60,7 @@ function TitleState:InitComponents()
 		function (button, luaevent, args)
 			Trace("new game button clicked!");
 			CloseState();
-			LoadScript("Resources/Sampler/startgame.lua");
+			LoadScript("startgame.lua");
 		end);
 	newGameButton.X = 550;
 	newGameButton.Y = 300;

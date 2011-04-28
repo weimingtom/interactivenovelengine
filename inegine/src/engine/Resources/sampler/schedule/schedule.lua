@@ -1,7 +1,7 @@
 -- schedule UI component implemented in lua
-LoadScript "Resources\\sampler\\components\\luaview.lua"
-LoadScript "Resources\\sampler\\components\\tabview.lua"
-LoadScript "Resources\\sampler\\components\\flowview.lua"
+LoadScript "components\\luaview.lua"
+LoadScript "components\\tabview.lua"
+LoadScript "components\\flowview.lua"
 
 ScheduleView = LuaView:New();
 
@@ -63,7 +63,7 @@ function ScheduleView:Init()
 	background.height = self.tabviewframe.height - 50 - 50;
 	background.x = 5;
 	background.y = 50;
-    background.WindowTexture = "Resources/sampler/resources/window.png"
+    background.WindowTexture = "resources/window.png"
     background.RectSize = 40
     background.BackgroundColor = 0xFFFFFF
 	background.alpha = 255
@@ -154,7 +154,7 @@ function ScheduleView:Init()
 
 	selectionframe.X = 475;
 	selectionframe.Y = 315;
-    selectionframe.WindowTexture = "Resources/sampler/resources/window.png"
+    selectionframe.WindowTexture = "resources/window.png"
     selectionframe.RectSize = 40
     selectionframe.BackgroundColor = 0xFFFFFF
 	selectionframe.Width = 320
@@ -221,7 +221,7 @@ function ScheduleView:Init()
 	detailviewframe.font = font;
 	detailviewframe.X = 475;
 	detailviewframe.Y = 440;
-    detailviewframe.WindowTexture = "Resources/sampler/resources/window.png"
+    detailviewframe.WindowTexture = "resources/window.png"
     detailviewframe.RectSize = 40
     detailviewframe.BackgroundColor = 0xFFFFFF
     detailviewframe.linespacing = 10
@@ -240,7 +240,7 @@ function ScheduleView:CreateUpButton(event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = "upButton";
-	newButton.Texture = "Resources/sampler/resources/up.png"
+	newButton.Texture = "resources/up.png"
 	newButton.Layer = 15
 	newButton.X = 0;
 	newButton.Y = 0;
@@ -269,7 +269,7 @@ function ScheduleView:CreateDownButton(event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = "downButotn";
-	newButton.Texture = "Resources/sampler/resources/down.png"
+	newButton.Texture = "resources/down.png"
 	newButton.Layer = 15
 	newButton.X = 0;
 	newButton.Y = 0;
@@ -298,7 +298,7 @@ function ScheduleView:CreateButton(buttonText, event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = buttonText;
-	newButton.Texture = "Resources/sampler/resources/button/button.png"
+	newButton.Texture = "resources/button/button.png"
 	newButton.Layer = 3
 	newButton.X = 0;
 	newButton.Y = 0;
@@ -329,7 +329,7 @@ function ScheduleView:CreateSelectedButton(buttonName, buttonText)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = buttonName;
-	newButton.Texture = "Resources/sampler/resources/button.png"
+	newButton.Texture = "resources/button.png"
 	newButton.Layer = 3
 	newButton.X = 0;
 	newButton.Y = 0;

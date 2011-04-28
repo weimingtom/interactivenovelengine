@@ -167,7 +167,7 @@ end
 function SchedulePresenter:SelectSchedule(scheduleID)
 	if (self.selectedScheduleCount < self.numSchedules) then
 		local key = self:GetKey();
-		if (self.scheduleView ~= nil) then self.scheduleView:AddSelectedItem(key, "Resources/sampler/resources/icon.png"); end;
+		if (self.scheduleView ~= nil) then self.scheduleView:AddSelectedItem(key, "resources/icon.png"); end;
 		table.insert(self.selectedSchedules, scheduleID);
 		self.scheduleKeyMap[key] = scheduleID;
 		self.selectedScheduleCount = self.selectedScheduleCount + 1;

@@ -1,4 +1,4 @@
-LoadScript "Resources\\sampler\\components\\dialoguewindow.lua"
+LoadScript "components\\dialoguewindow.lua"
 
 --GUI initialization
 

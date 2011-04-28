@@ -1,21 +1,21 @@
 --main state
 --Import
-LoadScript "Resources\\sampler\\inventory\\inventory.lua"
+LoadScript "inventory\\inventory.lua"
 --LoadScript "zip://Resources/test.zip|inventory.lua"
-LoadScript "Resources\\sampler\\inventory\\inventorypresenter.lua"
-LoadScript "Resources\\sampler\\schedule\\schedule.lua"
-LoadScript "Resources\\sampler\\schedule\\execution.lua"
-LoadScript "Resources\\sampler\\schedule\\schedulepresenter.lua"
-LoadScript "Resources\\sampler\\schedule\\executionpresenter.lua"
-LoadScript "Resources\\sampler\\shopping\\shoplist.lua"
-LoadScript "Resources\\sampler\\shopping\\shop.lua"
-LoadScript "Resources\\sampler\\shopping\\shoppresenter.lua"
-LoadScript "Resources\\sampler\\status\\status.lua"
-LoadScript "Resources\\sampler\\status\\statuspresenter.lua"
-LoadScript "Resources\\sampler\\communication\\talklist.lua"
-LoadScript "Resources\\sampler\\communication\\talk.lua"
-LoadScript "Resources\\sampler\\save\\saveview.lua"
-LoadScript "Resources\\sampler\\save\\savepresenter.lua"
+LoadScript "inventory\\inventorypresenter.lua"
+LoadScript "schedule\\schedule.lua"
+LoadScript "schedule\\execution.lua"
+LoadScript "schedule\\schedulepresenter.lua"
+LoadScript "schedule\\executionpresenter.lua"
+LoadScript "shopping\\shoplist.lua"
+LoadScript "shopping\\shop.lua"
+LoadScript "shopping\\shoppresenter.lua"
+LoadScript "status\\status.lua"
+LoadScript "status\\statuspresenter.lua"
+LoadScript "communication\\talklist.lua"
+LoadScript "communication\\talk.lua"
+LoadScript "save\\saveview.lua"
+LoadScript "save\\savepresenter.lua"
 
 Main = {}
 
@@ -47,7 +47,7 @@ function Main:InitComponents()
 	local calendarBackground = SpriteBase();
 	calendarBackground.Name = "calBackground";
 	self.calendarBackground = background;
-	calendarBackground.Texture = "Resources/sampler/resources/calendar.png"
+	calendarBackground.Texture = "resources/calendar.png"
 	calendarBackground.Visible = true;
 	calendarBackground.Layer = 3;
 	InitComponent(calendarBackground)
@@ -67,7 +67,7 @@ function Main:InitComponents()
 	        Trace("datewindow clicked!")
         end;
 	datewin.Visible = true
-	--datewin.WindowTexture = "Resources/sampler/resources/window.png"
+	--datewin.WindowTexture = "resources/window.png"
 	--datewin.RectSize = 40
 	datewin.BackgroundColor = 0xFFFFFF
 	
@@ -89,7 +89,7 @@ function Main:InitComponents()
 	        Trace("statewindow clicked!")
         end;
 	statewin.Visible = true
-	--statewin.WindowTexture = "Resources/sampler/resources/window.png"
+	--statewin.WindowTexture = "resources/window.png"
 	--statewin.RectSize = 40
 	statewin.BackgroundColor = 0xFFFFFF
 	
@@ -108,7 +108,7 @@ function Main:InitComponents()
 	menu.Visible = true
 	menu.Enabled = true
 	menu.Font = GetFont("state")
-	--menu.WindowTexture = "Resources/sampler/resources/win.png"
+	--menu.WindowTexture = "resources/win.png"
 	menu.MouseLeave =
 		function(selectionWindow, event, args)
 		end
@@ -171,8 +171,8 @@ function Main:InitComponents()
 
 	local button8 = self:CreateButton("Log", 
  		function (button, luaevent, args)
-			OpenState("log", "Resources/Sampler/log/logstate.lua");
-			--self:OpenEvent("Resources/sampler/resources/event/testevent.ess");
+			OpenState("log", "log/logstate.lua");
+			--self:OpenEvent("resources/event/testevent.ess");
 		end);
 	button8.X = 100;
 	button8.Y = 42 * 3;	
@@ -180,7 +180,7 @@ function Main:InitComponents()
 	
 	local button9 = self:CreateButton("Test", 
  		function (button, luaevent, args)
-			self:OpenEvent("Resources/sampler/resources/event/testevent.ess");
+			self:OpenEvent("resources/event/testevent.ess");
 		end);
 	button9.X = 0;
 	button9.Y = 42 * 4;	
@@ -192,7 +192,7 @@ function Main:CreateButton(buttonText, event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = buttonText;
-	newButton.Texture = "Resources/sampler/resources/button/button.png"	
+	newButton.Texture = "resources/button/button.png"	
 	newButton.Layer = 3
 	newButton.X = 0;
 	newButton.Y = 0;
@@ -268,7 +268,7 @@ function Main:OpenCommunication()
 	self.talkListView = talkListView;
 	
 	talkListView:Init();
-	talkListView:SetGreeting("Resources/sampler/resources/images/f2.png","규브", "따님과 대화하실 내용을 선택해주세요.");
+	talkListView:SetGreeting("resources/images/f2.png","규브", "따님과 대화하실 내용을 선택해주세요.");
 	
 	
 	self.musumeevents = eventManager:GetMusumeEvents();
@@ -392,7 +392,7 @@ function Main:OpenShopList()
 	local shoplist = ShopListView:New("shoplistview", CurrentState());
 	self.shoplist = shoplist;
 	shoplist:Init();
-	shoplist:SetGreeting("Resources/sampler/resources/images/f2.png","규브", "쇼핑하실 곳을 선택해주세요.");
+	shoplist:SetGreeting("resources/images/f2.png","규브", "쇼핑하실 곳을 선택해주세요.");
 	shoplist:SetShopSelectedEvent(
 		function(button, luaevent, arg)
 			Trace(arg);
@@ -493,7 +493,7 @@ function Main:ProcessEvents(first)
 end
 
 function Main:OpenEvent(eventScript)
-    OpenState("event", "Resources/Sampler/event/eventstate.lua", eventScript,
+    OpenState("event", "event/eventstate.lua", eventScript,
     function()     
 		self:ProcessEvents(false);		
     end)
@@ -615,5 +615,5 @@ CurrentState().state = main;
 main:InvalidateDate();
 main:InvalidateStatus();
 
-main:SetBackground("Resources/sampler/resources/images/room03.jpg");
+main:SetBackground("resources/images/room03.jpg");
 main:EquipDress();

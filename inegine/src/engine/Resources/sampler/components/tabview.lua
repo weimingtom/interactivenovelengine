@@ -125,7 +125,7 @@ function Tabview:CreateButton(buttonText, event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = buttonText;
-	newButton.Texture = "Resources/sampler/resources/button/tabbutton.png"	
+	newButton.Texture = "resources/button/tabbutton.png"	
 	newButton.Layer = 1
 	newButton.X = 0;
 	newButton.Y = 0;

@@ -8,76 +8,57 @@ namespace INovelEngine.ResourceManager
 {
     class ArchiveManager
     {
-        private const string zipIdentifier = "zip://";
-        
-        public static string password;
+        private static string package = null;
+        private static string password = null;
+        private static string path = null;
 
-        public static bool IsURI(string uri)
+        public static void SetPackage(string package, string password)
         {
-            int archiveIndex = uri.IndexOf(zipIdentifier);
-            if (archiveIndex < 0)
-            {
-                return false;
-            }
-            return true;
+            ArchiveManager.package = package;
+            ArchiveManager.password = password;
         }
+
+        public static void SetPath(string path)
+        {
+            ArchiveManager.path = path;
+        }
+
+
 
         /// <summary>
-        /// Get stream from URI referencing resource path in archive
-        /// URI example: "zip://test.zip|test/test.zip"
+        /// Get stream from given path
+        /// If relative path is set by SetPath, a stream for the file within the path is returned
+        /// If package is set by SetPackage, a stream for the file within the package is returned
         /// </summary>
-        /// <param name="uri"></param>
-        /// <returns></returns>
-        public static Stream GetStream(string uri)
+        public static Stream GetStream(string path)
         {
-            int archiveIndex = uri.IndexOf(zipIdentifier);
-            if (archiveIndex < 0)
+            if (ArchiveManager.package != null)
             {
-                throw new Exception("uri format invalid!");
+                return GetStreamInternal(package, path, password);
             }
-
-            int resourceIndex = uri.IndexOf("|");
-            if (resourceIndex < 0 || resourceIndex > uri.Length - 2 || resourceIndex == zipIdentifier.Length)
+            else
             {
-                throw new Exception("uri format invalid!");
+                if (ArchiveManager.path != null)
+                {
+                    path = ArchiveManager.path + "/" + path;
+                }
+                return File.OpenRead(path);
             }
-
-            string archivePath = uri.Substring(archiveIndex + zipIdentifier.Length, resourceIndex - (archiveIndex + zipIdentifier.Length));
-            string resourcePath = uri.Substring(resourceIndex + 1, uri.Length - (resourceIndex + 1));
-
-            return GetStream(archivePath, resourcePath);
         }
 
-        public static Stream GetStream(string archivePath, string resourcePath)
-        {
-            return GetStream(archivePath, resourcePath, password);
-        }
-
-        public static Stream GetStream(string archivePath, string resourcePath, string password)
+        private static Stream GetStreamInternal(string archivePath, string resourcePath, string password)
         {
             ZipInputStream s = new ZipInputStream(File.OpenRead(archivePath));    
             s.Password = password;
             ZipEntry theEntry;
             while ((theEntry = s.GetNextEntry()) != null)
             {
-                if (theEntry.Name.Equals(resourcePath))
+                if (theEntry.Name.Equals(resourcePath) || theEntry.Name.Equals(resourcePath.Replace("\\", "/")))
                 {
                     return s;
                 }
             }
             throw new Exception(resourcePath + " not found");
-        }
-
-        private static void CopyStream(Stream input, Stream output)
-        {
-            byte[] buffer = new byte[32768];
-            while (true)
-            {
-                int read = input.Read(buffer, 0, buffer.Length);
-                if (read <= 0)
-                    return;
-                output.Write(buffer, 0, read);
-            }
         }
     }
 }

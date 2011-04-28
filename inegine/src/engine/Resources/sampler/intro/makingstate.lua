@@ -1,7 +1,7 @@
 ﻿--character making state
 
 --Import
-LoadScript "Resources\\sampler\\components\\dialoguewindow.lua"
+LoadScript "components\\dialoguewindow.lua"
 
 MakingState = {}
 
@@ -23,7 +23,7 @@ end
 function MakingState:InitComponents()
 	local gamestate = self.gamestate;
 	
-	self:SetBackground("Resources/sampler/resources/images/title.jpg");
+	self:SetBackground("resources/images/title.jpg");
 	
 	
 	self.frame = View()
@@ -54,7 +54,7 @@ function MakingState:InitComponents()
 	textWindow.Visible = true
 	textWindow.Enabled = true
 	textWindow.Font = GetFont("japanese")
-	--textWindow.WindowTexture = "Resources/sampler/resources/window.png"
+	--textWindow.WindowTexture = "resources/window.png"
 	--textWindow.RectSize = 40;
 	
 	self.frame:AddComponent(textWindow)
@@ -216,7 +216,7 @@ function MakingState:PromptFirstName()
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName("규브");
-	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText("あなたの娘がどんな子なのか、教えて頂けますか？@\nまず、名前は？@");
 	self.talkWindow:SetDialogueOverEvent(
 		function()
@@ -271,7 +271,7 @@ function MakingState:PromptLastName()
 	
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName("규브");
-	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText("娘の苗字も教えて頂けましょうか？@");
 	self.talkWindow:SetDialogueOverEvent(
 		function()
@@ -326,7 +326,7 @@ function MakingState:PromptBirthday()
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName("규브");
-	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText("なるほど。\nでは、娘の誕生日は？@");
 	self.talkWindow:SetDialogueOverEvent(
 		function()
@@ -423,7 +423,7 @@ function MakingState:PromptBloodType()
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName("규브");
-	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText("では、血液型は？@");
 	self.talkWindow:SetDialogueOverEvent(
 		function()
@@ -527,7 +527,7 @@ function MakingState:PromptFatherName()
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName("규브");
-	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText("あなたの名前を教えてくれませんか？@");
 	self.talkWindow:SetDialogueOverEvent(
 		function()
@@ -581,7 +581,7 @@ function MakingState:PromptFatherBirthday()
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName("규브");
-	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText("あなたの誕生日は？@");
 	self.talkWindow:SetDialogueOverEvent(
 		function()
@@ -672,7 +672,7 @@ function MakingState:PromptSummary()
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName("규브");
-	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText("これで間違いありませんか？@");
 	self.talkWindow:SetDialogueOverEvent(
 		function()
@@ -715,7 +715,7 @@ function MakingState:PromptFinish()
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName("규브");
-	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText("分かりました\nでは、あなたの娘の物語を始めましょう。@");
 	self.talkWindow:SetDialogueOverEvent(
 		function()
@@ -726,7 +726,7 @@ function MakingState:PromptFinish()
 			Delay(500,
 			function()
 				CloseState();
-				OpenState("main", "Resources/Sampler/main/main.lua");
+				OpenState("main", "main/main.lua");
 				FadeIn(500)
 			end);
 		end);
@@ -737,7 +737,7 @@ function MakingState:PromptReset()
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName("규브");
-	self.talkWindow:SetPortraitTexture("Resources/sampler/resources/images/f2.png");
+	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText("間違ったところを指摘してくれれば、やり直せます。@");
 	self.talkWindow:SetDialogueOverEvent(
 		function()

@@ -1,9 +1,9 @@
 category,id,text,price,icon,dressImage,hp,will,int,cha,grace,moral,sense,rep,stress,mana,desc
-dress,item1,메이드복,100,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/1.png,0,0,0,0,0,0,0,0,0,0,"보통의 메이드복
+dress,item1,메이드복,100,resources/icon.png,resources/images/1.png,0,0,0,0,0,0,0,0,0,0,"보통의 메이드복
 STR +1, MANA -1
 일잘하게 보인다",
-dress,item2,야한 메이드복,1000,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/2.png,0,0,0,0,0,0,0,0,0,0,야해보이는 메이드복,
-dress,item3,체육복,10000,Resources/sampler/resources/icon.png,Resources/sampler/resources/images/3.png,0,0,0,0,0,0,0,0,0,0,"체육복이다...",
-item,item4,몽둥이,1,Resources/sampler/resources/icon.png,na,1,2,3,4,5,6,7,8,9,0,"믿음직스러운 몽둥이",
-item,item14,체과,0,Resources/sampler/resources/icon.png,na,0,0,0,0,0,0,0,0,0,0,테스트, 테스트",
-furniture,item15,예과,0,Resources/sampler/resources/icon.png,na,0,0,0,0,0,0,0,0,0,0,"테스트, 테스트",
+dress,item2,야한 메이드복,1000,resources/icon.png,resources/images/2.png,0,0,0,0,0,0,0,0,0,0,야해보이는 메이드복,
+dress,item3,체육복,10000,resources/icon.png,resources/images/3.png,0,0,0,0,0,0,0,0,0,0,"체육복이다...",
+item,item4,몽둥이,1,resources/icon.png,na,1,2,3,4,5,6,7,8,9,0,"믿음직스러운 몽둥이",
+item,item14,체과,0,resources/icon.png,na,0,0,0,0,0,0,0,0,0,0,테스트, 테스트",
+furniture,item15,예과,0,resources/icon.png,na,0,0,0,0,0,0,0,0,0,0,"테스트, 테스트",

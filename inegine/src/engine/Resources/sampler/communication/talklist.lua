@@ -1,5 +1,5 @@
-LoadScript "Resources\\sampler\\components\\luaview.lua"
-LoadScript "Resources\\sampler\\components\\dialoguewindow.lua"
+LoadScript "components\\luaview.lua"
+LoadScript "components\\dialoguewindow.lua"
 
 TalkListView = LuaView:New();
 
@@ -45,7 +45,7 @@ function TalkListView:Init()
 	local talkimage = SpriteBase();
 	talkimage.Relative = true;
 	talkimage.Name = "villageiamge";
-	talkimage.Texture = "Resources/sampler/resources/images/musume.png";
+	talkimage.Texture = "resources/images/musume.png";
 	talkimage.Visible = true;
 	talkimage.X = 0;
 	talkimage.y = 0;
@@ -100,7 +100,7 @@ function TalkListView:CreateButtonInternal(buttonName, buttonText, event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = buttonName;
-	newButton.Texture = "Resources/sampler/resources/button/button.png"	
+	newButton.Texture = "resources/button/button.png"	
 	newButton.Layer = 3
 	newButton.X = 0;
 	newButton.Y = 0;

@@ -1,4 +1,4 @@
-LoadScript "Resources\\sampler\\components\\luaview.lua"
+LoadScript "components\\luaview.lua"
 
 DialogueWindow = LuaView:New();
 
@@ -31,7 +31,7 @@ function DialogueWindow:Init()
 	local background = SpriteBase();
 	background.Name = "background";
 	self.background = background;
-	background.Texture = "Resources/sampler/resources/windows/dialoguewin.png"
+	background.Texture = "resources/windows/dialoguewin.png"
 	background.Visible = true;
 	background.Layer = 0;
 	background.x = self.frame.Width - background.Width - 20;
@@ -55,12 +55,12 @@ function DialogueWindow:Init()
             window:AdvanceText();
         end
 	dialogueWin.Visible = true
-	--dialogueWin.WindowTexture = "Resources/sampler/resources/win.png"
+	--dialogueWin.WindowTexture = "resources/win.png"
 	dialogueWin.Font = GetFont("dialogue")
 	
 	dialogueWin.Cursor = AnimatedSprite();
 	dialogueWin.Cursor.Name = "cursor"
-	dialogueWin.Cursor.Texture = "Resources/sampler/resources/cursor.png"
+	dialogueWin.Cursor.Texture = "resources/cursor.png"
 	dialogueWin.Cursor.Width = 32;
 	dialogueWin.Cursor.Height = 48;
 	dialogueWin.Cursor.Rows = 4;

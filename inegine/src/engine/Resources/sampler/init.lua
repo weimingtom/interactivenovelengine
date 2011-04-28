@@ -1,6 +1,6 @@
-LoadScript("Resources/Sampler/init_sound.lua")
-LoadScript("Resources/Sampler/init_csv.lua")
-LoadScript("Resources/Sampler/init_font.lua");
-LoadScript("Resources/Sampler/init_masterdata.lua")
+LoadScript("init_sound.lua")
+LoadScript("init_csv.lua")
+LoadScript("init_font.lua");
+LoadScript("init_masterdata.lua")
 
-OpenState("title", "Resources/Sampler/intro/titlestate.lua");
+OpenState("title", "intro/titlestate.lua");

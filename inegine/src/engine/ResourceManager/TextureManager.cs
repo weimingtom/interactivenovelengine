@@ -51,14 +51,8 @@ namespace INovelEngine.ResourceManager
             try
             {
                 Bitmap bitmap;
-                if (ArchiveManager.IsURI(fileName))
-                {
-                    bitmap = new Bitmap(ArchiveManager.GetStream(fileName));
-                }
-                else
-                {
-                    bitmap = new Bitmap(fileName);
-                }
+                bitmap = new Bitmap(ArchiveManager.GetStream(fileName));
+               
 
                 this.Width = bitmap.Width;
                 this.Height = bitmap.Height;

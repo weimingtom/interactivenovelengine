@@ -1,4 +1,4 @@
-LoadScript "Resources\\sampler\\components\\luaview.lua"
+LoadScript "components\\luaview.lua"
 
 TachieView = LuaView:New();
 
@@ -34,7 +34,7 @@ function TachieView:Init()
 	descriptionWindow.relative = true;
 	descriptionWindow.width = 240;
 	descriptionWindow.height = 320;
-    descriptionWindow.WindowTexture = "Resources/sampler/resources/window.png"
+    descriptionWindow.WindowTexture = "resources/window.png"
     descriptionWindow.RectSize = 40
     descriptionWindow.BackgroundColor = 0xFFFFFF
     descriptionWindow.Margin = 20;
@@ -57,7 +57,7 @@ function TachieView:Init()
 	graphWindow.relative = true;
 	graphWindow.width = 280;
 	graphWindow.height = 480;
-    graphWindow.WindowTexture = "Resources/sampler/resources/window.png"
+    graphWindow.WindowTexture = "resources/window.png"
     graphWindow.RectSize = 40
     graphWindow.BackgroundColor = 0xFFFFFF
     graphWindow.Margin = 50;

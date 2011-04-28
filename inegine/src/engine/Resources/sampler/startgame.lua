@@ -1,7 +1,7 @@
-LoadScript "Resources\\sampler\\models\\calendar.lua"
-LoadScript "Resources\\sampler\\models\\character.lua"
-LoadScript "Resources\\sampler\\models\\inventorymanager.lua"
-LoadScript "Resources\\sampler\\models\\logmanager.lua"
+LoadScript "models\\calendar.lua"
+LoadScript "models\\character.lua"
+LoadScript "models\\inventorymanager.lua"
+LoadScript "models\\logmanager.lua"
 
 --game models
 
@@ -21,4 +21,4 @@ calendar:SetDate(0, 1, 1);
 --log manager
 logManager = LogManager:New();
 
-OpenState("character making", "Resources/Sampler/intro/makingstate.lua");
+OpenState("character making", "intro/makingstate.lua");
