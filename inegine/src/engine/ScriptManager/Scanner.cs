@@ -100,7 +100,7 @@ public class Buffer {
 		Pos = beg;
 		while (Pos < end) buf[len++] = (char) Read();
 		Pos = oldPos;
-		return new String(buf, 0, len);
+		return new string(buf, 0, len);
 	}
 
 	public int Pos {
@@ -254,7 +254,7 @@ public class Scanner {
 			NextCh(); int ch1 = ch;
 			NextCh(); int ch2 = ch;
 			if (ch1 != 0xBB || ch2 != 0xBF) {
-				throw new FatalError(String.Format("illegal byte order mark: EF {0,2:X} {1,2:X}", ch1, ch2));
+				throw new FatalError(string.Format("illegal byte order mark: EF {0,2:X} {1,2:X}", ch1, ch2));
 			}
 			buffer = new UTF8Buffer(buffer); col = 0;
 			NextCh();
@@ -386,7 +386,7 @@ public class Scanner {
 				else {t.kind = 3; break;}
 			case 5:
 				if (ch <= 9 || ch >= 11 && ch <= 12 || ch >= 14 && ch <= 65535) {AddCh(); goto case 5;}
-				else {t.kind = 4; t.val = new String(tval, 0, tlen); CheckLiteral(); return t;}
+				else {t.kind = 4; t.val = new string(tval, 0, tlen); CheckLiteral(); return t;}
 			case 6:
 				if (ch == 10 || ch == 13) {apx++; AddCh(); goto case 7;}
 				else {t.kind = noSym; break;}
@@ -419,7 +419,7 @@ public class Scanner {
 				else {t.kind = 3; break;}
 
 		}
-		t.val = new String(tval, 0, tlen);
+		t.val = new string(tval, 0, tlen);
 		return t;
 	}
 	

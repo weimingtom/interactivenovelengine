@@ -37,7 +37,7 @@ namespace INovelEngine.Effector
 
         // componentList sorted by z-order (higher, higher)
         protected List<AbstractGUIComponent> componentList = new List<AbstractGUIComponent>();
-        protected Dictionary<String, AbstractGUIComponent> componentMap =
+        protected Dictionary<string, AbstractGUIComponent> componentMap =
             new Dictionary<string, AbstractGUIComponent>();
 
         public AbstractGUIComponent()

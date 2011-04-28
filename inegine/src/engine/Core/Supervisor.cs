@@ -22,7 +22,7 @@ namespace INovelEngine
 
         private GameState activeState;
 
-        private Dictionary<String, GameState> states = new Dictionary<string, GameState>();
+        private Dictionary<string, GameState> states = new Dictionary<string, GameState>();
 
         //private Stack<GameState> stateStack = new Stack<GameState>();
         private List<GameState> stateList = new List<GameState>();
@@ -263,6 +263,7 @@ namespace INovelEngine
 
             ScriptManager.lua.RegisterFunction("SetIcon", this, this.GetType().GetMethod("Lua_SetIcon"));
             ScriptManager.lua.RegisterFunction("SetTitle", this, this.GetType().GetMethod("Lua_SetTitle"));
+            ScriptManager.lua.RegisterFunction("SetPackage", this, this.GetType().GetMethod("Lua_SetPackage"));
 
 
             ScriptManager.lua.RegisterFunction("SetSize", this, this.GetType().GetMethod("Lua_SetSize"));
@@ -307,7 +308,7 @@ namespace INovelEngine
             ScriptManager.lua.DoString("this = CurrentState().State");
         }
 
-        public void Lua_LoadScript(String ScriptFile)
+        public void Lua_LoadScript(string ScriptFile)
         {
             try
             {
@@ -325,7 +326,7 @@ namespace INovelEngine
         }
 
         /* create a new state and initialize the state using given lua script */
-        public void Lua_LoadState(String stateName, String ScriptFile)
+        public void Lua_LoadState(string stateName, string ScriptFile)
         {
             GameState newState = new GameState();
             newState.Name = stateName;
@@ -340,7 +341,7 @@ namespace INovelEngine
             Lua_LoadScript(ScriptFile);
         }
 
-        public void Lua_SwitchState(String id)
+        public void Lua_SwitchState(string id)
         {
             if (states.ContainsKey(id))
             {
@@ -393,12 +394,12 @@ namespace INovelEngine
             return this.activeState;
         }
 
-        public void Lua_Trace(String s)
+        public void Lua_Trace(string s)
         {  
             Console.WriteLine(">" + s);
         }
 
-        public string Lua_LoadESS(String path)
+        public string Lua_LoadESS(string path)
         {
             string result = null;
             try
@@ -413,18 +414,18 @@ namespace INovelEngine
             return result;
         }
 
-        public string Lua_GetESSLine(String path, int lineNumber)
+        public string Lua_GetESSLine(string path, int lineNumber)
         {
             return ScriptManager.GetESSLine(path, lineNumber);
         }
 
 
-        public void Lua_SetTitle(String s)
+        public void Lua_SetTitle(string s)
         {
             Window.Text = s;
         }
 
-        public void Lua_SetIcon(String s)
+        public void Lua_SetIcon(string s)
         {
             Window.Icon = new System.Drawing.Icon(s);
         }
@@ -492,19 +493,19 @@ namespace INovelEngine
             return this.fadingTransition;
         }
 
-        public void Lua_SaveData(String data, String path)
+        public void Lua_SaveData(string data, string path)
         {
             SaveManager.SaveData(data, path);
         }
 
-        public String Lua_LoadData(String path)
+        public string Lua_LoadData(string path)
         {
             return SaveManager.LoadData(path);
         }
 
-        public String Lua_GetInput(Boolean numeric)
+        public string Lua_GetInput(bool numeric)
         {
-            String result = "";
+            string result = "";
             using (TextInput inputForm = new TextInput())
             {
                 inputForm.numeric = numeric;
@@ -519,6 +520,10 @@ namespace INovelEngine
                 }
             }
             return result;
+        }
+
+        public void Lua_SetPackage(string path, bool isPackage)
+        {
         }
 
         #endregion

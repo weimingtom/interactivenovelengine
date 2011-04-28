@@ -74,13 +74,10 @@ namespace INovelEngine.ResourceManager
         private void FadeOutStep()
         {
             float currentTick = Clock.GetTime();
-            //Console.WriteLine("elapsed:" + (currentTick - fadeStartTick).ToString() + " / " + fadeDuration);
             
             float progress = (currentTick - fadeStartTick) / fadeDuration + 0.1f;
 
-            Console.WriteLine("progress:" + progress);
             Volume = oldVolume * (1.0f - (float)Math.Log10(progress * 10f));
-            //Volume = oldVolume * (1.1f - progress);
 
             if (currentTick >= (fadeStartTick + fadeDuration)) fadeOutEvent.kill = true;
         }
@@ -138,7 +135,7 @@ namespace INovelEngine.ResourceManager
     public class SoundManager : IResource // sound manager is a graphical resource itself
     {
         protected ResourceCollection resources = new ResourceCollection();
-        protected Dictionary<String, AbstractResource> resourcesMap = new Dictionary<string, AbstractResource>();
+        protected Dictionary<string, AbstractResource> resourcesMap = new Dictionary<string, AbstractResource>();
 
 
         #region IResource Members for managing resources

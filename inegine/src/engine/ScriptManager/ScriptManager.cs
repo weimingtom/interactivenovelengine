@@ -37,7 +37,7 @@ namespace INovelEngine.Script
         public LuaEventHandler AnimationOver;
 
         public object state;
-        public Boolean handleMyself
+        public bool handleMyself
         { get; set; }
 
         protected bool _enabled = true;
@@ -159,7 +159,7 @@ namespace INovelEngine.Script
             }
         }
 
-        public static void DoLua(String path)
+        public static void DoLua(string path)
         {
             if (ArchiveManager.IsURI(path))
             {
@@ -185,7 +185,7 @@ namespace INovelEngine.Script
             lua.Push(obj);
         }
 
-        public static String ParseESS(String path)
+        public static string ParseESS(string path)
         {
             Scanner scanner;
             if (ArchiveManager.IsURI(path))
@@ -203,7 +203,7 @@ namespace INovelEngine.Script
             return parser.gen.GetScript();
         }
 
-        public static String GetESSLine(String path, int line)
+        public static string GetESSLine(string path, int line)
         {
             // Read the file and display it line by line.
             System.IO.StreamReader reader;

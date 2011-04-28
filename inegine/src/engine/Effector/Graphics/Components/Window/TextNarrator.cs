@@ -12,7 +12,7 @@ namespace INovelEngine.Effector
     public class TextNarrator
     {
         private StringBuilder outputStringBuffer;
-        private String inputString;
+        private string inputString;
         private int index;
         private NarrationState state;
 
@@ -24,7 +24,7 @@ namespace INovelEngine.Effector
             state = NarrationState.Going;
         }
 
-        public void AppendText(String text)
+        public void AppendText(string text)
         {
             this.inputString += text;
             if (state != NarrationState.Stopped)
@@ -75,7 +75,7 @@ namespace INovelEngine.Effector
             }
         }
 
-        public String OutputString
+        public string OutputString
         {
             get
             {
@@ -83,7 +83,7 @@ namespace INovelEngine.Effector
             }
         }
 
-        public String SourceString
+        public string SourceString
         {
             get
             {

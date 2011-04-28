@@ -136,7 +136,7 @@ namespace INovelEngine.ResourceManager
     public class FontManager : IResource // font manager is a graphical resource itself
     {
         protected ResourceCollection graphicalResources = new ResourceCollection();
-        protected Dictionary<String, AbstractResource> graphicalResourcesMap = new Dictionary<string, AbstractResource>();
+        protected Dictionary<string, AbstractResource> graphicalResourcesMap = new Dictionary<string, AbstractResource>();
 
 
         #region IResource Members for managing graphical resources

@@ -13,7 +13,7 @@ namespace INovelEngine.Effector.Graphics.Text
         private int _rubyX;
         private int _rubyY;
         private int _rubySize;
-        public Boolean RubyStarted
+        public bool RubyStarted
         {
             get
             {
@@ -68,7 +68,7 @@ namespace INovelEngine.Effector.Graphics.Text
             {
                 if (tag.IsEnding)
                 {
-                    if (!String.IsNullOrEmpty(_rubyString))
+                    if (!string.IsNullOrEmpty(_rubyString))
                     {
                         //_rubyFont.DrawString(sprite, _rubyString, _rubyX, 0);
                         Size rubyStringSize = _rubyFont.Measure(_rubyString);

@@ -14,16 +14,16 @@ namespace INovelEngine.StateManager
     {
         /* resources managed by state */
         protected ResourceCollection graphicalResources = new ResourceCollection();
-        protected Dictionary<String, AbstractResource> graphicalResourcesMap = new Dictionary<string, AbstractResource>();
+        protected Dictionary<string, AbstractResource> graphicalResourcesMap = new Dictionary<string, AbstractResource>();
 
 
         protected ResourceCollection generalResources = new ResourceCollection();
-        protected Dictionary<String, AbstractResource> generalResourcesMap = new Dictionary<string, AbstractResource>();
+        protected Dictionary<string, AbstractResource> generalResourcesMap = new Dictionary<string, AbstractResource>();
 
         /* components (objects to draw) managed by state */
         /* componentList sorted by z-order (higher, higher) */
         protected List<AbstractGUIComponent> componentList = new List<AbstractGUIComponent>();
-        protected Dictionary<String, AbstractGUIComponent> componentMap = 
+        protected Dictionary<string, AbstractGUIComponent> componentMap = 
             new Dictionary<string, AbstractGUIComponent>();
 
         public GameState()
