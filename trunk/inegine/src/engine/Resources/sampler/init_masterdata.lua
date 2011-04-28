@@ -1,10 +1,10 @@
-LoadScript "Resources\\sampler\\models\\schedulemanager.lua"
-LoadScript "Resources\\sampler\\models\\itemmanager.lua"
-LoadScript "Resources\\sampler\\models\\shopmanager.lua"
-LoadScript "Resources\\sampler\\models\\savemanager.lua"
-LoadScript "Resources\\sampler\\models\\eventmanager.lua"
-LoadScript "Resources\\sampler\\models\\talkmanager.lua"
-LoadScript "Resources\\sampler\\condition\\conditionmanager.lua"
+LoadScript "models\\schedulemanager.lua"
+LoadScript "models\\itemmanager.lua"
+LoadScript "models\\shopmanager.lua"
+LoadScript "models\\savemanager.lua"
+LoadScript "models\\eventmanager.lua"
+LoadScript "models\\talkmanager.lua"
+LoadScript "condition\\conditionmanager.lua"
 
 --parameters
 BASE_EDU_RATE = 0.75;

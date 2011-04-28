@@ -1,5 +1,5 @@
-LoadScript "Resources\\sampler\\components\\luaview.lua"
-LoadScript "Resources\\sampler\\components\\dialoguewindow.lua"
+LoadScript "components\\luaview.lua"
+LoadScript "components\\dialoguewindow.lua"
 
 TalkView = LuaView:New();
 

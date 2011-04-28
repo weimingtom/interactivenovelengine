@@ -29,7 +29,7 @@ function Selector:Init()
 	self.frame.Enabled = false
 	self.frame.Font = font
     --self.frame.RectSize = 40;
-	--self.frame.WindowTexture = "Resources/sampler/resources/window.png"
+	--self.frame.WindowTexture = "resources/window.png"
 	self.frame.MouseLeave =
 		function(selectionWindow, event, args)
 			Trace("mouse leave: " .. selectionWindow.Name)	

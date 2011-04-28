@@ -1,7 +1,7 @@
 -- InventoryView UI component implemented in lua
-LoadScript "Resources\\sampler\\components\\luaview.lua"
-LoadScript "Resources\\sampler\\components\\tabview.lua"
-LoadScript "Resources\\sampler\\components\\flowview.lua"
+LoadScript "components\\luaview.lua"
+LoadScript "components\\tabview.lua"
+LoadScript "components\\flowview.lua"
 
 InventoryView = LuaView:New();
 
@@ -40,7 +40,7 @@ function InventoryView:Init()
 	background.height = self.frame.height - 150 - 50;
 	background.x = 5;
 	background.y = 50;
-    background.WindowTexture = "Resources/sampler/resources/window.png"
+    background.WindowTexture = "resources/window.png"
     background.RectSize = 40
     background.BackgroundColor = 0xFFFFFF
 	background.alpha = 255
@@ -59,7 +59,7 @@ function InventoryView:Init()
     detailView.linespacing = 5
 	detailView.x = 5;
 	detailView.y = background.y + background.height + 5;
-    detailView.WindowTexture = "Resources/sampler/resources/window.png"
+    detailView.WindowTexture = "resources/window.png"
     detailView.RectSize = 40
     detailView.backgroundColor = 0xFFFFFF
 	detailView.alpha = 255
@@ -199,7 +199,7 @@ function InventoryView:CreateUpButton(event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = "upButton";
-	newButton.Texture = "Resources/sampler/resources/up.png"	
+	newButton.Texture = "resources/up.png"	
 	newButton.Layer = 15
 	newButton.X = 0;
 	newButton.Y = 0;
@@ -228,7 +228,7 @@ function InventoryView:CreateDownButton(event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = "downButotn";
-	newButton.Texture = "Resources/sampler/resources/down.png"	
+	newButton.Texture = "resources/down.png"	
 	newButton.Layer = 15
 	newButton.X = 0;
 	newButton.Y = 0;
@@ -258,7 +258,7 @@ function InventoryView:CreateButton(buttonName, buttonText, event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = buttonName;
-	newButton.Texture = "Resources/sampler/resources/button/button.png"	
+	newButton.Texture = "resources/button/button.png"	
 	newButton.Layer = 5
 	newButton.X = 0;
 	newButton.Y = 0;

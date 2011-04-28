@@ -1,6 +1,6 @@
-LoadScript "Resources\\sampler\\components\\luaview.lua"
-LoadScript "Resources\\sampler\\components\\dialoguewindow.lua"
-LoadScript "Resources\\sampler\\components\\flowview.lua"
+LoadScript "components\\luaview.lua"
+LoadScript "components\\dialoguewindow.lua"
+LoadScript "components\\flowview.lua"
 
 ShopView = LuaView:New();
 
@@ -49,7 +49,7 @@ function ShopView:Init()
 	commitWindow.height = 200;
 	commitWindow.x = (GetWidth() - commitWindow.width) / 3;
 	commitWindow.y = (GetHeight() - commitWindow.height) / 2;
-    commitWindow.WindowTexture = "Resources/sampler/resources/window.png"
+    commitWindow.WindowTexture = "resources/window.png"
     commitWindow.RectSize = 40
 	commitWindow.alpha = 255
 	commitWindow.layer = 9;
@@ -159,7 +159,7 @@ function ShopView:Init()
 	background.height = 270;
 	background.x = 50;
 	background.y = 160;
-    background.WindowTexture = "Resources/sampler/resources/window.png"
+    background.WindowTexture = "resources/window.png"
     background.RectSize = 40
     background.BackgroundColor = 0xFFFFFF
 	background.alpha = 255
@@ -214,7 +214,7 @@ function ShopView:Init()
     detailviewFrame.linespacing = 10
 	detailviewFrame.x = 525;
 	detailviewFrame.y = 160;
-    detailviewFrame.WindowTexture = "Resources/sampler/resources/window.png"
+    detailviewFrame.WindowTexture = "resources/window.png"
     detailviewFrame.RectSize = 40
     detailviewFrame.backgroundColor = 0xFFFFFF
 	detailviewFrame.alpha = 255
@@ -266,7 +266,7 @@ function ShopView:CreateUpButton(event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = "upButton";
-	newButton.Texture = "Resources/sampler/resources/up.png"	
+	newButton.Texture = "resources/up.png"	
 	newButton.Layer = 15
 	newButton.X = 0;
 	newButton.Y = 0;
@@ -295,7 +295,7 @@ function ShopView:CreateDownButton(event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = "downButotn";
-	newButton.Texture = "Resources/sampler/resources/down.png"	
+	newButton.Texture = "resources/down.png"	
 	newButton.Layer = 15
 	newButton.X = 0;
 	newButton.Y = 0;
@@ -324,7 +324,7 @@ function ShopView:CreateButton(name, text, x, y, layer)
 	local button = Button()
 	button.Relative = true;
 	button.Name = name
-	button.Texture = "Resources/sampler/resources/button/button.png"	
+	button.Texture = "resources/button/button.png"	
 	button.Layer = layer;
 	button.X = x;
 	button.Y = y;
@@ -455,7 +455,7 @@ function ShopView:CreateItemButton(buttonName, buttonText)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = buttonName;
-	newButton.Texture = "Resources/sampler/resources/button.png"	
+	newButton.Texture = "resources/button.png"	
 	newButton.Layer = 3
 	newButton.X = 0;
 	newButton.Y = 0;

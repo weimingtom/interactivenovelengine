@@ -161,18 +161,9 @@ namespace INovelEngine.Script
 
         public static void DoLua(string path)
         {
-            if (ArchiveManager.IsURI(path))
-            {
-                StreamReader reader = new StreamReader(ArchiveManager.GetStream(path), Encoding.Default);
-                string script = reader.ReadToEnd();
-                lua.DoString(script, path);
-            }
-            else
-            {
-                path = path.Replace("/", "\\");
-                string script = File.ReadAllText(path, Encoding.Default);
-                lua.DoString(script, path);
-            }   
+            StreamReader reader = new StreamReader(ArchiveManager.GetStream(path), Encoding.Default);
+            string script = reader.ReadToEnd();
+            lua.DoString(script, path); 
         }
 
         public static Object Pop()
@@ -188,15 +179,8 @@ namespace INovelEngine.Script
         public static string ParseESS(string path)
         {
             Scanner scanner;
-            if (ArchiveManager.IsURI(path))
-            {
-                scanner = new Scanner(ArchiveManager.GetStream(path));
-            }
-            else
-            {
-                scanner = new Scanner(path);
-            } 
-            
+            scanner = new Scanner(ArchiveManager.GetStream(path));
+    
             Parser parser = new Parser(scanner);
             parser.gen = new CodeGenerator();
             parser.Parse();
@@ -207,14 +191,9 @@ namespace INovelEngine.Script
         {
             // Read the file and display it line by line.
             System.IO.StreamReader reader;
-            if (ArchiveManager.IsURI(path))
-            {
-                reader = new System.IO.StreamReader(ArchiveManager.GetStream(path));
-            }
-            else
-            {
-                reader = new System.IO.StreamReader(path);
-            } 
+            
+            reader = new System.IO.StreamReader(ArchiveManager.GetStream(path));
+
            
             int counter = 0;
             string buffer;

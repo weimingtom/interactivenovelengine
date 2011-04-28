@@ -92,16 +92,16 @@ function SaveManager:Title()
 	Delay(500,
 	function()
 		CloseState();
-		OpenState("title", "Resources/Sampler/intro/titlestate.lua");
+		OpenState("title", "intro/titlestate.lua");
 		FadeIn(500)
 	end);
 end
 
 function SaveManager:Load(id)
-	LoadScript "Resources\\sampler\\models\\calendar.lua"
-	LoadScript "Resources\\sampler\\models\\character.lua"
-	LoadScript "Resources\\sampler\\models\\inventorymanager.lua"
-	LoadScript "Resources\\sampler\\models\\logmanager.lua"
+	LoadScript "models\\calendar.lua"
+	LoadScript "models\\character.lua"
+	LoadScript "models\\inventorymanager.lua"
+	LoadScript "models\\logmanager.lua"
 	
     local loadData = LoadString(self:GenerateSaveFileName(id));
     Trace("loading : " .. loadData);
@@ -113,7 +113,7 @@ function SaveManager:Load(id)
 		Delay(500,
 		function()
 			CloseState();
-			OpenState("main", "Resources/Sampler/main/main.lua");
+			OpenState("main", "main/main.lua");
 			FadeIn(500)
 		end);
 		return true;

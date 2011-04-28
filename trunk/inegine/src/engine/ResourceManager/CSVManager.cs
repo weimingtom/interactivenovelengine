@@ -185,14 +185,9 @@ namespace INovelEngine.ResourceManager
         {
             base.LoadContent();
             StreamReader streamReader;
-            if (ArchiveManager.IsURI(this.FileName))
-            {
-                streamReader = new StreamReader(ArchiveManager.GetStream(this.FileName), System.Text.Encoding.GetEncoding(this.Encoding));
-            }
-            else
-            {
-                streamReader = new StreamReader(this.FileName, System.Text.Encoding.GetEncoding(this.Encoding));
-            } 
+            
+            streamReader = new StreamReader(ArchiveManager.GetStream(this.FileName), System.Text.Encoding.GetEncoding(this.Encoding));
+            
             string fileContent = streamReader.ReadToEnd();
             streamReader.Close();
             csvReader = new CSVReader(fileContent);

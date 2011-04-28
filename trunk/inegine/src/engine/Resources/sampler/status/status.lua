@@ -1,4 +1,4 @@
-LoadScript "Resources\\sampler\\components\\luaview.lua"
+LoadScript "components\\luaview.lua"
 
 StatusView = LuaView:New();
 
@@ -34,7 +34,7 @@ function StatusView:Init()
 	descriptionWindow.relative = true;
 	descriptionWindow.width = 240;
 	descriptionWindow.height = 320;
-    descriptionWindow.WindowTexture = "Resources/sampler/resources/window.png"
+    descriptionWindow.WindowTexture = "resources/window.png"
     descriptionWindow.RectSize = 40
     descriptionWindow.BackgroundColor = 0xFFFFFF
     descriptionWindow.Margin = 20;
@@ -57,7 +57,7 @@ function StatusView:Init()
 	graphWindow.relative = true;
 	graphWindow.width = 280;
 	graphWindow.height = 480;
-    graphWindow.WindowTexture = "Resources/sampler/resources/window.png"
+    graphWindow.WindowTexture = "resources/window.png"
     graphWindow.RectSize = 40
     graphWindow.BackgroundColor = 0xFFFFFF
     graphWindow.Margin = 50;
@@ -90,7 +90,7 @@ function StatusView:CreateButton(buttonText, event, x, y, layer)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = buttonText;
-	newButton.Texture = "Resources/sampler/resources/button/button.png"	
+	newButton.Texture = "resources/button/button.png"	
 	newButton.Layer = layer
 	newButton.X = x;
 	newButton.Y = y;
@@ -125,7 +125,7 @@ function StatusView:CreateItemButton(buttonName, buttonText)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = buttonName;
-	newButton.Texture = "Resources/sampler/resources/button.png"	
+	newButton.Texture = "resources/button.png"	
 	newButton.Layer = 3
 	newButton.X = 0;
 	newButton.Y = 0;

@@ -1,8 +1,8 @@
 category,id,condition,script
-post,testevent1,M == 2 and S.lucy > 70,Resources/sampler/resources/event/testevent.ess
-post,testevent2,M == 2 and S.lucy > 90,Resources/sampler/resources/event/testevent.ess
-post,testevent3,M == 2,Resources/sampler/resources/event/testevent.ess
-musume,testevent4,M == 2,Resources/sampler/resources/event/testevent.ess
-goddess,testevent5,M == 2,Resources/sampler/resources/event/testevent.ess
-musume,testevent6,M == 3,Resources/sampler/resources/event/testevent.ess
-goddess,testevent7,M == 3,Resources/sampler/resources/event/testevent.ess
+post,testevent1,M == 2 and S.lucy > 70,resources/event/testevent.ess
+post,testevent2,M == 2 and S.lucy > 90,resources/event/testevent.ess
+post,testevent3,M == 2,resources/event/testevent.ess
+musume,testevent4,M == 2,resources/event/testevent.ess
+goddess,testevent5,M == 2,resources/event/testevent.ess
+musume,testevent6,M == 3,resources/event/testevent.ess
+goddess,testevent7,M == 3,resources/event/testevent.ess

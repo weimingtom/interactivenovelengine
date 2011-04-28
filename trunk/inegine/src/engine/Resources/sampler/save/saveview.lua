@@ -1,5 +1,5 @@
-LoadScript "Resources\\sampler\\components\\luaview.lua"
-LoadScript "Resources\\sampler\\components\\selector.lua"
+LoadScript "components\\luaview.lua"
+LoadScript "components\\selector.lua"
 
 SaveView = LuaView:New();
 
@@ -46,7 +46,7 @@ function SaveView:Init()
     --saveLoadWindow.linespacing = 5
 	saveLoadWindow.x = (self.frame.width - saveLoadWindow.width) / 2;
 	saveLoadWindow.y = (self.frame.height - saveLoadWindow.height) / 2;
-    --saveLoadWindow.WindowTexture = "Resources/sampler/resources/window.png"
+    --saveLoadWindow.WindowTexture = "resources/window.png"
     --saveLoadWindow.RectSize = 40
     --saveLoadWindow.backgroundColor = 0xFFFFFF
 	saveLoadWindow.alpha = 255
@@ -109,7 +109,7 @@ function SaveView:CreateButton(buttonName, buttonText, event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = buttonName;
-	newButton.Texture = "Resources/sampler/resources/button/button.png"	
+	newButton.Texture = "resources/button/button.png"	
 	newButton.Layer = 3
 	newButton.X = 0;
 	newButton.Y = 0;

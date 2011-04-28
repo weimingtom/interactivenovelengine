@@ -522,8 +522,16 @@ namespace INovelEngine
             return result;
         }
 
-        public void Lua_SetPackage(string path, bool isPackage)
+        public void Lua_SetPackage(string path, string password, bool isPackage)
         {
+            if (isPackage)
+            {
+                ArchiveManager.SetPackage(path, password);
+            }
+            else
+            {
+                ArchiveManager.SetPath(path);
+            }
         }
 
         #endregion

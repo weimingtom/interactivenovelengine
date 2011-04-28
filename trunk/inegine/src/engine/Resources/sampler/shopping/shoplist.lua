@@ -1,4 +1,4 @@
-LoadScript "Resources\\sampler\\components\\luaview.lua"
+LoadScript "components\\luaview.lua"
 
 ShopListView = LuaView:New();
 
@@ -46,7 +46,7 @@ function ShopListView:Init()
 	local villageimage = SpriteBase();
 	villageimage.Relative = true;
 	villageimage.Name = "villageiamge";
-	villageimage.Texture = "Resources/sampler/resources/images/village.png";
+	villageimage.Texture = "resources/images/village.png";
 	villageimage.Visible = true;
 	villageimage.X = 0;
 	villageimage.y = 0;
@@ -103,7 +103,7 @@ function ShopListView:CreateButtonInternal(buttonName, buttonText, event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = buttonName;
-	newButton.Texture = "Resources/sampler/resources/button/button.png"	
+	newButton.Texture = "resources/button/button.png"	
 	newButton.Layer = 3
 	newButton.X = 0;
 	newButton.Y = 0;

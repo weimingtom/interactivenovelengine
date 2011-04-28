@@ -1,8 +1,8 @@
-LoadCsv("scheduledata", "Resources\\Sampler\\resources\\data\\schedule.csv", "ks_c_5601-1987");
-LoadCsv("schedulesuccess", "Resources\\Sampler\\resources\\data\\schedule_success.csv", "ks_c_5601-1987");
-LoadCsv("schedulefailure", "Resources\\Sampler\\resources\\data\\schedule_failure.csv", "ks_c_5601-1987");
-LoadCsv("itemdata", "Resources\\Sampler\\resources\\data\\item.csv", "ks_c_5601-1987");
-LoadCsv("shopdata", "Resources\\Sampler\\resources\\data\\shopdata.csv", "ks_c_5601-1987");
-LoadCsv("shoplist", "Resources\\Sampler\\resources\\data\\shoplist.csv", "ks_c_5601-1987");
-LoadCsv("eventlist", "Resources\\Sampler\\resources\\data\\eventlist.csv", "ks_c_5601-1987");
-LoadCsv("talklist", "Resources\\Sampler\\resources\\data\\talklist.csv", "ks_c_5601-1987");
+LoadCsv("scheduledata", "resources\\data\\schedule.csv", "ks_c_5601-1987");
+LoadCsv("schedulesuccess", "resources\\data\\schedule_success.csv", "ks_c_5601-1987");
+LoadCsv("schedulefailure", "resources\\data\\schedule_failure.csv", "ks_c_5601-1987");
+LoadCsv("itemdata", "resources\\data\\item.csv", "ks_c_5601-1987");
+LoadCsv("shopdata", "resources\\data\\shopdata.csv", "ks_c_5601-1987");
+LoadCsv("shoplist", "resources\\data\\shoplist.csv", "ks_c_5601-1987");
+LoadCsv("eventlist", "resources\\data\\eventlist.csv", "ks_c_5601-1987");
+LoadCsv("talklist", "resources\\data\\talklist.csv", "ks_c_5601-1987");
