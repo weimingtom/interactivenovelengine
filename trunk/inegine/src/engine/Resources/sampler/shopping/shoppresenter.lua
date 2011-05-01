@@ -56,9 +56,7 @@ function ShopPresenter:RegisterEvents()
 
 	shopView:SetClosingEvent(
 		function()
-			Trace("closing shop!");
 			if (self.closingEvent ~= nil) then
-				Trace("doing closing event for shop!");
 				self.closingEvent();
 			end
 			self:Finalize();

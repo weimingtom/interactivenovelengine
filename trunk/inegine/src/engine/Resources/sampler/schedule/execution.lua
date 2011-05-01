@@ -29,7 +29,6 @@ function ExecutionView:InitComponents()
 	self.frame.Enabled = false
 	self.frame.MouseLeave =
 		function(target, event, args)
-			Trace("mouse leave: " .. target.Name)
 		end
 
 	parent:AddComponent(self.frame)
@@ -78,7 +77,6 @@ function ExecutionView:Dispose()
 end
 
 function ExecutionView:Show()
-	Trace("showing schedule!")
 	self.frame.Visible = true
 	self.frame.Enabled = true
 end
@@ -97,7 +95,6 @@ function ExecutionView:SetAnimation(animation)
     animation.y = 5;
 	animation.AnimationOver =
 		function (animation, luaevent, args)
-			Trace(animation.name .. "animation over!")
                 if (self.animationOverEvent~=nil) then
                     self.animationOverEvent(animation, luaevent, args);
                 end

@@ -5,5 +5,6 @@ SetVolume(50);
 
 SetPackage("Resources/Sampler", "", false);
 --SetPackage("Resources/sampler.zip", "test", true);
-
-LoadScript "init.lua"
+LoadScript("resources/i18n/locale_kr.lua");
+--LoadScript("resources/i18n/locale_jp.lua");
+LoadScript("init.lua");

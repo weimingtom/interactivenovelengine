@@ -104,7 +104,7 @@ function ScheduleView:Init()
 	educationView.frame.visible = true;
 	educationView.frame.enabled = true;
 	self.educationView = educationView;
-	tabView:AddTab("education", educationView.frame);
+	tabView:AddTab(schedule_view_education, educationView.frame);
 
 	local workView = Flowview:New("workview")
 	workView.frame.relative = true;
@@ -119,7 +119,7 @@ function ScheduleView:Init()
 	workView.frame.visible = false;
 	workView.frame.enabled = false;
 	self.workView = workView;
-	tabView:AddTab("work", workView.frame);
+	tabView:AddTab(schedule_view_work, workView.frame);
 
 	local vacationView = Flowview:New("vacationview");
 	vacationView.frame.relative = true;
@@ -134,9 +134,9 @@ function ScheduleView:Init()
 	vacationView.frame.visible = false;
 	vacationView.frame.enabled = false;
 	self.vacationView = vacationView;
-	tabView:AddTab("vacation", vacationView.frame);
+	tabView:AddTab(schedule_view_vacation, vacationView.frame);
 
-	local repeatButton = self:CreateButton("Repeat",
+	local repeatButton = self:CreateButton(schedule_view_repeat,
 		function (repeatButton, luaevent, args)
             if (self.executeEvent~=nil) then
                 self.repeatEvent(repeatButton, luaevent, args);
@@ -179,7 +179,7 @@ function ScheduleView:Init()
 	self.selectedItemsView = selectedItemsView;
 	selectionframe:AddComponent(selectedItemsView.frame);
 
-	local closeButton = self:CreateButton("Close",
+	local closeButton = self:CreateButton(common_close,
 		function (closeButton, luaevent, args)
             self:Dispose();
 		end)
@@ -190,7 +190,7 @@ function ScheduleView:Init()
 	self.frame:AddComponent(closeButton);
 
 
-	local deleteButton = self:CreateButton("Delete",
+	local deleteButton = self:CreateButton(schedule_view_remove,
 		function (deleteButton, luaevent, args)
             if (self.deleteEvent ~= nil) then
                 self.deleteEvent(deleteButton, luaevent, args);
@@ -202,7 +202,7 @@ function ScheduleView:Init()
 	self.deleteButton = deleteButton
 	self.frame:AddComponent(deleteButton);
 
-	local executeButton = self:CreateButton("Run",
+	local executeButton = self:CreateButton(schedule_view_run,
 		function (executeButton, luaevent, args)
             if (self.executeEvent~=nil) then
                 self.executeEvent(executeButton, luaevent, args);

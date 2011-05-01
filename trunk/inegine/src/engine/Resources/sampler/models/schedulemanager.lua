@@ -168,9 +168,9 @@ end
 
 function ScheduleManager:ComposeString(header, effect)
 	local result = header;
-	result = result .. "체력 : " .. character:Read("hp", 1) .. " (" .. self:GenString(effect.hp) .. ")";
-	result = result .. "\n스트레스 : " .. character:Read("stress", 1) .. " (" .. self:GenString(effect.stress) .. ")";
-	result = result .. "\n골드 : " .. character:Read("gold", 0) .. " (" .. self:GenString(effect.gold) .. ")";
+	result = result .. schedule_manager_hp .. character:Read("hp", 1) .. " (" .. self:GenString(effect.hp) .. ")\n";
+	result = result .. schedule_manager_stress .. character:Read("stress", 1) .. " (" .. self:GenString(effect.stress) .. ")\n";
+	result = result .. schedule_manager_gold .. character:Read("gold", 0) .. " (" .. self:GenString(effect.gold) .. ")";
 	return result;
 end
 
