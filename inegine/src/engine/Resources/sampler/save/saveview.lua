@@ -55,7 +55,7 @@ function SaveView:Init()
 	self.frame:AddComponent(saveLoadWindow);
 
 
-	self.closeButton = self:CreateButton("closeButton", "Close", 
+	self.closeButton = self:CreateButton("closeButton", common_close, 
         function (button, luaevent, args)
 			if (button.State["mouseDown"]) then
 				button.Pushed = false
@@ -67,7 +67,7 @@ function SaveView:Init()
     self.closeButton.y = saveLoadWindow.y + saveLoadWindow.height + 5
 	self.frame:AddComponent(self.closeButton);
 
-	self.loadButton = self:CreateButton("loadButton", "Load", 
+	self.loadButton = self:CreateButton("loadButton", saveview_load_button, 
         function (button, luaevent, args)
             if (self.loadEvent ~= nil) then
                 self.loadEvent();
@@ -79,7 +79,7 @@ function SaveView:Init()
 
 	if (self.showSave == nil or self.showSave == true) then
 
-		self.saveButton = self:CreateButton("saveButton", "Save", 
+		self.saveButton = self:CreateButton("saveButton", saveview_save_button, 
 			function (button, luaevent, args)
 				if (self.saveEvent ~= nil) then
 					self.saveEvent();
@@ -92,7 +92,7 @@ function SaveView:Init()
 
 	if (self.showTitle == nil or self.showTitle == true) then
 
-		self.titleButton = self:CreateButton("titleButton", "Title", 
+		self.titleButton = self:CreateButton("titleButton", saveview_title_button, 
 			function (button, luaevent, args)
 				if (self.titleEvent ~= nil) then
 					self.titleEvent();

@@ -146,20 +146,20 @@ function SchedulePresenter:AddItems()
 	local scheduleList = scheduleManager:GetItems("edu");
 	for i,v in ipairs(scheduleList) do
 	    if (self:ItemInPage(i, self.currentEduPage)) then
-            scheduleView:AddEducationItem(v.id, v.text, v.price .. "G", v.icon);
+            scheduleView:AddEducationItem(v.id, v.text, v.price .. common_priceunit, v.icon);
 	    end
     end
 	local scheduleList = scheduleManager:GetItems("job");
 	for i,v in ipairs(scheduleList) do
 	    if (self:ItemInPage(i, self.currentJobPage)) then
-		    scheduleView:AddWorkItem(v.id, v.text, v.price .. "G", v.icon);
+		    scheduleView:AddWorkItem(v.id, v.text, v.price .. common_priceunit, v.icon);
         end
 	end
 
 	local scheduleList = scheduleManager:GetItems("vac");
 	for i,v in ipairs(scheduleList) do
 	    if (self:ItemInPage(i, self.currentVacPage)) then
-		    scheduleView:AddVacationItem(v.id, v.text, v.price .. "G", v.icon);
+		    scheduleView:AddVacationItem(v.id, v.text, v.price .. common_priceunit, v.icon);
         end
 	end
 end

@@ -23,7 +23,6 @@ function StatusView:Init()
 	self.frame.Enabled = false
 	self.frame.MouseLeave =
 		function(target, event, args)
-			Trace("mouse leave: " .. target.Name)	
 		end
 
 	parent:AddComponent(self.frame)

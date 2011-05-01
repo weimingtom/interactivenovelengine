@@ -57,7 +57,7 @@ function ShopView:Init()
 	self.frame:AddComponent(commitWindow);
 	
 	local label = Label();
-	label.text = "BUY?";
+	label.text = shop_view_commit_text;
 	label.font = GetFont("default");
 	label.width = 100;
 	label.height = 50;
@@ -68,7 +68,7 @@ function ShopView:Init()
 	
 	local itemNameLabel = Label();
 	self.itemNameLabel = itemNameLabel;
-	itemNameLabel.text = "teirqwe";
+	itemNameLabel.text = "";
 	itemNameLabel.font = GetFont("default");
 	itemNameLabel.width = 200;
 	itemNameLabel.height = 50;
@@ -79,7 +79,7 @@ function ShopView:Init()
 	
 	local countLabel = Label();
 	self.countLabel = countLabel;
-	countLabel.text = "10";
+	countLabel.text = "";
 	countLabel.font = GetFont("default");
 	countLabel.width = 30;
 	countLabel.height = 30;
@@ -113,7 +113,7 @@ function ShopView:Init()
 
 	local priceLabel = Label();
 	self.priceLabel = priceLabel;
-	priceLabel.text = "1000G";
+	priceLabel.text = "0G";
 	priceLabel.font = GetFont("default");
 	priceLabel.width = 150;
 	priceLabel.height = 30;
@@ -123,7 +123,7 @@ function ShopView:Init()
 	commitWindow:AddComponent(priceLabel);
 		
 		
-	local okButton = self:CreateButton("okButton", "Buy", 50, commitWindow.height - 45, 6)
+	local okButton = self:CreateButton("okButton", shop_view_buy_button, 50, commitWindow.height - 45, 6)
 	self.commitokButton = okButton;
 	okButton.relative = true;
 	okButton.MouseUp = 
@@ -136,7 +136,7 @@ function ShopView:Init()
 		end
 	commitWindow:AddComponent(okButton);
 		
-	local closeButton = self:CreateButton("closeButton", "Cancel", okButton.x + okButton.width + 10,
+	local closeButton = self:CreateButton("closeButton", common_cancel, okButton.x + okButton.width + 10,
 	 commitWindow.height - 45, 6)
 	self.commitCloseButton = closeButton;
 	closeButton.relative = true;
@@ -248,7 +248,7 @@ function ShopView:Init()
 	self.selectedIconText = button;
 	self.detailviewFrame:AddComponent(button);
 	
-	self.closeButton = self:CreateButton("closeButton", "Close", 
+	self.closeButton = self:CreateButton("closeButton", common_close, 
 										 detailviewFrame.x + detailviewFrame.width - 210, background.y + background.height - 40, 6)
 	self.closeButton.relative = true;
 	self.closeButton.MouseUp = 
@@ -484,7 +484,7 @@ end
 
 function ShopView:SelectItem(itemId, itemName, description, icon, price)
 	self.selectedIcon.texture = icon;
-	self.selectedIconText.text = price .. "G"
+	self.selectedIconText.text = price .. common_priceunit
 	self.detailviewFrame.text = description;
 end
 
@@ -505,7 +505,7 @@ function ShopView:SetCountDownButtonEvent(event)
 end
 
 function ShopView:OpenCommitWindow(itemName, count, price)
-	self.priceLabel.text = price .. "G";
+	self.priceLabel.text = price .. common_priceunit;
 	self.countLabel.text = count;
 	self.itemNameLabel.text = itemName;
 	self.commitWindow:Show();

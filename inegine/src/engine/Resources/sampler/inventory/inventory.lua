@@ -67,7 +67,7 @@ function InventoryView:Init()
 	self.detailView = detailView;
 	self.frame:AddComponent(detailView);
 	
-	local equipButton = self:CreateButton("equipButton", "Equip",
+	local equipButton = self:CreateButton("equipButton", inventory_equip,
 	function (equipButton, luaevent, args)
 		self:EquipItem();
 	end)
@@ -151,7 +151,7 @@ function InventoryView:Init()
 	dressView.frame.visible = true;
 	dressView.frame.enabled = true;
 	self.dressView = dressView;
-	tabView:AddTab("Dress", dressView.frame);
+	tabView:AddTab(inventory_dress, dressView.frame);
 	
 	local itemView = Flowview:New("itemview")
 	itemView.frame.relative = true;
@@ -166,7 +166,7 @@ function InventoryView:Init()
 	itemView.frame.visible = false;
 	itemView.frame.enabled = false;
 	self.itemView = itemView;
-	tabView:AddTab("Item", itemView.frame);
+	tabView:AddTab(inventory_item, itemView.frame);
 	
 	local furnitureView = Flowview:New("furnitureview");
 	furnitureView.frame.relative = true;
@@ -181,9 +181,9 @@ function InventoryView:Init()
 	furnitureView.frame.visible = false;
 	furnitureView.frame.enabled = false;
 	self.furnitureView = furnitureView;
-	tabView:AddTab("Furniture", furnitureView.frame);
+	tabView:AddTab(inventory_furniture, furnitureView.frame);
 	
-	local closeButton = self:CreateButton("closeButton", "Close",
+	local closeButton = self:CreateButton("closeButton", common_close,
 		function (closeButton, luaevent, args)
 			self:Dispose();
 		end)
@@ -359,7 +359,7 @@ end
 
 function InventoryView:SelectItem(itemId, itemName, description, icon, price, count)
 	self.selectedIcon.texture = icon;
-	self.selectedIconText.text = price .. "G"
+	self.selectedIconText.text = price .. common_priceunit
 	self.detailView.text = itemName .. "x" .. count .. "\n" .. description;
 end
 
@@ -393,9 +393,9 @@ function InventoryView:SetEquipMode(equip)
 	self:ShowEquip(true);
 	self.equipButton.enabled = true;
 	if (equip) then
-		self.equipButton.text = "Equip";
+		self.equipButton.text = inventory_equip;
 	else
-		self.equipButton.text = "Unequip";
+		self.equipButton.text = inventory_unequip;
 	end
 end
 

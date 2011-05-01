@@ -31,7 +31,6 @@ function ExecutionPresenter:Close()
 end
 
 function ExecutionPresenter:RegisterEvents()
-	Trace("registering execution presenter events!");
     local executionView = self.executionView;
     local main = self.main;
     local scheduleManager = self.scheduleManager;
@@ -48,7 +47,6 @@ function ExecutionPresenter:HandleKeyDown(handler, luaevent, args)
 end
 
 function ExecutionPresenter:DeregisterEvents()
-	Trace("deregistering execution presenter events!");
     main:SetKeyDownEvent(nil)
 end
 
@@ -81,16 +79,17 @@ function ExecutionPresenter:RunSchedule()
         local portrait2 = "";
         local sound = "";
         if (success) then
-            dialog2 = "이번주는 잘 되었습니다!\n아버지도 기뻐하실거에요.@"
+            dialog2 = execution_presenter_success_msg
             portrait2 = "resources/images/f2.png"
             sound = "failure";
         else
-            dialog2 = "이번주는 잘 안되었습니다!\n아버지가 슬퍼하실거에요.@"
+            dialog2 = execution_presenter_failure_msg
             portrait2 = "resources/images/f1.png"
             sound = "failure";
         end
 
-	    self.executionView:ExecuteSchedule("규브", "이번주의 일정은 " ..  scheduleName .. "입니다.\n열심히 하세요.@",
+	    self.executionView:ExecuteSchedule(execution_presenter_dialogue_name,
+								  execution_presenter_dialogue_text1 ..  scheduleName .. execution_presenter_dialogue_text2,
 							      "resources/images/f3.png", 
 							      animation,
 							      result,

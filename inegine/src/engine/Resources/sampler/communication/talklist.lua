@@ -53,16 +53,16 @@ function TalkListView:Init()
 	self.talkimage = talkimage;
 	viewframe:AddComponent(talkimage);
 	
-	self.musumeButton = self:CreateButton("musumeButton", "딸", 
+	self.musumeButton = self:CreateButton("musumeButton", talklist_musume_button, 
 										 viewframe.width - 125, 5+45*0, 4)
 	self.viewframe:AddComponent(self.musumeButton);
 	
 	
-	self.goddessButton = self:CreateButton("goddessButton", "여신", 
+	self.goddessButton = self:CreateButton("goddessButton", talklist_goddess_button, 
 										 viewframe.width - 125, 5+45*1, 4)
 	self.viewframe:AddComponent(self.goddessButton);
 	
-	self.closeButton = self:CreateButton("closeButton", "Close", 
+	self.closeButton = self:CreateButton("closeButton", common_close, 
 										 viewframe.width - 125, 5+45*2, 4)
 	self.closeButton.MouseUp = 
 		function (button, luaevent, args)
@@ -85,11 +85,11 @@ function TalkListView:Init()
 end
 
 function TalkListView:ToggleMusumeEvent()
-	self.musumeButton.Text = "딸 (이벤트)";
+	self.musumeButton.Text = talklist_musume_event_button;
 end
 
 function TalkListView:ToggleGoddessEvent()
-	self.goddessButton.Text = "여신 (이벤트)";
+	self.goddessButton.Text = talklist_goddess_event_button;
 end
 
 function TalkListView:SetTalkSelectedEvent(event)

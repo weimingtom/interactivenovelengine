@@ -45,7 +45,7 @@ function TitleState:InitComponents()
 	titleText.VerticalAlignment = 0;
 	titleText.Width = 640;
 	titleText.Height = 240;
-	titleText.Text = "体験版";
+	titleText.Text = titlestate_title;
 	titleText.Font = GetFont("verylarge");
 	titleText.TextColor = 0xEEEEEE
 	titleText.Layer = 3
@@ -56,7 +56,7 @@ function TitleState:InitComponents()
 	titleText.enabled = true;
 	view:AddComponent(titleText);	
 	
-	local newGameButton = self:CreateButton("New Game",
+	local newGameButton = self:CreateButton(titlestate_newgame,
 		function (button, luaevent, args)
 			Trace("new game button clicked!");
 			CloseState();
@@ -66,7 +66,7 @@ function TitleState:InitComponents()
 	newGameButton.Y = 300;
 	view:AddComponent(newGameButton);
 	
-	local continueButton = self:CreateButton("Continue Game",
+	local continueButton = self:CreateButton(titlestate_continue,
 		function (button, luaevent, args)
 			Trace("continue button clicked!");
 			self:OpenSystem();
@@ -75,7 +75,7 @@ function TitleState:InitComponents()
 	continueButton.Y = 350;
 	view:AddComponent(continueButton);
 	
-	local omakeButton = self:CreateButton("Omake",
+	local omakeButton = self:CreateButton(titlestate_omake,
 		function (button, luaevent, args)
 			Trace("omake button clicked!");
 		end);
@@ -84,7 +84,7 @@ function TitleState:InitComponents()
 	view:AddComponent(omakeButton);
 	
 	
-	local exitButton = self:CreateButton("Exit",
+	local exitButton = self:CreateButton(titlestate_exit,
 		function (button, luaevent, args)
 			Trace("exit button clicked!");
 		end);

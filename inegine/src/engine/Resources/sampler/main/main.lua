@@ -1,7 +1,6 @@
 --main state
 --Import
 LoadScript "inventory\\inventory.lua"
---LoadScript "zip://Resources/test.zip|inventory.lua"
 LoadScript "inventory\\inventorypresenter.lua"
 LoadScript "schedule\\schedule.lua"
 LoadScript "schedule\\execution.lua"
@@ -268,8 +267,6 @@ function Main:OpenCommunication()
 	self.talkListView = talkListView;
 	
 	talkListView:Init();
-	talkListView:SetGreeting("resources/images/f2.png","규브", "따님과 대화하실 내용을 선택해주세요.");
-	
 	
 	self.musumeevents = eventManager:GetMusumeEvents();
 	self.goddessevents = eventManager:GetGoddessEvents();
@@ -306,7 +303,7 @@ function Main:OpenCommunication()
 			end
 			self.musumeevents = nil;
 			self.goddessevents = nil;
-			talkListView:Dispose();
+			talkListView:Hide();
 		end
 	)
 	
@@ -344,13 +341,14 @@ function Main:NormalTalk(pic, name, line)
 	talkView:SetTalkOverEvent(
 		function()
 			talkView:Dispose();
+			self.talkListView:Dispose();
 			self:SetKeyDownEvent(nil);
-			self:Enable();
 		end
 	)
 	
 	talkView:SetClosingEvent( 
 		function()
+			self.talkListView:Dispose();
 			self:Enable();
 		end
 	);
@@ -392,7 +390,8 @@ function Main:OpenShopList()
 	local shoplist = ShopListView:New("shoplistview", CurrentState());
 	self.shoplist = shoplist;
 	shoplist:Init();
-	shoplist:SetGreeting("resources/images/f2.png","규브", "쇼핑하실 곳을 선택해주세요.");
+	shoplist:SetGreeting("resources/images/f2.png", main_shop_greeting_name,
+						 main_shop_greeting_msg);
 	shoplist:SetShopSelectedEvent(
 		function(button, luaevent, arg)
 			Trace(arg);
@@ -598,8 +597,11 @@ end
 
 function Main:SetState(firstname, lastname, age, gold, stress, mana)
 	GetComponent("statedisplay").text = firstname .. " " 
-										.. lastname .. "\nAge " .. age .. "\nGold "
-										.. gold .. "\nStress " .. stress .. "\nMana " .. mana;
+										.. lastname .. "\n" 
+										.. main_state_age .. age .. "\n"
+										.. main_state_gold .. gold .. "\n"
+										.. main_state_stress .. stress .. "\n"
+										.. main_state_mana .. mana;
 end
 
 function Main:SetKeyDownEvent(event)

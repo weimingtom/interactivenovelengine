@@ -63,7 +63,7 @@ function MakingState:InitComponents()
 	self.okButton = okButton;
     okButton.Name = "ok"
 	okButton.Relative = true;
-	okButton.Text = "決定"
+	okButton.Text = makingstate_next_button
 	okButton.font = GetFont("japanese");
 	okButton.Layer = 6;
 	okButton.Width = 100;
@@ -89,7 +89,7 @@ function MakingState:InitComponents()
     self.previousButton = previousButton;
 	previousButton.Name = "prev"
 	previousButton.Relative = true;
-	previousButton.Text = "前に戻る"
+	previousButton.Text = makingstate_previous_button
 	previousButton.font = GetFont("japanese");
 	previousButton.Layer = 6;
 	previousButton.Width = 100;
@@ -206,18 +206,18 @@ end
 
 function MakingState:PromptFirstName()
 	self.textWindow.Height = 200;
-	self.okButton.text = "決定";
+	self.okButton.text = makingstate_next_button
 	self.previousButton.Y = self.textWindow.Height - self.previousButton.Height * 1.5;
-	self.previousButton.text = "前に戻る";
+	self.previousButton.text = makingstate_previous_button;
 	self.okButton.Y = self.textWindow.Height - self.okButton.Height * 1.5;
 	self.previousButton.enabled = false;
 	
 	self.textWindow:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
-	self.talkWindow:SetDialogueName("규브");
+	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
 	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
-	self.talkWindow:SetDialogueText("あなたの娘がどんな子なのか、教えて頂けますか？@\nまず、名前は？@");
+	self.talkWindow:SetDialogueText(makingstate_dialogue_firstname1);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
 			self:AskFirstName();
@@ -228,7 +228,7 @@ function MakingState:AskFirstName()
 	self.textWindow:Show();
 	self.talkWindow:Hide();
 	self.textWindow:Clear();
-	self.textWindow.text = "娘の名前を教えてください";
+	self.textWindow.text = makingstate_dialogue_firstname2;
 	
     self.daughterName = nil;
     
@@ -270,9 +270,9 @@ function MakingState:PromptLastName()
 	self.talkWindow:Show();
 	
     self.talkWindow:ClearDialogueText();
-	self.talkWindow:SetDialogueName("규브");
+	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
 	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
-	self.talkWindow:SetDialogueText("娘の苗字も教えて頂けましょうか？@");
+	self.talkWindow:SetDialogueText(makingstate_dialogue_lastname1);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
 			self:AskLastName();
@@ -283,7 +283,7 @@ function MakingState:AskLastName()
 	self.textWindow:Show();
 	self.talkWindow:Hide();
 	self.previousButton.enabled = true;
-	self.textWindow.text = "娘の苗字を教えてください。";
+	self.textWindow.text = makingstate_dialogue_lastname2;
 
     self.lastName = nil
     
@@ -325,9 +325,9 @@ function MakingState:PromptBirthday()
 	self.textWindow:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
-	self.talkWindow:SetDialogueName("규브");
+	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
 	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
-	self.talkWindow:SetDialogueText("なるほど。\nでは、娘の誕生日は？@");
+	self.talkWindow:SetDialogueText(makingstate_dialogue_birthday1);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
 			self:AskBirthday();
@@ -337,7 +337,7 @@ end
 function MakingState:AskBirthday()
 	self.textWindow:Show();
 	self.talkWindow:Hide();
-	self.textWindow.text = "娘の誕生日を教えてください。";
+	self.textWindow.text = makingstate_dialogue_birthday2;
 	
     self.month = nil;
     self.day = nil
@@ -360,7 +360,7 @@ function MakingState:AskBirthday()
 		end
 	self.textWindow:AddComponent(textButton);
 
-	local textButton = self:CreateButton("monthLabel", "月",
+	local textButton = self:CreateButton("monthLabel", makingstate_month_label,
 										 135, self.textWindow.Height / 2 - 10,
 										 25, 20);
 	self.textWindow:AddComponent(textButton);
@@ -383,7 +383,7 @@ function MakingState:AskBirthday()
 		end
 	self.textWindow:AddComponent(textButton);
 	
-	local textButton = self:CreateButton("dayLabel", "日",
+	local textButton = self:CreateButton("dayLabel", makingstate_day_label,
 										 240, self.textWindow.Height / 2 - 10,
 										 25, 20);
 										 
@@ -422,9 +422,9 @@ function MakingState:PromptBloodType()
 	self.textWindow:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
-	self.talkWindow:SetDialogueName("규브");
+	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
 	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
-	self.talkWindow:SetDialogueText("では、血液型は？@");
+	self.talkWindow:SetDialogueText(makingstate_dialogue_bloodtype1);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
 			self:AskBloodType();
@@ -434,7 +434,7 @@ end
 function MakingState:AskBloodType()
 	self.textWindow:Show();
 	self.talkWindow:Hide();
-	self.textWindow.text = "娘の血液型は？";
+	self.textWindow.text = makingstate_dialogue_bloodtype2;
 
     self.bloodType = nil;
 
@@ -526,9 +526,9 @@ function MakingState:PromptFatherName()
 	self.textWindow:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
-	self.talkWindow:SetDialogueName("규브");
+	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
 	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
-	self.talkWindow:SetDialogueText("あなたの名前を教えてくれませんか？@");
+	self.talkWindow:SetDialogueText(makingstate_dialogue_fathername1);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
 			self:AskFatherName();
@@ -538,7 +538,7 @@ end
 function MakingState:AskFatherName()
 	self.textWindow:Show();
 	self.talkWindow:Hide();
-	self.textWindow.text = "あなたの名前は？";
+	self.textWindow.text = makingstate_dialogue_fathername2;
 
     self.fatherName = nil;
     
@@ -580,9 +580,9 @@ function MakingState:PromptFatherBirthday()
 	self.textWindow:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
-	self.talkWindow:SetDialogueName("규브");
+	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
 	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
-	self.talkWindow:SetDialogueText("あなたの誕生日は？@");
+	self.talkWindow:SetDialogueText(makingstate_dialogue_fatherbirthday1);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
 			self:AskFatherBirthday();
@@ -592,7 +592,7 @@ end
 function MakingState:AskFatherBirthday()
 	self.textWindow:Show();
 	self.talkWindow:Show();
-	self.textWindow.text = "あなたの誕生日を教えてください";
+	self.textWindow.text = makingstate_dialogue_fatherbirthday2;
 
     self.fatherMonth = nil;
     self.fatherDay = nil;
@@ -615,7 +615,7 @@ function MakingState:AskFatherBirthday()
 		end
 	self.textWindow:AddComponent(textButton);
 
-	local textButton = self:CreateButton("monthLabel", "月",
+	local textButton = self:CreateButton("monthLabel", makingstate_month_label,
 										 135, self.textWindow.Height / 2 - 10,
 										 25, 20);
 	self.textWindow:AddComponent(textButton);
@@ -636,7 +636,7 @@ function MakingState:AskFatherBirthday()
 		end
 	self.textWindow:AddComponent(textButton);
 	
-	local textButton = self:CreateButton("dayLabel", "日",
+	local textButton = self:CreateButton("dayLabel", makingstate_day_label,
 										 240, self.textWindow.Height / 2 - 10,
 										 25, 20);
 										 
@@ -671,9 +671,9 @@ function MakingState:PromptSummary()
 	self.textWindow:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
-	self.talkWindow:SetDialogueName("규브");
+	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
 	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
-	self.talkWindow:SetDialogueText("これで間違いありませんか？@");
+	self.talkWindow:SetDialogueText(makingstate_dialogue_summary1);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
 			self:Summary();
@@ -682,19 +682,19 @@ end
 
 function MakingState:Summary()
 	self.textWindow.Height = 300;
-	self.okButton.text = "はい";
+	self.okButton.text = makingstate_dialogue_summary_confirm;
 	self.okButton.Y = self.textWindow.Height - self.okButton.Height * 1.5;
-	self.previousButton.text = "いいえ";
+	self.previousButton.text = makingstate_dialogue_summary_decline;
 	self.previousButton.Y = self.textWindow.Height - self.previousButton.Height * 1.5;
 	self.textWindow:Show();
 	self.talkWindow:Hide();
-	self.textWindow.text = "娘の名前 : " .. self.daughterName .. "\n" ..
-	"苗字 : " .. self.lastName .. "\n" ..
-	"誕生日 : " .. self.month .. "月" ..  self.day .. "日\n" ..
-	"血液型 : " .. self.bloodType .. "\n" ..
-	"あなたの名前 : " .. self.fatherName .. "\n" ..
-	"あなたの誕生日 :" .. self.fatherMonth .. "月" ..  self.fatherDay .. "日\n" ..
-	"\n以上で宜しいですか？";
+	self.textWindow.text = makingstate_dialogue_summary_daughter_name .. self.daughterName .. "\n" ..
+	makingstate_dialogue_summary_last_name .. self.lastName .. "\n" ..
+	makingstate_dialogue_summary_birthday .. self.month .. makingstate_month_label ..  self.day .. makingstate_day_label .. "\n" ..
+	makingstate_dialogue_summary_bloodtype .. self.bloodType .. "\n" ..
+	makingstate_dialogue_summary_fathername .. self.fatherName .. "\n" ..
+	makingstate_dialogue_summary_fatherbirthday .. self.fatherMonth .. makingstate_month_label ..  self.fatherDay .. makingstate_day_label .. "\n" ..
+	makingstate_dialogue_summary_confirm;
 	
     self:SetOKEvent(
         function()
@@ -714,9 +714,9 @@ function MakingState:PromptFinish()
 	self.textWindow:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
-	self.talkWindow:SetDialogueName("규브");
+	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
 	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
-	self.talkWindow:SetDialogueText("分かりました\nでは、あなたの娘の物語を始めましょう。@");
+	self.talkWindow:SetDialogueText(makingstate_dialogue_finish);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
 			Trace("finished!");
@@ -736,9 +736,9 @@ function MakingState:PromptReset()
 	self.textWindow:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
-	self.talkWindow:SetDialogueName("규브");
+	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
 	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
-	self.talkWindow:SetDialogueText("間違ったところを指摘してくれれば、やり直せます。@");
+	self.talkWindow:SetDialogueText(makingstate_dialogue_reset);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
 		    self:ResetValues();

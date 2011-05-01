@@ -212,6 +212,8 @@
     <None Include="Resources\sampler\resources\data\schedule_failure.csv" />
     <None Include="Resources\sampler\resources\data\schedule_success.csv" />
     <None Include="Resources\sampler\resources\data\eventlist.csv" />
+    <None Include="Resources\sampler\resources\i18n\locale_jp.lua" />
+    <None Include="Resources\sampler\resources\i18n\locale_kr.lua" />
     <None Include="Resources\sampler\startgame.lua" />
     <None Include="Resources\sampler\event\eventstate.lua" />
     <None Include="Resources\sampler\init_csv.lua" />

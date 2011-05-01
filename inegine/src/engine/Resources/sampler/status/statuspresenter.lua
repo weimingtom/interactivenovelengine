@@ -50,28 +50,29 @@ end
 function StatusPresenter:AddItems()
 	local descriptionText = self.character:GetFirstName() .. ", " .. self.character:GetLastName() .. "\n";
 	local month, day = self.character:GetBirthday();
-	descriptionText = descriptionText .. month .. "월 " .. day .. "일 " .. self.character:GetBloodtype() .. "형\n";
+	descriptionText = descriptionText .. month .. status_month .. " " .. day .. status_day 
+					  .. " " .. self.character:GetBloodtype() .. status_bloodtype .. "\n";
 	self.statusView:SetDescriptionText(descriptionText);
 	
 	
-	self.statusView:AddGraphItem("체력", character:Read("hp"), character:Get("hp"), 0xBBBBBB);
-	self.statusView:AddGraphItem("의욕", character:Read("will"), character:Get("will"), 0xBBBBBB);
-	self.statusView:AddGraphItem("지력", character:Read("int"), character:Get("int"), 0xBBBBBB);
-	self.statusView:AddGraphItem("매력", character:Read("cha"), character:Get("cha"), 0xBBBBBB);
-	self.statusView:AddGraphItem("기품", character:Read("grace"), character:Get("grace"), 0xBBBBBB);
-	self.statusView:AddGraphItem("모랄", character:Read("moral"), character:Get("moral"), 0xBBBBBB);
-	self.statusView:AddGraphItem("센스", character:Read("sense"), character:Get("sense"), 0xBBBBBB);
-	self.statusView:AddGraphItem("평판", character:Read("rep"), character:Get("rep"), 0xBBBBBB);
-	self.statusView:AddGraphItem("스트레스", character:Read("stress"), character:Get("stress"), 0xBBBBBB);
-	self.statusView:AddGraphItem("마나", character:Read("mana"), character:Get("mana"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_hp, character:Read("hp"), character:Get("hp"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_will, character:Read("will"), character:Get("will"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_int, character:Read("int"), character:Get("int"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_cha, character:Read("cha"), character:Get("cha"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_grace, character:Read("grace"), character:Get("grace"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_moral, character:Read("moral"), character:Get("moral"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_sense, character:Read("sense"), character:Get("sense"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_rep, character:Read("rep"), character:Get("rep"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_stress, character:Read("stress"), character:Get("stress"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_mana, character:Read("mana"), character:Get("mana"), 0xBBBBBB);
 
-	self.statusView:AddGraphItem("검술", character:Read("sword"), character:Get("sword"), 0xBBBBBB);
-	self.statusView:AddGraphItem("마법", character:Read("magic"), character:Get("magic"), 0xBBBBBB);
-	self.statusView:AddGraphItem("연금술", character:Read("alchemy"), character:Get("alchemy"), 0xBBBBBB);
-	self.statusView:AddGraphItem("음악", character:Read("music"), character:Get("music"), 0xBBBBBB);
-	self.statusView:AddGraphItem("댄스", character:Read("dance"), character:Get("dance"), 0xBBBBBB);
-	self.statusView:AddGraphItem("요리", character:Read("cooking"), character:Get("cooking"), 0xBBBBBB);
-	self.statusView:AddGraphItem("논리", character:Read("logic"), character:Get("logic"), 0xBBBBBB);
-	self.statusView:AddGraphItem("상식", character:Read("wis"), character:Get("wis"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_sword, character:Read("sword"), character:Get("sword"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_magic, character:Read("magic"), character:Get("magic"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_alchemy, character:Read("alchemy"), character:Get("alchemy"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_music, character:Read("music"), character:Get("music"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_dance, character:Read("dance"), character:Get("dance"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_cooking, character:Read("cooking"), character:Get("cooking"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_logic, character:Read("logic"), character:Get("logic"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_wis, character:Read("wis"), character:Get("wis"), 0xBBBBBB);
 
 end

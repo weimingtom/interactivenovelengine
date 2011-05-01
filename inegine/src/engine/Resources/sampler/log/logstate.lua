@@ -93,7 +93,7 @@ function LogState:InitComponents()
 	self.box = box;
 	background:AddComponent(box);
 	
-	self.closeButton = self:CreateButton("Close", 
+	self.closeButton = self:CreateButton(common_close, 
 		function (button, luaevent, args)
 			if (button.State["mouseDown"]) then
 				button.Pushed = false
@@ -111,8 +111,6 @@ function LogState:Dispose()
 end
 
 function LogState:SetBoxPosition()
-	Trace(self.currentLine .. "/" .. logManager:GetSize());
-	
 	local percentage = 0;
 	if (logManager:GetSize() <= self.itemsPerPage or self.currentLine == 0) then
 		percentage = 0;
@@ -120,7 +118,6 @@ function LogState:SetBoxPosition()
 		percentage = (self.currentLine + self.itemsPerPage) / (logManager:GetSize());
 	end
 	
-	Trace("[" .. percentage .. "]");
 	
 	self.box.x = self.upButton.x;
 	self.box.y = self.upButton.y + self.upButton.height + 20 +
@@ -175,13 +172,7 @@ function LogState:AddDate(year, month, week)
 	self.numItems = self.numItems + 1;
 end
 
-function LogState:AddLine(line, name, face)
-	if (name ~= nil) then
-		Trace("[[[" .. name .. ":" .. line .. "]]]");
-	else
-		Trace("[[[ " .. ":" .. line .. "]]]");
-	end
-	
+function LogState:AddLine(line, name, face)	
 	self.logList:Add(self:CreateLineItem(self.numItems, 400, 30, name, face, line));
 	self.numItems = self.numItems + 1;
 end
@@ -334,7 +325,7 @@ function LogState:CreateDateItem(id, width, height, year, month, week)
 	button.Y = 0;
 	button.font = GetFont("default");
 	button.TextColor = 0xFF0000
-	button.Text = "<year " .. year .. " month " .. month .. " week " .. week .. ">";
+	button.Text = "<" .. logstate_year .. year .. logstate_month .. month .. logstate_week .. week .. ">";
 	button.Alignment = 0;
 	button.VerticalAlignment = 1;
 	frame:AddComponent(button);

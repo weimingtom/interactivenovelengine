@@ -74,11 +74,11 @@ function InventoryPresenter:RegisterEvents()
     inventoryView:SetUpButtonEvent(
         function()
             local activeTab = inventoryView:GetActiveTab();
-            if (activeTab == "Dress") then
+            if (activeTab == inventory_dress) then
                 if (self:SetDressPage(-1)) then self:Update(); end
-            elseif (activeTab == "Item") then
+            elseif (activeTab == inventory_item) then
                 if (self:SetItemPage(-1)) then self:Update(); end
-            elseif (activeTab == "Furniture") then
+            elseif (activeTab == inventory_furniture) then
                 if (self:SetFurniturePage(-1)) then self:Update(); end
             end
         end
@@ -87,11 +87,11 @@ function InventoryPresenter:RegisterEvents()
     inventoryView:SetDownButtonEvent(
         function()
             local activeTab = inventoryView:GetActiveTab();
-            if (activeTab == "Dress") then
+            if (activeTab == inventory_dress) then
                 if (self:SetDressPage(1)) then self:Update(); end
-            elseif (activeTab == "Item") then
+            elseif (activeTab == inventory_item) then
                 if (self:SetItemPage(1)) then self:Update(); end
-            elseif (activeTab == "Furniture") then
+            elseif (activeTab == inventory_furniture) then
                 if (self:SetFurniturePage(1)) then self:Update(); end
             end
         end
