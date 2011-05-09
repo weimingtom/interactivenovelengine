@@ -1,12 +1,12 @@
-LoadFont("default", "resources\\fonts\\NanumGothicBold.ttf", 17);
+--LoadFont("default", "resources\\fonts\\NanumGothicBold.ttf", 17);
 LoadFont("japanese", "resources\\fonts\\\meiryo.ttc", 17);
 GetFont("japanese").LineSpacing = 10;
 
-LoadFont("menu", "resources\\fonts\\NanumGothicBold.ttf", 13);
-GetFont("menu").TextEffect = 1
+--LoadFont("menu", "resources\\fonts\\NanumGothicBold.ttf", 13);
+--GetFont("menu").TextEffect = 1
 
-LoadFont("bigmenu", "resources\\fonts\\NanumGothicBold.ttf", 23);
-GetFont("bigmenu").TextEffect = 1
+--LoadFont("bigmenu", "resources\\fonts\\NanumGothicBold.ttf", 23);
+--GetFont("bigmenu").TextEffect = 1
 
 
 LoadFont("smalldefault", "resources\\fonts\\NanumGothicBold.ttf", 12);
@@ -26,9 +26,9 @@ LoadFont("dialogue", "resources\\fonts\\NanumGothicBold.ttf", 17, "resources\\fo
 GetFont("dialogue").LineSpacing = 10;
 GetFont("dialogue").TextEffect = 1;
 
-LoadFont("small", "resources\\fonts\\NanumMyeongjoBold.ttf", 15);
-GetFont("small").LineSpacing = 10;
-GetFont("small").TextEffect = 0;
+--LoadFont("small", "resources\\fonts\\NanumMyeongjoBold.ttf", 15);
+--GetFont("small").LineSpacing = 10;
+--GetFont("small").TextEffect = 0;
 
 LoadFont("verysmall", "resources\\fonts\\NanumGothicBold.ttf", 8);
 GetFont("verysmall").LineSpacing = 5
@@ -36,3 +36,18 @@ GetFont("verysmall").LineSpacing = 5
 LoadFont("verylarge", "c:\\windows\\fonts\\meiryo.ttc", 78);
 --LoadFont("verylarge", "resources\\fonts\\NanumMyeongjoBold.ttf", 48);
 GetFont("verylarge").LineSpacing = 30;
+
+
+
+----------------------------------------------------------------------------------
+LoadFont("default", "C:\\Windows\\Fonts\\msgothic.ttc", 17);
+
+LoadFont("menu", "C:\\Windows\\Fonts\\msgothic.ttc", 13);
+GetFont("menu").TextEffect = 1
+
+LoadFont("bigmenu", "C:\\Windows\\Fonts\\msgothic.ttc", 23);
+GetFont("bigmenu").TextEffect = 1
+
+LoadFont("small", "C:\\Windows\\Fonts\\msgothic.ttc", 15);
+GetFont("small").LineSpacing = 10;
+GetFont("small").TextEffect = 0;

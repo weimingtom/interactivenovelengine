@@ -67,9 +67,12 @@ namespace INovelEngine
             ScriptManager.Init();
 
             Resources.Add(fontManager);
-            Resources.Add(csvManager);
-            Resources.Add(soundManager);
             Resources.Add(fadingTransition);
+
+            csvManager.Initialize(this.GraphicsDeviceManager);
+            csvManager.LoadContent();
+            soundManager.Initialize(this.GraphicsDeviceManager);
+            soundManager.LoadContent();
 
             /* load lua entry script */
             Lua_LoadScript("Resources/start.lua");
@@ -90,25 +93,31 @@ namespace INovelEngine
         protected override void OnExiting(EventArgs e)
         {
             base.OnExiting(e);
+
+            csvManager.Dispose();
+            soundManager.Dispose();
+            
+            this.Dispose();
+
+            DumpObjects();
         }
 
         protected override void Dispose(bool disposing)
         {
             Console.WriteLine("disposing supervisor!");
             base.Dispose(disposing);
-
-            DumpObjects();
-
             Console.WriteLine("supervisor disposed!");
         }
   
         public static void DumpObjects()
         {
+            Console.WriteLine("Dumping undisposed dx objects\n====");
             ReadOnlyCollection<ComObject> table = ObjectTable.Objects;
             foreach (ComObject obj in table)
             {
                 Console.WriteLine(obj.GetType().ToString() + ":" + obj.CreationTime.ToString());
             }
+            Console.WriteLine("\n====\nDumping undisposed dx objects over");
 
 #if DEBUG
             MessageBox.Show("Terminating INE");

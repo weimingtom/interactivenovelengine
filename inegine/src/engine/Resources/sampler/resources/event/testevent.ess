@@ -1,4 +1,4 @@
-﻿[테스트 스크립트 1]
+﻿[Test script 1]
 #FadeIn 1000
 #Load "street", "resources/images/room04.jpg"
 #LoadCharacter "musume1", "resources/images/1.png"
@@ -9,16 +9,16 @@
 #elseif 3 < 4
 #return
 #end
-|[r=HOME]집[/r]에 가다가 넘어졌다.@
-#Name "안나", "resources/images/f1.png"
+|On the way [r=HOME]home[/r], I fell.@
+#Name "Anna", "resources/images/f1.png"
 #Show "musume1", 100
-|아파... 흑흑흑...
-어떻게 하지? 젠장...
-하하...@
+|It hurts... *sob*...
+What should I do? Damn...
+Haha...@
 #Nar
-|어쩔수 없이 그냥 집에 갔다.
+|She went home.
 #FadeOut 1000
 TEST:
-|음..테스트@
+|Hmm.. testing@
 #FadeOut 1000
 #Wait 1000

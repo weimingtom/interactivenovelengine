@@ -1,5 +1,5 @@
 category,id,name,price,condition,ability,icon,successani,failureani,desc
-edu,edu1,아버지와 공부,5,,will,resources/icon.png,resources/images/success_ani.gif,resources/images/failure_ani.gif,"아버지와 거실에서 공부 한다."
-edu,edu2,아버지와 운동,5,,will,resources/icon.png,resources/images/success_ani.gif,resources/images/failure_ani.gif,"아버지와 공원에서 가벼운 운동을 한다."
-job,job1,가사,0,,will,resources/icon.png,resources/images/success_ani.gif,resources/images/failure_ani.gif,"집안일을 도운다."
-job,job2,과수원,0,,hp,resources/icon.png,resources/images/success_ani.gif,resources/images/failure_ani.gif,"집안일을 도운다."
+edu,edu1,Study with Father,5,,will,resources/icon.png,resources/images/success_ani.gif,resources/images/failure_ani.gif,"Study with father in living."
+edu,edu2,Work Out with Father,5,,will,resources/icon.png,resources/images/success_ani.gif,resources/images/failure_ani.gif,"Work out with fater at park."
+job,job1,Chores,0,,will,resources/icon.png,resources/images/success_ani.gif,resources/images/failure_ani.gif,"Do the chores."
+job,job2,Orchard,0,,hp,resources/icon.png,resources/images/success_ani.gif,resources/images/failure_ani.gif,"Work at orchard."
