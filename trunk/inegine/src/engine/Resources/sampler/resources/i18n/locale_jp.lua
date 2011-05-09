@@ -52,7 +52,7 @@ makingstate_dialogue_finish = "•ª‚©‚è‚Ü‚µ‚½\n‚Å‚ÍA‚ ‚È‚½‚Ì–º‚Ì•¨Œê‚ğn‚ß‚Ü‚µ‚å‚
 makingstate_dialogue_reset = "ŠÔˆá‚Á‚½‚Æ‚±‚ë‚ğw“E‚µ‚Ä‚­‚ê‚ê‚ÎA‚â‚è’¼‚¹‚Ü‚·B@"
 
 --title state
-titlestate_title = "‘ÌŒ±”Å"
+titlestate_title = "‰´‚Ì–º\n‘ÌŒ±”Å"
 titlestate_newgame = "New Game"
 titlestate_continue = "Continue"
 titlestate_omake = "Omake"

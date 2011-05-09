@@ -4,11 +4,15 @@ LoadScript "components\\flowview.lua"
 
 ShopView = LuaView:New();
 
+shop_font_default = "default"
+shop_font_small = "small"
+shop_font_menu = "menu"
+
 function ShopView:Init()
 	local gamestate = CurrentState();
 	
 	local parent = self.parent;
-	local font = GetFont("default")
+	local font = GetFont(shop_font_default)
 	local name = self.name;
 	
 	self.frame = View()
@@ -58,7 +62,7 @@ function ShopView:Init()
 	
 	local label = Label();
 	label.text = shop_view_commit_text;
-	label.font = GetFont("default");
+	label.font = GetFont(shop_font_default);
 	label.width = 100;
 	label.height = 50;
 	label.x = (commitWindow.width - label.width) / 2;
@@ -69,7 +73,7 @@ function ShopView:Init()
 	local itemNameLabel = Label();
 	self.itemNameLabel = itemNameLabel;
 	itemNameLabel.text = "";
-	itemNameLabel.font = GetFont("default");
+	itemNameLabel.font = GetFont(shop_font_default);
 	itemNameLabel.width = 200;
 	itemNameLabel.height = 50;
 	itemNameLabel.x = (commitWindow.width - itemNameLabel.width) / 2;
@@ -80,7 +84,7 @@ function ShopView:Init()
 	local countLabel = Label();
 	self.countLabel = countLabel;
 	countLabel.text = "";
-	countLabel.font = GetFont("default");
+	countLabel.font = GetFont(shop_font_default);
 	countLabel.width = 30;
 	countLabel.height = 30;
 	countLabel.x = 50;
@@ -114,7 +118,7 @@ function ShopView:Init()
 	local priceLabel = Label();
 	self.priceLabel = priceLabel;
 	priceLabel.text = "0G";
-	priceLabel.font = GetFont("default");
+	priceLabel.font = GetFont(shop_font_default);
 	priceLabel.width = 150;
 	priceLabel.height = 30;
 	priceLabel.x = 120;
@@ -210,7 +214,7 @@ function ShopView:Init()
 	detailviewFrame.height = 230;
 	detailviewFrame.leftMargin = 20;
 	detailviewFrame.margin = 90;
-	detailviewFrame.font = GetFont("smalldefault");
+	detailviewFrame.font = GetFont(shop_font_small);
     detailviewFrame.linespacing = 10
 	detailviewFrame.x = 525;
 	detailviewFrame.y = 160;
@@ -240,7 +244,7 @@ function ShopView:Init()
 	button.Height = 21;
 	button.X = 10;
 	button.Y = 10 + pic.Height;
-	button.font = GetFont("verysmall");
+	button.font = GetFont(shop_font_menu);
 	button.TextColor = 0xFFFFFF
 	button.Text = text;
 	button.Alignment = 1;
@@ -331,7 +335,7 @@ function ShopView:CreateButton(name, text, x, y, layer)
 	button.Width = 100;
 	button.Height = 40;
 	button.Text = text;
-	button.Font =  GetFont("menu")
+	button.Font =  GetFont(shop_font_menu)
 	button.TextColor = 0xEEEEEE
 	button.State = {}
 	button.MouseDown = 
@@ -428,7 +432,7 @@ function ShopView:CreateItem(id, text, price, icon)
 	button.Height = 15;
 	button.X = 0;
 	button.Y = pic.Height;
-	button.font = GetFont("verysmall");
+	button.font = GetFont(shop_font_small);
 	button.TextColor = 0xFFFFFF
 	button.Text = text;
 	button.Alignment = 1;
@@ -442,7 +446,7 @@ function ShopView:CreateItem(id, text, price, icon)
 	priceButton.Height = 15;
 	priceButton.X = 0;
 	priceButton.Y = button.Y + button.Height;
-	priceButton.font = GetFont("verysmall");
+	priceButton.font = GetFont(shop_font_small);
 	priceButton.TextColor = 0xFFFFFF
 	priceButton.Text = price;
 	priceButton.Alignment = 1;
@@ -477,7 +481,7 @@ function ShopView:CreateItemButton(buttonName, buttonText)
 			end
 		end
 	newButton.Text = buttonText;
-	newButton.Font = GetFont("default");
+	newButton.Font = GetFont(shop_font_default);
 	newButton.TextColor = 0xEEEEEE
 	return newButton;
 end

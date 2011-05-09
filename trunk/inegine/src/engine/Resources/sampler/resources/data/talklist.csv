@@ -1,4 +1,4 @@
 category,id,condition,pic,name,line
-musume,testevent1,1 == 1,resources/images/f2.png,규브,"대화1.@"
-musume,testevent2,1 == 1,resources/images/f2.png,규브,"대화2.@"
-goddess,testevent3,1 == 1,resources/images/f2.png,규브,"대화3.@"
+musume,testevent1,1 == 1,resources/images/f2.png,Bato,"Talk1.@"
+musume,testevent2,1 == 1,resources/images/f2.png,Bato,"Talk2.@"
+goddess,testevent3,1 == 1,resources/images/f2.png,Bato,"Talk3.@"
