@@ -36,8 +36,6 @@ function SchedulePresenter:Init(main, scheduleView, scheduleManager)
 	self.main = main;
 	self.scheduleView = scheduleView;
 	self.scheduleManager = scheduleManager;
-
-	main:ToggleMainMenu(false);
 	
     scheduleView:EnableRun(false);
     scheduleView:Show();
@@ -48,7 +46,6 @@ end
 
 function SchedulePresenter:RegisterEvents()
     local scheduleView = self.scheduleView;
-    local main = self.main;
     local scheduleManager = self.scheduleManager;
 
 	scheduleView:SetClosingEvent(
@@ -58,7 +55,6 @@ function SchedulePresenter:RegisterEvents()
 			end
 
 			scheduleView:Hide();
-			main:ToggleMainMenu(true);
 		end
 	);
 

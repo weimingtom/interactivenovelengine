@@ -56,6 +56,7 @@ namespace INovelEngine.Effector
             sprite.Begin(SpriteFlags.AlphaBlend);
   
             sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(), new Vector3(RealX, RealY, 0), renderColor);
+
             sprite.End();
         }
 

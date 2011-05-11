@@ -32,11 +32,7 @@ function InventoryPresenter:Init(main, inventoryView, itemManager, inventoryMana
 	self.main = main;
 	self.inventoryView = inventoryView;
 	self.itemManager = itemManager;
-    self.inventoryManager = inventoryManager;
-
-	main:ToggleMainMenu(false);
-	main:SetTachiePosition(inventoryView.frame.X + inventoryView.frame.Width + 10);
-	
+    self.inventoryManager = inventoryManager;	
     inventoryView:Show();
     
     self:RegisterEvents();
@@ -45,8 +41,6 @@ end
 
 function InventoryPresenter:Finalize()
 	self.inventoryView:Hide();
-	self.main:ToggleMainMenu(true);
-	self.main:CenterTachie();
 end
 
 function InventoryPresenter:RegisterEvents()
@@ -165,7 +159,8 @@ function InventoryPresenter:SelectItem(id)
 	if (item.category == "dress") then
 		--enable equipping for dress items only
 		if (self.inventoryManager:ItemEquipped(id)) then
-			self.inventoryView:SetEquipMode(false);
+			--self.inventoryView:SetEquipMode(false);
+			self.inventoryView:ShowEquip(false);
 		else
 			self.inventoryView:SetEquipMode(true);
 		end	

@@ -30,8 +30,6 @@ function ShopPresenter:Init(main, shopView, itemManager, shopManager, inventoryM
 	self.shopManager = shopManager;
 	self.inventoryManager = inventoryManager;
 
-	main:ToggleMainMenu(false);
-
 	--shopView:SetBuyMode(false);
 	shopView:SetDialogueName(shopManager:GetShop(shopName).owner);
 	shopView:SetPortraitTexture(shopManager:GetShop(shopName).portrait);

@@ -137,6 +137,7 @@
     <Compile Include="Effector\Graphics\Components\IComponentManager.cs" />
     <Compile Include="Effector\Graphics\Components\Label\Label.cs" />
     <Compile Include="Effector\Graphics\Components\Sprite\AnimatedSprite.cs" />
+    <Compile Include="Effector\Graphics\Components\Sprite\Tachie.cs" />
     <Compile Include="Effector\Graphics\Components\View\View.cs" />
     <Compile Include="Effector\Graphics\Components\Window\TextNarrator.cs" />
     <Compile Include="Effector\Graphics\Effect\AbstractTransition.cs" />
@@ -254,8 +255,6 @@
     <None Include="Resources\sampler\shopping\shoplist.lua" />
     <None Include="Resources\sampler\status\statuspresenter.lua" />
     <None Include="Resources\sampler\status\status.lua" />
-    <None Include="Resources\sampler\tachie\tachie.lua" />
-    <None Include="Resources\sampler\tachie\tachiepresenter.lua" />
     <None Include="Resources\sampler\condition\conditionmanager.lua" />
     <None Include="Resources\start.lua" />
     <None Include="Resources\test\characterTest.lua" />
@@ -323,6 +322,10 @@
     <Content Include="Resources\sampler\resources\images\room03.jpg" />
     <Content Include="Resources\sampler\resources\images\room04.jpg" />
     <Content Include="Resources\sampler\resources\images\success_ani.gif" />
+    <Content Include="Resources\sampler\resources\images\tachie\anze_body1.png" />
+    <Content Include="Resources\sampler\resources\images\tachie\anze_dress_normal.png" />
+    <Content Include="Resources\sampler\resources\images\tachie\anze_dress_summer.png" />
+    <Content Include="Resources\sampler\resources\images\tachie\anze_dress_winter.png" />
     <Content Include="Resources\sampler\resources\images\title.png" />
     <Content Include="Resources\sampler\resources\button.png" />
     <Content Include="Resources\sampler\resources\cursor.png" />

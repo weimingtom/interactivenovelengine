@@ -15,6 +15,7 @@ function InventoryManager:New()
 end
 
 function InventoryManager:AddItem(id, category, count)
+	
 	if (category == nil and itemManager ~= nil) then
 		category = itemManager:GetItem(id).category;
 	end
@@ -105,12 +106,7 @@ function InventoryManager:EquipItem(id)
 	Trace("Equipping " .. id);
 	
 	if (self.categoryMap[id] == "dress") then
-		Trace("setting dress!");
 		character:SetDress(id);
-	    if (self.dressEquippedEvent ~= nil) then
-		    self.dressEquippedEvent();
-	    end
-
         for i,v in ipairs(self:GetItems("dress")) do
             if (v ~= id) then self:UnequipItem(v); end
         end
@@ -120,12 +116,7 @@ end
 
 function InventoryManager:UnequipItem(id)
 	Trace("Unequipping " .. id);
-	
 	self.equippedItems[id] = false;
-end
-
-function InventoryManager:SetDressEquippedEvent(event)
-	self.dressEquippedEvent = event;
 end
 
 function InventoryManager:GetCategories()

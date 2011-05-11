@@ -16,7 +16,6 @@ function StatusPresenter:Init(main, statusView, character)
 	self.statusView = statusView;
 	self.character = character;
 
-	main:ToggleMainMenu(false);
 	statusView:Show();
 
     self:RegisterEvents();
@@ -35,7 +34,6 @@ function StatusPresenter:RegisterEvents()
 			end
 
 			statusView:Hide();
-			main:ToggleMainMenu(true);
 		end
 	);
 

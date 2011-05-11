@@ -1,8 +1,4 @@
 category,id,text,price,icon,dressImage,hp,will,int,cha,grace,moral,sense,rep,stress,mana,desc
-dress,item1,Maid Dress,100,resources/icon.png,resources/images/1.png,0,0,0,0,0,0,0,0,0,0,"A normal looking dress
-STR +1, MANA -1",
-dress,item2,Naughty Maid Dress,1000,resources/icon.png,resources/images/2.png,0,0,0,0,0,0,0,0,0,0,Looks naughty,
-dress,item3,Bloomer,10000,resources/icon.png,resources/images/3.png,0,0,0,0,0,0,0,0,0,0,"It's a bloomer...",
 item,item4,Stick,1,resources/icon.png,na,1,2,3,4,5,6,7,8,9,0,"Looks strong",
-dress,ewear,普段着,0,resources/icon.png,resources/images/1.png,0,0,0,0,0,0,0,0,0,0,"娘の普段着。",
-dress,swear,夏服,180,resources/icon.png,resources/images/1.png,0,0,0,0,0,0,0,0,0,0,"涼しく着られる夏物の洋服。",
+dress,ewear,普段着,0,resources/icon.png,resources/images/tachie/anze_dress_normal.png,0,0,0,0,0,0,0,0,0,0,"娘の普段着。",
+dress,swear,夏服,180,resources/icon.png,resources/images/tachie/anze_dress_summer.png,0,0,0,0,0,0,0,0,0,0,"涼しく着られる夏物の洋服。",

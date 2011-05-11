@@ -106,6 +106,7 @@ namespace INovelEngine.Effector
             }
             set
             {
+                if (this._windowTexture != null) resources.Remove(_windowTexture);
                 _windowTexture = new INETexture(value);
                 resources.Add(_windowTexture);
                 if (this.loaded)

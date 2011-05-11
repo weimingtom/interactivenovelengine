@@ -107,7 +107,6 @@ function Main:InitComponents()
 	menu.Visible = true
 	menu.Enabled = true
 	menu.Font = GetFont("state")
-	--menu.WindowTexture = "resources/win.png"
 	menu.MouseLeave =
 		function(selectionWindow, event, args)
 		end
@@ -185,6 +184,11 @@ function Main:InitComponents()
 	button9.Y = 42 * 4;	
 	menu:AddComponent(button9);
 	
+	--tachie
+	self.tachie = Tachie()
+	self.tachie.layer = 10;
+	gamestate:AddComponent(self.tachie);
+	self.tachie.Position = 0.5;
 end
 
 function Main:CreateButton(buttonText, event)
@@ -220,10 +224,12 @@ end
 
 function Main:RegisterEvents()
 	calendar:SetUpdateEvent(function() self:InvalidateDate() end);
-	inventoryManager:SetDressEquippedEvent(function() self:EquipDress() end);
+	character:SetLookEvent(function() self:InvalidateTachie() end);
+	
 	CurrentState().KeyDown = function(handler, luaevent, args) 
 		self:KeyDown(handler, luaevent, args);
 	end
+	
 end
 
 function Main:KeyDown(handler, luaevent, args)
@@ -234,6 +240,7 @@ end
 
 --mainmenu
 function Main:OpenSchedule()
+	self:Disable();
 	local schedule = ScheduleView:New("scheduleView", self.gamestate);
 	schedule:Init();
 	
@@ -243,6 +250,7 @@ function Main:OpenSchedule()
 		function()
 			Trace("disposing schedule presenter!");
 			self.schedulePresenter = nil;
+			self:Enable();
 		end
 	)
 end
@@ -356,7 +364,9 @@ function Main:NormalTalk(pic, name, line)
 end
 
 function Main:OpenStatus()
-
+	
+	self:Disable();
+	
 	local statusView = StatusView:New("statusView", self.gamestate);
 	statusView:Init();
 	
@@ -366,6 +376,7 @@ function Main:OpenStatus()
 		function()
 			Trace("disposing schedule presenter!");
 			self.statusPresenter = nil;
+			self:Enable();
 		end
 	)
 end
@@ -435,6 +446,7 @@ function Main:OpenSystem()
 end
 
 function Main:OpenInventory()
+	self:Disable();
 	local inventory = InventoryView:New("inventory", self.gamestate);
 	inventory:Init();
 	
@@ -444,6 +456,7 @@ function Main:OpenInventory()
 		function()
 			Trace("disposing schedule presenter!");
 			self.inventoryPresenter = nil;
+			self:Enable();
 		end
 	)
 end
@@ -513,63 +526,70 @@ function Main:SetBackground(filename)
 end
 
 --tachie
-function Main:EquipDress()
-	local id = character:GetDress();
-	Trace("equipping dress to tachie " .. id);
-	local tachiBodyImage = itemManager:GetItem(id).dressImage;
-	self:SetTachieBody(tachiBodyImage);
+function Main:InvalidateTachie()
+	self.tachie.BodyTexture = character:GetBody();
+	self.tachie.DressTexture = itemManager:GetItem(character:GetDress()).dressImage;
 end
 
-function Main:SetTachieBody(filename)
-	local tachie = GetComponent("tachie");
-	if (tachie == nil) then
-		local tachie = SpriteBase();
-		tachie.Name = "tachie";
-		tachie.Texture = filename
-		tachie.Visible = true;
-		tachie.Layer = 2;
-		InitComponent(tachie);
-	else
-		tachie.Texture = filename;
-	end
-	
-	if (self.tachieMargin ~= nil) then
-		self:SetTachiePosition(self.tachieMargin);
-	else
-		self:CenterTachie();
-	end
-end
-
-function Main:SetTachieFace(filename)
-end
-
-function Main:SetTachieDress(filename)
-end
-
+--function Main:EquipDress()
+	--local id = character:GetDress();
+	--Trace("equipping dress to tachie " .. id);
+	--local tachiBodyImage = itemManager:GetItem(id).dressImage;
+	--self:SetTachieBody(tachiBodyImage);
+--end
+--
+--function Main:SetTachieBody(filename)
+	--local tachie = GetComponent("tachie");
+	--if (tachie == nil) then
+		--local tachie = SpriteBase();
+		--tachie.Name = "tachie";
+		--tachie.Texture = filename
+		--tachie.Visible = true;
+		--tachie.Layer = 2;
+		--InitComponent(tachie);
+	--else
+		--tachie.Texture = filename;
+	--end
+	--
+	--if (self.tachieMargin ~= nil) then
+		--self:SetTachiePosition(self.tachieMargin);
+	--else
+		--self:CenterTachie();
+	--end
+--end
+--
+--function Main:SetTachieFace(filename)
+--end
+--
+--function Main:SetTachieDress(filename)
+--end
+--
 function Main:ShowTachie(show)
-	local tachie = GetComponent("tachie");
-	if (tachie ~= nil) then
-		tachie.visible = show;
-		tachie.enabled = show;
+	if (show == true) then
+		Trace("showing tachie");
+		self.tachie:Show();
+	else
+		Trace("hiding tachie");
+		self.tachie:Hide();
 	end
 end
-
-function Main:SetTachiePosition(leftMargin)
-	self.tachieMargin = leftMargin;
-	local tachie = GetComponent("tachie");
-	if (tachie ~= nil) then
-		tachie.X = leftMargin;
-		tachie.Y = (GetHeight() - tachie.Height);
-	end
-end
-
-function Main:CenterTachie()
-	local tachie = GetComponent("tachie");
-	if (tachie ~= nil) then
-		self:SetTachiePosition((GetWidth() - tachie.Width)/2);
-	end
-end
-
+--
+--function Main:SetTachiePosition(leftMargin)
+	--self.tachieMargin = leftMargin;
+	--local tachie = GetComponent("tachie");
+	--if (tachie ~= nil) then
+		--tachie.X = leftMargin;
+		--tachie.Y = (GetHeight() - tachie.Height);
+	--end
+--end
+--
+--function Main:CenterTachie()
+	--local tachie = GetComponent("tachie");
+	--if (tachie ~= nil) then
+		--self:SetTachiePosition((GetWidth() - tachie.Width)/2);
+	--end
+--end
+--
 
 
 --private/helper functions
@@ -608,14 +628,16 @@ function Main:SetKeyDownEvent(event)
 	self.keyDownEvent = event;
 end
 
+function Main:Invalidate()
+	self:InvalidateDate();
+	self:InvalidateStatus();
+	self:InvalidateTachie();
+end
 
 --entry point
 main = Main:New();
 CurrentState().state = main;
 
 --extra actions
-main:InvalidateDate();
-main:InvalidateStatus();
-
+main:Invalidate();
 main:SetBackground("resources/images/room03.jpg");
-main:EquipDress();
