@@ -446,7 +446,8 @@ function Main:OpenSystem()
 end
 
 function Main:OpenInventory()
-	self:Disable();
+	self:Disable(false);
+	self:SetTachiePosition(0.75);
 	local inventory = InventoryView:New("inventory", self.gamestate);
 	inventory:Init();
 	
@@ -457,6 +458,7 @@ function Main:OpenInventory()
 			Trace("disposing schedule presenter!");
 			self.inventoryPresenter = nil;
 			self:Enable();
+			self:SetTachiePosition(0.5);
 		end
 	)
 end
@@ -531,6 +533,10 @@ function Main:InvalidateTachie()
 	self.tachie.DressTexture = itemManager:GetItem(character:GetDress()).dressImage;
 end
 
+function Main:SetTachiePosition(pos)
+	self.tachie.Position = pos;
+end
+
 --function Main:EquipDress()
 	--local id = character:GetDress();
 	--Trace("equipping dress to tachie " .. id);
@@ -598,8 +604,11 @@ function Main:Enable()
 	self:ToggleMainMenu(true);
 end
 
-function Main:Disable()
-	self:ShowTachie(false);
+function Main:Disable(hideTachie)
+	if (hideTachie == nil or hideTachie == true) then
+		self:ShowTachie(false);
+	end
+	
 	self:ToggleMainMenu(false);
 end
 
