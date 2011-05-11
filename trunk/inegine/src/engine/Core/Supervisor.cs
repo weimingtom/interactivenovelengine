@@ -17,6 +17,8 @@ namespace INovelEngine
 {
     class Supervisor : Game
     {
+        private static Supervisor instance;
+
         static int InitialWidth = 800;
         static int InitialHeight = 600;
 
@@ -44,6 +46,16 @@ namespace INovelEngine
         {
             get;
             set;
+        }
+
+        // singleton
+        public static Supervisor GetInstance()
+        {
+            if (instance == null)
+            {
+                instance = new Supervisor();
+            }
+            return instance;
         }
 
         public Supervisor()
@@ -276,8 +288,8 @@ namespace INovelEngine
 
 
             ScriptManager.lua.RegisterFunction("SetSize", this, this.GetType().GetMethod("Lua_SetSize"));
-            ScriptManager.lua.RegisterFunction("GetWidth", this, this.GetType().GetMethod("Lua_GetWidth"));
-            ScriptManager.lua.RegisterFunction("GetHeight", this, this.GetType().GetMethod("Lua_GetHeight"));
+            ScriptManager.lua.RegisterFunction("GetWidth", this, this.GetType().GetMethod("GetWidth"));
+            ScriptManager.lua.RegisterFunction("GetHeight", this, this.GetType().GetMethod("GetHeight"));
 
             ScriptManager.lua.RegisterFunction("Trace", this, this.GetType().GetMethod("Lua_Trace"));
 
@@ -446,12 +458,12 @@ namespace INovelEngine
             Window.ClientSize = new Size(width, height);
         }
 
-        public int Lua_GetWidth()
+        public int GetWidth()
         {
             return Window.ClientSize.Width;
         }
 
-        public int Lua_GetHeight()
+        public int GetHeight()
         {
             return Window.ClientSize.Height;
         }

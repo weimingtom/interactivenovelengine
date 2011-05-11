@@ -104,3 +104,23 @@ function TestCharacter:testSave()
     
 	assert(loadstring(saveString))();
 end
+
+function TestCharacter:testEvent()
+	local character = self.character;
+	character:SetLookEvent(function()
+		testval = 1;
+	end);
+	
+	testval = 0;
+	character:SetDress("test");
+	assertEquals(1, testval);
+	
+	testval = 0;
+	character:SetBody("test");
+	assertEquals(1, testval);
+	
+	testval = 0;
+	character:SetBody("test");
+	assertEquals(1, testval);
+	
+end

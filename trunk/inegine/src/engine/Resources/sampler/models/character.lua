@@ -25,6 +25,7 @@ function Character:Initialize()
 	self:SetBloodtype("A");
 	self:SetFatherName("");
 	self:SetDress("");
+	self:SetBody("");
 	self:Add("age", 12, 0, 999);
 	self:Add("gold", 1000, -3000, 99999);
 	
@@ -167,14 +168,35 @@ function Character:SetFatherName(name)
 	self.fatherName = name;
 end
 
+--tachie related
+function Character:SetLookEvent(event)
+	self.lookEvent = event;
+end
+
 function Character:GetDress()
 	return self.dress;
 end
 
 function Character:SetDress(id)
 	self.dress = id;
+    if (self.lookEvent ~= nil) then
+		Trace("look event executed!");
+		self.lookEvent();
+	end
 end
 
+function Character:GetBody()
+	return self.body;
+end
+
+function Character:SetBody(id)
+	self.body = id;
+    if (self.lookEvent ~= nil) then
+		Trace("look event executed!");
+		self.lookEvent();
+	end
+end
+--tachie related over
 
 function Character:SetTriggerEvent(status, event)
 	self.trigger[status] = event;
@@ -193,6 +215,7 @@ function Character:Save(target)
     saveString = saveString .. [[self:SetBloodtype("]] .. self:GetBloodtype() .. [[");]] .. "\n";
     saveString = saveString .. [[self:SetFatherName("]] .. self:GetFatherName() .. [[");]] .. "\n";
     saveString = saveString .. [[self:SetDress("]] .. self:GetDress() .. [[");]] .. "\n";
+    saveString = saveString .. [[self:SetBody("]] .. self:GetBody() .. [[");]] .. "\n";
     
 	for i,v in pairs(self.status) do
         saveString = saveString .. "self:Set(\"" .. i .. "\"," .. v .. ")\n";

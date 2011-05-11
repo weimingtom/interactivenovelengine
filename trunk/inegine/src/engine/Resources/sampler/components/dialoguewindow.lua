@@ -2,12 +2,13 @@ LoadScript "components\\luaview.lua"
 
 DialogueWindow = LuaView:New();
 
+dialogue_font_name = "small"
+dialogue_font_text = "dialogue"
+
 function DialogueWindow:Init()
 	local gamestate = CurrentState();
 	
 	local parent = self.parent;
-	--local font = GetFont("default")
-	local font = GetFont("japanese")
 	local name = self.name;
 	
 	self.frame = View()
@@ -55,8 +56,7 @@ function DialogueWindow:Init()
             window:AdvanceText();
         end
 	dialogueWin.Visible = true
-	--dialogueWin.WindowTexture = "resources/win.png"
-	dialogueWin.Font = GetFont("dialogue")
+	dialogueWin.Font = GetFont(dialogue_font_text)
 	
 	dialogueWin.Cursor = AnimatedSprite();
 	dialogueWin.Cursor.Name = "cursor"
@@ -87,7 +87,7 @@ function DialogueWindow:Init()
 	namewin.y = -2;
 	namewin.Layer = 6
 	namewin.Visible = true
-	namewin.Font = GetFont("small")
+	namewin.Font = GetFont(dialogue_font_name)
 	namewin.TextColor = 0xFFFFFF
 	namewin.Alignment = 0
 	background:AddComponent(namewin)

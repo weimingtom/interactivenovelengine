@@ -10,6 +10,7 @@ AnimatedSprite = luanet.import_type("INovelEngine.Effector.AnimatedSprite")
 Button = luanet.import_type("INovelEngine.Effector.Button")
 Label = luanet.import_type("INovelEngine.Effector.Label")
 View = luanet.import_type("INovelEngine.Effector.View")
+Tachie = luanet.import_type("INovelEngine.Effector.Tachie")
 Sound = luanet.import_type("INovelEngine.ResourceManager.INESound")
 
 ScriptEvents = luanet.import_type("INovelEngine.Script.ScriptEvents");

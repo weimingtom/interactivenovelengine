@@ -28,7 +28,7 @@ namespace INovelEngine
         [STAThread]
         static void Main(string[] args)
         {
-            using (Supervisor game = new Supervisor())
+            using (Supervisor game = Supervisor.GetInstance())
                 game.Run();        
         }
     }
