@@ -7,12 +7,15 @@ LoadScript "models\\logmanager.lua"
 
 --character initialization
 character = Character:New();
-character:SetBody("resources/images/tachie/anze_body1.png"); --set default body
+character:SetBody("resources/scg/ma.png"); --set default body
 --TODO: change body image according to age automatically
 
 --inventory initialization
 inventoryManager = InventoryManager:New();
+
 inventoryManager:AddItem("ewear");
+inventoryManager:AddItem("pajamas");
+
 inventoryManager:EquipItem("ewear");
 
 --calendar

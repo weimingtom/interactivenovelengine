@@ -1,4 +1,15 @@
-category,id,text,price,icon,dressImage,hp,will,int,cha,grace,moral,sense,rep,stress,mana,desc
-item,item4,Stick,1,resources/icon.png,na,1,2,3,4,5,6,7,8,9,0,"Looks strong",
-dress,ewear,普段着,0,resources/icon.png,resources/images/tachie/anze_dress_normal.png,0,0,0,0,0,0,0,0,0,0,"娘の普段着。",
-dress,swear,夏服,180,resources/icon.png,resources/images/tachie/anze_dress_summer.png,0,0,0,0,0,0,0,0,0,0,"涼しく着られる夏物の洋服。",
+category,id,text,desc,price,icon,dressImage,hp,will,int,cha,grace,moral,sense,rep,stress,mana,cook
+dress,ewear,普段着,娘の普段着。,0,resources/icon/d01.png,resources/scg/d01.png,0,0,0,0,0,0,0,0,0,0,0
+dress,pajamas,パジャマ,娘のパジャマ。,0,resources/icon/d02.png,resources/scg/d02.png,0,0,0,0,0,0,0,0,0,0,0
+dress,swear,夏服,涼しく着られる夏物の洋服。,180,resources/icon/d03.png,resources/scg/d03.png,0,0,0,0,0,0,10,0,0,0,0
+dress,wwear,冬服,暖かく着られる冬物の洋服。,220,resources/icon/d04.png,resources/scg/d04.png,0,0,0,0,0,0,10,0,0,0,0
+dress,aprondress,エプロンワンピ,エプロン付きのカントリー 風ワンピース。,400,resources/icon/d05.png,resources/scg/d05.png,0,0,0,10,0,10,0,0,0,0,0
+dress,sundaybest,外出着,娘の魅力を引き出せる可愛い外出着。,500,resources/icon/d06.png,resources/scg/d06.png,0,0,0,25,0,0,0,0,0,0,0
+instant,handker,ハンカチ,シンプルだが上質のリネンハンカチ。,0,resources/icon.png,,0,10,0,0,0,0,5,0,0,0,0
+instant,taddybear,テディベア,大きいテディベア。ちょっと困ったような顔が可愛い。,150,resources/icon.png,,0,20,0,0,0,10,0,0,0,0,0
+instant,postcard,絵ハガキ,外国の風景が描かれた絵ハガキ。送り手はあなたの弟。,0,resources/icon.png,,0,0,0,0,0,0,10,0,0,0,0
+instant,lobster,ロブスター料理,水の都の名物、ロブスターのオーブン焼き。,300,resources/icon.png,,20,0,0,0,0,0,0,0,0,0,0
+instant,childrunch,お子様ランチ,お子様が好きなものがいっぱい揃ってるメニュー。,150,resources/icon.png,,0,10,0,0,0,0,5,0,0,0,0
+instant,vegestew,野菜シチュー,ほうれん草とニンジンが沢山入ってる、とてもヘルシーなシチュー。,150,resources/icon.png,,10,0,0,0,0,0,0,0,0,0,5
+instant,eastrunch,東方風ランチ,「ナットウオニギリ」と「ウメボシ」のセット。頭にいいらしい。,200,resources/icon.png,,0,0,15,0,0,0,0,0,0,0,0
+instant,strgelato,苺のジェラート,春苺の果汁で作った甘いジェラート。,130,resources/icon.png,,0,0,0,0,0,0,8,0,-5,0,0
