@@ -213,78 +213,13 @@ namespace INovelEngine.StateManager
             componentList.Sort(); // sort them according to z-order (higher, higher)
         }
 
-        public AbstractGUIComponent GetCollidingComponent(int x, int y)
-        {
-            AbstractGUIComponent component;
-            // do it in reverse order because components sorted in z order...
-            for (int i = componentList.Count - 1; i >= 0; i--)
-            {
-                component = componentList[i];
-                if (component.RealX <= x && component.RealY <= y &&
-                    component.RealX + component.Width >= x &&
-                    component.RealY + component.Height >= y && component.Enabled) return component;
-            }
-            return null;
-        }
-
         #endregion
 
         #region event handling 
-
-        private AbstractLuaEventHandler mouseDownLocked;
-        private AbstractLuaEventHandler mouseMoveLocked;
+        
         public override AbstractLuaEventHandler FindEventHandler(ScriptEvents luaevent, params object[] args)
         {
-            AbstractLuaEventHandler handler = this;
-            switch (luaevent)
-            {
-                case ScriptEvents.KeyPress:
-                    handler = this;
-                    break;
-                case ScriptEvents.MouseMove:
-                    if (mouseDownLocked != null && !mouseDownLocked.Removed) handler = mouseDownLocked;
-                    else
-                    {
-                        handler = GetCollidingComponent((int)args[0], (int)args[1]);
-
-                        if (handler == null) handler = this;
-
-                        if (mouseMoveLocked != null && !mouseMoveLocked.Removed)
-                        {
-                            if (mouseMoveLocked != handler)
-                            {
-                                SendEvent(mouseMoveLocked, ScriptEvents.MouseLeave, null);
-                                mouseMoveLocked = null;
-                            }
-                        }
-                        else if (handler != this)
-                        {
-                            mouseMoveLocked = handler;
-                        }
-                    }
-                    break;
-                case ScriptEvents.MouseDown:
-                    handler = GetCollidingComponent((int)args[0], (int)args[1]);
-                    if (handler == null) handler = this;
-                    mouseDownLocked = handler;
-                    break;
-                case ScriptEvents.MouseUp:
-                    if (mouseDownLocked != null) handler = mouseDownLocked;
-                    mouseDownLocked = null;
-                    break;
-                case ScriptEvents.MouseDoubleClick:
-                    handler = GetCollidingComponent((int)args[0], (int)args[1]);
-                    if (handler == null) handler = this;
-                    break;
-                case ScriptEvents.MouseClick:
-                    handler = GetCollidingComponent((int)args[0], (int)args[1]);
-                    if (handler == null) handler = this;
-                    break;
-                default:
-                    handler = this;
-                    break;
-            }
-            return handler;
+            return ComponentManagerHelper.FindEventHandler(this, this.componentList, luaevent, args);
         }
 
         #endregion

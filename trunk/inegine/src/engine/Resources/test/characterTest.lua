@@ -46,13 +46,13 @@ function TestCharacter:testItemEffect()
 	itemManager = ItemManager:New();
 	
 	local newItem = {};
-	newItem.hp = 5;
+	newItem.sta = 5;
 	newItem.grace = 10;
 	itemManager:AddItem("item1", newItem);
 	
 	newItem = {};
 	newItem.int = 1;
-	newItem.hp = 2;
+	newItem.sta = 2;
 	newItem.wis = 3;
 	newItem.grace = 4;
 	itemManager:AddItem("item2", newItem);
@@ -60,14 +60,14 @@ function TestCharacter:testItemEffect()
 	
 	newItem = {};
 	newItem.int = 1;
-	newItem.hp = 2;
+	newItem.sta = 2;
 	newItem.wis = 3;
 	newItem.grace = 4;
 	itemManager:AddItem("item3", newItem);
 	
 	newItem = {};
 	newItem.int = 5;
-	newItem.hp = 6;
+	newItem.sta = 6;
 	newItem.wis = 7;
 	newItem.grace = 8;
 	itemManager:AddItem("item4", newItem);
@@ -81,14 +81,14 @@ function TestCharacter:testItemEffect()
 	local character = self.character;
 	character:Set("int", 1);
 	character:Set("cha", 2);
-	character:Set("hp", 3);
+	character:Set("sta", 3);
 	character:Set("wis", 4);
 	character:Set("grace", 5);
 	character:SetDress("item3");
 	
 	assertEquals(6, character:Get("int"))
 	assertEquals(2, character:Get("cha"))
-	assertEquals(18, character:Get("hp"))
+	assertEquals(18, character:Get("sta"))
 	assertEquals(19, character:Get("wis"))
 	assertEquals(35, character:Get("grace"))
 end

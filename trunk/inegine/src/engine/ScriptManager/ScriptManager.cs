@@ -6,6 +6,7 @@ using LuaInterface;
 using INovelEngine.StateManager;
 using INovelEngine.ResourceManager;
 using System.IO;
+using INovelEngine.Effector;
 
 namespace INovelEngine.Script
 {
@@ -16,6 +17,7 @@ namespace INovelEngine.Script
         MouseMove,
         MouseClick,
         MouseDoubleClick,
+        MouseEnter,
         MouseLeave,
         KeyPress,
         AnimationOver,
@@ -31,10 +33,15 @@ namespace INovelEngine.Script
         public LuaEventHandler MouseMove;
         public LuaEventHandler MouseDoubleClick;
         public LuaEventHandler MouseClick;
+        public LuaEventHandler MouseEnter;
         public LuaEventHandler MouseLeave;
         public LuaEventHandler KeyDown;
         public LuaEventHandler StateUpdate;
         public LuaEventHandler AnimationOver;
+
+        public AbstractLuaEventHandler mouseDownLocked;
+        public AbstractLuaEventHandler mouseMoveLocked;
+        public AbstractLuaEventHandler previousMouseMove;
 
         public object state;
         public bool handleMyself
@@ -110,6 +117,9 @@ namespace INovelEngine.Script
                             break;
                         case ScriptEvents.MouseClick:
                             if (MouseClick != null) MouseClick(handler, luaevent, args);
+                            break;
+                        case ScriptEvents.MouseEnter:
+                            if (MouseEnter != null) MouseEnter(handler, luaevent, args);
                             break;
                         case ScriptEvents.MouseLeave:
                             if (MouseLeave != null) MouseLeave(handler, luaevent, args);

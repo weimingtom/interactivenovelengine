@@ -22,17 +22,17 @@ function TestScheduleManager:testCopyEffect()
 	source = {};
 	
 	source.stress = 100;
-	source.hp = 100;
+	source.sta = 100;
 	
 	schedule:SaveEffect(target, source);
 	
 	assertEquals(100, target.stress);
-	assertEquals(100, target.hp);
+	assertEquals(100, target.sta);
 	
 	schedule:SaveEffect(source, source);
 	
 	assertEquals(200, source.stress);
-	assertEquals(200, source.hp);
+	assertEquals(200, source.sta);
 end
 
 

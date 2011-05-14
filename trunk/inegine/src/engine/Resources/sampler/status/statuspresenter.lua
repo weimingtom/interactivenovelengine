@@ -53,7 +53,7 @@ function StatusPresenter:AddItems()
 	self.statusView:SetDescriptionText(descriptionText);
 	
 	
-	self.statusView:AddGraphItem(status_hp, character:Read("hp"), character:Get("hp"), 0xBBBBBB);
+	self.statusView:AddGraphItem(status_sta, character:Read("sta"), character:Get("sta"), 0xBBBBBB);
 	self.statusView:AddGraphItem(status_will, character:Read("will"), character:Get("will"), 0xBBBBBB);
 	self.statusView:AddGraphItem(status_int, character:Read("int"), character:Get("int"), 0xBBBBBB);
 	self.statusView:AddGraphItem(status_cha, character:Read("cha"), character:Get("cha"), 0xBBBBBB);

@@ -9,10 +9,12 @@ common_priceunit = "G"
 --main
 main_shop_greeting_name = "Batou"
 main_shop_greeting_msg = "Choose your destination."
-main_state_age = "Age "
-main_state_gold = "Gold "
-main_state_stress = "Stress "
-main_state_mana = "Mana "
+main_state_year =   "Y"
+main_state_month =   "M"
+main_state_day =   "D"
+main_state_gold =   "Gold  "
+main_state_stress = "Stress  "
+main_state_mana =   "Mana  "
 
 --talk list
 talklist_musume_button = "Daughter"
@@ -83,7 +85,7 @@ execution_presenter_dialogue_text1 = "This week's schedule is "
 execution_presenter_dialogue_text2 = ". Good luck@"
 
 --schedule manager
-schedule_manager_hp = "HP : "
+schedule_manager_sta = "‘Ì—Í : "
 schedule_manager_stress  = "Stress : "
 schedule_manager_gold = "Gold : "
 
@@ -108,7 +110,7 @@ status_month = "month"
 status_day = "day"
 status_bloodtype = "type"
 
-status_hp = "hp"
+status_sta = "sta"
 status_will = "will"
 status_int = "int"
 status_cha = "cha"

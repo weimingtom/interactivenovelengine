@@ -8,10 +8,12 @@ common_priceunit = "G"
 --main
 main_shop_greeting_name = "Batou"
 main_shop_greeting_msg = "Choose your destination."
-main_state_age = "Age "
-main_state_gold = "Gold "
-main_state_stress = "Stress "
-main_state_mana = "Mana "
+main_state_year =   "Y"
+main_state_month =   "M"
+main_state_day =   "D"
+main_state_gold =   "Gold  "
+main_state_stress = "Stress  "
+main_state_mana =   "Mana  "
 
 --talk list
 talklist_musume_button = "Daughter"
@@ -82,7 +84,7 @@ execution_presenter_dialogue_text1 = "This week's schedule is "
 execution_presenter_dialogue_text2 = ". Good luck@"
 
 --schedule manager
-schedule_manager_hp = "HP : "
+schedule_manager_sta = "Stamina : "
 schedule_manager_stress  = "Stress : "
 schedule_manager_gold = "Gold : "
 
@@ -103,25 +105,25 @@ shoplist_tailor = "Tailor"
 shoplist_restaurant = "Restaurant"
 
 --status presenter
-status_month = "¿ù"
+status_month = "¿E
 status_day = "ÀÏ"
-status_bloodtype = "Çü"
+status_bloodtype = "ÇE
 
-status_hp = "Ã¼·Â"
-status_will = "ÀÇ¿å"
+status_sta = "Stamina"
+status_will = "ÀÇ¿E
 status_int = "Áö·Â"
 status_cha = "¸Å·Â"
 status_grace = "±âÇ°"
-status_moral = "¸ğ¶ö"
+status_moral = "¸ğ¶E
 status_sense = "¼¾½º"
 status_rep = "ÆòÆÇ"
 status_stress = "½ºÆ®·¹½º"
 status_mana = "¸¶³ª"
-status_sword = "°Ë¼ú"
+status_sword = "°Ë¼E
 status_magic = "¸¶¹ı"
-status_alchemy = "¿¬±İ¼ú"
+status_alchemy = "¿¬±İ¼E
 status_music = "À½¾Ç"
-status_dance = "´í½º"
+status_dance = "´úÙº"
 status_cooking = "¿ä¸®"
-status_logic = "³í¸®"
+status_logic = "³úÔ®"
 status_wis = "»ó½Ä"

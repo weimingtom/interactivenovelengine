@@ -17,7 +17,7 @@ function StatusView:Init()
 	self.frame.x = 0;
 	self.frame.y = 0;
 	self.frame.alpha = 155
-	self.frame.layer = 3
+	self.frame.layer = 10
 	
 	self.frame.Visible = false
 	self.frame.Enabled = false
