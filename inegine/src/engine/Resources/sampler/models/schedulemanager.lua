@@ -72,7 +72,7 @@ function ScheduleManager:GetEffect(id, csv)
     for i=0, csv.Count-1 do
 		if (id == csv:GetString(i, "id")) then
 			local item = {};
-			item.hp = csv:GetFloat(i, "hp");
+			item.sta = csv:GetFloat(i, "sta");
 			item.stress = csv:GetFloat(i, "stress");
 			item.gold = csv:GetFloat(i, "gold");
 			--TODO: other abilities!
@@ -168,7 +168,7 @@ end
 
 function ScheduleManager:ComposeString(header, effect)
 	local result = header;
-	result = result .. schedule_manager_hp .. character:Read("hp", 1) .. " (" .. self:GenString(effect.hp) .. ")\n";
+	result = result .. schedule_manager_sta .. character:Read("sta", 1) .. " (" .. self:GenString(effect.sta) .. ")\n";
 	result = result .. schedule_manager_stress .. character:Read("stress", 1) .. " (" .. self:GenString(effect.stress) .. ")\n";
 	result = result .. schedule_manager_gold .. character:Read("gold", 0) .. " (" .. self:GenString(effect.gold) .. ")";
 	return result;

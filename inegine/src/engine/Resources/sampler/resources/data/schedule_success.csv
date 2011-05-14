@@ -1,4 +1,4 @@
-id,gold,hp,stress
+id,gold,sta,stress
 edu1,0,-0.3,0.05
 edu2,0,0.6,0.05
 job1,5,0,0.1

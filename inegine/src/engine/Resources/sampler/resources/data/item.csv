@@ -1,4 +1,4 @@
-category,id,text,desc,price,icon,dressImage,hp,will,int,cha,grace,moral,sense,rep,stress,mana,cook
+category,id,text,desc,price,icon,dressImage,sta,will,int,cha,grace,moral,sense,rep,stress,mana,cook
 dress,ewear,普段着,娘の普段着。,0,resources/icon/d01.png,resources/scg/d01.png,0,0,0,0,0,0,0,0,0,0,0
 dress,pajamas,パジャマ,娘のパジャマ。,0,resources/icon/d02.png,resources/scg/d02.png,0,0,0,0,0,0,0,0,0,0,0
 dress,swear,夏服,涼しく着られる夏物の洋服。,180,resources/icon/d03.png,resources/scg/d03.png,0,0,0,0,0,0,10,0,0,0,0

@@ -30,7 +30,7 @@ function Character:Initialize()
 	self:Add("gold", 1000, -3000, 99999);
 	
 	--abilities
-	self:Add("hp", 100, 0, 999);
+	self:Add("sta", 100, 0, 999);
 	self:Add("will", 20, 0, 999);
 	self:Add("int", 20, 0, 999);
 	self:Add("cha", 20, 0, 999);
@@ -49,6 +49,7 @@ function Character:Initialize()
 	self:Add("cooking", 0, 0, 300);
 	self:Add("logic", 0, 0, 300);
 	self:Add("wis", 0, 0, 300);
+	--todo: add job histories and attraction points
 	--job histories
 	self:Add("edu1", 0, 0, 999);
 	self:Add("edu2", 0, 0, 999);

@@ -16,6 +16,12 @@ LoadScript "communication\\talk.lua"
 LoadScript "save\\saveview.lua"
 LoadScript "save\\savepresenter.lua"
 
+--font
+--calendar date font
+main_calendar_date = "calendar_date"
+main_calendar_state_name = "calendar_state_name"
+main_calendar_state_state = "calendar_state_state"
+
 Main = {}
 
 function Main:New()
@@ -46,13 +52,13 @@ function Main:InitComponents()
 	local calendarBackground = SpriteBase();
 	calendarBackground.Name = "calBackground";
 	self.calendarBackground = background;
-	calendarBackground.Texture = "resources/calendar.png"
+	calendarBackground.Texture = "resources/ui/state_window.png"
 	calendarBackground.Visible = true;
 	calendarBackground.Layer = 3;
 	InitComponent(calendarBackground)
 
 	local datewin = TextWindow()
-	datewin.Name = "datedisplay"
+	self.datewin = datewin;
 	datewin.Alpha = 0
 	datewin.Width = 100
 	datewin.Height = 100
@@ -61,164 +67,257 @@ function Main:InitComponents()
 	datewin.Layer = 5
 	datewin.LeftMargin = 20
 	datewin.Margin = 15
-	datewin.MouseClick =
-        function(window, luaevent, args)	
-	        Trace("datewindow clicked!")
-        end;
 	datewin.Visible = true
-	--datewin.WindowTexture = "resources/window.png"
-	--datewin.RectSize = 40
 	datewin.BackgroundColor = 0xFFFFFF
 	
-	datewin.Font = GetFont("verysmall") --defaultFont
+	datewin.Font = GetFont(main_calendar_date)
 	InitComponent(datewin)
 	
-	local statewin = TextWindow()
-	statewin.Name = "statedisplay"
-	statewin.Alpha = 0
-	statewin.Width = 120
-	statewin.Height = 100
-	statewin.x = 112;
-	statewin.y = 25;
-	statewin.Layer = 5
-	statewin.LeftMargin = 15
-	statewin.Margin = 10
-	statewin.MouseClick =
-        function(window, luaevent, args)	
-	        Trace("statewindow clicked!")
-        end;
-	statewin.Visible = true
-	--statewin.WindowTexture = "resources/window.png"
-	--statewin.RectSize = 40
-	statewin.BackgroundColor = 0xFFFFFF
+	local statewinName = TextWindow()
+	self.statewinName = statewinName;
+	statewinName.Alpha = 0
+	statewinName.Width = 110
+	statewinName.Height = 100
+	statewinName.x = 105;
+	statewinName.y = 25;
+	statewinName.Layer = 5
+	statewinName.LeftMargin = 15
+	statewinName.Margin = 10
+	statewinName.Visible = true
+	statewinName.TextColor = 0x000000
 	
-	statewin.Font = GetFont("calstate") --defaultFont
-	InitComponent(statewin)
+	statewinName.Font = GetFont(main_calendar_state_name)
+	InitComponent(statewinName)
+
+	local statewinState = TextWindow()
+	self.statewinState = statewinState;
+	statewinState.Alpha = 0
+	statewinState.Width = 110
+	statewinState.Height = 50
+	statewinState.x = 105;
+	statewinState.y = 65;
+	statewinState.Layer = 5
+	statewinState.LeftMargin = 15
+	statewinState.Margin = 10
+	statewinState.Visible = true
+	statewinState.TextColor = 0x000000
 	
-	local menu = ImageWindow()
+	statewinState.Font = GetFont(main_calendar_state_state)
+	InitComponent(statewinState)
+
+	local menuSprite = SpriteBase()
+	self.menuSprite = menuSprite;
+	menuSprite.Width = 196
+	menuSprite.Height = 228
+	menuSprite.X = 10;
+	menuSprite.Y = 150;
+	menuSprite.Layer = 4
+	menuSprite.Visible = true
+	menuSprite.Enabled = true
+	menuSprite.Texture = "resources/ui/main_menu.png"
+	AddComponent(menuSprite)
+	
+	local menuSprite = SpriteBase()
+	self.menuItemSprite = menuSprite;
+	menuSprite.Width = 196
+	menuSprite.Height = 228
+	menuSprite.X = 10;
+	menuSprite.Y = 150;
+	menuSprite.Layer = 5
+	menuSprite.Visible = false
+	menuSprite.Enabled = true
+	menuSprite.Texture = "resources/ui/main_menu_item.png"
+	AddComponent(menuSprite)
+	
+	local menuSprite = SpriteBase()
+	self.menuScheduleSprite = menuSprite;
+	menuSprite.Width = 196
+	menuSprite.Height = 228
+	menuSprite.X = 10;
+	menuSprite.Y = 150;
+	menuSprite.Layer = 5
+	menuSprite.Visible = false
+	menuSprite.Enabled = true
+	menuSprite.Texture = "resources/ui/main_menu_schedule.png"
+	AddComponent(menuSprite)
+	
+	local menuSprite = SpriteBase()
+	self.menuStateSprite = menuSprite;
+	menuSprite.Width = 196
+	menuSprite.Height = 228
+	menuSprite.X = 10;
+	menuSprite.Y = 150;
+	menuSprite.Layer = 5
+	menuSprite.Visible = false
+	menuSprite.Enabled = true
+	menuSprite.Texture = "resources/ui/main_menu_state.png"
+	AddComponent(menuSprite)
+	
+	local menuSprite = SpriteBase()
+	self.menuStoreSprite = menuSprite;
+	menuSprite.Width = 196
+	menuSprite.Height = 228
+	menuSprite.X = 10;
+	menuSprite.Y = 150;
+	menuSprite.Layer = 5
+	menuSprite.Visible = false
+	menuSprite.Enabled = true
+	menuSprite.Texture = "resources/ui/main_menu_store.png"
+	AddComponent(menuSprite)
+	
+	local menuSprite = SpriteBase()
+	self.menuSystemSprite = menuSprite;
+	menuSprite.Width = 196
+	menuSprite.Height = 228
+	menuSprite.X = 10;
+	menuSprite.Y = 150;
+	menuSprite.Layer = 5
+	menuSprite.Visible = false
+	menuSprite.Enabled = true
+	menuSprite.Texture = "resources/ui/main_menu_system.png"
+	AddComponent(menuSprite)
+	
+	local menuSprite = SpriteBase()
+	self.menuTalkSprite = menuSprite;
+	menuSprite.Width = 196
+	menuSprite.Height = 228
+	menuSprite.X = 10;
+	menuSprite.Y = 150;
+	menuSprite.Layer = 5
+	menuSprite.Visible = false
+	menuSprite.Enabled = true
+	menuSprite.Texture = "resources/ui/main_menu_talk.png"
+	AddComponent(menuSprite)
+	
+
+	local menu = View()
 	menu.Name = "mainmenu"
-	menu.Alpha = 155
-	menu.Width = 250
-	menu.Height = 42*5
-	menu.X = 50;
-	menu.Y = 160;
-	menu.Layer = 5
-	menu.LineSpacing = 20
+	menu.Width = 196
+	menu.Height = 228
+	menu.X = 10;
+	menu.Y = 150;
+	menu.Layer = 6
 	menu.Visible = true
 	menu.Enabled = true
-	menu.Font = GetFont("state")
-	menu.MouseLeave =
-		function(selectionWindow, event, args)
-		end
-	AddComponent(menu)
+	AddComponent(menu)	
+	
 
-	local button1 = self:CreateButton("Schedule",
+	local button = self:CreateMenuButton("Schedule",
  		function (button, luaevent, args)
 			self:OpenSchedule();
-		end);
-	button1.X = 0;
-	button1.Y = 42 * 0;
-	menu:AddComponent(button1);
-
+		end,
+		self.menuScheduleSprite);
+	button.X = 120;
+	button.Y = 40;
+	button.Width = 70;
+	button.Height = 40;
+	menu:AddComponent(button);
 	
-	local button2 = self:CreateButton("Talk",
+	local button = self:CreateMenuButton("Talk",
  		function (button, luaevent, args)
 			self:OpenCommunication();
-		end);
-	button2.X = 100;
-	button2.Y = 42 * 0;
-	menu:AddComponent(button2);
-
-	local button3 = self:CreateButton("Status",
+		end,
+		self.menuTalkSprite);
+	button.X = 120;
+	button.Y = 100;
+	button.Width = 50;
+	button.Height = 30;
+	menu:AddComponent(button);
+	
+	local button = self:CreateMenuButton("Status",
  		function (button, luaevent, args)
 			self:OpenStatus();
-		end);
-	button3.X = 0;
-	button3.Y = 42 * 1;
-	menu:AddComponent(button3);
-
-	local button4 = self:CreateButton("Inventory",
+		end,
+		self.menuStateSprite);
+	button.X = 72;
+	button.Y = 130;
+	button.Width = 50;
+	button.Height = 40;
+	menu:AddComponent(button);	
+	
+	local button = self:CreateMenuButton("Inventory",
  		function (button, luaevent, args)
 			self:OpenInventory();
-		end);
-	button4.X = 100;
-	button4.Y = 42 * 1;
-	menu:AddComponent(button4);
-
-	local button5 = self:CreateButton("Shopping",
+		end,
+		self.menuItemSprite);
+	button.X = 25;
+	button.Y = 105;
+	button.Width = 55;
+	button.Height = 25;
+	menu:AddComponent(button);
+	
+	local button = self:CreateMenuButton("Shopping",
  		function (button, luaevent, args)
 			self:OpenShopList();
-		end);
-	button5.X = 0;
-	button5.Y = 42 * 2;
-	menu:AddComponent(button5);
+		end,
+		self.menuStoreSprite);
+	button.X = 23;
+	button.Y = 54;
+	button.Width = 55;
+	button.Height = 30;
+	menu:AddComponent(button);
 	
-	local button6 = self:CreateButton("Goddess", nil);
-	button6.X = 100;
-	button6.Y = 42 * 2;	
-	menu:AddComponent(button6);
-	
-	
-	local button7 = self:CreateButton("System", 
+	local button = self:CreateMenuButton("System",
  		function (button, luaevent, args)
 			self:OpenSystem();
-		end);
-	button7.X = 0;
-	button7.Y = 42 * 3;	
-	menu:AddComponent(button7);
-
-	local button8 = self:CreateButton("Log", 
- 		function (button, luaevent, args)
-			OpenState("log", "log/logstate.lua");
-			--self:OpenEvent("resources/event/testevent.ess");
-		end);
-	button8.X = 100;
-	button8.Y = 42 * 3;	
-	menu:AddComponent(button8);
-	
-	local button9 = self:CreateButton("Test", 
- 		function (button, luaevent, args)
-			self:OpenEvent("resources/event/testevent.ess");
-		end);
-	button9.X = 0;
-	button9.Y = 42 * 4;	
-	menu:AddComponent(button9);
+		end,
+		self.menuSystemSprite);
+	button.X = 66;
+	button.Y = 17;
+	button.Width = 70;
+	button.Height = 30;
+	menu:AddComponent(button);	
 	
 	--tachie
 	self.tachie = Tachie()
-	self.tachie.layer = 10;
+	self.tachie.layer = 5
 	gamestate:AddComponent(self.tachie);
 	self.tachie.Position = 0.5;
 end
 
-function Main:CreateButton(buttonText, event)
-	local newButton = Button()
+function Main:ShowMenu(menu, show)
+	self.menuItemSprite:Hide();
+	self.menuScheduleSprite:Hide();
+	self.menuStateSprite:Hide();
+	self.menuStoreSprite:Hide();
+	self.menuSystemSprite:Hide();
+	self.menuTalkSprite:Hide();
+	
+	if (show) then
+		menu:Show();
+	else
+		menu:Hide();
+	end
+end
+
+function Main:CreateMenuButton(buttonText, event, texture)
+	local newButton = View()
 	newButton.Relative = true;
 	newButton.Name = buttonText;
-	newButton.Texture = "resources/button/button.png"	
 	newButton.Layer = 3
-	newButton.X = 0;
-	newButton.Y = 0;
-	newButton.Width = 100;
-	newButton.Height = 40;
 	newButton.State = {}
 	newButton.MouseDown = 
 		function (newButton, luaevent, args)
 			newButton.State["mouseDown"] = true
-			newButton.Pushed = true
 		end
 	newButton.MouseUp = 
 		function (button, luaevent, args)
 			if (button.State["mouseDown"]) then
-				button.Pushed = false;
                 if (event~=nil) then 
 					event(button, luaevent, args);
 				end
 			end
 		end
-	newButton.Text = buttonText;
-	newButton.Font = GetFont("menu"); --menuFont
-	newButton.TextColor = 0xEEEEEE
+	newButton.MouseLeave =
+		function (button, luaevent, args)
+			Trace(buttonText .. " left!");
+			self:ShowMenu(texture, false);
+		end
+	newButton.MouseEnter =
+		function (button, luaevent, args)
+			Trace(buttonText .. " enter!");
+			self:ShowMenu(texture, true);
+		end
 	return newButton;
 end
 
@@ -365,7 +464,7 @@ end
 
 function Main:OpenStatus()
 	
-	self:Disable();
+	self:Disable(false);
 	
 	local statusView = StatusView:New("statusView", self.gamestate);
 	statusView:Init();
@@ -465,7 +564,7 @@ end
 
 --datewindow
 function Main:InvalidateDate()
-	self:SetDate(calendar:GetYear(), calendar:GetWordMonth(), calendar:GetDay(), calendar:GetWeek());
+	self:SetDate(calendar:GetYear(), calendar:GetMonth(), calendar:GetDay());
 	--reset talk event toggle
 	self.musumeEventAvailable = true;
 	self.goddessEventAvailable = true;
@@ -474,7 +573,7 @@ end
 --statuswindow
 function Main:InvalidateStatus()
 	self:SetState(character:GetFirstName(), character:GetLastName(), character:Read("age"), character:Read("gold"),
-				  character:Read("stress", 1), character:Read("mana", 1));
+				  character:Read("stress"), character:Read("mana"));
 end
 
 --event functions
@@ -537,39 +636,6 @@ function Main:SetTachiePosition(pos)
 	self.tachie.Position = pos;
 end
 
---function Main:EquipDress()
-	--local id = character:GetDress();
-	--Trace("equipping dress to tachie " .. id);
-	--local tachiBodyImage = itemManager:GetItem(id).dressImage;
-	--self:SetTachieBody(tachiBodyImage);
---end
---
---function Main:SetTachieBody(filename)
-	--local tachie = GetComponent("tachie");
-	--if (tachie == nil) then
-		--local tachie = SpriteBase();
-		--tachie.Name = "tachie";
-		--tachie.Texture = filename
-		--tachie.Visible = true;
-		--tachie.Layer = 2;
-		--InitComponent(tachie);
-	--else
-		--tachie.Texture = filename;
-	--end
-	--
-	--if (self.tachieMargin ~= nil) then
-		--self:SetTachiePosition(self.tachieMargin);
-	--else
-		--self:CenterTachie();
-	--end
---end
---
---function Main:SetTachieFace(filename)
---end
---
---function Main:SetTachieDress(filename)
---end
---
 function Main:ShowTachie(show)
 	if (show == true) then
 		Trace("showing tachie");
@@ -579,24 +645,6 @@ function Main:ShowTachie(show)
 		self.tachie:Hide();
 	end
 end
---
---function Main:SetTachiePosition(leftMargin)
-	--self.tachieMargin = leftMargin;
-	--local tachie = GetComponent("tachie");
-	--if (tachie ~= nil) then
-		--tachie.X = leftMargin;
-		--tachie.Y = (GetHeight() - tachie.Height);
-	--end
---end
---
---function Main:CenterTachie()
-	--local tachie = GetComponent("tachie");
-	--if (tachie ~= nil) then
-		--self:SetTachiePosition((GetWidth() - tachie.Width)/2);
-	--end
---end
---
-
 
 --private/helper functions
 function Main:Enable()
@@ -615,22 +663,25 @@ end
 function Main:ToggleMainMenu(enabled)
 	GetComponent("mainmenu").enabled = enabled;
 	GetComponent("mainmenu").visible = enabled;
+	
+	if (enabled) then
+		self:ShowMenu(self.menuSprite, true);
+	else
+		self:ShowMenu(self.menuSprite, false);
+	end
 end
 
 
-function Main:SetDate(year, month, day, week)
-	GetComponent("datedisplay").text = year .. "\n" 
-									   .. month .. " " .. day .. "\n"
-									   .. "Week " ..  week;
+function Main:SetDate(year, month, day)
+	self.datewin.text = year .. main_state_year .. "\n" ..
+						month .. main_state_month .. day .. main_state_day
 end
 
 function Main:SetState(firstname, lastname, age, gold, stress, mana)
-	GetComponent("statedisplay").text = firstname .. " " 
-										.. lastname .. "\n" 
-										.. main_state_age .. age .. "\n"
-										.. main_state_gold .. gold .. "\n"
-										.. main_state_stress .. stress .. "\n"
-										.. main_state_mana .. mana;
+	self.statewinName.text = firstname .. "\n" .. lastname .. "\n";
+	self.statewinState.text = main_state_gold .. gold .. "\n" ..
+							  main_state_stress .. stress .. "\n" ..
+							  main_state_mana .. mana;
 end
 
 function Main:SetKeyDownEvent(event)

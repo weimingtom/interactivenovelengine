@@ -51,3 +51,16 @@ GetFont("small").TextEffect = 0;
 LoadFont("dialogue", "C:\\Windows\\Fonts\\msgothic.ttc", 17, "C:\\Windows\\Fonts\\msgothic.ttc", 10);
 GetFont("dialogue").LineSpacing = 10;
 GetFont("dialogue").TextEffect = 1;
+
+
+
+LoadFont("calendar_date", "C:\\Windows\\Fonts\\msgothic.ttc", 13);
+GetFont("calendar_date").LineSpacing = 5
+GetFont("calendar_date").TextEffect = 1
+
+LoadFont("calendar_state_name", "C:\\Windows\\Fonts\\msgothic.ttc", 12);
+GetFont("calendar_state_name").LineSpacing = 7
+GetFont("calendar_state_name").TextEffect = 2
+
+LoadFont("calendar_state_state", "C:\\Windows\\Fonts\\msgothic.ttc", 9);
+GetFont("calendar_state_state").LineSpacing = 7
