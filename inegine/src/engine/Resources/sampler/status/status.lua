@@ -1,12 +1,13 @@
 LoadScript "components\\luaview.lua"
+LoadScript "components\\uifactory.lua"
 
 StatusView = LuaView:New();
+statusview_state_item_font = "state_item"
 
 function StatusView:Init()
 	local gamestate = CurrentState();
 	
 	local parent = self.parent;
-	local font = GetFont("default")
 	local name = self.name;
 	
 	self.frame = View()
@@ -21,140 +22,136 @@ function StatusView:Init()
 	
 	self.frame.Visible = false
 	self.frame.Enabled = false
-	self.frame.MouseLeave =
-		function(target, event, args)
-		end
 
 	parent:AddComponent(self.frame)
 	
-	local descriptionWindow = ImageWindow()
+	--back button
+	self.backButton = UIFactory.CreateBackButton(
+		function (button, luaevent, args)
+				self:Dispose();
+		end
+	)
+	self.backButton.Layer = 5
+	self.frame:AddComponent(self.backButton);
+	
+	local stateMenu = SpriteBase();
+	stateMenu.Name = "calBackground";
+	self.stateMenu = stateMenu;
+	stateMenu.Texture = "resources/ui/state_menu.png"
+	stateMenu.Visible = true;
+	stateMenu.Layer = 3;
+	self.frame:AddComponent(stateMenu)
+	
+	
+	local nameWindow = TextWindow()
+	self.nameWindow = nameWindow;
+	nameWindow.name = "nameWindow"
+	nameWindow.relative = true;
+	nameWindow.width = 166;
+	nameWindow.height = 100;
+    nameWindow.TextColor = 0x000000
+    nameWindow.x = 60;
+	nameWindow.y = 70;
+	nameWindow.alpha = 0;
+	nameWindow.layer = 6;
+	nameWindow.font = GetFont("calendar_state_name");
+	self.frame:AddComponent(nameWindow);
+	
+	local descriptionWindow = TextWindow()
 	self.descriptionWindow = descriptionWindow;
 	descriptionWindow.name = "descriptionWindow"
 	descriptionWindow.relative = true;
-	descriptionWindow.width = 240;
-	descriptionWindow.height = 320;
-    descriptionWindow.WindowTexture = "resources/window.png"
-    descriptionWindow.RectSize = 40
-    descriptionWindow.BackgroundColor = 0xFFFFFF
-    descriptionWindow.Margin = 20;
-    descriptionWindow.Leftmargin = 20;
-	descriptionWindow.x = 20;
-	descriptionWindow.y = GetHeight() - descriptionWindow.height - 20;
-	descriptionWindow.alpha = 255;
+	descriptionWindow.width = 166;
+	descriptionWindow.height = 96;
+    descriptionWindow.TextColor = 0x000000
+    descriptionWindow.x = 60;
+	descriptionWindow.y = 90;
+	descriptionWindow.alpha = 0;
 	descriptionWindow.layer = 6;
-	descriptionWindow.font = GetFont("state");
+	descriptionWindow.font = GetFont("calendar_state_state");
 	self.frame:AddComponent(descriptionWindow);
-	local closeButton = self:CreateButton("Close", 
-		function (button, luaevent, args)
-				self:Dispose();
-		end,
-		descriptionWindow.width - 110, descriptionWindow.height - 50, 5)
-	descriptionWindow:AddComponent(closeButton);
 	
-	local graphWindow = ImageWindow()
-	graphWindow.name = "graphWindow"
-	graphWindow.relative = true;
-	graphWindow.width = 280;
-	graphWindow.height = 480;
-    graphWindow.WindowTexture = "resources/window.png"
-    graphWindow.RectSize = 40
-    graphWindow.BackgroundColor = 0xFFFFFF
-    graphWindow.Margin = 50;
-	graphWindow.x = GetWidth() - graphWindow.width - 20;
-	graphWindow.y = GetHeight() - graphWindow.height - 20;
-	graphWindow.alpha = 255
-	graphWindow.layer = 6;
-	self.frame:AddComponent(graphWindow);
-
+	--local closeButton = self:CreateButton("Close", 
+		--function (button, luaevent, args)
+				--self:Dispose();
+		--end,
+		--descriptionWindow.width - 110, descriptionWindow.height - 50, 5)
+	--descriptionWindow:AddComponent(closeButton);
+	--
+	--local graphWindow = ImageWindow()
+	--graphWindow.name = "graphWindow"
+	--graphWindow.relative = true;
+	--graphWindow.width = 280;
+	--graphWindow.height = 480;
+    --graphWindow.WindowTexture = "resources/window.png"
+    --graphWindow.RectSize = 40
+    --graphWindow.BackgroundColor = 0xFFFFFF
+    --graphWindow.Margin = 50;
+	--graphWindow.x = GetWidth() - graphWindow.width - 20;
+	--graphWindow.y = GetHeight() - graphWindow.height - 20;
+	--graphWindow.alpha = 255
+	--graphWindow.layer = 6;
+	--self.frame:AddComponent(graphWindow);
+--
 	local itemListView = Flowview:New("itemListView")
 	itemListView.frame.relative = true;
-	itemListView.frame.width = graphWindow.width;
-	itemListView.frame.height = graphWindow.height;
-	itemListView.frame.x = 0;
-	itemListView.frame.y = 10;
+	itemListView.frame.width = 171
+	itemListView.frame.height = 215
+	itemListView.frame.x = 580;
+	itemListView.frame.y = 111;
 	itemListView.frame.layer = 4;
-	itemListView.spacing = 5;
-	itemListView.padding = 10;
+	itemListView.spacing = 2;
+	itemListView.padding = 0;
 	itemListView.frame.visible = true;
 	itemListView.frame.enabled = true;
 	self.itemListView = itemListView;
-	graphWindow:AddComponent(itemListView.frame);	
+	self.frame:AddComponent(itemListView.frame);	
+end
+
+function StatusView:SetName(text)
+	self.nameWindow.text = text;
 end
 
 function StatusView:SetDescriptionText(text)
 	self.descriptionWindow.text = text;
 end
 
-function StatusView:CreateButton(buttonText, event, x, y, layer)
-	local newButton = Button()
-	newButton.Relative = true;
-	newButton.Name = buttonText;
-	newButton.Texture = "resources/button/button.png"	
-	newButton.Layer = layer
-	newButton.X = x;
-	newButton.Y = y;
-	newButton.Width = 100;
-	newButton.Height = 40;
-	newButton.State = {}
-	newButton.MouseDown = 
-		function (newButton, luaevent, args)
-			newButton.State["mouseDown"] = true
-			newButton.Pushed = true
-		end
-	newButton.MouseUp = 
-		function (button, luaevent, args)
-			if (button.State["mouseDown"]) then
-				button.Pushed = false;
-                if (event~=nil) then 
-					event(button, luaevent, args);
-				end
-			end
-		end
-	newButton.Text = buttonText;
-	newButton.Font = GetFont("menu"); --menuFont
-	newButton.TextColor = 0xEEEEEE
-	return newButton;
-end
-
 function StatusView:AddGraphItem(key, value, percentage, color)
 	self.itemListView:Add(self:CreateGraphItem(key, value, percentage, color));
 end
 
-function StatusView:CreateItemButton(buttonName, buttonText)
-	local newButton = Button()
-	newButton.Relative = true;
-	newButton.Name = buttonName;
-	newButton.Texture = "resources/button.png"	
-	newButton.Layer = 3
-	newButton.X = 0;
-	newButton.Y = 0;
-	newButton.Width = 120;
-	newButton.Height = 40;
-	newButton.State = {}
-	newButton.Text = buttonText;
-	newButton.Font = GetFont("default");
-	newButton.TextColor = 0xEEEEEE
-	return newButton;
+function StatusView:AddEmpty()
+	self.itemListView:Add(self:CreateEmptyGraphItem());
+end
+
+function StatusView:CreateEmptyGraphItem()
+	local frame = View();
+	frame.Relative = true;
+	frame.Name = "empty"
+	frame.Width = 170;
+	frame.Height = 20;
+	return frame;
 end
 
 function StatusView:CreateGraphItem(key, value, percentage, color)
 	local frame = View();
 	frame.Relative = true;
 	frame.Name = key;
-	frame.Width = 240;
+	frame.Width = 170;
 	frame.Height = 20;
+	
 	local textButton = Button()
 	textButton.Relative = true;
 	textButton.Name = "text";
 	textButton.Layer = 3
 	textButton.Alignment = 0;
 	textButton.X = 0;
-	textButton.Y = 2;
-	textButton.Width = 100;
-	textButton.Height = 10;
+	textButton.Y = 0;
+	textButton.Width = 70;
+	textButton.Height = 20;
 	textButton.Text = key;
-	textButton.Font = GetFont("state");
-	textButton.TextColor = 0xEEEEEE
+	textButton.Font = GetFont(statusview_state_item_font);
+	textButton.TextColor = 0x000000
 	
 	frame:AddComponent(textButton);
 	
@@ -163,13 +160,13 @@ function StatusView:CreateGraphItem(key, value, percentage, color)
 	valueButton.Name = "value";
 	valueButton.Layer = 3
 	valueButton.Alignment = 0;
-	valueButton.X = textButton.Width;
-	valueButton.Y = 2;
+	valueButton.X = textButton.Width - 10;
+	valueButton.Y = 0;
 	valueButton.Width = 50;
-	valueButton.Height = 10;
+	valueButton.Height = 20;
 	valueButton.Text = value;
-	valueButton.Font = GetFont("state");
-	valueButton.TextColor = 0xEEEEEE
+	valueButton.Font = GetFont(statusview_state_item_font);
+	valueButton.TextColor = 0x000000
 	
 	frame:AddComponent(valueButton);
 	
@@ -177,8 +174,8 @@ function StatusView:CreateGraphItem(key, value, percentage, color)
 	local graphView = View();
 	graphView.Relative = true;
 	graphView.Name = key;
-	graphView.X = valueButton.X + valueButton.Width;
-	graphView.Y = 2;
+	graphView.X = valueButton.X + valueButton.Width - 10;
+	graphView.Y = 4;
 	graphView.Width = percentage / 100 * (frame.Width - graphView.X);
 	graphView.Height = 12;
 	valueButton.Layer = 2;

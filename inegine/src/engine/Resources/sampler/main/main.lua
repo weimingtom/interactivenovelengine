@@ -48,10 +48,9 @@ function Main:InitComponents()
 	
 	local gamestate = self.gamestate;
 
-	
 	local calendarBackground = SpriteBase();
 	calendarBackground.Name = "calBackground";
-	self.calendarBackground = background;
+	self.calendarBackground = calendarBackground;
 	calendarBackground.Texture = "resources/ui/state_window.png"
 	calendarBackground.Visible = true;
 	calendarBackground.Layer = 3;
@@ -649,15 +648,34 @@ end
 --private/helper functions
 function Main:Enable()
 	self:ShowTachie(true);
+	self:ToggleCalendar(true);
 	self:ToggleMainMenu(true);
 end
 
-function Main:Disable(hideTachie)
+function Main:Disable(hideTachie, hideCalendar)
 	if (hideTachie == nil or hideTachie == true) then
 		self:ShowTachie(false);
 	end
 	
+	if (hideCalendar == nil or hideCalendar == true) then
+		self:ToggleCalendar(false);
+	end
+	
 	self:ToggleMainMenu(false);
+end
+
+function Main:ToggleCalendar(enabled)
+	if (enabled) then
+		self.calendarBackground:Show();
+		self.datewin:Show();
+		self.statewinName:Show();
+		self.statewinState:Show();
+	else
+		self.calendarBackground:Hide();
+		self.datewin:Hide();
+		self.statewinName:Hide();
+		self.statewinState:Hide();
+	end
 end
 
 function Main:ToggleMainMenu(enabled)

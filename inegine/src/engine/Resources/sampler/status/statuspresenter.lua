@@ -46,10 +46,13 @@ function StatusPresenter:Update()
 end
 
 function StatusPresenter:AddItems()
-	local descriptionText = self.character:GetFirstName() .. ", " .. self.character:GetLastName() .. "\n";
+	local nameText = self.character:GetFirstName() .. ", " .. self.character:GetLastName();
+	
+	self.statusView:SetName(nameText);
+	
 	local month, day = self.character:GetBirthday();
-	descriptionText = descriptionText .. month .. status_month .. " " .. day .. status_day 
-					  .. " " .. self.character:GetBloodtype() .. status_bloodtype .. "\n";
+	local descriptionText = month .. status_month .. " " .. day .. status_day 
+					  .. " " .. self.character:GetBloodtype() .. status_bloodtype;
 	self.statusView:SetDescriptionText(descriptionText);
 	
 	
@@ -63,6 +66,10 @@ function StatusPresenter:AddItems()
 	self.statusView:AddGraphItem(status_rep, character:Read("rep"), character:Get("rep"), 0xBBBBBB);
 	self.statusView:AddGraphItem(status_stress, character:Read("stress"), character:Get("stress"), 0xBBBBBB);
 	self.statusView:AddGraphItem(status_mana, character:Read("mana"), character:Get("mana"), 0xBBBBBB);
+	
+	--empty dummy
+	self.statusView:AddEmpty();
+	
 
 	self.statusView:AddGraphItem(status_sword, character:Read("sword"), character:Get("sword"), 0xBBBBBB);
 	self.statusView:AddGraphItem(status_magic, character:Read("magic"), character:Get("magic"), 0xBBBBBB);
