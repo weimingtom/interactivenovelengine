@@ -210,9 +210,9 @@ function Character:Save(target)
     saveString = saveString .. [[self:SetFirstName("]] .. self:GetFirstName() .. [[");]] .. "\n";
     saveString = saveString .. [[self:SetLastName("]] .. self:GetLastName() .. [[");]] .. "\n";
     local mon, day = self:GetBirthday();
-    saveString = saveString .. [[self:SetBirthday("]] .. mon .. "," .. day .. [[");]] .. "\n";
+    saveString = saveString .. [[self:SetBirthday(]] .. mon .. "," .. day .. [[);]] .. "\n";
     local mon, day = self:GetFatherBirthday();
-    saveString = saveString .. [[self:SetFatherBirthday("]] .. mon .. "," .. day .. [[");]] .. "\n";
+    saveString = saveString .. [[self:SetFatherBirthday(]] .. mon .. "," .. day .. [[);]] .. "\n";
     saveString = saveString .. [[self:SetBloodtype("]] .. self:GetBloodtype() .. [[");]] .. "\n";
     saveString = saveString .. [[self:SetFatherName("]] .. self:GetFatherName() .. [[");]] .. "\n";
     saveString = saveString .. [[self:SetDress("]] .. self:GetDress() .. [[");]] .. "\n";

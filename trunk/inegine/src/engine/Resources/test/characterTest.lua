@@ -98,6 +98,7 @@ function TestCharacter:testSave()
 	character:Set("int", 1);
 	character:Set("cha", 2);
 	character:Set("wis", 3);
+	character:SetBirthday(3, 19);
 
     local saveString = character:Save("character");
     print(saveString);

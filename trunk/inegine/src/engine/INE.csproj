@@ -189,6 +189,7 @@
     <None Include="BaseScripts\ESS.lua" />
     <None Include="BaseScripts\font.lua" />
     <None Include="BaseScripts\Init.lua" />
+    <None Include="Resources\sampler\components\uifactory.lua" />
     <None Include="Resources\sampler\components\selector.lua" />
     <None Include="Microsoft.VC90.CRT.manifest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

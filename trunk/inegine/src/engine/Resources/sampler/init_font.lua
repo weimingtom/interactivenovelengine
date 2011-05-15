@@ -64,3 +64,5 @@ GetFont("calendar_state_name").TextEffect = 2
 
 LoadFont("calendar_state_state", "C:\\Windows\\Fonts\\msgothic.ttc", 9);
 GetFont("calendar_state_state").LineSpacing = 7
+
+LoadFont("state_item", "C:\\Windows\\Fonts\\msgothic.ttc", 10);
