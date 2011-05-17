@@ -66,3 +66,8 @@ LoadFont("calendar_state_state", "C:\\Windows\\Fonts\\msgothic.ttc", 9);
 GetFont("calendar_state_state").LineSpacing = 7
 
 LoadFont("state_item", "C:\\Windows\\Fonts\\msgothic.ttc", 10);
+
+LoadFont("item_name", "C:\\Windows\\Fonts\\msgothic.ttc", 9);
+LoadFont("item_desc", "C:\\Windows\\Fonts\\msgothic.ttc", 9);
+GetFont("item_desc").LineSpacing = 7
+

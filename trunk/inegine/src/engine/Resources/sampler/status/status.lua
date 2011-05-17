@@ -71,28 +71,6 @@ function StatusView:Init()
 	descriptionWindow.font = GetFont("calendar_state_state");
 	self.frame:AddComponent(descriptionWindow);
 	
-	--local closeButton = self:CreateButton("Close", 
-		--function (button, luaevent, args)
-				--self:Dispose();
-		--end,
-		--descriptionWindow.width - 110, descriptionWindow.height - 50, 5)
-	--descriptionWindow:AddComponent(closeButton);
-	--
-	--local graphWindow = ImageWindow()
-	--graphWindow.name = "graphWindow"
-	--graphWindow.relative = true;
-	--graphWindow.width = 280;
-	--graphWindow.height = 480;
-    --graphWindow.WindowTexture = "resources/window.png"
-    --graphWindow.RectSize = 40
-    --graphWindow.BackgroundColor = 0xFFFFFF
-    --graphWindow.Margin = 50;
-	--graphWindow.x = GetWidth() - graphWindow.width - 20;
-	--graphWindow.y = GetHeight() - graphWindow.height - 20;
-	--graphWindow.alpha = 255
-	--graphWindow.layer = 6;
-	--self.frame:AddComponent(graphWindow);
---
 	local itemListView = Flowview:New("itemListView")
 	itemListView.frame.relative = true;
 	itemListView.frame.width = 171
