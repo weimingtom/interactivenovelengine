@@ -11,7 +11,7 @@ namespace INovelEngine.Effector.Graphics.Components
     }
 
     public class ComponentManagerHelper
-    {
+    {        
         public static AbstractGUIComponent GetCollidingComponent(
             List<AbstractGUIComponent> componentList,
             int x, int y
@@ -39,26 +39,14 @@ namespace INovelEngine.Effector.Graphics.Components
                     handler = parent;
                     break;
                 case ScriptEvents.MouseMove:
-                    if (parent.mouseDownLocked != null && !parent.mouseDownLocked.Removed) handler = parent.mouseDownLocked;
-                    else
-                    {
-                        handler = ComponentManagerHelper.GetCollidingComponent(componentList, (int)args[0], (int)args[1]);
+                    handler = ComponentManagerHelper.GetCollidingComponent(componentList, (int)args[0], (int)args[1]);
 
-                        if (handler == null) handler = parent;
-
-                        if (parent.mouseMoveLocked != null && !parent.mouseMoveLocked.Removed && parent.mouseMoveLocked != handler)
-                        {
-                            parent.SendEvent(parent.mouseMoveLocked, ScriptEvents.MouseLeave, null);
-                            parent.mouseMoveLocked = null;
-                        }
-                        else if (handler != parent)
-                        {
-                            parent.mouseMoveLocked = handler;
-                        }
-                    }
+                    if (handler == null) handler = parent;
 
                     if (parent.previousMouseMove == null || parent.previousMouseMove != handler)
                     {
+                        if (parent.previousMouseMove != null) 
+                            parent.SendEvent(parent.previousMouseMove, ScriptEvents.MouseLeave, null);
                         parent.SendEvent(handler, ScriptEvents.MouseEnter, null);
                         parent.previousMouseMove = handler;
                     }

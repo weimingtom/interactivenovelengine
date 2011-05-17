@@ -5,7 +5,7 @@ function InventoryPresenter:New()
 	setmetatable(o, self)
 	self.__index = self
 
-	self.pageItems = 8;
+	self.pageItems = 10;
 
 	self.numDressPages = 0;
 	self.currentDressPage = 0;
@@ -96,6 +96,12 @@ function InventoryPresenter:RegisterEvents()
 			self:EquipItem();
 		end
     )
+    
+    inventoryView:SetSellEvent(
+		function()
+			self:SellItem();
+		end
+    )
 end
 
 function InventoryPresenter:Update()
@@ -105,7 +111,13 @@ function InventoryPresenter:Update()
         self.inventoryView:ClearItemItems();
         self.inventoryView:ClearFurnitureItems();
         self:AddItems();
+        self:PrintPageNumbers();
     end
+end
+
+function InventoryPresenter:PrintPageNumbers()
+	self.inventoryView:PrintPageNumbers(self.numDressPages, self.currentDressPage,
+		self.numItemPages, self.currentItemPage, self.numFurniturePages, self.currentFurniturePage);
 end
 
 function InventoryPresenter:UpdateNumPages()
@@ -120,14 +132,20 @@ function InventoryPresenter:AddItems()
 	for i,v in ipairs(itemList) do
 	    if (self:ItemInPage(i, self.currentDressPage)) then
             local item = self.itemManager:GetItem(v);
-            inventoryView:AddDressItem(self:GetKey(item.id), item.text, item.icon);
+			local itemCount = self.inventoryManager:GetItemCount(v);
+			local equipped = false;
+			if (v == character:GetDress()) then
+				equipped = true;
+			end
+            inventoryView:AddDressItem(self:GetKey(item.id), item.text, item.icon, item.price, itemCount, item.shortdesc, equipped);
 	    end
     end
 	local itemList = self.inventoryManager:GetItems("item");
 	for i,v in ipairs(itemList) do
 	    if (self:ItemInPage(i, self.currentItemPage)) then
             local item = self.itemManager:GetItem(v);
-		    inventoryView:AddItemItem(self:GetKey(item.id), item.text, item.icon);
+			local itemCount = self.inventoryManager:GetItemCount(v);
+		    inventoryView:AddItemItem(self:GetKey(item.id), item.text, item.icon, item.price, itemCount, item.shortdesc);
         end
 	end
 
@@ -135,7 +153,8 @@ function InventoryPresenter:AddItems()
 	for i,v in ipairs(itemList) do
 	    if (self:ItemInPage(i, self.currentFurniturePage)) then
             local item = self.itemManager:GetItem(v);
-		    inventoryView:AddFurnitureItem(self:GetKey(item.id), item.text, item.icon);
+			local itemCount = self.inventoryManager:GetItemCount(v);
+		    inventoryView:AddFurnitureItem(self:GetKey(item.id), item.text, item.icon, item.price, itemCount, item.shortdesc);
         end
 	end
 end
@@ -156,28 +175,26 @@ function InventoryPresenter:SelectItem(id)
     local itemCount = self.inventoryManager:GetItemCount(id);
 	self.inventoryView:SelectItem(item.id, item.text, item.desc, item.icon, item.price, itemCount);
 	self.selectedItem = id;
-	if (item.category == "dress") then
-		--enable equipping for dress items only
-		if (self.inventoryManager:ItemEquipped(id)) then
-			--self.inventoryView:SetEquipMode(false);
-			self.inventoryView:ShowEquip(false);
-		else
-			self.inventoryView:SetEquipMode(true);
-		end	
-	else
-		self.inventoryView:ShowEquip(false);
-	end
 end
 
 function InventoryPresenter:EquipItem()
 	if (self.selectedItem ~= nil) then
 		local itemID = self.selectedItem;
-		if (self.inventoryManager:ItemEquipped(itemID)) then
-			self.inventoryManager:UnequipItem(itemID);
-		else
-			self.inventoryManager:EquipItem(itemID);
-		end
+		self.inventoryManager:EquipItem(itemID);
 		self:SelectItem(itemID);
+		self:Update();
+	end
+end
+
+function InventoryPresenter:SellItem()
+	if (self.selectedItem ~= nil) then
+		local itemID = self.selectedItem;
+		self.inventoryManager:RemoveItem(itemID);
+		local soldPrice = itemManager:GetItem(itemID).price / 2;
+		character:Inc("gold", soldPrice)
+		self.inventoryView:CloseDetail();
+		self.selectedItem = nil;
+		self:Update();
 	end
 end
 
@@ -211,6 +228,7 @@ end
 function InventoryPresenter:SetDressPage(modifier)
     local oldpage = self.currentDressPage;
     local page = self.currentDressPage + modifier;
+    
     if (page < 0) then
         self.currentDressPage = 0;
     elseif (page >= self.numDressPages) then

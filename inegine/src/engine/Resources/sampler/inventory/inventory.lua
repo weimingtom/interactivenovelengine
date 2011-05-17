@@ -2,25 +2,25 @@
 LoadScript "components\\luaview.lua"
 LoadScript "components\\tabview.lua"
 LoadScript "components\\flowview.lua"
+LoadScript "components\\uifactory.lua"
 
 InventoryView = LuaView:New();
 
 function InventoryView:Init()
+	self.activeTab = inventory_dress;
 	local gamestate = CurrentState();
 	
 	local parent = self.parent;
-	local font = GetFont("default"); 
-	self.font = font;
 	local name = self.name;
 	
 	self.frame = View()
 	self.frame.Name = name
 	
-	self.frame.x = 50;
-	self.frame.y = 160;
-	self.frame.Width = 400
-	self.frame.Height = 430
-	self.frame.alpha = 155
+	self.frame.x = 0;
+	self.frame.y = 0;
+	self.frame.Width = 800
+	self.frame.Height = 600
+	self.frame.alpha = 0
 	self.frame.layer = 6
 	
 	self.frame.Visible = false
@@ -32,80 +32,104 @@ function InventoryView:Init()
 	
 	parent:AddComponent(self.frame)
 	
-	
-	local background = ImageWindow()
-	background.name = "backround"
-	background.relative = true;
-	background.width = self.frame.width - 10;
-	background.height = self.frame.height - 150 - 50;
-	background.x = 5;
-	background.y = 50;
-    background.WindowTexture = "resources/window.png"
-    background.RectSize = 40
-    background.BackgroundColor = 0xFFFFFF
-	background.alpha = 255
-	background.layer = 6;
-	self.background = background;
-	self.frame:AddComponent(background);
-	
-	local detailView = ImageWindow()
-	detailView.name = "detailView"
-	detailView.relative = true;
-	detailView.width = self.frame.width - 10;
-	detailView.height = 95;
-	detailView.leftMargin = 90;
-	detailView.margin = 12;
-	detailView.font = GetFont("smalldefault");
-    detailView.linespacing = 5
-	detailView.x = 5;
-	detailView.y = background.y + background.height + 5;
-    detailView.WindowTexture = "resources/window.png"
-    detailView.RectSize = 40
-    detailView.backgroundColor = 0xFFFFFF
-	detailView.alpha = 255
-	detailView.layer = 6;
-	self.detailView = detailView;
-	self.frame:AddComponent(detailView);
-	
-	local equipButton = self:CreateButton("equipButton", inventory_equip,
-	function (equipButton, luaevent, args)
-		self:EquipItem();
-	end)
-	equipButton.Layer = 4;
-	equipButton.X = detailView.width - equipButton.width - 10;
-	equipButton.Y = 10;
-	equipButton.enabled = false;
-	self.equipButton = equipButton;
-	
-	self.detailView:AddComponent(equipButton);
+	local inventoryMenu = SpriteBase();
+	self.inventoryMenu = inventoryMenu;
+	inventoryMenu.Texture = "resources/ui/inventory_window.png"
+	inventoryMenu.Visible = true;
+	inventoryMenu.Layer = 3;
+	self.frame:AddComponent(inventoryMenu)
 	
 	
-	local pic = Button();
-	pic.Name = "picture";
-	pic.Visible = true;
-	pic.Width = 48;
-	pic.Height = 48;
-	pic.X = 20;
-	pic.Y = 10;
-	pic.State = {}
-	self.selectedIcon = pic;
-	self.detailView:AddComponent(pic);
-	
-	local button = Button();
-	button.Name = "text"
-	button.Width = 68;
-	button.Height = 21;
-	button.X = 10;
-	button.Y = 10 + pic.Height;
-	button.font = GetFont("verysmall");
-	button.TextColor = 0xFFFFFF
-	button.Text = text;
-	button.Alignment = 1;
-	button.VerticalAlignment = 1;
-	self.selectedIconText = button;
-	self.detailView:AddComponent(button);
+	local dressRollOver = SpriteBase();
+	self.dressRollOver = dressRollOver;
+	dressRollOver.Texture = "resources/ui/inventory_window_dress_rollover.png"
+	dressRollOver.Visible = false;
+	dressRollOver.Layer = 4;
+	dressRollOver:Hide();
+	self.frame:AddComponent(dressRollOver)
 	
 	
+	local itemRollOver = SpriteBase();
+	self.itemRollOver = itemRollOver;
+	itemRollOver.Texture = "resources/ui/inventory_window_item_rollover.png"
+	itemRollOver.Visible = false;
+	itemRollOver.Layer = 4;
+	itemRollOver:Hide();
+	self.frame:AddComponent(itemRollOver)
+	
+	--local background = ImageWindow()
+	--background.name = "backround"
+	--background.relative = true;
+	--background.width = self.frame.width - 10;
+	--background.height = self.frame.height - 150 - 50;
+	--background.x = 5;
+	--background.y = 50;
+    --background.WindowTexture = "resources/window.png"
+    --background.RectSize = 40
+    --background.BackgroundColor = 0xFFFFFF
+	--background.alpha = 255
+	--background.layer = 6;
+	--self.background = background;
+	--self.frame:AddComponent(background);
+	--
+	--local detailView = ImageWindow()
+	--detailView.name = "detailView"
+	--detailView.relative = true;
+	--detailView.width = self.frame.width - 10;
+	--detailView.height = 95;
+	--detailView.leftMargin = 90;
+	--detailView.margin = 12;
+	--detailView.font = GetFont("smalldefault");
+    --detailView.linespacing = 5
+	--detailView.x = 5;
+	--detailView.y = background.y + background.height + 5;
+    --detailView.WindowTexture = "resources/window.png"
+    --detailView.RectSize = 40
+    --detailView.backgroundColor = 0xFFFFFF
+	--detailView.alpha = 255
+	--detailView.layer = 6;
+	--self.detailView = detailView;
+	--self.frame:AddComponent(detailView);
+	--
+	--local equipButton = self:CreateButton("equipButton", inventory_equip,
+	--function (equipButton, luaevent, args)
+		--self:EquipItem();
+	--end)
+	--equipButton.Layer = 4;
+	--equipButton.X = detailView.width - equipButton.width - 10;
+	--equipButton.Y = 10;
+	--equipButton.enabled = false;
+	--self.equipButton = equipButton;
+	--
+	--self.detailView:AddComponent(equipButton);
+	--
+	--
+	--local pic = Button();
+	--pic.Name = "picture";
+	--pic.Visible = true;
+	--pic.Width = 48;
+	--pic.Height = 48;
+	--pic.X = 20;
+	--pic.Y = 10;
+	--pic.State = {}
+	--self.selectedIcon = pic;
+	--self.detailView:AddComponent(pic);
+	--
+	--local button = Button();
+	--button.Name = "text"
+	--button.Width = 68;
+	--button.Height = 21;
+	--button.X = 10;
+	--button.Y = 10 + pic.Height;
+	--button.font = GetFont("verysmall");
+	--button.TextColor = 0xFFFFFF
+	--button.Text = text;
+	--button.Alignment = 1;
+	--button.VerticalAlignment = 1;
+	--self.selectedIconText = button;
+	--self.detailView:AddComponent(button);
+	--
+	--
     local upButton = self:CreateUpButton(
     function()
         if (self.upButtonEvent ~= nil) then
@@ -113,8 +137,10 @@ function InventoryView:Init()
         end
     end
     );
-    upButton.x = background.width - 30 + background.x;
-    upButton.y = 10 + background.y;
+    upButton.x = 155
+    upButton.y = 535
+    upButton.width = 25
+    upButton.height = 20
     self.frame:AddComponent(upButton);
 
     local downButton = self:CreateDownButton(
@@ -124,82 +150,230 @@ function InventoryView:Init()
             end
         end
     );
-    downButton.x = background.width - 30 + background.x;
-    downButton.y = background.height - 20 + background.y;
+    downButton.x = 246
+    downButton.y = 535
+    downButton.width = 25
+    downButton.height = 20
     self.frame:AddComponent(downButton);
-	
-	local tabView = Tabview:New("tabView", GetFont("default"));
-	tabView.frame.relative = true
-	tabView.frame.X = 0;
-	tabView.frame.Y = 0;
-	tabView.frame.Width = self.background.Width;
-	tabView.frame.Height = self.background.Height;
-	tabView.frame.layer = 10;
-	self.tabView = tabView;
-	self.frame:AddComponent(tabView.frame);
-	tabView:Show();
-		
+	--
+	--local tabView = Tabview:New("tabView", GetFont("default"));
+	--tabView.frame.relative = true
+	--tabView.frame.X = 0;
+	--tabView.frame.Y = 0;
+	--tabView.frame.Width = self.background.Width;
+	--tabView.frame.Height = self.background.Height;
+	--tabView.frame.layer = 10;
+	--self.tabView = tabView;
+	--self.frame:AddComponent(tabView.frame);
+	--tabView:Show();
+		--
 	local dressView = Flowview:New("dressview")
 	dressView.frame.relative = true;
-	dressView.frame.width = self.background.width;
-	dressView.frame.height = self.background.height;
-	dressView.frame.x = 5;
-	dressView.frame.y = 50;
-	dressView.frame.layer = 10;
-	dressView.spacing = 5;
-	dressView.padding = 10;
-	dressView.frame.visible = true;
-	dressView.frame.enabled = true;
+	dressView.frame.width = 350;
+	dressView.frame.height = 326;
+	dressView.frame.x = 40;
+	dressView.frame.y = 225;
+	dressView.frame.layer = 4;
+	dressView.spacing = 2;
+	dressView.padding = 2;
 	self.dressView = dressView;
-	tabView:AddTab(inventory_dress, dressView.frame);
+	self.frame:AddComponent(self.dressView.frame);
+	self.dressView:Show();
+	
+	self.dressButton = UIFactory.CreateRollOverButton(
+		function()
+			self.itemView:Hide();
+			self.dressView:Show();
+			self.activeTab = inventory_dress;
+		end,
+		function ()
+			self.dressRollOver:Show();
+			self.itemRollOver:Hide();
+		end,
+		function ()
+			self.dressRollOver:Hide();
+			self.itemRollOver:Hide();
+		end);
+	self.dressButton.X =  33
+	self.dressButton.Y = 181
+	self.dressButton.Width = 66
+	self.dressButton.Height = 32
+	self.dressButton.Layer = 5
+	self.frame:AddComponent(self.dressButton);
 	
 	local itemView = Flowview:New("itemview")
+	self.itemView = itemView;
 	itemView.frame.relative = true;
-	itemView.frame.width = self.background.width;
-	itemView.frame.height = self.background.height;
-	itemView.frame.x = 5;
-	itemView.frame.y = 50;
-	itemView.frame.alpha = 155
+	itemView.frame.width = 350;
+	itemView.frame.height = 326;
+	itemView.frame.x = 40;
+	itemView.frame.y = 225;
 	itemView.frame.layer = 4;
 	itemView.spacing = 5;
 	itemView.padding = 10;
 	itemView.frame.visible = false;
 	itemView.frame.enabled = false;
 	self.itemView = itemView;
-	tabView:AddTab(inventory_item, itemView.frame);
+	self.frame:AddComponent(self.itemView.frame);
+		
+	self.itemButton = UIFactory.CreateRollOverButton(
+		function()
+			self.itemView:Show();
+			self.dressView:Hide();
+			self.activeTab = inventory_item;
+		end,
+		function ()
+			self.itemRollOver:Show();
+			self.dressRollOver:Hide();
+		end,
+		function ()
+			self.dressRollOver:Hide();
+			self.itemRollOver:Hide();
+		end);
+	self.itemButton.X =  125
+	self.itemButton.Y = 184
+	self.itemButton.Width = 63
+	self.itemButton.Height = 28
+	self.itemButton.Layer = 5
+	self.frame:AddComponent(self.itemButton);
 	
-	local furnitureView = Flowview:New("furnitureview");
-	furnitureView.frame.relative = true;
-	furnitureView.frame.width = self.background.width;
-	furnitureView.frame.height = self.background.height;
-	furnitureView.frame.x = 5;
-	furnitureView.frame.y = 50;
-	furnitureView.frame.alpha = 155
-	furnitureView.frame.layer = 4;	
-	furnitureView.spacing = 5;
-	furnitureView.padding = 10;
-	furnitureView.frame.visible = false;
-	furnitureView.frame.enabled = false;
-	self.furnitureView = furnitureView;
-	tabView:AddTab(inventory_furniture, furnitureView.frame);
+	--page button
+	local button = Button();
+	self.pageButton = button;
+	button.Width = 60;
+	button.Height = 30;
+	button.X = 184
+	button.Y = 531;
+	button.Layer = 10
+	button.font = GetFont("item_name");
+	button.TextColor = 0x2222FF
+	button.Alignment = 1;
+	button.VerticalAlignment = 1;
+	button:Show();
+	self.frame:AddComponent(button);
 	
-	local closeButton = self:CreateButton("closeButton", common_close,
-		function (closeButton, luaevent, args)
-			self:Dispose();
-		end)
-	closeButton.Layer = 4;
-	closeButton.X = self.frame.width - 105;
-	closeButton.Y = self.frame.height - 45;
-	self.closebutton = closeButton;
+	self.backButton = UIFactory.CreateBackButton(
+		function (button, luaevent, args)
+				self:Dispose();
+		end
+	)
+	self.backButton.X = 380
+	self.backButton.Y = 460
+	self.backButton.Layer = 10
+	self.frame:AddComponent(self.backButton);
 	
-	self.frame:AddComponent(closeButton);
+	-------------------
+	-- detail window --
+	-------------------
+	local detailWindow = SpriteBase();
+	self.detailWindow = detailWindow;
+	detailWindow.Texture = "resources/ui/inventory_detail.png"
+	detailWindow.Visible = true;
+	detailWindow.Layer = 10;
+	self.parent:AddComponent(detailWindow)
+	detailWindow:Hide();
+	
+	local pic = Button();
+	self.detailIcon = pic;
+	pic.Visible = true;
+	pic.Width = 60;
+	pic.Height = 60;
+	pic.X = 274
+	pic.Y = 227
+	pic.MouseDoubleClick = 
+		function (button, luaevent, args)
+			Trace("click!");
+			if (self.equipEvent ~= nil) then
+				self.equipEvent();
+			end
+		end
+	detailWindow:AddComponent(pic);
+	
+	local button = Button();
+	self.detailName = button;
+	button.Width = 110;
+	button.Height = 21;
+	button.X = 355
+	button.Y = 227
+	button.font = GetFont("item_name");
+	button.TextColor = 0x000000
+	button.Alignment = 0;
+	button.VerticalAlignment = 1;
+	detailWindow:AddComponent(button);
+	
+	local button = Button();
+	self.detailPrice = button;
+	button.Width = 110;
+	button.Height = 20;
+	button.X = 470
+	button.Y = 227;
+	button.font = GetFont("item_desc");
+	button.TextColor = 0x000000
+	button.Alignment = 0;
+	button.VerticalAlignment = 1;
+	detailWindow:AddComponent(button);
+	
+	local button = Button();
+	self.detailDesc = button;
+	button.Width = 175;
+	button.Height = 50;
+	button.X = 355
+	button.Y = 236;
+	button.font = GetFont("item_desc");
+	button.TextColor = 0x000000
+	button.Alignment = 0;
+	button.VerticalAlignment = 1;
+	detailWindow:AddComponent(button);
+	
+	self.sellButton = UIFactory.CreateRollOverButton(
+		function()
+			if (self.sellEvent ~= nil) then
+				self.sellEvent();
+			end
+		end,
+		function ()
+			self.detailWindowRollover:Show();
+		end,
+		function ()
+			self.detailWindowRollover:Hide();
+		end);
+	self.sellButton.X =  455
+	self.sellButton.Y = 323
+	self.sellButton.Width = 51
+	self.sellButton.Height = 30
+	self.sellButton.Layer = 5
+	detailWindow:AddComponent(self.sellButton);	
+	
+	local detailWindowRollover = SpriteBase();
+	self.detailWindowRollover = detailWindowRollover;
+	detailWindowRollover.Texture = "resources/ui/inventory_detail_rollover.png"
+	detailWindowRollover.Visible = true;
+	detailWindowRollover.Layer = 4;
+	detailWindow:AddComponent(detailWindowRollover)
+	detailWindowRollover:Hide();
+	
+	
+	self.backButton = UIFactory.CreateBackButton(
+		function (button, luaevent, args)
+			self:CloseDetail();
+		end
+	)
+	self.backButton.X = 537
+	self.backButton.Y = 235
+	self.backButton.Layer = 10
+	detailWindow:AddComponent(self.backButton);
+	
+	
+end
+
+function InventoryView:CloseDetail()
+	self.detailWindow:Hide();
+	self.frame.enabled = true;
 end
 
 function InventoryView:CreateUpButton(event)
-	local newButton = Button()
+	local newButton = View()
 	newButton.Relative = true;
-	newButton.Name = "upButton";
-	newButton.Texture = "resources/up.png"	
 	newButton.Layer = 15
 	newButton.X = 0;
 	newButton.Y = 0;
@@ -209,26 +383,21 @@ function InventoryView:CreateUpButton(event)
 	newButton.MouseDown = 
 		function (newButton, luaevent, args)
 			newButton.State["mouseDown"] = true
-			newButton.Pushed = true
 		end
 	newButton.MouseUp = 
 		function (button, luaevent, args)
 			if (button.State["mouseDown"]) then
-				button.Pushed = false;
                 if (event~=nil) then 
 					event(button, luaevent, args);
 				end
 			end
 		end
-	newButton.TextColor = 0xEEEEEE
 	return newButton;
 end
 
 function InventoryView:CreateDownButton(event)
-	local newButton = Button()
+	local newButton = View()
 	newButton.Relative = true;
-	newButton.Name = "downButotn";
-	newButton.Texture = "resources/down.png"	
 	newButton.Layer = 15
 	newButton.X = 0;
 	newButton.Y = 0;
@@ -238,111 +407,33 @@ function InventoryView:CreateDownButton(event)
 	newButton.MouseDown = 
 		function (newButton, luaevent, args)
 			newButton.State["mouseDown"] = true
-			newButton.Pushed = true
 		end
 	newButton.MouseUp = 
 		function (button, luaevent, args)
 			if (button.State["mouseDown"]) then
-				button.Pushed = false;
+				Trace("button down!");
                 if (event~=nil) then 
 					event(button, luaevent, args);
 				end
 			end
 		end
-	newButton.TextColor = 0xEEEEEE
 	return newButton;
 end
 
-
-function InventoryView:CreateButton(buttonName, buttonText, event)
-	local newButton = Button()
-	newButton.Relative = true;
-	newButton.Name = buttonName;
-	newButton.Texture = "resources/button/button.png"	
-	newButton.Layer = 5
-	newButton.X = 0;
-	newButton.Y = 0;
-	newButton.Width = 100;
-	newButton.Height = 40;
-	newButton.State = {}
-	newButton.MouseDown = 
-		function (newButton, luaevent, args)
-			newButton.State["mouseDown"] = true
-			newButton.Pushed = true
-		end
-	newButton.MouseUp = 
-		function (button, luaevent, args)
-			if (button.State["mouseDown"]) then
-				button.Pushed = false;
-                if (event~=nil) then 
-					event(button, luaevent, args);
-				end
-			end
-		end
-	newButton.Text = buttonText;
-	newButton.Font = GetFont("menu"); --menuFont
-	newButton.TextColor = 0xEEEEEE
-	return newButton;
+function InventoryView:AddDressItem(buttonName, buttonText, icon, price, count, effect, equipped)
+	self.dressView:Add(UIFactory.CreateItemButton(buttonName, buttonText, icon, price, count, effect, self.selectedEvent, equipped));
 end
 
-
-function InventoryView:CreateItem(id, text, icon)
-	local frame = View();
-	frame.Name = id;
-	frame.Relative = true;
-	frame.Width = 80;
-	frame.Height = 69;
-	frame.Enabled = true;
-	
-	local pic = Button();
-	pic.Name = "picture";
-	pic.Texture = icon
-	pic.Visible = true;
-	pic.Width = 48;
-	pic.Height = 48;
-	pic.X = (frame.Width - pic.Width) / 2;
-	pic.State = {}
-	pic.MouseDown = 
-		function (button, luaevent, args)
-			Trace("mouse down!");
-			button.State["mouseDown"] = true
-			button.Pushed = true;
-		end
-	pic.MouseUp = 
-		function (button, luaevent, args)
-			if (button.State["mouseDown"]) then
-				Trace("mouse up!");
-				button.Pushed = false;
-				self.selectedEvent(button, luaevent, id);
-			end
-		end
-	frame:AddComponent(pic);
-	
-	local button = Button();
-	button.Name = "text"
-	button.Width = 80;
-	button.Height = 21;
-	button.X = 0;
-	button.Y = pic.Height;
-	button.font = GetFont("verysmall");
-	button.TextColor = 0xFFFFFF
-	button.Text = text;
-	button.Alignment = 1;
-	button.VerticalAlignment = 1;
-	frame:AddComponent(button);
-	return frame;
-end
-
-function InventoryView:AddDressItem(buttonName, buttonText, icon)
-	self.dressView:Add(self:CreateItem(buttonName, buttonText, icon));
-end
-
-function InventoryView:AddItemItem(buttonName, buttonText, icon)
-	self.itemView:Add(self:CreateItem(buttonName, buttonText, icon));
+function InventoryView:AddItemItem(buttonName, buttonText, icon, price, count, effect)
+	self.itemView:Add(UIFactory.CreateItemButton(buttonName, buttonText, icon, price, count, effect, self.selectedEvent));
 end
 
 function InventoryView:AddFurnitureItem(buttonName, buttonText, icon)
-	self.furnitureView:Add(self:CreateItem(buttonName, buttonText, icon));
+	--self.furnitureView:Add(UIFactory.CreateItemButton(buttonName, buttonText, icon, price, count, effect, selectedEvent));
+end
+
+function InventoryView:SetSellEvent(event)
+	self.sellEvent = event;
 end
 
 function InventoryView:SetSelectedEvent(event)
@@ -358,13 +449,18 @@ function InventoryView:SetDownButtonEvent(event)
 end
 
 function InventoryView:SelectItem(itemId, itemName, description, icon, price, count)
-	self.selectedIcon.texture = icon;
-	self.selectedIconText.text = price .. common_priceunit
-	self.detailView.text = itemName .. "x" .. count .. "\n" .. description;
+	self.detailWindow:Show();
+	self.frame.enabled = false;
+	self.detailIcon.texture = icon;
+	self.detailName.text = itemName;
+	self.detailPrice.text = price .. "G"
+	self.detailDesc.text = description;
+	--self.selectedIconText.text = price .. common_priceunit
+	--self.detailView.text = itemName .. "x" .. count .. "\n" .. description;
 end
 
 function InventoryView:GetActiveTab()
-    return self.tabView:GetEnabledTab()
+    return self.activeTab;
 end
 
 function InventoryView:ClearDressItems()
@@ -376,7 +472,7 @@ function InventoryView:ClearItemItems()
 end
 
 function InventoryView:ClearFurnitureItems()
-	self.furnitureView:Clear();
+	--self.furnitureView:Clear();
 end
 
 function InventoryView:EquipItem()
@@ -389,17 +485,12 @@ function InventoryView:SetEquipEvent(event)
 	self.equipEvent = event;
 end
 
-function InventoryView:SetEquipMode(equip)
-	self:ShowEquip(true);
-	self.equipButton.enabled = true;
-	if (equip) then
-		self.equipButton.text = inventory_equip;
-	else
-		self.equipButton.text = inventory_unequip;
+function InventoryView:PrintPageNumbers(nd, cd, ni, ci, nf, cf)
+	if (self.activeTab == inventory_dress) then
+		self.pageButton.Text = (cd + 1) .. "/" .. nd;
+	elseif (self.activeTab == inventory_item) then
+		self.pageButton.Text = (ci + 1) .. "/" .. ni;
+	elseif (self.activeTab == inventory_furniture) then
+		self.pageButton.Text = (cf + 1) .. "/" .. nf;
 	end
-end
-
-function InventoryView:ShowEquip(enable)
-	self.equipButton.visible = enable;
-	self.equipButton.enabled = enable;
 end

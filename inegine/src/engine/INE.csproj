@@ -402,6 +402,13 @@
     <Content Include="Resources\sampler\resources\scg\mte.png" />
     <Content Include="Resources\sampler\resources\scg\mw.png" />
     <Content Include="Resources\sampler\resources\scg\ss.png" />
+    <Content Include="Resources\sampler\resources\ui\back_button.png" />
+    <Content Include="Resources\sampler\resources\ui\inventory_detail.png" />
+    <Content Include="Resources\sampler\resources\ui\inventory_detail_rollover.png" />
+    <Content Include="Resources\sampler\resources\ui\inventory_star.png" />
+    <Content Include="Resources\sampler\resources\ui\inventory_window.png" />
+    <Content Include="Resources\sampler\resources\ui\inventory_window_dress_rollover.png" />
+    <Content Include="Resources\sampler\resources\ui\inventory_window_item_rollover.png" />
     <Content Include="Resources\sampler\resources\ui\main_menu.png" />
     <Content Include="Resources\sampler\resources\ui\main_menu_item.png" />
     <Content Include="Resources\sampler\resources\ui\main_menu_schedule.png" />
@@ -409,6 +416,7 @@
     <Content Include="Resources\sampler\resources\ui\main_menu_store.png" />
     <Content Include="Resources\sampler\resources\ui\main_menu_system.png" />
     <Content Include="Resources\sampler\resources\ui\main_menu_talk.png" />
+    <Content Include="Resources\sampler\resources\ui\state_menu.png" />
     <Content Include="Resources\sampler\resources\ui\state_window.png" />
     <Content Include="Resources\sound\failure.mp3" />
     <Content Include="Resources\sound\opening.mp3" />

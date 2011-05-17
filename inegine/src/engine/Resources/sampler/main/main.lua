@@ -201,7 +201,7 @@ function Main:InitComponents()
 	AddComponent(menu)	
 	
 
-	local button = self:CreateMenuButton("Schedule",
+	local button = self:CreateMenuButton(
  		function (button, luaevent, args)
 			self:OpenSchedule();
 		end,
@@ -212,7 +212,7 @@ function Main:InitComponents()
 	button.Height = 40;
 	menu:AddComponent(button);
 	
-	local button = self:CreateMenuButton("Talk",
+	local button = self:CreateMenuButton(
  		function (button, luaevent, args)
 			self:OpenCommunication();
 		end,
@@ -223,7 +223,7 @@ function Main:InitComponents()
 	button.Height = 30;
 	menu:AddComponent(button);
 	
-	local button = self:CreateMenuButton("Status",
+	local button = self:CreateMenuButton(
  		function (button, luaevent, args)
 			self:OpenStatus();
 		end,
@@ -234,7 +234,7 @@ function Main:InitComponents()
 	button.Height = 40;
 	menu:AddComponent(button);	
 	
-	local button = self:CreateMenuButton("Inventory",
+	local button = self:CreateMenuButton(
  		function (button, luaevent, args)
 			self:OpenInventory();
 		end,
@@ -245,7 +245,7 @@ function Main:InitComponents()
 	button.Height = 25;
 	menu:AddComponent(button);
 	
-	local button = self:CreateMenuButton("Shopping",
+	local button = self:CreateMenuButton(
  		function (button, luaevent, args)
 			self:OpenShopList();
 		end,
@@ -256,7 +256,7 @@ function Main:InitComponents()
 	button.Height = 30;
 	menu:AddComponent(button);
 	
-	local button = self:CreateMenuButton("System",
+	local button = self:CreateMenuButton(
  		function (button, luaevent, args)
 			self:OpenSystem();
 		end,
@@ -289,40 +289,22 @@ function Main:ShowMenu(menu, show)
 	end
 end
 
-function Main:CreateMenuButton(buttonText, event, texture)
-	local newButton = View()
-	newButton.Relative = true;
-	newButton.Name = buttonText;
-	newButton.Layer = 3
-	newButton.State = {}
-	newButton.MouseDown = 
-		function (newButton, luaevent, args)
-			newButton.State["mouseDown"] = true
-		end
-	newButton.MouseUp = 
-		function (button, luaevent, args)
-			if (button.State["mouseDown"]) then
-                if (event~=nil) then 
-					event(button, luaevent, args);
-				end
-			end
-		end
-	newButton.MouseLeave =
-		function (button, luaevent, args)
-			Trace(buttonText .. " left!");
-			self:ShowMenu(texture, false);
-		end
-	newButton.MouseEnter =
-		function (button, luaevent, args)
-			Trace(buttonText .. " enter!");
+function Main:CreateMenuButton(event, texture)
+	return UIFactory.CreateRollOverButton(event,
+		function ()
 			self:ShowMenu(texture, true);
-		end
-	return newButton;
+		end,
+		function ()
+			self:ShowMenu(texture, false);
+		end);
 end
 
 function Main:RegisterEvents()
 	calendar:SetUpdateEvent(function() self:InvalidateDate() end);
 	character:SetLookEvent(function() self:InvalidateTachie() end);
+	character:SetTriggerEvent("gold", function() self:InvalidateStatus() end);
+	character:SetTriggerEvent("stress", function() self:InvalidateStatus() end);
+	character:SetTriggerEvent("mana", function() self:InvalidateStatus() end);
 	
 	CurrentState().KeyDown = function(handler, luaevent, args) 
 		self:KeyDown(handler, luaevent, args);
@@ -544,7 +526,7 @@ function Main:OpenSystem()
 end
 
 function Main:OpenInventory()
-	self:Disable(false);
+	self:Disable(false, false);
 	self:SetTachiePosition(0.75);
 	local inventory = InventoryView:New("inventory", self.gamestate);
 	inventory:Init();
