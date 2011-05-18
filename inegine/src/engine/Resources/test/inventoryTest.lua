@@ -55,6 +55,10 @@ TestInventory = {}
         inventory:AddItem("testItem4", "cat2", 4);
         inventory:AddItem("testItem5", "cat3", 5);
         inventory:AddItem("testItem6", "cat4", 6);
+        inventory:AddItem("testItem7", "dress");
+        inventory:AddItem("testItem8", "dress", 2);
+        inventory:AddItem("testItem9", "dress", 4);
+        inventory:AddItem("testItem10", "dress", 4);
         local items = inventory:GetItems("cat1");
         assertEquals(nil, inventory:GetItemCount("asdasd"));
         assertEquals(true, table.contains(items, "testItem1"));
@@ -66,6 +70,10 @@ TestInventory = {}
         assertEquals(true, table.contains(inventory:GetItems("cat2"), "testItem4"));
         assertEquals(true, table.contains(inventory:GetItems("cat3"), "testItem5"));
         assertEquals(true, table.contains(inventory:GetItems("cat4"), "testItem6"));
+        assertEquals(1, inventory:GetItemCount("testItem7"));
+        assertEquals(1, inventory:GetItemCount("testItem8"));
+        assertEquals(1, inventory:GetItemCount("testItem9"));
+        assertEquals(1, inventory:GetItemCount("testItem10"));
     end
  
     function TestInventory:testEquipDress()
