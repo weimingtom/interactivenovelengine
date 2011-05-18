@@ -24,6 +24,15 @@ function InventoryManager:AddItem(id, category, count)
         count = 1;
     end
 
+	-- make sure dress are unique in inventory
+	if (category == "dress") then
+		if (table.contains(self.itemList, id)) then
+			return;
+		elseif(count > 1) then
+			count = 1;
+		end
+	end
+
     if (table.contains(self.itemList, id) == false) then
         table.insert(self.itemList, id);    
         if (table.contains(self.categoryList, category) == false) then
@@ -32,7 +41,8 @@ function InventoryManager:AddItem(id, category, count)
         self.categoryMap[id] = category;
         self.countMap[id] = count;
     else
-        self.countMap[id] = self.countMap[id] + count;
+		self.countMap[id] = self.countMap[id] + count;
+        
     end
 end
 
