@@ -1,5 +1,5 @@
 LoadScript "components\\luaview.lua"
-LoadScript "components\\dialoguewindow.lua"
+LoadScript "components\\messagewindow.lua"
 LoadScript "components\\flowview.lua"
 
 ShopView = LuaView:New();
@@ -12,7 +12,6 @@ function ShopView:Init()
 	local gamestate = CurrentState();
 	
 	local parent = self.parent;
-	local font = GetFont(shop_font_default)
 	local name = self.name;
 	
 	self.frame = View()
@@ -34,7 +33,15 @@ function ShopView:Init()
 	
 	parent:AddComponent(self.frame)
 		
-	local dialogueWin = DialogueWindow:New("dialogueWin", self.frame);
+	
+	local shopMenu = SpriteBase();
+	self.shopMenu = shopMenu;
+	shopMenu.Texture = "resources/ui/store_menu.png"
+	shopMenu.Visible = true;
+	shopMenu.Layer = 3;
+	self.frame:AddComponent(shopMenu)	
+		
+	local dialogueWin = MessageWindow:New("dialogueWin", self.frame);
 	self.dialogueWin = dialogueWin;
 	dialogueWin:Init();
 	dialogueWin.frame.relative = true;
@@ -42,143 +49,18 @@ function ShopView:Init()
 	dialogueWin.frame.y = self.frame.height - dialogueWin.frame.height;
 	dialogueWin:Hide();
 	
-	-------------------
-	-- commit window --
-	-------------------
-	local commitWindow = ImageWindow()
-	self.commitWindow = commitWindow;
-	--commitWindow.Name = "commitWindow"
-	commitWindow.relative = true;
-	commitWindow.width = 300;
-	commitWindow.height = 200;
-	commitWindow.x = (GetWidth() - commitWindow.width) / 3;
-	commitWindow.y = (GetHeight() - commitWindow.height) / 2;
-    commitWindow.WindowTexture = "resources/window.png"
-    commitWindow.RectSize = 40
-	commitWindow.alpha = 255
-	commitWindow.layer = 9;
-	commitWindow:Hide();
-	self.frame:AddComponent(commitWindow);
 	
-	local label = Label();
-	label.text = shop_view_commit_text;
-	label.font = GetFont(shop_font_default);
-	label.width = 100;
-	label.height = 50;
-	label.x = (commitWindow.width - label.width) / 2;
-	label.y = 0;
-	label.TextColor = 0xFFFFFF;
-	commitWindow:AddComponent(label);
-	
-	local itemNameLabel = Label();
-	self.itemNameLabel = itemNameLabel;
-	itemNameLabel.text = "";
-	itemNameLabel.font = GetFont(shop_font_default);
-	itemNameLabel.width = 200;
-	itemNameLabel.height = 50;
-	itemNameLabel.x = (commitWindow.width - itemNameLabel.width) / 2;
-	itemNameLabel.y = 50;
-	itemNameLabel.TextColor = 0xFFFFFF;
-	commitWindow:AddComponent(itemNameLabel);
-	
-	local countLabel = Label();
-	self.countLabel = countLabel;
-	countLabel.text = "";
-	countLabel.font = GetFont(shop_font_default);
-	countLabel.width = 30;
-	countLabel.height = 30;
-	countLabel.x = 50;
-	countLabel.y = 100;
-	countLabel.TextColor = 0xFFFFFF;
-	commitWindow:AddComponent(countLabel);
-	
-	
-	local upButton = self:CreateUpButton(
-        function()
-            if (self.upCountButtonEvent ~= nil) then
-                self.upCountButtonEvent();
-            end
+    local upButton = self:CreateUpButton(
+    function()
+        if (self.upButtonEvent ~= nil) then
+            self.upButtonEvent();
         end
+    end
     );
-    upButton.x = 20;
-    upButton.y = 100;
-    commitWindow:AddComponent(upButton);
-
-    local downButton = self:CreateDownButton(
-        function()
-            if (self.downCountButtonEvent ~= nil) then
-                self.downCountButtonEvent();
-            end
-        end
-    );
-    downButton.x = 20;
-    downButton.y = 120;
-    commitWindow:AddComponent(downButton);
-
-	local priceLabel = Label();
-	self.priceLabel = priceLabel;
-	priceLabel.text = "0G";
-	priceLabel.font = GetFont(shop_font_default);
-	priceLabel.width = 150;
-	priceLabel.height = 30;
-	priceLabel.x = 120;
-	priceLabel.y = 100;
-	priceLabel.TextColor = 0xFFFFFF;
-	commitWindow:AddComponent(priceLabel);
-		
-		
-	local okButton = self:CreateButton("okButton", shop_view_buy_button, 50, commitWindow.height - 45, 6)
-	self.commitokButton = okButton;
-	okButton.relative = true;
-	okButton.MouseUp = 
-		function (button, luaevent, args)
-			if (button.State["mouseDown"]) then
-				button.Pushed = false
-				self:CloseCommitWindow();
-				self:buyingEvent();
-			end
-		end
-	commitWindow:AddComponent(okButton);
-		
-	local closeButton = self:CreateButton("closeButton", common_cancel, okButton.x + okButton.width + 10,
-	 commitWindow.height - 45, 6)
-	self.commitCloseButton = closeButton;
-	closeButton.relative = true;
-	closeButton.MouseUp = 
-		function (button, luaevent, args)
-			if (button.State["mouseDown"]) then
-				button.Pushed = false
-				self:CloseCommitWindow();
-			end
-		end
-	commitWindow:AddComponent(closeButton);
-		
-		
-		
-	local background = ImageWindow()
-	self.background = background;
-	background.name = "backround"
-	background.relative = true;
-	background.width = 465;
-	background.height = 270;
-	background.x = 50;
-	background.y = 160;
-    background.WindowTexture = "resources/window.png"
-    background.RectSize = 40
-    background.BackgroundColor = 0xFFFFFF
-	background.alpha = 255
-	background.layer = 6;
-	self.frame:AddComponent(background);
-		
-	local upButton = self:CreateUpButton(
-        function()
-            if (self.upButtonEvent ~= nil) then
-                self.upButtonEvent();
-            end
-        end
-    );
-    upButton.x = background.width - 30 + background.x;
-    upButton.y = 10 + background.y;
+    upButton.x = 215
+    upButton.y = 390
+    upButton.width = 20
+    upButton.height = 20
     self.frame:AddComponent(upButton);
 
     local downButton = self:CreateDownButton(
@@ -188,89 +70,344 @@ function ShopView:Init()
             end
         end
     );
-    downButton.x = background.width - 30 + background.x;
-    downButton.y = background.height - 20 + background.y;
+    downButton.x = 312
+    downButton.y = 390
+    downButton.width = 20
+    downButton.height = 20
     self.frame:AddComponent(downButton);
-	
-	local itemListView = Flowview:New("itemListView")
-	itemListView.frame.relative = true;
-	itemListView.frame.width = background.width;
-	itemListView.frame.height = background.height - 50;
-	itemListView.frame.x = 0;
-	itemListView.frame.y = 0;
-	itemListView.frame.layer = 4;
-	itemListView.spacing = 5;
-	itemListView.padding = 10;
-	itemListView.frame.visible = true;
-	itemListView.frame.enabled = true;
-	self.itemListView = itemListView;
-	background:AddComponent(itemListView.frame);
-	
-		
-	local detailviewFrame = ImageWindow()
-	detailviewFrame.name = "detailviewFrame"
-	detailviewFrame.relative = true;
-	detailviewFrame.width = 215;
-	detailviewFrame.height = 230;
-	detailviewFrame.leftMargin = 20;
-	detailviewFrame.margin = 90;
-	detailviewFrame.font = GetFont(shop_font_small);
-    detailviewFrame.linespacing = 10
-	detailviewFrame.x = 525;
-	detailviewFrame.y = 160;
-    detailviewFrame.WindowTexture = "resources/window.png"
-    detailviewFrame.RectSize = 40
-    detailviewFrame.backgroundColor = 0xFFFFFF
-	detailviewFrame.alpha = 255
-	detailviewFrame.layer = 6;
-	self.detailviewFrame = detailviewFrame;
-	self.frame:AddComponent(detailviewFrame);
-	
-	
-	local pic = Button();
-	pic.Name = "picture";
-	pic.Visible = true;
-	pic.Width = 48;
-	pic.Height = 48;
-	pic.X = 20;
-	pic.Y = 10;
-	pic.State = {}
-	self.selectedIcon = pic;
-	self.detailviewFrame:AddComponent(pic);
-	
+
+	--page button
 	local button = Button();
-	button.Name = "text"
-	button.Width = 68;
-	button.Height = 21;
-	button.X = 10;
-	button.Y = 10 + pic.Height;
-	button.font = GetFont(shop_font_menu);
-	button.TextColor = 0xFFFFFF
-	button.Text = text;
+	self.pageButton = button;
+	button.Width = 60;
+	button.Height = 30;
+	button.X = 252
+	button.Y = 386;
+	button.Layer = 10
+	button.font = GetFont("item_name");
+	button.TextColor = 0x2222FF
 	button.Alignment = 1;
 	button.VerticalAlignment = 1;
-	self.selectedIconText = button;
-	self.detailviewFrame:AddComponent(button);
+	button:Show();
+	self.frame:AddComponent(button);
 	
-	self.closeButton = self:CreateButton("closeButton", common_close, 
-										 detailviewFrame.x + detailviewFrame.width - 210, background.y + background.height - 40, 6)
-	self.closeButton.relative = true;
-	self.closeButton.MouseUp = 
+
+	local itemListView = Flowview:New("itemListView")
+	itemListView.frame.relative = true;
+	itemListView.frame.width = 350;
+	itemListView.frame.height = 238;
+	itemListView.frame.x = 105;
+	itemListView.frame.y = 155;
+	itemListView.frame.layer = 4;
+	itemListView.spacing = 0;
+	itemListView.padding = 0;
+	self.itemListView = itemListView;
+	self.frame:AddComponent(self.itemListView.frame);
+	self.itemListView:Show();
+	
+	
+	self.backButton = UIFactory.CreateBackButton(
 		function (button, luaevent, args)
-			if (button.State["mouseDown"]) then
-				button.Pushed = false
-				Trace("button click!")
 				self:Dispose();
-			end
 		end
-	self.frame:AddComponent(self.closeButton);
+	)
+	self.backButton.X = 687
+	self.backButton.Y = 306
+	self.backButton.Layer = 10
+	self.frame:AddComponent(self.backButton);
+	
+	--detail window
+	local button = Button();
+	self.detailName = button;
+	button.Width = 110;
+	button.Height = 21;
+	button.X = 505
+	button.Y = 300
+	button.font = GetFont("item_name");
+	button.TextColor = 0x000000
+	button.Alignment = 0;
+	button.Layer = 10
+	button:Show();
+	button.VerticalAlignment = 1;
+	self.frame:AddComponent(button);
+	
+	local button = Button();
+	self.detailPrice = button;
+	button.Width = 110;
+	button.Height = 20;
+	button.X = 620
+	button.Y = 299;
+	button.font = GetFont("item_desc");
+	button.TextColor = 0x000000
+	button.Alignment = 0;
+	button.VerticalAlignment = 1;
+	button.Layer = 10
+	button:Show();
+	self.frame:AddComponent(button);
+	
+	local button = Button();
+	self.detailDesc = button;
+	button.Width = 175;
+	button.Height = 50;
+	button.X = 505
+	button.Y = 309;
+	button.font = GetFont("item_desc");
+	button.TextColor = 0x000000
+	button.Alignment = 0;
+	button.VerticalAlignment = 1;
+	button.Layer = 10
+	button:Show();
+	self.frame:AddComponent(button);
+		
+	
+	-------------------
+	-- commit window --
+	-------------------	
+	local commitWindow = SpriteBase();
+	self.commitWindow = commitWindow;
+	commitWindow.Texture = "resources/ui/store_detail.png"
+	commitWindow.Visible = true;
+	commitWindow.Layer = 10;
+	self.parent:AddComponent(commitWindow)
+	commitWindow:Hide();
+	
+	local pic = Button();
+	self.commitIcon = pic;
+	pic.Visible = true;
+	pic.Width = 60;
+	pic.Height = 60;
+	pic.X = 274
+	pic.Y = 227
+	commitWindow:AddComponent(pic);
+	
+	local button = Button();
+	self.commitName = button;
+	button.Width = 110;
+	button.Height = 21;
+	button.X = 355
+	button.Y = 227
+	button.font = GetFont("item_name");
+	button.TextColor = 0x000000
+	button.Alignment = 0;
+	button.VerticalAlignment = 1;
+	commitWindow:AddComponent(button);
+	
+	local button = Button();
+	self.commitPrice = button;
+	button.Width = 110;
+	button.Height = 20;
+	button.X = 470
+	button.Y = 227;
+	button.font = GetFont("item_desc");
+	button.TextColor = 0x000000
+	button.Alignment = 0;
+	button.VerticalAlignment = 1;
+	commitWindow:AddComponent(button);
+	
+	local button = Button();
+	self.commitCount = button;
+	button.Width = 60;
+	button.Height = 30;
+	button.X = 412
+	button.Y = 260;
+	button.font = GetFont("item_desc");
+	button.TextColor = 0x000000
+	button.Alignment = 1;
+	button.VerticalAlignment = 1;
+	commitWindow:AddComponent(button);
+	
+	local upButton = self:CreateUpButton(
+        function()
+            if (self.upCountButtonEvent ~= nil) then
+                self.downCountButtonEvent();
+            end
+        end
+    );
+    upButton.x = 387;
+    upButton.y = 265;
+    commitWindow:AddComponent(upButton);
+
+    local downButton = self:CreateDownButton(
+        function()
+            if (self.downCountButtonEvent ~= nil) then
+                self.upCountButtonEvent();
+            end
+        end
+    );
+    downButton.x = 479;
+    downButton.y = 266;
+    commitWindow:AddComponent(downButton);
+	
+	
+	self.buyButton = UIFactory.CreateRollOverButton(
+		function()
+			if (self.buyingEvent ~= nil) then
+				self.buyingEvent();
+			end
+		end,
+		function ()
+			self.commitWindowRollover:Show();
+		end,
+		function ()
+			self.commitWindowRollover:Hide();
+		end);
+	self.buyButton.X =  455
+	self.buyButton.Y = 323
+	self.buyButton.Width = 51
+	self.buyButton.Height = 30
+	self.buyButton.Layer = 5
+	commitWindow:AddComponent(self.buyButton);	
+	
+	local commitWindowRollover = SpriteBase();
+	self.commitWindowRollover = commitWindowRollover;
+	commitWindowRollover.Texture = "resources/ui/store_detail_rollover.png"
+	commitWindowRollover.Visible = true;
+	commitWindowRollover.Layer = 4;
+	commitWindow:AddComponent(commitWindowRollover)
+	commitWindowRollover:Hide();
+	
+	
+	self.backButton = UIFactory.CreateBackButton(
+		function (button, luaevent, args)
+			self:CloseCommitWindow();
+		end
+	)
+	self.backButton.X = 537
+	self.backButton.Y = 235
+	self.backButton.Layer = 10
+	commitWindow:AddComponent(self.backButton);
+	
+	
+	
+	--local countLabel = Label();
+	--self.countLabel = countLabel;
+	--countLabel.text = "";
+	--countLabel.font = GetFont(shop_font_default);
+	--countLabel.width = 30;
+	--countLabel.height = 30;
+	--countLabel.x = 50;
+	--countLabel.y = 100;
+	--countLabel.TextColor = 0xFFFFFF;
+	--commitWindow:AddComponent(countLabel);
+	--
+	--
+
+		
+		
+	--local background = ImageWindow()
+	--self.background = background;
+	--background.name = "backround"
+	--background.relative = true;
+	--background.width = 465;
+	--background.height = 270;
+	--background.x = 50;
+	--background.y = 160;
+    --background.WindowTexture = "resources/window.png"
+    --background.RectSize = 40
+    --background.BackgroundColor = 0xFFFFFF
+	--background.alpha = 255
+	--background.layer = 6;
+	--self.frame:AddComponent(background);
+		--
+	--local upButton = self:CreateUpButton(
+        --function()
+            --if (self.upButtonEvent ~= nil) then
+                --self.upButtonEvent();
+            --end
+        --end
+    --);
+    --upButton.x = background.width - 30 + background.x;
+    --upButton.y = 10 + background.y;
+    --self.frame:AddComponent(upButton);
+--
+    --local downButton = self:CreateDownButton(
+        --function()
+            --if (self.downButtonEvent ~= nil) then
+                --self.downButtonEvent();
+            --end
+        --end
+    --);
+    --downButton.x = background.width - 30 + background.x;
+    --downButton.y = background.height - 20 + background.y;
+    --self.frame:AddComponent(downButton);
+	--
+	--local itemListView = Flowview:New("itemListView")
+	--itemListView.frame.relative = true;
+	--itemListView.frame.width = background.width;
+	--itemListView.frame.height = background.height - 50;
+	--itemListView.frame.x = 0;
+	--itemListView.frame.y = 0;
+	--itemListView.frame.layer = 4;
+	--itemListView.spacing = 5;
+	--itemListView.padding = 10;
+	--itemListView.frame.visible = true;
+	--itemListView.frame.enabled = true;
+	--self.itemListView = itemListView;
+	--background:AddComponent(itemListView.frame);
+	--
+		--
+	--local detailviewFrame = ImageWindow()
+	--detailviewFrame.name = "detailviewFrame"
+	--detailviewFrame.relative = true;
+	--detailviewFrame.width = 215;
+	--detailviewFrame.height = 230;
+	--detailviewFrame.leftMargin = 20;
+	--detailviewFrame.margin = 90;
+	--detailviewFrame.font = GetFont(shop_font_small);
+    --detailviewFrame.linespacing = 10
+	--detailviewFrame.x = 525;
+	--detailviewFrame.y = 160;
+    --detailviewFrame.WindowTexture = "resources/window.png"
+    --detailviewFrame.RectSize = 40
+    --detailviewFrame.backgroundColor = 0xFFFFFF
+	--detailviewFrame.alpha = 255
+	--detailviewFrame.layer = 6;
+	--self.detailviewFrame = detailviewFrame;
+	--self.frame:AddComponent(detailviewFrame);
+	--
+	--
+	--local pic = Button();
+	--pic.Name = "picture";
+	--pic.Visible = true;
+	--pic.Width = 48;
+	--pic.Height = 48;
+	--pic.X = 20;
+	--pic.Y = 10;
+	--pic.State = {}
+	--self.selectedIcon = pic;
+	--self.detailviewFrame:AddComponent(pic);
+	--
+	--local button = Button();
+	--button.Name = "text"
+	--button.Width = 68;
+	--button.Height = 21;
+	--button.X = 10;
+	--button.Y = 10 + pic.Height;
+	--button.font = GetFont(shop_font_menu);
+	--button.TextColor = 0xFFFFFF
+	--button.Text = text;
+	--button.Alignment = 1;
+	--button.VerticalAlignment = 1;
+	--self.selectedIconText = button;
+	--self.detailviewFrame:AddComponent(button);
+	--
+	--self.closeButton = self:CreateButton("closeButton", common_close, 
+										 --detailviewFrame.x + detailviewFrame.width - 210, background.y + background.height - 40, 6)
+	--self.closeButton.relative = true;
+	--self.closeButton.MouseUp = 
+		--function (button, luaevent, args)
+			--if (button.State["mouseDown"]) then
+				--button.Pushed = false
+				--Trace("button click!")
+				--self:Dispose();
+			--end
+		--end
+	--self.frame:AddComponent(self.closeButton);
 end
 
 function ShopView:CreateUpButton(event)
-	local newButton = Button()
+	local newButton = View()
 	newButton.Relative = true;
-	newButton.Name = "upButton";
-	newButton.Texture = "resources/up.png"	
 	newButton.Layer = 15
 	newButton.X = 0;
 	newButton.Y = 0;
@@ -280,26 +417,21 @@ function ShopView:CreateUpButton(event)
 	newButton.MouseDown = 
 		function (newButton, luaevent, args)
 			newButton.State["mouseDown"] = true
-			newButton.Pushed = true
 		end
 	newButton.MouseUp = 
 		function (button, luaevent, args)
 			if (button.State["mouseDown"]) then
-				button.Pushed = false;
                 if (event~=nil) then 
 					event(button, luaevent, args);
 				end
 			end
 		end
-	newButton.TextColor = 0xEEEEEE
 	return newButton;
 end
 
 function ShopView:CreateDownButton(event)
-	local newButton = Button()
+	local newButton = View()
 	newButton.Relative = true;
-	newButton.Name = "downButotn";
-	newButton.Texture = "resources/down.png"	
 	newButton.Layer = 15
 	newButton.X = 0;
 	newButton.Y = 0;
@@ -309,20 +441,19 @@ function ShopView:CreateDownButton(event)
 	newButton.MouseDown = 
 		function (newButton, luaevent, args)
 			newButton.State["mouseDown"] = true
-			newButton.Pushed = true
 		end
 	newButton.MouseUp = 
 		function (button, luaevent, args)
 			if (button.State["mouseDown"]) then
-				button.Pushed = false;
+				Trace("button down!");
                 if (event~=nil) then 
 					event(button, luaevent, args);
 				end
 			end
 		end
-	newButton.TextColor = 0xEEEEEE
 	return newButton;
 end
+
 
 function ShopView:CreateButton(name, text, x, y, layer)
 	local button = Button()
@@ -379,117 +510,19 @@ function ShopView:ClearItems()
 	self.itemListView:Clear();
 end
 
-function ShopView:AddItem(id, text, price, icon)
-	self.itemListView:Add(self:CreateItem(id, text, price, icon));
+--function ShopView:AddItem(id, text, price, icon)
+function ShopView:AddItem(buttonName, buttonText, icon, price, count, effect)
+	self.itemListView:Add(UIFactory.CreateItemButton(buttonName, buttonText, icon, price, count, effect, self.commitEvent, nil,  self.selectedEvent));
 end
 
 function ShopView:SetSelectedEvent(event)
 	self.selectedEvent = event;	
 end
 
-function ShopView:CreateItem(id, text, price, icon)
-	local frame = View();
-	frame.Name = id;
-	frame.Relative = true;
-	frame.Width = 90;
-	frame.Height = 80;
-	frame.Enabled = true;
-	
-	local pic = Button();
-	pic.Name = "picture";
-	pic.Texture = icon
-	pic.Visible = true;
-	pic.X = (frame.Width - pic.Width) / 2;
-	pic.Width = 48;
-	pic.Height = 48;
-	pic.State = {}
-	pic.MouseDown = 
-		function (button, luaevent, args)
-			Trace("mouse down!");
-			button.State["mouseDown"] = true
-			button.Pushed = true;
-		end
-	pic.MouseUp = 
-		function (button, luaevent, args)
-			if (button.State["mouseDown"]) then
-				Trace("mouse up!");
-				button.Pushed = false;
-				self.selectedEvent(button, luaevent, id);
-			end
-		end
-	pic.MouseDoubleClick =
-		function (button, luaevent, args)
-			Trace("double click!")
-			self.selectedEvent(button, luaevent, id);
-			self:commitEvent(button, luaevent, id);
-		end
-
-	frame:AddComponent(pic);
-	
-	local button = Button();
-	button.Name = "text"
-	button.Width = 90;
-	button.Height = 15;
-	button.X = 0;
-	button.Y = pic.Height;
-	button.font = GetFont(shop_font_small);
-	button.TextColor = 0xFFFFFF
-	button.Text = text;
-	button.Alignment = 1;
-	button.VerticalAlignment = 1;
-	frame:AddComponent(button);
-	
-	
-	local priceButton = Button();
-	priceButton.Name = "price"
-	priceButton.Width = 90;
-	priceButton.Height = 15;
-	priceButton.X = 0;
-	priceButton.Y = button.Y + button.Height;
-	priceButton.font = GetFont(shop_font_small);
-	priceButton.TextColor = 0xFFFFFF
-	priceButton.Text = price;
-	priceButton.Alignment = 1;
-	priceButton.VerticalAlignment = 1;
-	frame:AddComponent(priceButton);
-	return frame;
-end
-
-function ShopView:CreateItemButton(buttonName, buttonText)
-	local newButton = Button()
-	newButton.Relative = true;
-	newButton.Name = buttonName;
-	newButton.Texture = "resources/button.png"	
-	newButton.Layer = 3
-	newButton.X = 0;
-	newButton.Y = 0;
-	newButton.Width = 120;
-	newButton.Height = 40;
-	newButton.State = {}
-	newButton.MouseDown = 
-		function (newButton, luaevent, args)
-			newButton.State["mouseDown"] = true
-			newButton.Pushed = true
-		end
-	newButton.MouseUp = 
-		function (button, luaevent, args)
-			if (button.State["mouseDown"]) then
-				button.Pushed = false;
-                if (self.selectedEvent~=nil) then 
-					self.selectedEvent(button, luaevent, args);
-				end
-			end
-		end
-	newButton.Text = buttonText;
-	newButton.Font = GetFont(shop_font_default);
-	newButton.TextColor = 0xEEEEEE
-	return newButton;
-end
-
 function ShopView:SelectItem(itemId, itemName, description, icon, price)
-	self.selectedIcon.texture = icon;
-	self.selectedIconText.text = price .. common_priceunit
-	self.detailviewFrame.text = description;
+	self.detailName.text = itemName;
+	self.detailPrice.text = price .. "G"
+	self.detailDesc.text = description;
 end
 
 function ShopView:SetUpButtonEvent(event)
@@ -508,13 +541,18 @@ function ShopView:SetCountDownButtonEvent(event)
     self.downCountButtonEvent = event;
 end
 
-function ShopView:OpenCommitWindow(itemName, count, price)
-	self.priceLabel.text = price .. common_priceunit;
-	self.countLabel.text = count;
-	self.itemNameLabel.text = itemName;
+function ShopView:OpenCommitWindow(icon, itemName, count, price)
+	self.commitIcon.texture = icon;
+	self.commitName.text = itemName;
+	self.commitPrice.text = price .. "G"
+	self.commitCount.text = count;
 	self.commitWindow:Show();
 end
 
 function ShopView:CloseCommitWindow()
 	self.commitWindow:Hide();
+end
+
+function ShopView:PrintPageNumbers(numPages, currentPage)
+	self.pageButton.Text = (currentPage + 1) .. "/" .. numPages;
 end

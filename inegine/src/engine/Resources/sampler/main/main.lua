@@ -477,7 +477,7 @@ function Main:OpenShop(shopName)
 end
 
 function Main:OpenShopList()
-	self:Disable();
+	self:Disable(true, false);
 	local shoplist = ShopListView:New("shoplistview", CurrentState());
 	self.shoplist = shoplist;
 	shoplist:Init();

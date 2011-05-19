@@ -67,6 +67,10 @@ function Character:Inc(key, value)
 	self:Set(key, self:Get(key) + value);
 end
 
+function Character:Dec(key, value)
+	self:Set(key, self:Get(key) - value);
+end
+
 function Character:Set(key, value)
 	if (self.status[key] == nil) then
 		error("invalid key!");

@@ -99,6 +99,9 @@ schedule_view_run = "Run"
 --shop view
 shop_view_commit_text = "BUY?"
 shop_view_buy_button = "Buy"
+shop_view_buy_failed_item_already_exists = "Item already exists in inventory"
+shop_view_buy_failed_not_enough_gold = "Gold is not enough"
+shop_view_buy_success = "Thank you, come again!"
 
 --shoplist view
 shoplist_tailor = "Tailor"

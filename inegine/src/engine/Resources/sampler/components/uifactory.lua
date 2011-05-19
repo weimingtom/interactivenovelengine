@@ -1,6 +1,41 @@
 -- UI factory for commonly used components
 UIFactory = {}
 
+function UIFactory.CreateButton(texture, rolloverTexture, event)
+	local newButton = Button()
+	newButton.Relative = true;
+	newButton.Texture = texture
+	local rollOverButton = Button()
+	rollOverButton.Relative = true;
+	rollOverButton.State = {}
+	rollOverButton.Texture = rolloverTexture;
+	rollOverButton.MouseDown = 
+		function (rollOverButton, luaevent, args)
+			rollOverButton.State["mouseDown"] = true
+		end
+	rollOverButton.MouseUp = 
+		function (rollOverButton, luaevent, args)
+			if (rollOverButton.State["mouseDown"]) then
+                if (event~=nil) then 
+					event(rollOverButton, luaevent, args);
+				end
+			end
+		end
+	newButton:AddComponent(rollOverButton);
+	rollOverButton:Hide();
+		
+	newButton.MouseLeave =
+		function (button, luaevent, args)
+			rollOverButton:Hide();
+		end
+	newButton.MouseEnter =
+		function (button, luaevent, args)
+			rollOverButton:Show();
+		end
+	return newButton;
+end
+
+
 function UIFactory.CreateBackButton(event)
 	local newButton = Button()
 	newButton.Relative = true;
@@ -62,7 +97,7 @@ function UIFactory.CreateRollOverButton(clickEvent, rollOnEvent, rollOffEvent)
 end
 
 
-function UIFactory.CreateItemButton(id, name, icon, price, count, effect, event, equipped)
+function UIFactory.CreateItemButton(id, name, icon, price, count, effect, event, equipped, rollOverEvent)
 	local frame = View();
 	--frame.BackgroundColor = 0x000000
 	--frame.Alpha = 155
@@ -82,12 +117,17 @@ function UIFactory.CreateItemButton(id, name, icon, price, count, effect, event,
 	pic.Y = 0
 	pic.MouseDoubleClick = 
 		function (button, luaevent, args)
-			Trace("dclick!");
 			if (event ~= nil) then
 				event(button, luaevent, id);
 			end
 		end
-
+	pic.MouseMove =
+		function (button, luaevent, args)
+			if (rollOverEvent ~= nil) then
+				rollOverEvent(button, luaevent, id);
+			end
+		end
+		
 	frame:AddComponent(pic);
 	
 	local star = Button();

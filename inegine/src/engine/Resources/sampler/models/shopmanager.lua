@@ -55,7 +55,6 @@ function ShopManager:ExtractShop(i)
     item.owner = self.shopcsv:GetString(i, "owner");
     item.greetings = self.shopcsv:GetString(i, "greetings");
     item.portrait = self.shopcsv:GetString(i, "portrait");
-    item.buymessage = self.shopcsv:GetString(i, "buymessage");
     return item;
 end
 

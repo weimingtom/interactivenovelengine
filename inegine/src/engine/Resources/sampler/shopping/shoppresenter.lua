@@ -100,8 +100,11 @@ function ShopPresenter:RegisterEvents()
 	
 	shopView:SetCountUpButtonEvent(
         function()
-            self.itemCount = self.itemCount + 1;
-            self:RefreshCount();
+			local item = self.itemManager:GetItem(self.selectedItem);
+			if (item.category ~= "dress") then
+				self.itemCount = self.itemCount + 1;
+				self:RefreshCount();
+            end
         end
     )
 
@@ -121,7 +124,12 @@ function ShopPresenter:Update()
     if (self.shopView ~= nil) then
         self.shopView:ClearItems();
         self:AddItems();
+        self:PrintPageNumbers();
     end
+end
+
+function ShopPresenter:PrintPageNumbers()
+	self.shopView:PrintPageNumbers(self.numPages, self.currentPage);
 end
 
 function ShopPresenter:UpdateNumPages()
@@ -133,8 +141,8 @@ function ShopPresenter:AddItems()
 	local itemList = shopManager:GetItems(self.shopName);
 	for i,listing in ipairs(itemList) do
 		local v = self.itemManager:GetItem(listing.id);
-	    if (self:ItemInPage(i, self.currentPage)) then
-            shopView:AddItem(v.id, v.text, v.price, v.icon);
+	    if (self:ItemInPage(i, self.currentPage)) then 
+            shopView:AddItem(v.id, v.text, v.icon, v.price, 1, v.shortdesc);
 	    end
     end
 end
@@ -195,13 +203,34 @@ end
 
 function ShopPresenter:RefreshCount()
 	local item = self.itemManager:GetItem(self.selectedItem);
-	self.shopView:OpenCommitWindow(item.text, self.itemCount, self.itemCount * item.price);
+	self.shopView:OpenCommitWindow(item.icon, item.text, self.itemCount, self.itemCount * item.price);
 end
 
 function ShopPresenter:BuyItem()
 	Trace("buying " .. self.selectedItem)
 	local item = self.itemManager:GetItem(self.selectedItem);
+	
+	--check if item is dress and already in inventory
+	if (item.category == "dress" and inventoryManager:ItemExists(item.id)) then
+		self.shopView:ClearDialogueText();
+		self.shopView:SetDialogueText(shop_view_buy_failed_item_already_exists);
+		self.shopView:CloseCommitWindow();
+		return;
+	end
+	
+	--check for gold
+	local totalPrice = self.itemCount * item.price;
+	if (character:Get("gold") < totalPrice) then
+		self.shopView:ClearDialogueText();
+		self.shopView:SetDialogueText(shop_view_buy_failed_not_enough_gold);
+		self.shopView:CloseCommitWindow();
+		return;
+	end
+	
+	--handle buying transaction
 	self.shopView:ClearDialogueText();
-	self.shopView:SetDialogueText(self.shopManager:GetShop(self.shopName).buymessage);
+	self.shopView:SetDialogueText(shop_view_buy_success);
+	character:Dec("gold", totalPrice)
 	self.inventoryManager:AddItem(item.id, item.category, self.itemCount);
+	self.shopView:CloseCommitWindow();
 end

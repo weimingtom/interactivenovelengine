@@ -6,7 +6,7 @@ function Flowview:New (name)
 	local o = {};
 	setmetatable(o, self)
 	self.__index = self;
-	
+	self.key = 0;
 	o.name = name;
 	
 	o:Init();
@@ -53,6 +53,10 @@ function Flowview:Hide()
 end
 
 function Flowview:Add(component)
+	if (component.name == nil) then
+		component.name = self.key;
+		self.key = self.key + 1;
+	end
 	table.insert(self.componentList, component.name)
 	self.frame:AddComponent(component)
 	self:RearrangeComponents()
