@@ -350,7 +350,7 @@ function Main:OpenScheduleExecution()
 end
 
 function Main:OpenCommunication()
-	self:Disable();
+	self:Disable(true, false);
 	local talkListView = TalkListView:New("talkListView", CurrentState());
 	self.talkListView = talkListView;
 	
@@ -415,7 +415,7 @@ function Main:GoddessTalk()
 end
 
 function Main:NormalTalk(pic, name, line)
-	self:Disable();
+	self:Disable(false, false);
 	local talkView = TalkView:New("talkView", CurrentState());
 	self.talkView = talkView;
 	talkView:Init();

@@ -1,7 +1,7 @@
 -- UI factory for commonly used components
 UIFactory = {}
 
-function UIFactory.CreateButton(texture, rolloverTexture, event)
+function UIFactory.CreateButton(texture, rolloverTexture, event, width, height)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Texture = texture
@@ -9,6 +9,7 @@ function UIFactory.CreateButton(texture, rolloverTexture, event)
 	rollOverButton.Relative = true;
 	rollOverButton.State = {}
 	rollOverButton.Texture = rolloverTexture;
+	rollOverButton.layer = 10;
 	rollOverButton.MouseDown = 
 		function (rollOverButton, luaevent, args)
 			rollOverButton.State["mouseDown"] = true
@@ -32,6 +33,17 @@ function UIFactory.CreateButton(texture, rolloverTexture, event)
 		function (button, luaevent, args)
 			rollOverButton:Show();
 		end
+		
+	if (width ~=nil) then
+		newButton.width = width;
+		rollOverButton.width = width;
+	end
+			
+	if (height ~=nil) then
+		newButton.height = height;
+		rollOverButton.height = height;
+	end
+		
 	return newButton;
 end
 

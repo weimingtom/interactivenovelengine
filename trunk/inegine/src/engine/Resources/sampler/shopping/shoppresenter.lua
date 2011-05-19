@@ -230,6 +230,7 @@ function ShopPresenter:BuyItem()
 	--handle buying transaction
 	self.shopView:ClearDialogueText();
 	self.shopView:SetDialogueText(shop_view_buy_success);
+	--TODO: for consumables (i.e. food), display effect message (i.e. "daughter's charisma increased!")
 	character:Dec("gold", totalPrice)
 	self.inventoryManager:AddItem(item.id, item.category, self.itemCount);
 	self.shopView:CloseCommitWindow();

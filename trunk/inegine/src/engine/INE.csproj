@@ -404,6 +404,7 @@
     <Content Include="Resources\sampler\resources\scg\mw.png" />
     <Content Include="Resources\sampler\resources\scg\ss.png" />
     <Content Include="Resources\sampler\resources\ui\back_button.png" />
+    <Content Include="Resources\sampler\resources\ui\dialogue_window.png" />
     <Content Include="Resources\sampler\resources\ui\inventory_detail.png" />
     <Content Include="Resources\sampler\resources\ui\inventory_detail_rollover.png" />
     <Content Include="Resources\sampler\resources\ui\inventory_star.png" />
@@ -417,8 +418,15 @@
     <Content Include="Resources\sampler\resources\ui\main_menu_store.png" />
     <Content Include="Resources\sampler\resources\ui\main_menu_system.png" />
     <Content Include="Resources\sampler\resources\ui\main_menu_talk.png" />
+    <Content Include="Resources\sampler\resources\ui\message_window.png" />
     <Content Include="Resources\sampler\resources\ui\state_menu.png" />
     <Content Include="Resources\sampler\resources\ui\state_window.png" />
+    <Content Include="Resources\sampler\resources\ui\store_detail.png" />
+    <Content Include="Resources\sampler\resources\ui\store_detail_rollover.png" />
+    <Content Include="Resources\sampler\resources\ui\store_list.png" />
+    <Content Include="Resources\sampler\resources\ui\store_menu.png" />
+    <Content Include="Resources\sampler\resources\ui\store_menu_rollover.png" />
+    <Content Include="Resources\sampler\resources\ui\talk_list.png" />
     <Content Include="Resources\sound\failure.mp3" />
     <Content Include="Resources\sound\opening.mp3" />
     <Content Include="Resources\test.ico" />

@@ -14,7 +14,7 @@ function DialogueWindow:Init()
 	self.frame = View()
 	self.frame.Name = name
 	self.frame.Width = 800;
-	self.frame.Height = 160;
+	self.frame.Height = 600;
 	self.frame.x = 0;
 	self.frame.y = 0;
 	self.frame.alpha = 155
@@ -27,26 +27,25 @@ function DialogueWindow:Init()
 			Trace("mouse leave: " .. target.Name)	
 		end
 	
-	parent:AddComponent(self.frame)
+	parent:AddComponent(self.frame);
 	
 	local background = SpriteBase();
 	background.Name = "background";
 	self.background = background;
-	background.Texture = "resources/windows/dialoguewin.png"
+	background.Texture = "resources/ui/dialogue_window.png"
 	background.Visible = true;
 	background.Layer = 0;
-	background.x = self.frame.Width - background.Width - 20;
 	self.frame:AddComponent(background)
 	
 	
 	local dialogueWin = TextWindow()
-	dialogueWin.Name = "dialogueWindow"
+	dialogueWin.Name = "MessageWindow"
 	dialogueWin.relative = true;
 	dialogueWin.Alpha = 0
-	dialogueWin.Width = 570
-	dialogueWin.Height = 93
-	dialogueWin.x = 15;
-	dialogueWin.y = 40;
+	dialogueWin.Width = 503
+	dialogueWin.Height = 98
+	dialogueWin.x = 217;
+	dialogueWin.y = 481;
 	dialogueWin.Layer = 5
 	dialogueWin.LineSpacing = 20
 	dialogueWin.Margin = 0
@@ -80,33 +79,32 @@ function DialogueWindow:Init()
 	local namewin = Button()
 	namewin.Name = "namewindow"	
 	namewin.Alpha = 255
-	namewin.Width = 150
-	namewin.Height = 40
+	namewin.Width = 137
+	namewin.Height = 33
 	namewin.Relative = true
-	namewin.x = 15;
-	namewin.y = -2;
+	namewin.x = 220;
+	namewin.y = 441;
 	namewin.Layer = 6
 	namewin.Visible = true
 	namewin.Font = GetFont(dialogue_font_name)
-	namewin.TextColor = 0xFFFFFF
-	namewin.Alignment = 0
+	namewin.TextColor = 0x000000
+	namewin.Alignment = 1
 	background:AddComponent(namewin)
-	self.namewin = namewin;	
+	self.namewin = namewin;		
 		
 	local portrait = SpriteBase();
 	portrait.Name = "portrait";
 	portrait.Visible = true;
 	portrait.relative = true;
 	portrait.Layer = 2;
+	portrait.x = 15;
+	portrait.y = 430;
 	self.portrait = portrait;
 	self.frame:AddComponent(portrait);		
 end
 
 function DialogueWindow:SetPortraitTexture(texture)
 	self.portrait.Texture = texture;
-	self.portrait.X = (self.background.x - self.portrait.Width) / 2;
-	self.portrait.y = self.frame.Height - self.background.Height - 20 + 
-					  ((self.background.Height - self.portrait.Height) / 2);
 	self.portrait:Show();
 end
 
