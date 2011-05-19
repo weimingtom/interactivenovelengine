@@ -56,80 +56,7 @@ function InventoryView:Init()
 	itemRollOver.Layer = 4;
 	itemRollOver:Hide();
 	self.frame:AddComponent(itemRollOver)
-	
-	--local background = ImageWindow()
-	--background.name = "backround"
-	--background.relative = true;
-	--background.width = self.frame.width - 10;
-	--background.height = self.frame.height - 150 - 50;
-	--background.x = 5;
-	--background.y = 50;
-    --background.WindowTexture = "resources/window.png"
-    --background.RectSize = 40
-    --background.BackgroundColor = 0xFFFFFF
-	--background.alpha = 255
-	--background.layer = 6;
-	--self.background = background;
-	--self.frame:AddComponent(background);
-	--
-	--local detailView = ImageWindow()
-	--detailView.name = "detailView"
-	--detailView.relative = true;
-	--detailView.width = self.frame.width - 10;
-	--detailView.height = 95;
-	--detailView.leftMargin = 90;
-	--detailView.margin = 12;
-	--detailView.font = GetFont("smalldefault");
-    --detailView.linespacing = 5
-	--detailView.x = 5;
-	--detailView.y = background.y + background.height + 5;
-    --detailView.WindowTexture = "resources/window.png"
-    --detailView.RectSize = 40
-    --detailView.backgroundColor = 0xFFFFFF
-	--detailView.alpha = 255
-	--detailView.layer = 6;
-	--self.detailView = detailView;
-	--self.frame:AddComponent(detailView);
-	--
-	--local equipButton = self:CreateButton("equipButton", inventory_equip,
-	--function (equipButton, luaevent, args)
-		--self:EquipItem();
-	--end)
-	--equipButton.Layer = 4;
-	--equipButton.X = detailView.width - equipButton.width - 10;
-	--equipButton.Y = 10;
-	--equipButton.enabled = false;
-	--self.equipButton = equipButton;
-	--
-	--self.detailView:AddComponent(equipButton);
-	--
-	--
-	--local pic = Button();
-	--pic.Name = "picture";
-	--pic.Visible = true;
-	--pic.Width = 48;
-	--pic.Height = 48;
-	--pic.X = 20;
-	--pic.Y = 10;
-	--pic.State = {}
-	--self.selectedIcon = pic;
-	--self.detailView:AddComponent(pic);
-	--
-	--local button = Button();
-	--button.Name = "text"
-	--button.Width = 68;
-	--button.Height = 21;
-	--button.X = 10;
-	--button.Y = 10 + pic.Height;
-	--button.font = GetFont("verysmall");
-	--button.TextColor = 0xFFFFFF
-	--button.Text = text;
-	--button.Alignment = 1;
-	--button.VerticalAlignment = 1;
-	--self.selectedIconText = button;
-	--self.detailView:AddComponent(button);
-	--
-	--
+
     local upButton = self:CreateUpButton(
     function()
         if (self.upButtonEvent ~= nil) then
@@ -155,18 +82,7 @@ function InventoryView:Init()
     downButton.width = 25
     downButton.height = 20
     self.frame:AddComponent(downButton);
-	--
-	--local tabView = Tabview:New("tabView", GetFont("default"));
-	--tabView.frame.relative = true
-	--tabView.frame.X = 0;
-	--tabView.frame.Y = 0;
-	--tabView.frame.Width = self.background.Width;
-	--tabView.frame.Height = self.background.Height;
-	--tabView.frame.layer = 10;
-	--self.tabView = tabView;
-	--self.frame:AddComponent(tabView.frame);
-	--tabView:Show();
-		--
+
 	local dressView = Flowview:New("dressview")
 	dressView.frame.relative = true;
 	dressView.frame.width = 350;
@@ -455,8 +371,6 @@ function InventoryView:SelectItem(itemId, itemName, description, icon, price, co
 	self.detailName.text = itemName;
 	self.detailPrice.text = price .. "G"
 	self.detailDesc.text = description;
-	--self.selectedIconText.text = price .. common_priceunit
-	--self.detailView.text = itemName .. "x" .. count .. "\n" .. description;
 end
 
 function InventoryView:GetActiveTab()
