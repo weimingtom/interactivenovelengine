@@ -14,8 +14,8 @@ function ShopListView:Init()
 	
 	self.frame.Width = GetWidth();
 	self.frame.Height = GetHeight();
-	self.frame.x = 0;--(GetWidth() - self.frame.Width) / 2;
-	self.frame.y = 0;--(GetHeight() - self.frame.Height) / 2;
+	self.frame.x = 0;
+	self.frame.y = 0;
 	self.frame.alpha = 155
 	self.frame.layer = 3
 	

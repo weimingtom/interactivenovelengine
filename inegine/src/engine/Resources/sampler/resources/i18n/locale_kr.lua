@@ -15,12 +15,6 @@ main_state_gold =   "Gold  "
 main_state_stress = "Stress  "
 main_state_mana =   "Mana  "
 
---talk list
-talklist_musume_button = "Daughter"
-talklist_musume_event_button = "Daughter (Event)"
-talklist_goddess_button = "Goddess"
-talklist_goddess_event_button = "Goddess (Event)"
-
 --charater making state
 makingstate_previous_button =  "Previous"
 makingstate_next_button = "Ok"

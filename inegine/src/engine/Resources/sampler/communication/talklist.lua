@@ -15,8 +15,8 @@ function TalkListView:Init()
 	
 	self.frame.Width = GetWidth();--450
 	self.frame.Height = GetHeight();--240
-	self.frame.x = 0;--(GetWidth() - self.frame.Width) / 2;
-	self.frame.y = 0;--(GetHeight() - self.frame.Height) / 2;
+	self.frame.x = 0;
+	self.frame.y = 0;
 	self.frame.alpha = 155
 	self.frame.layer = 3
 	
@@ -29,122 +29,76 @@ function TalkListView:Init()
 	
 	parent:AddComponent(self.frame)
 	
-	local viewframe = View();
-	viewframe.Name = "viewframe"
-	viewframe.Width = 450;
-	viewframe.Height = 240;
-	viewframe.Relative = true;
-	viewframe.x = (self.frame.Width - viewframe.Width) / 2;
-	viewframe.y = (self.frame.Height - viewframe.Height) / 2;
-	viewframe.layer = 3;
-	viewframe.visible = true;
-	viewframe.enabled = true;
-	self.viewframe = viewframe;
-	self.frame:AddComponent(viewframe);
+	local talkListMenu = SpriteBase();
+	self.talkListMenu = talkListMenu;
+	talkListMenu.Texture = "resources/ui/talk_list.png"
+	talkListMenu.Visible = true;
+	talkListMenu.Layer = 3;
+	self.frame:AddComponent(talkListMenu)
 	
-	local talkimage = SpriteBase();
-	talkimage.Relative = true;
-	talkimage.Name = "villageiamge";
-	talkimage.Texture = "resources/images/musume.png";
-	talkimage.Visible = true;
-	talkimage.X = 0;
-	talkimage.y = 0;
-	talkimage.Layer = 2;
-	self.talkimage = talkimage;
-	viewframe:AddComponent(talkimage);
+	local talkList = Flowview:New("talkList")
+	talkList.frame.relative = true;
+	talkList.frame.width = 229;
+	talkList.frame.height = 80;
+	talkList.frame.x = 320;
+	talkList.frame.y = 251;
+	talkList.frame.layer = 4;
+	talkList.spacing = 20;
+	talkList.padding = 2;
+	self.talkList = talkList;
+	self.frame:AddComponent(self.talkList.frame);
+	self.talkList:Show();
 	
-	self.musumeButton = self:CreateButton("musumeButton", talklist_musume_button, 
-										 viewframe.width - 125, 5+45*0, 4)
-	self.viewframe:AddComponent(self.musumeButton);
+	self.musumeButton = self:CreateButton("musumeButton", "resources/icon/talk01a.png", "resources/icon/talk01b.png");
+	self.goddessButton = self:CreateButton("goddessButton", "resources/icon/talk02a.png", "resources/icon/talk02b.png", false);
 	
+	talkList:Add(self.musumeButton);
+	talkList:Add(self.goddessButton);
 	
-	self.goddessButton = self:CreateButton("goddessButton", talklist_goddess_button, 
-										 viewframe.width - 125, 5+45*1, 4)
-	self.viewframe:AddComponent(self.goddessButton);
-	
-	self.closeButton = self:CreateButton("closeButton", common_close, 
-										 viewframe.width - 125, 5+45*2, 4)
-	self.closeButton.MouseUp = 
+
+	self.backButton = UIFactory.CreateBackButton(
 		function (button, luaevent, args)
-			if (button.State["mouseDown"]) then
-				button.Pushed = false
-				Trace("button click!")
 				self:Dispose();
-			end
 		end
-	self.viewframe:AddComponent(self.closeButton);
-	
-	local dialogueWin = DialogueWindow:New("dialogueWin", self.frame);
-	self.dialogueWin = dialogueWin;
-	dialogueWin:Init();
-	dialogueWin.frame.relative = true;
-	dialogueWin.frame.x = 0;
-	dialogueWin.frame.y = self.frame.height - dialogueWin.frame.height;
-	dialogueWin:Hide();
+	)
+	self.backButton.X = 491
+	self.backButton.Y = 259
+	self.backButton.Layer = 10
+	self.frame:AddComponent(self.backButton);
 	
 end
 
 function TalkListView:ToggleMusumeEvent()
-	self.musumeButton.Text = talklist_musume_event_button;
+	local eventButton = Button();
+	eventButton.texture = "resources/icon/talk_event.png";
+	eventButton.layer = 10;
+	eventButton.enabled = false;
+	self.musumeButton:AddComponent(eventButton);
 end
 
 function TalkListView:ToggleGoddessEvent()
-	self.goddessButton.Text = talklist_goddess_event_button;
+	local eventButton = Button();
+	eventButton.texture = "resources/icon/talk_event.png";
+	eventButton.layer = 10;
+	eventButton.enabled = false;
+	self.goddessButton:AddComponent(eventButton);
 end
 
 function TalkListView:SetTalkSelectedEvent(event)
 	self.talkSelectedEvent = event;
 end
 
-function TalkListView:CreateButtonInternal(buttonName, buttonText, event)
-	local newButton = Button()
-	newButton.Relative = true;
-	newButton.Name = buttonName;
-	newButton.Texture = "resources/button/button.png"	
-	newButton.Layer = 3
-	newButton.X = 0;
-	newButton.Y = 0;
-	newButton.Width = 100;
-	newButton.Height = 40;
-	newButton.State = {}
-	newButton.MouseDown = 
-		function (newButton, luaevent, args)
-			newButton.State["mouseDown"] = true
-			newButton.Pushed = true
-		end
-	newButton.MouseUp = 
-		function (button, luaevent, args)
-			if (button.State["mouseDown"]) then
-				button.Pushed = false;
-                if (event~=nil) then 
-					event(button, luaevent, args);
-				end
-			end
-		end
-	newButton.Text = buttonText;
-	newButton.Font = GetFont("menu"); --menuFont
-	newButton.TextColor = 0xEEEEEE
-	return newButton;
-end
-
-
-
-function TalkListView:CreateButton(buttonName, text, x, y, layer)
-	local button = self:CreateButtonInternal(buttonName, text, 		
+function TalkListView:CreateButton(name, texture, rolloverTexture, enabled)
+	local button = UIFactory.CreateButton(texture, rolloverTexture,	
         function (button, luaevent, args)
 			if (self.talkSelectedEvent ~= nil) then
-				self.talkSelectedEvent(button, luaevent, args);
-			end	
-		end)
-	button.X = x;
-	button.Y = y;
+				if (enabled == nil or enabled == true) then
+					self.talkSelectedEvent(button, luaevent, name);
+				end
+			end
+		end, 60, 72)
 	return button;	
 end
 
 function TalkListView:SetGreeting(portrait, name, text)	
-	self.dialogueWin:Show();
-	self.dialogueWin:SetPortraitTexture(portrait);
-	self.dialogueWin:SetDialogueName(name);
-	self.dialogueWin:ClearDialogueText();
-	self.dialogueWin:SetDialogueText(text);	
 end
