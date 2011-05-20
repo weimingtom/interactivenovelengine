@@ -102,6 +102,12 @@ function InventoryPresenter:RegisterEvents()
 			self:SellItem();
 		end
     )
+    
+    inventoryView:SetPageUpdateEvent(
+		function()
+			self:PrintPageNumbers();
+		end
+	)
 end
 
 function InventoryPresenter:Update()

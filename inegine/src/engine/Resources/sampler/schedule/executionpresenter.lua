@@ -16,7 +16,6 @@ function ExecutionPresenter:Init(main, executionView, scheduleManager)
 	self.scheduleManager = scheduleManager;
 
 	main:Disable();
-	main:ToggleMainMenu(false);
 	executionView:Show();
 
     self:RegisterEvents();
@@ -98,7 +97,8 @@ function ExecutionPresenter:RunSchedule()
 							      sound,
 							      function()
 									self.main:InvalidateStatus();
-							      end);
+							      end,
+							      self.currentScheduleIndex);
         self.currentScheduleIndex = self.currentScheduleIndex + 1;
     end 
 end

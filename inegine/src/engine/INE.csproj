@@ -405,6 +405,7 @@
     <Content Include="Resources\sampler\resources\scg\ss.png" />
     <Content Include="Resources\sampler\resources\ui\back_button.png" />
     <Content Include="Resources\sampler\resources\ui\dialogue_window.png" />
+    <Content Include="Resources\sampler\resources\ui\execution_menu.png" />
     <Content Include="Resources\sampler\resources\ui\inventory_detail.png" />
     <Content Include="Resources\sampler\resources\ui\inventory_detail_rollover.png" />
     <Content Include="Resources\sampler\resources\ui\inventory_star.png" />
@@ -419,6 +420,13 @@
     <Content Include="Resources\sampler\resources\ui\main_menu_system.png" />
     <Content Include="Resources\sampler\resources\ui\main_menu_talk.png" />
     <Content Include="Resources\sampler\resources\ui\message_window.png" />
+    <Content Include="Resources\sampler\resources\ui\schedule_delete_rollover.png" />
+    <Content Include="Resources\sampler\resources\ui\schedule_education_rollover.png" />
+    <Content Include="Resources\sampler\resources\ui\schedule_ok_rollover.png" />
+    <Content Include="Resources\sampler\resources\ui\schedule_repeat_rollover.png" />
+    <Content Include="Resources\sampler\resources\ui\schedule_select_menu.png" />
+    <Content Include="Resources\sampler\resources\ui\schedule_vacation_rollover.png" />
+    <Content Include="Resources\sampler\resources\ui\schedule_work_rollover.png" />
     <Content Include="Resources\sampler\resources\ui\state_menu.png" />
     <Content Include="Resources\sampler\resources\ui\state_window.png" />
     <Content Include="Resources\sampler\resources\ui\store_detail.png" />

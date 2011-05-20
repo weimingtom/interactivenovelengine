@@ -32,6 +32,7 @@ function ScheduleManager:ExtractItem(i)
     item.price = self.csv:GetString(i, "price");
     item.icon = self.csv:GetString(i, "icon");
     item.desc = self.csv:GetString(i, "desc");
+    item.shortdesc = self.csv:GetString(i, "shortdesc");
     item.ability = self.csv:GetString(i, "ability");
     item.successani = self.csv:GetString(i, "successani");
     item.failureani = self.csv:GetString(i, "failureani");
@@ -79,6 +80,7 @@ function ScheduleManager:GetEffect(id, csv)
 			return item;
 		end
 	end
+	assert(false, "id \"" .. id .. "\" not found in csv");
 end
 
 function ScheduleManager:SetSelectedSchedules(selectedSchedules)

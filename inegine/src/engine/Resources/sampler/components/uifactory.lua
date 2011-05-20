@@ -9,7 +9,7 @@ function UIFactory.CreateButton(texture, rolloverTexture, event, width, height)
 	rollOverButton.Relative = true;
 	rollOverButton.State = {}
 	rollOverButton.Texture = rolloverTexture;
-	rollOverButton.layer = 10;
+	rollOverButton.layer = 5;
 	rollOverButton.MouseDown = 
 		function (rollOverButton, luaevent, args)
 			rollOverButton.State["mouseDown"] = true

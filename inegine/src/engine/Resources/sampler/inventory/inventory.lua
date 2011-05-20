@@ -101,6 +101,7 @@ function InventoryView:Init()
 			self.itemView:Hide();
 			self.dressView:Show();
 			self.activeTab = inventory_dress;
+			self.pageUpdateEvent();
 		end,
 		function ()
 			self.dressRollOver:Show();
@@ -137,6 +138,7 @@ function InventoryView:Init()
 			self.itemView:Show();
 			self.dressView:Hide();
 			self.activeTab = inventory_item;
+			self.pageUpdateEvent();
 		end,
 		function ()
 			self.itemRollOver:Show();
@@ -346,6 +348,10 @@ end
 
 function InventoryView:AddFurnitureItem(buttonName, buttonText, icon)
 	--self.furnitureView:Add(UIFactory.CreateItemButton(buttonName, buttonText, icon, price, count, effect, selectedEvent));
+end
+
+function InventoryView:SetPageUpdateEvent(event)
+	self.pageUpdateEvent = event;
 end
 
 function InventoryView:SetSellEvent(event)

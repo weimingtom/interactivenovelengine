@@ -1,5 +1,6 @@
 id,gold,sta,stress
-edu1,0,0,0.05
-edu2,0,0.3,0.05
-job1,2,0,0.1
-job2,7,0.3,0.2
+homesc,0,0,0.05
+homeex,0,0.3,0.05
+housework,2,0,0.1
+orchard,7,0.3,0.2
+athome,7,0.3,0.2
