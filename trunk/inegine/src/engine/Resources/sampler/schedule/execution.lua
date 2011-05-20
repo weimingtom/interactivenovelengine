@@ -25,11 +25,8 @@ function ExecutionView:InitComponents()
 	self.frame.alpha = 155
 	self.frame.layer = 10
 
-	self.frame.Visible = false
-	self.frame.Enabled = false
-	self.frame.MouseLeave =
-		function(target, event, args)
-		end
+	self.frame.Visible = true
+	self.frame.Enabled = true
 
 	parent:AddComponent(self.frame)
 
@@ -41,15 +38,22 @@ function ExecutionView:InitComponents()
 	dialogueWin.frame.y = self.frame.height - dialogueWin.frame.height;
 	dialogueWin:Hide();
 
+	local statusMenu = SpriteBase();
+	self.statusMenu = statusMenu;
+	statusMenu.Texture = "resources/ui/execution_menu.png"
+	statusMenu.Visible = true;
+	statusMenu.Layer = 3;
+	self.frame:AddComponent(statusMenu)	
+
 	local statusWindow = TextWindow()
 	statusWindow.name = "statusWindow"
 	statusWindow.relative = true;
-	statusWindow.width = 480;
-	statusWindow.height = 100;
-	statusWindow.x = (self.frame.width - statusWindow.width) / 2 + 20;
-	statusWindow.y = dialogueWin.frame.y - statusWindow.height - 5;
+	statusWindow.width = 182
+	statusWindow.height = 151
+	statusWindow.x = 575
+	statusWindow.y = 200
 	statusWindow.alpha = 155
-	statusWindow.layer = 6;
+	statusWindow.layer = 10;
 	statusWindow.BackgroundColor = 0xFFFFFF
 	statusWindow.TextColor = 0x000000
 	statusWindow.font = GetFont("state");
@@ -60,12 +64,12 @@ function ExecutionView:InitComponents()
 	local animatedWindow = TextWindow()
 	animatedWindow.name = "animatedwindow"
 	animatedWindow.relative = true;
-	animatedWindow.width = 330;
-	animatedWindow.height = 250;
-	animatedWindow.x = (self.frame.width - animatedWindow.width) / 2 + 20;
-	animatedWindow.y = statusWindow.y - animatedWindow.height - 5;
-	animatedWindow.alpha = 155
-	animatedWindow.layer = 6;
+	animatedWindow.width = 320;
+	animatedWindow.height = 240;
+	animatedWindow.x = 215
+	animatedWindow.y = 150
+	animatedWindow.alpha = 0
+	animatedWindow.layer = 10;
 	self.frame:AddComponent(animatedWindow);
 	self.animatedWindow = animatedWindow;
 	self:ShowAnimationView(false);
@@ -99,8 +103,10 @@ function ExecutionView:SetAnimation(animation)
                     self.animationOverEvent(animation, luaevent, args);
                 end
 		end
+	animation:Show();
 	self.animatedWindow:RemoveComponent("currentanimation");
 	self.animatedWindow:AddComponent(animation);
+	animation:FadeIn(100);
 	animation:Begin(200, 0);
 end
 
@@ -108,17 +114,45 @@ function ExecutionView:SetAnimationOverEvent(event)
 	self.animationOverEvent = event;
 end
 
-function ExecutionView:ShowAnimationView(show)
+function ExecutionView:ShowAnimationView(show, immediate)
 	self.animatedWindow.Enabled = show;
-	self.animatedWindow.Visible = show;
+	
+	if (immediate == true or immediate == nil) then
+		if (show == false) then
+			self.animatedWindow:Hide();
+		else
+			self.animatedWindow:Show();
+		end
+		return;
+	end
+	
+	if (show == false) then
+		self.animatedWindow:FadeOut(100);
+	else
+		self.animatedWindow:FadeIn(100);
+	end
 end
 
-function ExecutionView:ShowStatus(show)
+function ExecutionView:ShowStatus(show, immediate)
 	self.statusWindow.Enabled = show;
+	
+	if (immediate == true or immediate == nil) then
+		if (show == false) then
+			self.statusMenu:Hide();
+			self.statusWindow:Hide();
+		else
+			self.statusMenu:Show();
+			self.statusWindow:Show();
+		end
+		return;
+	end
+	
 	if (show == false) then
-		self.statusWindow.Visible = false;
+		self.statusMenu:FadeOut(200);
+		self.statusWindow:FadeOut(100);
 	else
-		self.statusWindow:FadeIn(500);--, true);
+		self.statusMenu:FadeIn(200);
+		self.statusWindow:FadeIn(100);
 	end
 end
 
@@ -130,9 +164,15 @@ function ExecutionView:SetExecutionOverEvent(event)
 	self.executionOverEvent = event;
 end
 
-function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, baseAnimation, resultText, afterText, afterPortrait, sound, result)
-	self:ShowAnimationView(false);
-	self:ShowStatus(false);
+function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, baseAnimation, resultText, afterText, afterPortrait, sound, result, order)
+	if (order == 1) then
+		self:ShowAnimationView(false);
+		self:ShowStatus(false);
+	else
+		self:ShowAnimationView(false, false);
+		self:ShowStatus(false, false);
+	end
+	
 	self.dialogueWin:Hide();
 
 	self:Show();
@@ -146,7 +186,7 @@ function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, baseAni
 	self.dialogueWin:SetDialogueOverEvent(
 		function ()
 			self.dialogueWin:Hide();
-			self:ShowAnimationView(true);
+			self:ShowAnimationView(true, false);
 
 	        local tempAnimation = AnimatedSprite();
 	        tempAnimation.Name = "scheduleAnimation"        
@@ -160,12 +200,12 @@ function ExecutionView:ExecuteSchedule(name, beforeText, beforePortrait, baseAni
 						result();
 					end
 					GetSound(sound):Play();
-                    self:ShowStatus(true);
+                    self:ShowStatus(true, false);
 			        self:SetStatusText(resultText);
 			        self.dialogueWin:SetDialogueOverEvent(
 				        function ()
-					        self:ShowAnimationView(false);
-					        self:ShowStatus(false);
+					        self:ShowAnimationView(false, false);
+					        self:ShowStatus(false, false);
 					        self.dialogueWin:Hide();
 
 					        if (self.executionOverEvent ~= nil) then

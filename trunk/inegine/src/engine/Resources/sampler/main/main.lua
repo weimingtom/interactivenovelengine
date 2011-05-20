@@ -320,7 +320,7 @@ end
 
 --mainmenu
 function Main:OpenSchedule()
-	self:Disable();
+	self:Disable(true, false);
 	local schedule = ScheduleView:New("scheduleView", self.gamestate);
 	schedule:Init();
 	
@@ -336,17 +336,21 @@ function Main:OpenSchedule()
 end
 
 function Main:OpenScheduleExecution()
+	Trace("opening execution!");
 	local execution = ExecutionView:New("executionView", CurrentState());
 	execution:Init();
+	Trace("opening execution2!");
 
 	self.executionPresenter = ExecutionPresenter:New();
 	self.executionPresenter:SetClosingEvent(
 		function()
-			Trace("disposing execution presenter!");
             self:PostScheduleTrigger();
 		end
 	)
+	Trace("opening execution3!");
 	self.executionPresenter:Init(self, execution, scheduleManager);
+	execution:Show();
+	Trace("opening execution4!");
 end
 
 function Main:OpenCommunication()
@@ -415,6 +419,7 @@ function Main:GoddessTalk()
 end
 
 function Main:NormalTalk(pic, name, line)
+	self:Enable();
 	self:Disable(false, false);
 	local talkView = TalkView:New("talkView", CurrentState());
 	self.talkView = talkView;

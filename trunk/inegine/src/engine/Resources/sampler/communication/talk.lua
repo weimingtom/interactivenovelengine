@@ -18,7 +18,7 @@ function TalkView:Init()
 	self.frame.x = 0;--(GetWidth() - self.frame.Width) / 2;
 	self.frame.y = 0;--(GetHeight() - self.frame.Height) / 2;
 	self.frame.alpha = 155
-	self.frame.layer = 3
+	self.frame.layer = 10
 	
 	self.frame.Visible = false
 	self.frame.Enabled = false

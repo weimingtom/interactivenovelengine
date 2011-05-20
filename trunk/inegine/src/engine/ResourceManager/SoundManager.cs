@@ -64,7 +64,6 @@ namespace INovelEngine.ResourceManager
             }
             set
             {
-                Console.WriteLine("setting volume to " + value);
                 _volume = value;
                 if (this.loaded) SoundPlayer.SetVolume(this.FileName, _volume);
 
@@ -210,7 +209,6 @@ namespace INovelEngine.ResourceManager
         
         public void Fade(int fadeDuration)
         {
-            Console.WriteLine("fading out all sounds in " + fadeDuration + "ms");
             foreach (INESound sound in this.resources)
             {
                 sound.Fadeout(fadeDuration);

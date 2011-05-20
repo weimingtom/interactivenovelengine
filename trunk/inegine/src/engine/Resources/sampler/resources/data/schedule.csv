@@ -1,5 +1,6 @@
-category,id,name,price,condition,ability,icon,successani,failureani,desc
-edu,edu1,Study with Father,5,,will,resources/icon.png,resources/images/success_ani.gif,resources/images/failure_ani.gif,"Study with father in living."
-edu,edu2,Work Out with Father,5,,will,resources/icon.png,resources/images/success_ani.gif,resources/images/failure_ani.gif,"Work out with fater at park."
-job,job1,Chores,0,,will,resources/icon.png,resources/images/success_ani.gif,resources/images/failure_ani.gif,"Do the chores."
-job,job2,Orchard,0,,sta,resources/icon.png,resources/images/success_ani.gif,resources/images/failure_ani.gif,"Work at orchard."
+category,id,name,desc,shortdesc,price,condition,ability,icon,successani,failureani
+edu,homesc,ˆê‚É•×‹­,•ƒ‚Æˆê‚É–{‚ğ“Ç‚ñ‚¾‚èAZ”‚È‚Ç‚Ì‚¨•×‹­‚ğ‚·‚éB,TEST,5,,will,resources/icon/sc01.png,resources/images/success_ani.gif,resources/images/failure_ani.gif
+edu,homeex,ˆê‚É‰^“®,•ƒ‚Æˆê‚É‘Ì‘€‚âƒWƒ‡ƒMƒ“ƒO‚È‚Ç‚ÌŒy‚¢‰^“®‚ğ‚·‚éB,TEST,5,,will,resources/icon/sc03.png,resources/images/success_ani.gif,resources/images/failure_ani.gif
+job,housework,‰Æ–è“`‚¢,‰Æ‚Å‰Æ–‚ğè“`‚¤B,TEST,-5,,will,resources/icon/sc12.png,resources/images/success_ani.gif,resources/images/failure_ani.gif
+job,orchard,‰Ê÷‰€,‰Ê÷‰€‚Ì”¨d–‚ğ‚·‚éB,TEST,-14,,sta,resources/icon/sc13.png,resources/images/success_ani.gif,resources/images/failure_ani.gif
+vac,athome,‰Æ‚Å‹x‚Ş,•ƒ‚Æˆê‚É‰Æ‚Å‚Ì‚ñ‚Ñ‚è‰ß‚²‚·B,TEST,0,,,resources/icon/sc21.png,resources/images/success_ani.gif,resources/images/success_ani.gif

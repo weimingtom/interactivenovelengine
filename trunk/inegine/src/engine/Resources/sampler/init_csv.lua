@@ -1,8 +1,8 @@
-LoadCsv("scheduledata", "resources\\data\\schedule.csv", "ks_c_5601-1987");
-LoadCsv("schedulesuccess", "resources\\data\\schedule_success.csv", "ks_c_5601-1987");
-LoadCsv("schedulefailure", "resources\\data\\schedule_failure.csv", "ks_c_5601-1987");
+LoadCsv("scheduledata", "resources\\data\\schedule.csv", "Shift-JIS");
+LoadCsv("schedulesuccess", "resources\\data\\schedule_success.csv", "Shift-JIS");
+LoadCsv("schedulefailure", "resources\\data\\schedule_failure.csv", "Shift-JIS");
 LoadCsv("itemdata", "resources\\data\\item.csv", "Shift-JIS");
-LoadCsv("shopdata", "resources\\data\\shopdata.csv", "ks_c_5601-1987");
-LoadCsv("shoplist", "resources\\data\\shoplist.csv", "ks_c_5601-1987");
+LoadCsv("shopdata", "resources\\data\\shopdata.csv", "Shift-JIS");
+LoadCsv("shoplist", "resources\\data\\shoplist.csv", "Shift-JIS");
 LoadCsv("eventlist", "resources\\data\\eventlist.csv", "ks_c_5601-1987");
-LoadCsv("talklist", "resources\\data\\talklist.csv", "ks_c_5601-1987");
+LoadCsv("talklist", "resources\\data\\talklist.csv", "Shift-JIS");

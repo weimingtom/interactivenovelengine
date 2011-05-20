@@ -33,7 +33,6 @@ namespace INovelEngine.Effector.Audio
         {
             string volumeString = ((int)Math.Min(100, Math.Max(0, newVolumePercentage)) * 10).ToString();
             string commandString = "setaudio  \"" + file + "\" volume to " + volumeString;
-            Console.WriteLine(commandString);
             mciSendString(commandString, null, 0, IntPtr.Zero);
         }
 

@@ -5,7 +5,7 @@ function SchedulePresenter:New()
 	setmetatable(o, self)
 	self.__index = self
 
-	self.pageItems = 8;
+	self.pageItems = 10;
 
 	self.numSchedules = 3; --number of schedules per month
 
@@ -60,11 +60,15 @@ function SchedulePresenter:RegisterEvents()
 
 	scheduleView:SetSelectedEvent(
 		function (button, luaevent, args)
-			Trace("select event called from " .. args);
             self:SelectSchedule(args);
 		end
 	)
 
+	scheduleView:SetDetailEvent(
+		function (button, luaevent, args)
+            self:SetDetail(args);
+		end
+	)
 
 	scheduleView:SetSelectedFocusEvent(
 		function (button, luaevent, args)
@@ -86,6 +90,13 @@ function SchedulePresenter:RegisterEvents()
 		end
 	)
 
+	scheduleView:SetDeleteallEvent(
+		function (button, luaevent, args)
+            self:DeselectSchedules();
+            self.focusedScheduleID = nil;
+		end
+	)
+
     scheduleView:SetExecutingEvent(
 		function (button, luaevent, args)
 			scheduleView:Dispose();
@@ -97,11 +108,11 @@ function SchedulePresenter:RegisterEvents()
     scheduleView:SetUpButtonEvent(
         function()
             local activeTab = scheduleView:GetActiveTab();
-            if (activeTab == "education") then
+            if (activeTab == schedule_view_education) then
                 if (self:SetEduPage(-1)) then self:Update(); end
-            elseif (activeTab == "work") then
+            elseif (activeTab == schedule_view_work) then
                 if (self:SetJobPage(-1)) then self:Update(); end
-            elseif (activeTab == "vacation") then
+            elseif (activeTab == shcedule_view_vacation) then
                 if (self:SetVacPage(-1)) then self:Update(); end
             end
         end
@@ -110,15 +121,22 @@ function SchedulePresenter:RegisterEvents()
     scheduleView:SetDownButtonEvent(
         function()
             local activeTab = scheduleView:GetActiveTab();
-            if (activeTab == "education") then
+            Trace("active tab: " .. activeTab);
+            if (activeTab == schedule_view_education) then
                 if (self:SetEduPage(1)) then self:Update(); end
-            elseif (activeTab == "work") then
+            elseif (activeTab == schedule_view_work) then
                 if (self:SetJobPage(1)) then self:Update(); end
-            elseif (activeTab == "vacation") then
+            elseif (activeTab == shcedule_view_vacation) then
                 if (self:SetVacPage(1)) then self:Update(); end
             end
         end
     )
+    
+    scheduleView:SetPageUpdateEvent(
+		function()
+			self:PrintPageNumbers();
+		end
+	)
 end
 
 function SchedulePresenter:Update()
@@ -128,7 +146,13 @@ function SchedulePresenter:Update()
         self.scheduleView:ClearWorkItems();
         self.scheduleView:ClearVacationItems();
         self:AddItems();
+        self:PrintPageNumbers();
     end
+end
+
+function SchedulePresenter:PrintPageNumbers()
+	self.scheduleView:PrintPageNumbers(self.numEduPages, self.currentEduPage,
+		self.numJobPages, self.currentJobPage, self.numVacPages, self.currentVacPage);
 end
 
 function SchedulePresenter:UpdateNumPages()
@@ -142,28 +166,29 @@ function SchedulePresenter:AddItems()
 	local scheduleList = scheduleManager:GetItems("edu");
 	for i,v in ipairs(scheduleList) do
 	    if (self:ItemInPage(i, self.currentEduPage)) then
-            scheduleView:AddEducationItem(v.id, v.text, v.price .. common_priceunit, v.icon);
+            scheduleView:AddEducationItem(v.id, v.text, v.price, v.icon, v.shortdesc);
 	    end
     end
 	local scheduleList = scheduleManager:GetItems("job");
 	for i,v in ipairs(scheduleList) do
 	    if (self:ItemInPage(i, self.currentJobPage)) then
-		    scheduleView:AddWorkItem(v.id, v.text, v.price .. common_priceunit, v.icon);
+		    scheduleView:AddWorkItem(v.id, v.text, v.price, v.icon, v.shortdesc);
         end
 	end
 
 	local scheduleList = scheduleManager:GetItems("vac");
 	for i,v in ipairs(scheduleList) do
 	    if (self:ItemInPage(i, self.currentVacPage)) then
-		    scheduleView:AddVacationItem(v.id, v.text, v.price .. common_priceunit, v.icon);
+		    scheduleView:AddVacationItem(v.id, v.text, v.price, v.icon, v.shortdesc);
         end
 	end
 end
 
 function SchedulePresenter:SelectSchedule(scheduleID)
 	if (self.selectedScheduleCount < self.numSchedules) then
+		local schedule = self.scheduleManager:GetItem(scheduleID);
 		local key = self:GetKey();
-		if (self.scheduleView ~= nil) then self.scheduleView:AddSelectedItem(key, "resources/icon.png"); end;
+		if (self.scheduleView ~= nil) then self.scheduleView:AddSelectedItem(key, schedule.icon); end;
 		table.insert(self.selectedSchedules, scheduleID);
 		self.scheduleKeyMap[key] = scheduleID;
 		self.selectedScheduleCount = self.selectedScheduleCount + 1;
@@ -172,8 +197,13 @@ function SchedulePresenter:SelectSchedule(scheduleID)
             self.scheduleView:EnableRun(true);
         end
         
-        self.scheduleView:SetDetailText(self.scheduleManager:GetItem(scheduleID).desc);
+        self.scheduleView:SetDetailText(schedule.desc);
 	end
+end
+
+function SchedulePresenter:SetDetail(scheduleID)
+	local schedule = self.scheduleManager:GetItem(scheduleID);
+    self.scheduleView:SetDetailText(schedule.desc);
 end
 
 function SchedulePresenter:DeselectSchedule(scheduleID)
@@ -188,6 +218,18 @@ function SchedulePresenter:DeselectSchedule(scheduleID)
         if (self.selectedScheduleCount < self.numSchedules) then 
             self.scheduleView:EnableRun(false);
         end
+        self.scheduleView:SetDetailText("");
+	end
+end
+
+
+function SchedulePresenter:DeselectSchedules()
+	if (self.selectedScheduleCount > 0) then
+        self.scheduleView:RemoveSelectedItems();
+		self.selectedSchedules = {};
+		self.scheduleKeyMap = {};
+		self.selectedScheduleCount = 0;
+        self.scheduleView:EnableRun(false);
         self.scheduleView:SetDetailText("");
 	end
 end
