@@ -53,9 +53,9 @@ namespace INovelEngine.Effector
         }
 
 
-        private AnimatedSprite cursorSprite;
+        private AbstractGUIComponent cursorSprite;
 
-        public AnimatedSprite Cursor
+        public AbstractGUIComponent Cursor
         {
             get
             {
@@ -63,7 +63,13 @@ namespace INovelEngine.Effector
             }
             set
             {
+                if (this.cursorSprite != null)
+                {
+                    this.RemoveComponent(this.cursorSprite.Name);
+                }
                 cursorSprite = value;
+                cursorSprite.Relative = false;
+                this.AddComponent(cursorSprite);
             }
         }
 
@@ -313,9 +319,15 @@ namespace INovelEngine.Effector
                     if (cursorSprite.RealY + cursorSprite.Height <= this.Height)
                     {
                         cursorSprite.Y += this.RealY + topMargin;
-                        cursorSprite.Draw();
+                        cursorSprite.Show();
                     }
                 }
+            }
+            else
+            {
+                if (cursorSprite != null)
+                    cursorSprite.Hide();
+             
             }
             this.sprite.End();
         }
@@ -381,11 +393,6 @@ namespace INovelEngine.Effector
         {
             base.Initialize(graphicsDeviceManager);
             this.line = new Line(graphicsDeviceManager.Direct3D9.Device);
-            if (cursorSprite != null)
-            {
-                this.cursorSprite.Initialize(graphicsDeviceManager);
-                this.cursorSprite.Begin(100, 0, 2, true);
-            }
         }
 
 
@@ -395,7 +402,6 @@ namespace INovelEngine.Effector
         public override void LoadContent()
         {
             this.line.OnResetDevice();
-            if (cursorSprite != null) cursorSprite.LoadContent();
             base.LoadContent();
         }
 
@@ -405,16 +411,11 @@ namespace INovelEngine.Effector
         public override void UnloadContent()
         {
             this.line.OnLostDevice();
-            if (cursorSprite != null) cursorSprite.UnloadContent();
             base.UnloadContent();
         }
 
         public override void Dispose()
         {
-            if (Cursor != null)
-            {
-                Cursor.Dispose();
-            }
             line.Dispose();
             base.Dispose();
         }

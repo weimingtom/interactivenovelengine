@@ -10,7 +10,14 @@ namespace INovelEngine.Effector
 {
     class View : AbstractGUIComponent
     {
-        private Line line;
+        protected Line line
+        {
+            get
+            {
+                return Supervisor.GetInstance().GetLineBatch();
+            }
+        }
+
         Vector2[] lines;
         protected Color _backgroundColor;
         private bool backgroundTrasnparent;
@@ -65,7 +72,6 @@ namespace INovelEngine.Effector
         public override void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
             base.Initialize(graphicsDeviceManager);
-            this.line = new Line(graphicsDeviceManager.Direct3D9.Device);
         }
 
 
@@ -74,7 +80,6 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void LoadContent()
         {
-            this.line.OnResetDevice();
             base.LoadContent();
         }
 
@@ -83,13 +88,11 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void UnloadContent()
         {
-            this.line.OnLostDevice();
             base.UnloadContent();
         }
 
         public override void Dispose()
         {
-            line.Dispose();
             base.Dispose();
         }
 

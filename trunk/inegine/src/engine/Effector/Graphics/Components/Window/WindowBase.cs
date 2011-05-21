@@ -24,7 +24,14 @@ namespace INovelEngine.Effector
             }
         }
 
-        protected Sprite sprite;
+        protected Sprite sprite
+        {
+            get
+            {
+                return Supervisor.GetInstance().GetSpriteBatch();
+            }
+        }
+
 
         public WindowBase()
         {
@@ -40,7 +47,6 @@ namespace INovelEngine.Effector
         {
             base.Initialize(graphicsDeviceManager);
             manager = graphicsDeviceManager;
-            sprite = new Sprite(manager.Direct3D9.Device);
         }
 
         /// <summary>
@@ -49,7 +55,6 @@ namespace INovelEngine.Effector
         public override void LoadContent()
         {
             base.LoadContent();
-            sprite.OnResetDevice();
         }
 
         /// <summary>
@@ -58,7 +63,6 @@ namespace INovelEngine.Effector
         public override void UnloadContent()
         {
             base.UnloadContent();
-            sprite.OnLostDevice();
         }
 
 
@@ -67,8 +71,6 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void Dispose()
         {
-            sprite.Dispose();
-            //GC.SuppressFinalize(this);
             base.Dispose();
         }
 

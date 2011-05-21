@@ -58,9 +58,7 @@ namespace INovelEngine.Effector
             if (inTransition || fadedOut)
             {
                 line.Width = (float)Math.Max(0.000001, thichkness); // FIXME;
-                line.Begin();
                 line.Draw(linePath, Color.FromArgb((int)(progress * 255), color));
-                line.End();
             }
         }
 
