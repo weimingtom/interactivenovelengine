@@ -48,11 +48,13 @@ namespace INovelEngine.ResourceManager
 
         public void LoadTextureFile(string fileName)
         {
+            Stream fs = null;
             try
             {
+                fs = ArchiveManager.GetStream(fileName);
                 Bitmap bitmap;
-                bitmap = new Bitmap(ArchiveManager.GetStream(fileName));
-               
+                bitmap = new Bitmap(fs);
+
 
                 this.Width = bitmap.Width;
                 this.Height = bitmap.Height;
@@ -72,7 +74,7 @@ namespace INovelEngine.ResourceManager
                     {
                         scaledBitmap = new Bitmap(newWidth, newHeight);
 
-                        using (Graphics g = Graphics.FromImage((Image) scaledBitmap))
+                        using (Graphics g = Graphics.FromImage((Image)scaledBitmap))
                             g.DrawImage(bitmap, 0, 0, bitmap.Width, bitmap.Height);
                         bitmap.Dispose();
                     }
@@ -85,6 +87,14 @@ namespace INovelEngine.ResourceManager
             catch (Exception)
             {
                 throw new TextureLoadError(fileName);
+            }
+            finally
+            {
+                if (fs != null)
+                {
+                    fs.Close();
+                    fs.Dispose();
+                }
             }
         }
 
@@ -121,11 +131,8 @@ namespace INovelEngine.ResourceManager
 
         public override void LoadContent()
         {
-            if (this.scaledBitmap == null) LoadTextureFile(fileName);
-
-            //Console.WriteLine("loading : " + this.fileName);
-
-            //this.Texture = Texture.FromFile(device, this.fileName);
+            if (this.scaledBitmap == null)
+                LoadTextureFile(fileName);
             if (this.scaledBitmap != null)
             {
                 if (this.Texture != null) this.Texture.Dispose();
@@ -136,7 +143,6 @@ namespace INovelEngine.ResourceManager
                     scaledBitmap.Save(ms, ImageFormat.Png);
                     byte[] bitmapData = ms.ToArray();
                     this.Texture = Texture.FromMemory(device, bitmapData);
-                    Console.WriteLine("...loaded " + this.fileName);
                 }
                 
                 scaledBitmap.Dispose();
@@ -159,7 +165,6 @@ namespace INovelEngine.ResourceManager
 
         public override void Dispose()
         {
-            Console.WriteLine("disposing texture " + this.Name);
             Texture.Dispose();
         }
 

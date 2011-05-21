@@ -1,4 +1,5 @@
 LoadScript "components\\luaview.lua"
+LoadScript "components\\uifactory.lua"
 
 DialogueWindow = LuaView:New();
 
@@ -100,7 +101,34 @@ function DialogueWindow:Init()
 	portrait.x = 15;
 	portrait.y = 430;
 	self.portrait = portrait;
-	self.frame:AddComponent(portrait);		
+	self.frame:AddComponent(portrait);
+	
+		
+	local logRollover = SpriteBase();
+	logRollover.Texture = "resources/ui/dialogue_window_log_rollover.png"
+	logRollover.Visible = true;
+	logRollover.Layer = 4
+	background:AddComponent(logRollover)
+	logRollover:Hide();
+	
+	local logButton = UIFactory.CreateRollOverButton(
+		function()
+			Trace("opening log state!");
+			OpenState("log", "log/logstate.lua");
+		end,
+		function ()
+			logRollover:Show();
+		end,
+		function ()
+			logRollover:Hide();
+		end);
+	logButton.X =  750
+	logButton.Y = 528
+	logButton.Width = 37
+	logButton.Height = 20
+	logButton.Layer = 5
+	background:AddComponent(logButton);
+			
 end
 
 function DialogueWindow:SetPortraitTexture(texture)

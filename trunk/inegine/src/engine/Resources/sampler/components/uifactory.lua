@@ -47,6 +47,66 @@ function UIFactory.CreateButton(texture, rolloverTexture, event, width, height)
 	return newButton;
 end
 
+function UIFactory.CreateConfirmWindow(text, okEvent, closeEvent)
+	local view = View();
+	view.BackgroundColor = 0x000000
+	view.Alpha = 155;
+	view.Width = GetWidth();
+	view.Height = GetHeight();
+	local frame = SpriteBase();
+	frame.Texture = "resources/ui/confirm_window.png"
+	view:AddComponent(frame);
+	
+	
+	local textButton = Button();
+	textButton.Width = 265;
+	textButton.Height = 85;
+	textButton.X = 275
+	textButton.Y = 226
+	textButton.font = GetFont("small");
+	textButton.textColor = 0x000000
+	textButton.Alignment = 1;
+	textButton.VerticalAlignment = 1;
+	textButton.Layer = 10
+	textButton:Show();
+	textButton.text = text;
+	view:AddComponent(textButton);
+		
+	local okRollover = SpriteBase();
+	okRollover.Texture = "resources/ui/confirm_window_rollover.png"
+	okRollover.Visible = true;
+	okRollover.Layer = 4;
+	view:AddComponent(okRollover)
+	okRollover:Hide();
+	
+	local okButton = UIFactory.CreateRollOverButton(
+		function()
+			okEvent();
+		end,
+		function ()
+			okRollover:Show();
+		end,
+		function ()
+			okRollover:Hide();
+		end);
+	okButton.X =  449
+	okButton.Y = 322
+	okButton.Width = 51
+	okButton.Height = 30
+	okButton.Layer = 5
+	view:AddComponent(okButton);	
+		
+	local backButton = UIFactory.CreateBackButton(
+		function (button, luaevent, args)
+				closeEvent();
+		end
+	)
+	backButton.X = 540
+	backButton.Y = 235
+	backButton.Layer = 10
+	view:AddComponent(backButton);
+	return view;
+end
 
 function UIFactory.CreateBackButton(event)
 	local newButton = Button()

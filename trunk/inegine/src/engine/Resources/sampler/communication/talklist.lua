@@ -17,11 +17,12 @@ function TalkListView:Init()
 	self.frame.Height = GetHeight();--240
 	self.frame.x = 0;
 	self.frame.y = 0;
+	self.frame.BackgroundColor = 0x000000
 	self.frame.alpha = 155
 	self.frame.layer = 3
 	
-	self.frame.Visible = false
-	self.frame.Enabled = false
+	self.frame.Visible = true
+	self.frame.Enabled = true
 	self.frame.MouseLeave =
 		function(target, event, args)
 			Trace("mouse leave: " .. target.Name)	

@@ -42,7 +42,6 @@ function TestTemp:testLog()
     logMan:SetDate(2, 11, 3);
     logMan:SetLine("The day started")
     logMan:SetName("Anze", "pic1.png");
-    Trace("setting line!");
     logMan:SetLine("LOL")
 
 	assertEquals(8, logMan:GetSize());

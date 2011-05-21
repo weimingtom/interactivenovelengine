@@ -13,8 +13,7 @@ LoadScript "status\\status.lua"
 LoadScript "status\\statuspresenter.lua"
 LoadScript "communication\\talklist.lua"
 LoadScript "communication\\talk.lua"
-LoadScript "save\\saveview.lua"
-LoadScript "save\\savepresenter.lua"
+LoadScript "system\\system.lua"
 
 --font
 --calendar date font
@@ -336,10 +335,8 @@ function Main:OpenSchedule()
 end
 
 function Main:OpenScheduleExecution()
-	Trace("opening execution!");
 	local execution = ExecutionView:New("executionView", CurrentState());
 	execution:Init();
-	Trace("opening execution2!");
 
 	self.executionPresenter = ExecutionPresenter:New();
 	self.executionPresenter:SetClosingEvent(
@@ -347,10 +344,12 @@ function Main:OpenScheduleExecution()
             self:PostScheduleTrigger();
 		end
 	)
-	Trace("opening execution3!");
 	self.executionPresenter:Init(self, execution, scheduleManager);
 	execution:Show();
-	Trace("opening execution4!");
+	
+	--reset talk event toggle
+	self.musumeEventAvailable = true;
+	self.goddessEventAvailable = true;
 end
 
 function Main:OpenCommunication()
@@ -364,7 +363,7 @@ function Main:OpenCommunication()
 	self.goddessevents = eventManager:GetGoddessEvents();
 	
 	if (table.getn(self.musumeevents) > 0 and self.musumeEventAvailable) then
-		talkListView:ToggleMusumeEvent();	
+		talkListView:ToggleMusumeEvent();
 	end
 	
 	if (table.getn(self.goddessevents) > 0 and self.goddessEventAvailable) then
@@ -373,29 +372,29 @@ function Main:OpenCommunication()
 
 	talkListView:SetTalkSelectedEvent(
 		function(button, luaevent, args)
-	
-			if (button.Name == "musumeButton") then
-				Trace("musume button!");		
-				if (table.getn(self.musumeevents) > 0 and self.musumeEventAvailable) then			
+			if (args == "musumeButton") then
+				if (table.getn(self.musumeevents) > 0 and self.musumeEventAvailable) then
 					self.eventList = self.musumeevents
+					self.talkListView:Dispose();
 					self:ProcessEvents();
 					self.musumeEventAvailable = false;
-				else	
+				else		
+					self.talkListView:Dispose();
 					self:MusumeTalk();
 				end
-			else
-				Trace("goddess button!");		
+			elseif (args == "goddessButton") then	
 				if (table.getn(self.goddessevents) > 0 and self.goddessEventAvailable) then
 					self.eventList = self.goddessevents
+					self.talkListView:Dispose();
 					self:ProcessEvents();
 					self.goddessEventAvailable = false;
 				else
+					self.talkListView:Dispose();
 					self:GoddessTalk();
 				end
 			end
 			self.musumeevents = nil;
 			self.goddessevents = nil;
-			talkListView:Hide();
 		end
 	)
 	
@@ -429,22 +428,26 @@ function Main:NormalTalk(pic, name, line)
 			talkView:Advance()
 		end
 	)
+	Trace("outputting log");
 	
 	talkView:SetTalk(pic, name, line);
+	logManager:SetDate();
+    logManager:SetName(name, pic);
+    logManager:SetLine(line);
+	
 	talkView:SetTalkOverEvent(
 		function()
 			talkView:Dispose();
-			self.talkListView:Dispose();
 			self:SetKeyDownEvent(nil);
 		end
 	)
 	
 	talkView:SetClosingEvent( 
 		function()
-			self.talkListView:Dispose();
 			self:Enable();
 		end
 	);
+	Trace("showing talk view");
 	talkView:Show();
 end
 
@@ -504,30 +507,38 @@ function Main:OpenShopList()
 	shoplist:Show();
 end
 
-function Main:OpenGoddess()
-end
-
 function Main:OpenSystem()
-	local saveView = SaveView:New("saveView", CurrentState());
-	saveView:Init();
-	
-	self:Disable();
-
-	
-	self.savePresenter = SavePresenter:New();
-	self.savePresenter:Init(saveView, saveManager);
-	self.savePresenter:SetClosingEvent(
+	self:Disable(true, false);
+	local shoplist = SystemView:New("SystemView", CurrentState());
+	self.shoplist = shoplist;
+	shoplist:Init();
+	shoplist:SetClosingEvent( 
 		function()
-			Trace("disposing save presenter!");
 			self:Enable();
-			self.savePresenter = nil;
 		end
-	)
-	self.savePresenter:SetTitleEvent(
-		function()
-			Trace("going back to title!");
-		end
-	)
+	);
+	shoplist:Show();
+
+	--local saveView = SaveView:New("saveView", CurrentState());
+	--saveView:Init();
+	--
+	--self:Disable();
+--
+	--
+	--self.savePresenter = SavePresenter:New();
+	--self.savePresenter:Init(saveView, saveManager);
+	--self.savePresenter:SetClosingEvent(
+		--function()
+			--Trace("disposing save presenter!");
+			--self:Enable();
+			--self.savePresenter = nil;
+		--end
+	--)
+	--self.savePresenter:SetTitleEvent(
+		--function()
+			--Trace("going back to title!");
+		--end
+	--)
 end
 
 function Main:OpenInventory()
@@ -551,9 +562,6 @@ end
 --datewindow
 function Main:InvalidateDate()
 	self:SetDate(calendar:GetYear(), calendar:GetMonth(), calendar:GetDay());
-	--reset talk event toggle
-	self.musumeEventAvailable = true;
-	self.goddessEventAvailable = true;
 end
 	
 --statuswindow
@@ -566,10 +574,12 @@ end
 function Main:PostScheduleTrigger()
 	self.executionPresenter = nil;
 	self.eventList = eventManager:GetPostEvents();
+	Trace("got list of events");
 	self:ProcessEvents();
 end
 
 function Main:ProcessEvents(first)
+	Trace("processing events");
 	local delay = 0;
 	if (first == nil) then
 		FadeOut(1000)
@@ -587,6 +597,7 @@ function Main:ProcessEvents(first)
 		)
 	else
 		FadeIn(1000)
+		Trace("no more event to process - returning to main ");
 		self:Enable();
 	end
 end

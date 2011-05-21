@@ -37,6 +37,9 @@ GetFont("verylarge").LineSpacing = 30;
 
 ----------------------------------------------------------------------------------
 LoadFont("default", "C:\\Windows\\Fonts\\msgothic.ttc", 17);
+GetFont("default").TextEffect = 1;
+
+LoadFont("logtext", "C:\\Windows\\Fonts\\msgothic.ttc", 17);
 
 LoadFont("menu", "C:\\Windows\\Fonts\\msgothic.ttc", 13);
 GetFont("menu").TextEffect = 1
