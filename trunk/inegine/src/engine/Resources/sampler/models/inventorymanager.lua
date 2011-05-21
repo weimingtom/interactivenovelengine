@@ -113,14 +113,15 @@ function InventoryManager:ItemEquipped(id)
 end
 
 function InventoryManager:EquipItem(id)
-	
 	if (self.categoryMap[id] == "dress") then
 		Trace("Equipping " .. id);
-		character:SetDress(id);
-        for i,v in ipairs(self:GetItems("dress")) do
-            if (v ~= id) then self:UnequipItem(v); end
-        end
-		self.equippedItems[id] = true;
+		if (character:GetDress() ~= id) then
+			character:SetDress(id);
+			for i,v in ipairs(self:GetItems("dress")) do
+				if (v ~= id) then self:UnequipItem(v); end
+			end
+			self.equippedItems[id] = true;
+		end
     end
 end
 
