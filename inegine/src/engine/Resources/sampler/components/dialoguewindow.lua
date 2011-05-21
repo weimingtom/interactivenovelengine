@@ -67,6 +67,7 @@ function DialogueWindow:Init()
 	dialogueWin.Cursor.Cols = 4;
 	dialogueWin.Cursor.Layer = 10;
 	dialogueWin.Cursor.Visible = true
+	dialogueWin.Cursor:Begin(100, 0, 2, true);
 	dialogueWin.PrintOver = 
 		function (window, luaevent, args)
                 if (self.dialogueOverEvent~=nil) then 

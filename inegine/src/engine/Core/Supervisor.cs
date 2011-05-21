@@ -37,6 +37,9 @@ namespace INovelEngine
 
         private static Queue<LuaEventHandler> defferedCallList = new Queue<LuaEventHandler>();
 
+        private Sprite sharedSprite;
+        private Line sharedLine;
+
         public Device Device
         {
             get { return GraphicsDeviceManager.Direct3D9.Device; }
@@ -102,6 +105,16 @@ namespace INovelEngine
 #endif
         }
 
+        public Sprite GetSpriteBatch()
+        {
+            return this.sharedSprite;
+        }
+
+        public Line GetLineBatch()
+        {
+            return this.sharedLine;
+        }
+
         protected override void OnExiting(EventArgs e)
         {
             base.OnExiting(e);
@@ -118,6 +131,9 @@ namespace INovelEngine
         {
             Console.WriteLine("disposing supervisor!");
             base.Dispose(disposing);
+
+            sharedSprite.Dispose();
+            sharedLine.Dispose();
             Console.WriteLine("supervisor disposed!");
         }
   
@@ -240,15 +256,8 @@ namespace INovelEngine
                 this.activeState.Draw();
             }
 
-
-            //GameState[] stateList = stateStack.ToArray();
-            //for (int i = 0; i < stateList.Count; i++)
-            //{
-            //    stateList[i].Draw();
-            //}
-
-
             fadingTransition.Draw();
+
             Device.EndScene();
         }
 
@@ -260,16 +269,25 @@ namespace INovelEngine
         protected override void Initialize()
         {
             base.Initialize();
+
+            sharedSprite = new Sprite(this.Device);
+            sharedLine = new Line(this.Device);
         }
 
         protected override void LoadContent()
         {
             base.LoadContent();
+
+            sharedSprite.OnResetDevice();
+            sharedLine.OnResetDevice();
         }
 
         protected override void UnloadContent()
         {
             base.UnloadContent();
+
+            sharedSprite.OnLostDevice();
+            sharedLine.OnLostDevice();
         }
 
         public static void CallLater(LuaEventHandler luaEvent)
