@@ -62,9 +62,10 @@ inventory_item = "Item"
 inventory_furniture = "Furniture"
 
 --logstate
-logstate_year = "year "
-logstate_month = " month "
-logstate_week = " week "
+logstate_year = "”N–Ú "
+logstate_month = "Œ "
+logstate_week = "T–Ú"
+
 
 --saveview
 saveview_load_button = "Load"

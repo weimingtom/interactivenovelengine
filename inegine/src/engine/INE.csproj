@@ -258,6 +258,7 @@
     <None Include="Resources\sampler\status\statuspresenter.lua" />
     <None Include="Resources\sampler\status\status.lua" />
     <None Include="Resources\sampler\condition\conditionmanager.lua" />
+    <None Include="Resources\sampler\system\system.lua" />
     <None Include="Resources\start.lua" />
     <None Include="Resources\test\characterTest.lua" />
     <None Include="Resources\test\inventoryTest.lua" />
@@ -404,7 +405,10 @@
     <Content Include="Resources\sampler\resources\scg\mw.png" />
     <Content Include="Resources\sampler\resources\scg\ss.png" />
     <Content Include="Resources\sampler\resources\ui\back_button.png" />
+    <Content Include="Resources\sampler\resources\ui\confirm_window.png" />
+    <Content Include="Resources\sampler\resources\ui\confirm_window_rollover.png" />
     <Content Include="Resources\sampler\resources\ui\dialogue_window.png" />
+    <Content Include="Resources\sampler\resources\ui\dialogue_window_log_rollover.png" />
     <Content Include="Resources\sampler\resources\ui\execution_menu.png" />
     <Content Include="Resources\sampler\resources\ui\inventory_detail.png" />
     <Content Include="Resources\sampler\resources\ui\inventory_detail_rollover.png" />
@@ -412,6 +416,7 @@
     <Content Include="Resources\sampler\resources\ui\inventory_window.png" />
     <Content Include="Resources\sampler\resources\ui\inventory_window_dress_rollover.png" />
     <Content Include="Resources\sampler\resources\ui\inventory_window_item_rollover.png" />
+    <Content Include="Resources\sampler\resources\ui\log_window.png" />
     <Content Include="Resources\sampler\resources\ui\main_menu.png" />
     <Content Include="Resources\sampler\resources\ui\main_menu_item.png" />
     <Content Include="Resources\sampler\resources\ui\main_menu_schedule.png" />
@@ -427,6 +432,7 @@
     <Content Include="Resources\sampler\resources\ui\schedule_select_menu.png" />
     <Content Include="Resources\sampler\resources\ui\schedule_vacation_rollover.png" />
     <Content Include="Resources\sampler\resources\ui\schedule_work_rollover.png" />
+    <Content Include="Resources\sampler\resources\ui\scrollbar.png" />
     <Content Include="Resources\sampler\resources\ui\state_menu.png" />
     <Content Include="Resources\sampler\resources\ui\state_window.png" />
     <Content Include="Resources\sampler\resources\ui\store_detail.png" />
@@ -434,6 +440,11 @@
     <Content Include="Resources\sampler\resources\ui\store_list.png" />
     <Content Include="Resources\sampler\resources\ui\store_menu.png" />
     <Content Include="Resources\sampler\resources\ui\store_menu_rollover.png" />
+    <Content Include="Resources\sampler\resources\ui\system_load_rollover.png" />
+    <Content Include="Resources\sampler\resources\ui\system_menu.png" />
+    <Content Include="Resources\sampler\resources\ui\system_option_rollover.png" />
+    <Content Include="Resources\sampler\resources\ui\system_save_rollover.png" />
+    <Content Include="Resources\sampler\resources\ui\system_title_rollover.png" />
     <Content Include="Resources\sampler\resources\ui\talk_list.png" />
     <Content Include="Resources\sound\failure.mp3" />
     <Content Include="Resources\sound\opening.mp3" />

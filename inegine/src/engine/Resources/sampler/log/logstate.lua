@@ -13,8 +13,9 @@ function LogState:New()
 	self.gamestate = CurrentState();
 
 	self.numItems = 0;
-	self.itemsPerPage = 12;
+	self.itemsPerPage = 14;
 	self.currentLine = 0;
+	self.scrollUnit = 6;
 	self:Bottom();
 	
     self:InitComponents()
@@ -34,32 +35,29 @@ function LogState:InitComponents()
 	view.name = "view";
 	view.x = 0;
 	view.y = 0;
+	view.BackgroundColor = 0x000000
+	view.Alpha = 155
 	view.Width = GetWidth();
 	view.Height = GetHeight();
 	AddComponent(view);
 	view:Show();
 	view.Layer = 10;
 	
-	local background = ImageWindow()
+	local background = SpriteBase()
 	background.name = "backround"
 	background.relative = true;
-	background.width = self.view.width - 100;
-	background.height = self.view.height - 150;
-	background.x = 50;
-	background.y = 50;
-    background.WindowTexture = "resources/parchmentwindow.png"
-    background.RectSize = 40
-    background.BackgroundColor = 0xFFFFFF
-	background.alpha = 255
+	background.width = self.view.width
+	background.height = self.view.height
+	background.texture = "resources/ui/log_window.png"
 	background.layer = 4;
 	view:AddComponent(background);
 
 	local logList = Flowview:New("logList")
 	logList.frame.relative = true;
-	logList.frame.width = background.width - 10;
-	logList.frame.height = background.height - 10;
-	logList.frame.x = 5;
-	logList.frame.y = 5;
+	logList.frame.width = 610
+	logList.frame.height = 510
+	logList.frame.x = 90
+	logList.frame.y = 30
 	logList.frame.layer = 10;
 	logList.spacing = 5;
 	logList.padding = 10;
@@ -75,8 +73,8 @@ function LogState:InitComponents()
         end
     );
     self.upButton = upButton;
-    upButton.x = background.width - 60;
-    upButton.y = 30;
+    upButton.x = 703
+    upButton.y = 25
     background:AddComponent(upButton);
 
     local downButton = self:CreateDownButton(
@@ -85,25 +83,24 @@ function LogState:InitComponents()
         end
     );
     self.downButton = downButton;
-    downButton.x = background.width - 60;
-    downButton.y = background.height - 30;
+    downButton.x = 707
+    downButton.y = 516
     background:AddComponent(downButton);
 
 	local box = self:CreateBox();
 	self.box = box;
 	background:AddComponent(box);
 	
-	self.closeButton = self:CreateButton(common_close, 
+	self.backButton = UIFactory.CreateBackButton(
 		function (button, luaevent, args)
-			if (button.State["mouseDown"]) then
-				button.Pushed = false
-				Trace("button click!")
-				self:Dispose();
-			end
-		end)
-    self.closeButton.x = background.x + background.width - 110;
-    self.closeButton.y = background.y + background.height + 5
-	view:AddComponent(self.closeButton);
+			self:Dispose();
+		end
+	)
+	self.backButton.X = 730
+	self.backButton.Y = 454
+	self.backButton.Layer = 10
+	background:AddComponent(self.backButton);
+
 end
 
 function LogState:Dispose()
@@ -119,23 +116,24 @@ function LogState:SetBoxPosition()
 	end
 	
 	
-	self.box.x = self.upButton.x;
-	self.box.y = self.upButton.y + self.upButton.height + 20 +
-		(self.downButton.y - (self.upButton.y + self.upButton.height) - self.downButton.height - 40) * percentage;
+	self.box.x = 707;
+	self.box.y = ((self.downButton.y - self.upButton.y - self.upButton.height - 20) - self.box.height) * percentage + self.upButton.y + self.upButton.height + 10;
 end
 
 function LogState:Up()
-	if (self.currentLine > 0) then
-		self.currentLine = self.currentLine - 1;
-		self:AddItems();
+	self.currentLine = self.currentLine - self.scrollUnit;
+	if (self.currentLine < 0) then
+		self.currentLine = 0;
     end
+	self:AddItems();
 end
 
 function LogState:Down()
-	if (self.currentLine < logManager:GetSize() - self.itemsPerPage) then
-		self.currentLine = self.currentLine + 1;
-		self:AddItems();
+	self.currentLine = self.currentLine + self.scrollUnit;
+	if (self.currentLine > logManager:GetSize() - self.itemsPerPage) then
+		self.currentLine = logManager:GetSize() - self.itemsPerPage
 	end
+	self:AddItems();
 end
 
 function LogState:Bottom()
@@ -168,12 +166,12 @@ function LogState:SetBackground(filename)
 end
 
 function LogState:AddDate(year, month, week)
-	self.logList:Add(self:CreateDateItem(self.numItems, 400, 30, year, month, week));
+	self.logList:Add(self:CreateDateItem(self.numItems, 590, 30, year, month, week));
 	self.numItems = self.numItems + 1;
 end
 
 function LogState:AddLine(line, name, face)	
-	self.logList:Add(self:CreateLineItem(self.numItems, 400, 30, name, face, line));
+	self.logList:Add(self:CreateLineItem(self.numItems, 590, 30, name, face, line));
 	self.numItems = self.numItems + 1;
 end
 
@@ -209,12 +207,12 @@ function LogState:CreateBox()
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = "boxButton";
-	newButton.Texture = "resources/box.png"
+	newButton.Texture = "resources/ui/scrollbar.png"
 	newButton.Layer = 15
 	newButton.X = 0;
 	newButton.Y = 0;
-	newButton.Width = 18;
-	newButton.Height = 12;
+	newButton.Width = 16;
+	newButton.Height = 203;
 	return newButton;
 end
 
@@ -222,12 +220,11 @@ function LogState:CreateUpButton(event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = "upButton";
-	newButton.Texture = "resources/up.png"
 	newButton.Layer = 15
 	newButton.X = 0;
 	newButton.Y = 0;
-	newButton.Width = 18;
-	newButton.Height = 12;
+	newButton.Width = 20;
+	newButton.Height = 20;
 	newButton.State = {}
 	newButton.MouseDown =
 		function (newButton, luaevent, args)
@@ -251,12 +248,11 @@ function LogState:CreateDownButton(event)
 	local newButton = Button()
 	newButton.Relative = true;
 	newButton.Name = "downButotn";
-	newButton.Texture = "resources/down.png"
 	newButton.Layer = 15
 	newButton.X = 0;
 	newButton.Y = 0;
-	newButton.Width = 18;
-	newButton.Height = 12;
+	newButton.Width = 20;
+	newButton.Height = 20;
 	newButton.State = {}
 	newButton.MouseDown =
 		function (newButton, luaevent, args)
@@ -324,8 +320,8 @@ function LogState:CreateDateItem(id, width, height, year, month, week)
 	button.X = 0;
 	button.Y = 0;
 	button.font = GetFont("default");
-	button.TextColor = 0xFF0000
-	button.Text = "<" .. logstate_year .. year .. logstate_month .. month .. logstate_week .. week .. ">";
+	button.TextColor = 0xFFFFFF
+	button.Text = year.. logstate_year .. month .. logstate_month .. week .. logstate_week;
 	button.Alignment = 0;
 	button.VerticalAlignment = 1;
 	frame:AddComponent(button);

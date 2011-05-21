@@ -9,6 +9,10 @@ function LogManager:New()
     self.numLines = 0;
     self.currentLine = {};
     self.state = -1;
+    
+    self.prevYear = nil;
+    self.prevMonth = nil;
+    self.prevWeek = nil;
 
 	return o
 end
@@ -27,12 +31,34 @@ function LogManager:pushLine()
 end
 
 function LogManager:SetDate(year, month, week)
-    self.currentLine.date = {};
-    self.currentLine.date.year = year;
-    self.currentLine.date.month = month;
-    self.currentLine.date.week = week;
-    self.state = 0;
-    self:pushLine();
+	if (year == nil) then
+		year = calendar:GetYear();
+	end
+
+	if (month == nil) then
+		month = calendar:GetMonth();
+	end
+
+	if (week == nil) then
+		week = calendar:GetWeek();
+	end
+
+	--if previous date is nil or new date is different from previous date, push new date
+	--otherwise do nothing
+
+	if ((self.prevYear == nil or self.prevMonth == nil or self.prevWeek == nil) or
+		(self.prevYear ~= year or self.prevMonth ~= month or self.prevWeek ~= week)) then
+		self.currentLine.date = {};
+		self.currentLine.date.year = year;
+		self.currentLine.date.month = month;
+		self.currentLine.date.week = week;
+		self.state = 0;
+		self:pushLine();
+		
+		self.prevYear = year;
+		self.prevMonth = month;
+		self.prevWeek = week;
+    end
 end
 
 function LogManager:SetName(name, face)
