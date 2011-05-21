@@ -16,12 +16,24 @@ namespace INovelEngine.Effector
     {
         private Sprite sprite;
         private INETexture bodyTexture;
-        private INETexture dressTexture;
+        private SpriteBase oldDressSprite;
+        private SpriteBase dressSprite;
+
+        private bool firstTime;
+        
         private Rectangle sourceArea;
         private float relativePosition;
 
+        public float FadeTime
+        {
+            get;
+            set;
+        }
+
         public Tachie()
         {
+            firstTime = true;
+            FadeTime = 300;
             sourceArea = new Rectangle();
             BackgroundWidth = Supervisor.GetInstance().GetWidth();
         }
@@ -57,26 +69,34 @@ namespace INovelEngine.Effector
         {
             get
             {
-                if (this.dressTexture != null)
-                {
-                    return this.dressTexture.TextureFile;
-                }
-                else
-                {
-                    return null;
-                }
+                return dressSprite.Texture;
             }
             set
             {
-                if (this.dressTexture != null) resources.Remove(dressTexture);
-                dressTexture = new INETexture(value);
-                resources.Add(dressTexture);
-                if (this.loaded)
+                if (!firstTime)
                 {
-                    dressTexture.Initialize(manager);
-                    dressTexture.LoadContent();
+                    if (oldDressSprite != null)
+                        RemoveComponent(oldDressSprite.Name);
+
+                    oldDressSprite = dressSprite;
+                    oldDressSprite.Layer = 5;
+                    oldDressSprite.FadeOut(FadeTime * 2);
                 }
-                SetDimensions(dressTexture);
+
+                dressSprite = new SpriteBase();
+                dressSprite.Layer = 10;
+                dressSprite.Texture = value;
+                dressSprite.Relative = true;
+                dressSprite.X = 0;
+                dressSprite.Y = 0;
+                AddComponent(dressSprite);
+
+                if (!firstTime)
+                {
+                    dressSprite.FadeIn(FadeTime);
+                }
+
+                firstTime = false;
             }
         }
 
@@ -110,18 +130,11 @@ namespace INovelEngine.Effector
 
         protected override void DrawInternal()
         {
-            sprite.Begin(SpriteFlags.AlphaBlend);
-            
+            sprite.Begin(SpriteFlags.AlphaBlend);        
             if (this.bodyTexture != null)
             {
                 sprite.Draw(this.bodyTexture.Texture, this.sourceArea, new Vector3(), new Vector3(RealX, RealY, 0), renderColor);
             }
-
-            if (this.dressTexture != null)
-            {
-                sprite.Draw(this.dressTexture.Texture, this.sourceArea, new Vector3(), new Vector3(RealX, RealY, 0), renderColor);
-            }
-
             sprite.End();
         }
 
