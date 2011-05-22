@@ -15,7 +15,6 @@ function ExecutionPresenter:Init(main, executionView, scheduleManager)
 	self.executionView = executionView;
 	self.scheduleManager = scheduleManager;
 
-	main:Disable();
 	executionView:Show();
 
     self:RegisterEvents();
