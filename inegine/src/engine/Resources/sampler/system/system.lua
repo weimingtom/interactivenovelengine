@@ -107,8 +107,7 @@ function SystemView:Init()
 	optionRollover:Hide();
 		
 	self.confirmWindow = UIFactory.CreateConfirmWindow(
-		"Do you want to\n" .. 
-		"go back to title?",
+		system_confirm_title,
 		function() saveManager:Title(); end,
 		function() self.confirmWindow:Hide() end);
 	self.confirmWindow:Hide();
