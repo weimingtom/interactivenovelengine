@@ -1,4 +1,6 @@
 LoadScript "components\\luaview.lua"
+LoadScript "save\\savepresenter.lua"
+LoadScript "save\\saveview.lua"
 
 SystemView = LuaView:New();
 
@@ -36,6 +38,7 @@ function SystemView:Init()
 	
 	self.saveButton = UIFactory.CreateRollOverButton(
 		function()
+			self:OpenSave();
 		end,
 		function ()
 			self.saveRollover:Show();
@@ -60,6 +63,7 @@ function SystemView:Init()
 		
 	self.loadButton = UIFactory.CreateRollOverButton(
 		function()
+			self:OpenSave();
 		end,
 		function ()
 			self.loadRollover:Show();
@@ -149,6 +153,28 @@ function SystemView:Init()
 	self.backButton.Layer = 10
 	self.frame:AddComponent(self.backButton);
 	
+end
+
+function SystemView:OpenSave()
+	local saveView = SaveView:New("saveView", CurrentState());
+	saveView.Layer = 10;
+	self.frame:Hide();
+	saveView:Init();
+		
+	self.savePresenter = SavePresenter:New();
+	self.savePresenter:Init(saveView, saveManager);
+	self.savePresenter:SetClosingEvent(
+		function()
+			Trace("disposing save presenter!");
+			self.savePresenter = nil;
+			self.frame:Show();
+		end
+	)
+	self.savePresenter:SetTitleEvent(
+		function()
+			Trace("going back to title!");
+		end
+	)
 end
 
 function SystemView:CreateButton(name, texture, rolloverTexture, enabled)

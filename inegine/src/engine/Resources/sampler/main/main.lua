@@ -335,12 +335,14 @@ function Main:OpenSchedule()
 end
 
 function Main:OpenScheduleExecution()
+	self:Disable(false, false);
 	local execution = ExecutionView:New("executionView", CurrentState());
 	execution:Init();
 
 	self.executionPresenter = ExecutionPresenter:New();
 	self.executionPresenter:SetClosingEvent(
 		function()
+			self:Enable();
             self:PostScheduleTrigger();
 		end
 	)
@@ -518,27 +520,6 @@ function Main:OpenSystem()
 		end
 	);
 	shoplist:Show();
-
-	--local saveView = SaveView:New("saveView", CurrentState());
-	--saveView:Init();
-	--
-	--self:Disable();
---
-	--
-	--self.savePresenter = SavePresenter:New();
-	--self.savePresenter:Init(saveView, saveManager);
-	--self.savePresenter:SetClosingEvent(
-		--function()
-			--Trace("disposing save presenter!");
-			--self:Enable();
-			--self.savePresenter = nil;
-		--end
-	--)
-	--self.savePresenter:SetTitleEvent(
-		--function()
-			--Trace("going back to title!");
-		--end
-	--)
 end
 
 function Main:OpenInventory()

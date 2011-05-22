@@ -42,6 +42,10 @@ function ExecutionView:InitComponents()
 	self.statusMenu = statusMenu;
 	statusMenu.Texture = "resources/ui/execution_menu.png"
 	statusMenu.Visible = true;
+	statusMenu.X = 537;
+	statusMenu.Y = 154;
+	statusMenu.Width = 257;
+	statusMenu.Height = 232;
 	statusMenu.Layer = 3;
 	self.frame:AddComponent(statusMenu)	
 
@@ -56,12 +60,14 @@ function ExecutionView:InitComponents()
 	statusWindow.layer = 10;
 	statusWindow.BackgroundColor = 0xFFFFFF
 	statusWindow.TextColor = 0x000000
-	statusWindow.font = GetFont("state");
+	statusWindow.font = GetFont("verysmall");
 	self.statusWindow = statusWindow;
 	self.frame:AddComponent(statusWindow);
+	
+	
 	self:ShowStatus(false);
 
-	local animatedWindow = TextWindow()
+	local animatedWindow = View()
 	animatedWindow.name = "animatedwindow"
 	animatedWindow.relative = true;
 	animatedWindow.width = 320;
