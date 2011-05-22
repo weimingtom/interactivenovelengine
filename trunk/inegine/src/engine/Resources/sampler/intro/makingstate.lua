@@ -39,35 +39,46 @@ function MakingState:InitComponents()
 	self.frame.Enabled = true
 	AddComponent(self.frame);
 		
+	local windowSprite = SpriteBase();
+	self.windowSprite = windowSprite;
+	windowSprite.Texture = "resources/ui/character_make_window.png"
+	windowSprite.Visible = true;
+	windowSprite.Layer = 3;
+	windowSprite.X = 244;
+	windowSprite.Y = 144;
+	windowSprite.Width = 321;
+	windowSprite.Height = 257;
+	self.frame:AddComponent(windowSprite)
+		
 	local textWindow = TextWindow()
 	self.textWindow = textWindow;
 	textWindow.Name = "textWin"
-	textWindow.Alpha = 155
-	textWindow.Width = 350
-	textWindow.Height = 200
-	textWindow.X = (self.frame.Width - textWindow.Width) / 2;
-	textWindow.Y = (self.frame.Height - textWindow.Height) / 2 - 50;
-	textWindow.Margin = 20;
-	textWindow.LeftMargin = 20;
+	textWindow.Width = 321
+	textWindow.Height = 245
+	textWindow.Alpha = 0
+	textWindow.X = 0
+	textWindow.Y = 0
+	textWindow.Margin = 70;
+	textWindow.LeftMargin = 70;
 	textWindow.Layer = 5
 	textWindow.LineSpacing = 30
 	textWindow.Visible = true
 	textWindow.Enabled = true
-	textWindow.Font = GetFont("japanese")
-	--textWindow.WindowTexture = "resources/window.png"
-	--textWindow.RectSize = 40;
+	textWindow.TextColor = 0x000000
+	textWindow.Font = GetFont("default")
 	
-	self.frame:AddComponent(textWindow)
+	self.windowSprite:AddComponent(textWindow)
 
 	local okButton = Button()
 	self.okButton = okButton;
     okButton.Name = "ok"
 	okButton.Relative = true;
 	okButton.Text = makingstate_next_button
-	okButton.font = GetFont("japanese");
+	okButton.font = GetFont("default");
 	okButton.Layer = 6;
 	okButton.Width = 100;
 	okButton.Height = 40;
+	okButton.VerticalAlignment = 0;
 	okButton.X = 60
 	okButton.Y = textWindow.Height - okButton.Height * 1.5;
 	okButton.State = {}
@@ -82,7 +93,7 @@ function MakingState:InitComponents()
 				button.Pushed = false;
 			end
 		end
-	okButton.TextColor = 0xFFFFFF;
+	okButton.TextColor = 0x000000;
 	textWindow:AddComponent(okButton);
 	
 	local previousButton = Button()
@@ -90,12 +101,13 @@ function MakingState:InitComponents()
 	previousButton.Name = "prev"
 	previousButton.Relative = true;
 	previousButton.Text = makingstate_previous_button
-	previousButton.font = GetFont("japanese");
+	previousButton.font = GetFont("default");
 	previousButton.Layer = 6;
 	previousButton.Width = 100;
 	previousButton.Height = 40;
 	previousButton.X = okButton.X + okButton.Width + 10;
 	previousButton.Y = textWindow.Height - previousButton.Height * 1.5;
+	previousButton.VerticalAlignment = 0;
 	previousButton.State = {}
 	previousButton.MouseDown = 
 		function (newButton, luaevent, args)
@@ -108,7 +120,7 @@ function MakingState:InitComponents()
 				button.Pushed = false;
             end
 		end
-	previousButton.TextColor = 0xFFFFFF;
+	previousButton.TextColor = 0x000000;
 	textWindow:AddComponent(previousButton);
 	
 	local talkWindow = DialogueWindow:New("talkWindow", self.frame);
@@ -120,6 +132,24 @@ function MakingState:InitComponents()
 	talkWindow.frame.y = self.frame.height - talkWindow.frame.height;
 	talkWindow:Hide();
 	
+	self.confirmWindow = UIFactory.CreateConfirmWindow(
+		system_confirm_title,
+		function() saveManager:Title(); end,
+		function() self.confirmWindow:Hide() end);
+	self.confirmWindow:Hide();
+	self.confirmWindow.layer = 10;
+	self.frame:AddComponent(self.confirmWindow);
+	
+	self.backButton = UIFactory.CreateBackButton(
+		function (button, luaevent, args)
+			self.confirmWindow:Show();
+		end
+	)
+	self.backButton.X = 712
+	self.backButton.Y = 455
+	self.backButton.Layer = 10
+	self.backButton:Hide();
+	self.frame:AddComponent(self.backButton);
 end
 
 function MakingState:RegisterEvents()
@@ -161,14 +191,14 @@ function MakingState:CreateButton(name, text, x, y, width, height)
 	newButton.Name = name
 	newButton.Relative = true;
 	newButton.Text = text
-	newButton.font = GetFont("japanese");
+	newButton.font = GetFont("default");
 	newButton.Layer = 6;
 	newButton.X = x;
 	newButton.Y = y;
 	newButton.Width = width;
 	newButton.Height = height;
 	newButton.State = {}
-	newButton.TextColor = 0xFFFFFF;
+	newButton.TextColor = 0x000000;
 
 	return newButton;
 end
@@ -205,14 +235,15 @@ function MakingState:ResetValues()
 end
 
 function MakingState:PromptFirstName()
-	self.textWindow.Height = 200;
+	self.backButton:Hide();
+	
 	self.okButton.text = makingstate_next_button
 	self.previousButton.Y = self.textWindow.Height - self.previousButton.Height * 1.5;
 	self.previousButton.text = makingstate_previous_button;
 	self.okButton.Y = self.textWindow.Height - self.okButton.Height * 1.5;
 	self.previousButton.enabled = false;
 	
-	self.textWindow:Hide();
+	self.windowSprite:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
@@ -222,19 +253,22 @@ function MakingState:PromptFirstName()
 		function()
 			self:AskFirstName();
 		end);
+		
 end
 
 function MakingState:AskFirstName()
-	self.textWindow:Show();
+	self.backButton:Show();
+	
+	self.windowSprite:Show();
 	self.talkWindow:Hide();
 	self.textWindow:Clear();
 	self.textWindow.text = makingstate_dialogue_firstname2;
 	
     self.daughterName = nil;
     
-	local textButton = self:CreateButton("text", "__________",
-										 0, self.textWindow.Height / 2 - 10,
-										 350, 20);
+	local textButton = self:CreateButton("text", "___",
+										 0, self.textWindow.Height / 2 + 10,
+										 self.textWindow.width, 20);
     self.textButton = textButton;
 	self.textWindow:AddComponent(textButton);
 	self.textButton.MouseDown = 
@@ -266,7 +300,9 @@ function MakingState:AskFirstName()
 end
 
 function MakingState:PromptLastName()
-	self.textWindow:Hide();
+	self.backButton:Hide(); 
+	
+	self.windowSprite:Hide();
 	self.talkWindow:Show();
 	
     self.talkWindow:ClearDialogueText();
@@ -280,16 +316,18 @@ function MakingState:PromptLastName()
 end
 
 function MakingState:AskLastName()
-	self.textWindow:Show();
+	self.backButton:Show(); 
+	
+	self.windowSprite:Show();
 	self.talkWindow:Hide();
 	self.previousButton.enabled = true;
 	self.textWindow.text = makingstate_dialogue_lastname2;
 
     self.lastName = nil
     
-	local textButton = self:CreateButton("text", "__________",
-										 0, self.textWindow.Height / 2 - 10,
-										 350, 20);
+	local textButton = self:CreateButton("text", "___",
+										 0, self.textWindow.Height / 2 + 10,
+										 self.textWindow.width, 20);
     self.textButton = textButton;
 	self.textButton.MouseDown = 
 		function (newButton, luaevent, args)
@@ -322,7 +360,9 @@ function MakingState:AskLastName()
 end
 
 function MakingState:PromptBirthday()
-	self.textWindow:Hide();
+	self.backButton:Hide(); 
+	
+	self.windowSprite:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
@@ -335,15 +375,17 @@ function MakingState:PromptBirthday()
 end
 
 function MakingState:AskBirthday()
-	self.textWindow:Show();
+	self.backButton:Show(); 
+	
+	self.windowSprite:Show();
 	self.talkWindow:Hide();
 	self.textWindow.text = makingstate_dialogue_birthday2;
 	
     self.month = nil;
     self.day = nil
 	
-	local textButton = self:CreateButton("month", "__",
-										 85, self.textWindow.Height / 2 - 10,
+	local textButton = self:CreateButton("month", "_",
+										 85, self.textWindow.Height / 2 + 10,
 										 50, 20);
     self.monthButton = textButton;
 	textButton.MouseDown = 
@@ -353,7 +395,7 @@ function MakingState:AskBirthday()
             local text = GetInput(true);
             if (text ~= nil and self:CheckBirthday(tonumber(text), 1)) then
                 self.monthButton.text = text;
-                self.dayButton.text = "__";
+                self.dayButton.text = "_";
                 self.month = text;
                 self.day = nil;
             end
@@ -361,19 +403,19 @@ function MakingState:AskBirthday()
 	self.textWindow:AddComponent(textButton);
 
 	local textButton = self:CreateButton("monthLabel", makingstate_month_label,
-										 135, self.textWindow.Height / 2 - 10,
+										 135, self.textWindow.Height / 2 + 10,
 										 25, 20);
 	self.textWindow:AddComponent(textButton);
 										 
-	local textButton = self:CreateButton("day", "__",
-										 190, self.textWindow.Height / 2 - 10,
+	local textButton = self:CreateButton("day", "_",
+										 190, self.textWindow.Height / 2 + 10,
 										 50, 20);
     self.dayButton = textButton;
 	textButton.MouseDown = 
 		function (newButton, luaevent, args)
 			newButton.State["mouseDown"] = true
             Trace("mouse down!");
-            if (self.monthButton.text ~= "__") then
+            if (self.monthButton.text ~= "_") then
 				local text = GetInput(true);
 				if (text ~= nil and self:CheckBirthday(tonumber(self.monthButton.text), tonumber(text))) then
 					self.dayButton.text = text;
@@ -384,7 +426,7 @@ function MakingState:AskBirthday()
 	self.textWindow:AddComponent(textButton);
 	
 	local textButton = self:CreateButton("dayLabel", makingstate_day_label,
-										 240, self.textWindow.Height / 2 - 10,
+										 240, self.textWindow.Height / 2 + 10,
 										 25, 20);
 										 
 	self.textWindow:AddComponent(textButton);
@@ -419,7 +461,9 @@ function MakingState:CheckBirthday(month, day)
 end
 
 function MakingState:PromptBloodType()
-	self.textWindow:Hide();
+	self.backButton:Hide(); 
+	
+	self.windowSprite:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
@@ -432,14 +476,16 @@ function MakingState:PromptBloodType()
 end
 
 function MakingState:AskBloodType()
-	self.textWindow:Show();
+	self.backButton:Show(); 
+	
+	self.windowSprite:Show();
 	self.talkWindow:Hide();
 	self.textWindow.text = makingstate_dialogue_bloodtype2;
 
     self.bloodType = nil;
 
 	local oButton = self:CreateButton("O", "O",
-										 75, self.textWindow.Height / 2 - 10,
+										 75, self.textWindow.Height / 2 + 10,
 										 25, 20);
     self.oButton = oButton;
 	self.textWindow:AddComponent(oButton);
@@ -447,19 +493,19 @@ function MakingState:AskBloodType()
 	self.bloodType = "O";
 	
 	local aButton = self:CreateButton("A", "A",
-										 125, self.textWindow.Height / 2 - 10,
+										 125, self.textWindow.Height / 2 + 10,
 										 25, 20);
     self.aButton = aButton;
 	self.textWindow:AddComponent(aButton);
 
 	local bButton = self:CreateButton("B", "B",
-										 175, self.textWindow.Height / 2 - 10,
+										 175, self.textWindow.Height / 2 + 10,
 										 25, 20);
     self.bButton = bButton;
 	self.textWindow:AddComponent(bButton);
 
 	local abButton = self:CreateButton("AB", "AB",
-										 225, self.textWindow.Height / 2 - 10,
+										 225, self.textWindow.Height / 2 + 5,
 										 40, 20);
     self.abButton = abButton;
 	self.textWindow:AddComponent(abButton);
@@ -467,34 +513,34 @@ function MakingState:AskBloodType()
 
 	self.aButton.MouseDown = 
 		function (newButton, luaevent, args)
-            oButton.TextColor = 0xFFFFFF;
+            oButton.TextColor = 0x000000;
             aButton.TextColor = 0xFF0000;
-            bButton.TextColor = 0xFFFFFF;
-            abButton.TextColor = 0xFFFFFF;
+            bButton.TextColor = 0x000000;
+            abButton.TextColor = 0x000000;
 			self.bloodType = "A";
 		end
 	self.bButton.MouseDown = 
 		function (newButton, luaevent, args)
-            oButton.TextColor = 0xFFFFFF;
-            aButton.TextColor = 0xFFFFFF;
+            oButton.TextColor = 0x000000;
+            aButton.TextColor = 0x000000;
             bButton.TextColor = 0xFF0000;
-            abButton.TextColor = 0xFFFFFF;
+            abButton.TextColor = 0x000000;
 			self.bloodType = "B";
 		end
 	self.abButton.MouseDown = 
 		function (newButton, luaevent, args)
-            oButton.TextColor = 0xFFFFFF;
-            aButton.TextColor = 0xFFFFFF;
-            bButton.TextColor = 0xFFFFFF;
+            oButton.TextColor = 0x000000;
+            aButton.TextColor = 0x000000;
+            bButton.TextColor = 0x000000;
             abButton.TextColor = 0xFF0000;
 			self.bloodType = "AB";
 		end
 	self.oButton.MouseDown = 
 		function (newButton, luaevent, args)
             oButton.TextColor = 0xFF0000;
-            aButton.TextColor = 0xFFFFFF;
-            bButton.TextColor = 0xFFFFFF;
-            abButton.TextColor = 0xFFFFFF;
+            aButton.TextColor = 0x000000;
+            bButton.TextColor = 0x000000;
+            abButton.TextColor = 0x000000;
 			self.bloodType = "O";
 		end
 	
@@ -523,7 +569,9 @@ function MakingState:AskBloodType()
 end
 
 function MakingState:PromptFatherName()
-	self.textWindow:Hide();
+	self.backButton:Hide(); 
+	
+	self.windowSprite:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
@@ -536,14 +584,16 @@ function MakingState:PromptFatherName()
 end
 
 function MakingState:AskFatherName()
-	self.textWindow:Show();
+	self.backButton:Show(); 
+	
+	self.windowSprite:Show();
 	self.talkWindow:Hide();
 	self.textWindow.text = makingstate_dialogue_fathername2;
 
     self.fatherName = nil;
     
-	local textButton = self:CreateButton("text", "__________",
-										 0, self.textWindow.Height / 2 - 10,
+	local textButton = self:CreateButton("text", "___",
+										 0, self.textWindow.Height / 2 + 10,
 										 350, 20);
     self.textButton = textButton;
 	self.textButton.MouseDown = 
@@ -577,7 +627,9 @@ function MakingState:AskFatherName()
 end
 
 function MakingState:PromptFatherBirthday()
-	self.textWindow:Hide();
+	self.backButton:Hide(); 
+	
+	self.windowSprite:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
@@ -590,15 +642,17 @@ function MakingState:PromptFatherBirthday()
 end
 
 function MakingState:AskFatherBirthday()
-	self.textWindow:Show();
-	self.talkWindow:Show();
+	self.backButton:Show(); 
+	
+	self.windowSprite:Show();
+	self.talkWindow:Hide();
 	self.textWindow.text = makingstate_dialogue_fatherbirthday2;
 
     self.fatherMonth = nil;
     self.fatherDay = nil;
 
-	local textButton = self:CreateButton("month", "__",
-										 85, self.textWindow.Height / 2 - 10,
+	local textButton = self:CreateButton("month", "_",
+										 85, self.textWindow.Height / 2 + 10,
 										 50, 20);
     self.monthButton = textButton;
 	textButton.MouseDown = 
@@ -608,7 +662,7 @@ function MakingState:AskFatherBirthday()
             local text = GetInput(true);
             if (text ~= nil and self:CheckBirthday(tonumber(text), 1)) then
                 self.monthButton.text = text;
-                self.dayButton.text = "__";
+                self.dayButton.text = "_";
                 self.fatherMonth = text;
                 self.fatherDay = nil;
             end
@@ -616,12 +670,12 @@ function MakingState:AskFatherBirthday()
 	self.textWindow:AddComponent(textButton);
 
 	local textButton = self:CreateButton("monthLabel", makingstate_month_label,
-										 135, self.textWindow.Height / 2 - 10,
+										 135, self.textWindow.Height / 2 + 10,
 										 25, 20);
 	self.textWindow:AddComponent(textButton);
 										 
-	local textButton = self:CreateButton("day", "__",
-										 190, self.textWindow.Height / 2 - 10,
+	local textButton = self:CreateButton("day", "_",
+										 190, self.textWindow.Height / 2 + 10,
 										 50, 20);
     self.dayButton = textButton;
 	textButton.MouseDown = 
@@ -637,7 +691,7 @@ function MakingState:AskFatherBirthday()
 	self.textWindow:AddComponent(textButton);
 	
 	local textButton = self:CreateButton("dayLabel", makingstate_day_label,
-										 240, self.textWindow.Height / 2 - 10,
+										 240, self.textWindow.Height / 2 + 10,
 										 25, 20);
 										 
 	self.textWindow:AddComponent(textButton);
@@ -668,7 +722,9 @@ function MakingState:AskFatherBirthday()
 end
 
 function MakingState:PromptSummary()
-	self.textWindow:Hide();
+	self.backButton:Hide(); 
+	
+	self.windowSprite:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
@@ -681,13 +737,15 @@ function MakingState:PromptSummary()
 end
 
 function MakingState:Summary()
-	self.textWindow.Height = 300;
-	self.okButton.text = makingstate_dialogue_summary_confirm;
-	self.okButton.Y = self.textWindow.Height - self.okButton.Height * 1.5;
+	self.backButton:Show(); 
+	
+	self.okButton.text = makingstate_dialogue_summary_ok;
+	self.okButton.Y = 175
 	self.previousButton.text = makingstate_dialogue_summary_decline;
-	self.previousButton.Y = self.textWindow.Height - self.previousButton.Height * 1.5;
-	self.textWindow:Show();
+	self.previousButton.Y = 175
+	self.windowSprite:Show();
 	self.talkWindow:Hide();
+	self.textWindow.font = GetFont("verysmall");
 	self.textWindow.text = makingstate_dialogue_summary_daughter_name .. self.daughterName .. "\n" ..
 	makingstate_dialogue_summary_last_name .. self.lastName .. "\n" ..
 	makingstate_dialogue_summary_birthday .. self.month .. makingstate_month_label ..  self.day .. makingstate_day_label .. "\n" ..
@@ -698,20 +756,24 @@ function MakingState:Summary()
 	
     self:SetOKEvent(
         function()
-            Trace("OK!");  
+            Trace("OK!");
+			self.textWindow.font = GetFont("default");  
             self:PromptFinish();
         end
     );
     self:SetPrevEvent(
         function()
             Trace("Cancel!");
+			self.textWindow.font = GetFont("default");
             self:PromptReset();
         end
     );
 end
 
 function MakingState:PromptFinish()
-	self.textWindow:Hide();
+	self.backButton:Hide(); 
+	
+	self.windowSprite:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
@@ -733,7 +795,9 @@ function MakingState:PromptFinish()
 end
 
 function MakingState:PromptReset()
-	self.textWindow:Hide();
+	self.backButton:Hide(); 
+	
+	self.windowSprite:Hide();
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);

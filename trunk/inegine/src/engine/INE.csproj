@@ -170,6 +170,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Core\TextInput.resx">
       <DependentUpon>TextInput.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -405,6 +406,7 @@
     <Content Include="Resources\sampler\resources\scg\mw.png" />
     <Content Include="Resources\sampler\resources\scg\ss.png" />
     <Content Include="Resources\sampler\resources\ui\back_button.png" />
+    <Content Include="Resources\sampler\resources\ui\character_make_window.png" />
     <Content Include="Resources\sampler\resources\ui\confirm_window.png" />
     <Content Include="Resources\sampler\resources\ui\confirm_window_rollover.png" />
     <Content Include="Resources\sampler\resources\ui\dialogue_window.png" />

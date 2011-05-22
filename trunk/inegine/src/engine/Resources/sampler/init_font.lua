@@ -26,9 +26,6 @@ GetFont("calstate").LineSpacing = 7
 --GetFont("small").LineSpacing = 10;
 --GetFont("small").TextEffect = 0;
 
-LoadFont("verysmall", "resources\\fonts\\NanumGothicBold.ttf", 8);
-GetFont("verysmall").LineSpacing = 5
-
 LoadFont("verylarge", "c:\\windows\\fonts\\meiryo.ttc", 78);
 --LoadFont("verylarge", "resources\\fonts\\NanumMyeongjoBold.ttf", 48);
 GetFont("verylarge").LineSpacing = 30;
@@ -37,7 +34,8 @@ GetFont("verylarge").LineSpacing = 30;
 
 ----------------------------------------------------------------------------------
 LoadFont("default", "C:\\Windows\\Fonts\\msgothic.ttc", 17);
-GetFont("default").TextEffect = 1;
+GetFont("default").LineSpacing = 5;
+GetFont("default").TextEffect = 0;
 
 LoadFont("logtext", "C:\\Windows\\Fonts\\msgothic.ttc", 17);
 
@@ -50,6 +48,11 @@ GetFont("bigmenu").TextEffect = 1
 LoadFont("small", "C:\\Windows\\Fonts\\msgothic.ttc", 15);
 GetFont("small").LineSpacing = 10;
 GetFont("small").TextEffect = 0;
+
+
+LoadFont("verysmall", "C:\\Windows\\Fonts\\msgothic.ttc", 9);
+GetFont("verysmall").LineSpacing = 5;
+GetFont("verysmall").TextEffect = 0;
 
 LoadFont("dialogue", "C:\\Windows\\Fonts\\msgothic.ttc", 17, "C:\\Windows\\Fonts\\msgothic.ttc", 10);
 GetFont("dialogue").LineSpacing = 10;
