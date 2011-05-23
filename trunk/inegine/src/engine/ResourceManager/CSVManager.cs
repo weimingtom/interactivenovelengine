@@ -115,6 +115,11 @@ namespace INovelEngine.ResourceManager
             return this.columns[i].Trim();
         }
 
+        public bool HasColumn(string columnName)
+        {
+            return this.columnMap.ContainsKey(columnName);
+        }
+
         public int GetColumnID(string columnName)
         {
             if (this.columnMap.ContainsKey(columnName))
@@ -123,7 +128,7 @@ namespace INovelEngine.ResourceManager
             }
             else
             {
-                return -1;
+                throw new Exception("column name not found!");
             }
         }
 
@@ -159,7 +164,7 @@ namespace INovelEngine.ResourceManager
             }
             else
             {
-                return float.NaN;
+                return 0f;
             }
         }
 

@@ -7,6 +7,7 @@ function Character:New()
 	self.__index = self
 	
 	self.status = {}
+	self.statusNames = {}
 	self.max = {}
 	self.min = {}
 	self.trigger = {}
@@ -48,33 +49,62 @@ function Character:Initialize()
 	self:Add("dance", 0, 0, 300);
 	self:Add("cooking", 0, 0, 300);
 	self:Add("logic", 0, 0, 300);
-	self:Add("wis", 0, 0, 300);
-	--todo: add job histories and attraction points
-	--job histories
-	self:Add("edu1", 0, 0, 999);
-	self:Add("edu2", 0, 0, 999);
-	self:Add("job1", 0, 0, 999);
-	self:Add("job2", 0, 0, 999);
+	self:Add("wis", 0, 0, 300);	
+	--schedule hits
+	self:RegisterSchedules();
+	--affinities
+	self:Add("refa", 0, 0, 100);
+	self:Add("relucy", 0, 0, 100);
+	self:Add("relui", 0, 0, 100);
+end
+
+function Character:GetScheduleHitKey(id)
+	return "ac" .. id;
+end
+
+function Character:RegisterSchedules()
+	if (scheduleManager ~= nil) then
+		local schedules = scheduleManager:GetItems();
+		for i,schedule in ipairs(schedules) do
+			local scheduleHitID = self:GetScheduleHitKey(schedule.id);
+			self:Add(scheduleHitID, 0, 0, 999);
+		end
+	end
 end
 
 function Character:Add(key, value, min, max)
+	assert(key ~= nil, "key is null");
+	if (value == nil) then value = 0; end
+	if (min == nil) then min = 0; end
+	if (max == nil) then max = 999; end
+
+	table.insert(self.statusNames, key);
+	
     self.status[key] = value;
     self.min[key] = min;
     self.max[key] = max;
 end
 
 function Character:Inc(key, value)
-	self:Set(key, self:Get(key) + value);
+	assert(key ~= nil, "key is null");
+	assert(value ~= nil, "value for " .. key .. " is null");
+	assert(self:Get(key) ~= nil, "existing value for " .. key .. " is null");
+
+	self:Set(key, self:Get(key) + value);	
 end
 
 function Character:Dec(key, value)
+	assert(key ~= nil, "key is null");
+	assert(value ~= nil, "value for " .. key .. " is null");
+	assert(self:Get(key) ~= nil, "existing value for " .. key .. " is null");
+	
 	self:Set(key, self:Get(key) - value);
 end
 
 function Character:Set(key, value)
-	if (self.status[key] == nil) then
-		error("invalid key!");
-	end
+	assert(key ~= nil, "key is null");
+	assert(value ~= nil, "value for " .. key .. " is null");
+	assert(self:Get(key) ~= nil, "existing value for " .. key .. " is null");
 
 	if (self.min[key] > value) then
 		value = self.min[key];
@@ -93,10 +123,16 @@ function Character:Set(key, value)
 end
 
 function Character:GetRatio(key)
+	assert(key ~= nil, "key is null");
+	assert(self:Get(key) ~= nil, "existing value for " .. key .. " is null");
+	
 	return self.status[key] / self.max[key] * 100;
 end
 
 function Character:Get(key)
+	assert(key ~= nil, "key is null");
+	assert(self.status[key] ~= nil, "existing value for " .. key .. " is null");
+	
     local base = self.status[key];
     local effective = base;
     if (inventoryManager ~= nil) then
@@ -119,6 +155,9 @@ function Character:Get(key)
 end
 
 function Character:Read(key, digits)
+	assert(key ~= nil, "key is null");
+	assert(self:Get(key) ~= nil, "existing value for " .. key .. " is null");
+	
 	if (digits == nil) then digits = 0; end
 	return string.format("%." .. (digits) .. "f", self:Get(key))
 end
@@ -207,6 +246,10 @@ function Character:SetTriggerEvent(status, event)
 	self.trigger[status] = event;
 end
 
+function Character:GetKeys()
+	return self.statusNames;
+end
+
 function Character:Save(target)
     local saveString = target .. " = Character:New()\n";
     saveString = saveString .. "local self = " .. target .. "\n"
@@ -227,4 +270,15 @@ function Character:Save(target)
     end
     
     return saveString;
+end
+
+function Character:DumpTrace()
+    Trace("Character Trace");
+    Trace("---------------");
+    Trace("name : " .. self:GetFirstName() .. "," .. self:GetLastName());
+    Trace("dress : " .. self:GetDress());
+    Trace("body : " .. self:GetBody());
+    for i,v in pairs(self.status) do
+        Trace(i .. " : " .. v );
+    end
 end

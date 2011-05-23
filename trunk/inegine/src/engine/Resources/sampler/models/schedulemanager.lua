@@ -42,7 +42,7 @@ end
 function ScheduleManager:GetItems(category)
 	local scheduleList = {};
     for i=0, self.csv.Count-1 do
-        if (category == self.csv:GetString(i, "category")) then
+        if (category == nil or category == self.csv:GetString(i, "category")) then
 			table.insert(scheduleList, self:ExtractItem(i));
         end
     end
@@ -50,13 +50,13 @@ function ScheduleManager:GetItems(category)
 end
 
 function ScheduleManager:GetItem(id)
-    local itemIndex
+    local itemIndex = -1;
     for i=0, self.csv.Count-1 do
         if (id == self.csv:GetString(i, "id")) then
 			itemIndex = i;
         end
     end
-	
+	assert(itemIndex ~= -1, "schedule " .. id .. " is not found");
 	return self:ExtractItem(itemIndex);
 
 end
@@ -73,10 +73,12 @@ function ScheduleManager:GetEffect(id, csv)
     for i=0, csv.Count-1 do
 		if (id == csv:GetString(i, "id")) then
 			local item = {};
-			item.sta = csv:GetFloat(i, "sta");
-			item.stress = csv:GetFloat(i, "stress");
-			item.gold = csv:GetFloat(i, "gold");
-			--TODO: other abilities!
+			for j,key in ipairs(character:GetKeys()) do
+				if (csv:HasColumn(key)) then
+					Trace("effect " .. key .. " present!");
+					item[key] = csv:GetFloat(i, key);
+				end
+			end
 			return item;
 		end
 	end
@@ -103,17 +105,31 @@ function ScheduleManager:ProcessSchedule(id)
     local numSuccesses = 0;
     local effect = self:EmptyEffect();
 	
+	Trace("---------------------------");
+	Trace("Processing schedule:" .. id);
+	
     if (schedule.category == "edu") then
+		Trace("Category : Education");
 		rate = self:GetEduRate(BASE_EDU_RATE, character:Get("will"), character:Get("stress"));
     elseif (schedule.category == "job") then
-		character:Inc(schedule.id, 1);
+		Trace("Category : Job");
+		--increase schedule hit number
+		character:Inc(character:GetScheduleHitKey(schedule.id), 1);
+		
+		Trace("History Hits : " .. character:Get(character:GetScheduleHitKey(schedule.id)));
+		Trace("Ability : " .. schedule.ability .. " = " .. character:Get(schedule.ability));
+		Trace("Stress : " .. character:Get("stress"));
+		
 		rate = self:GetJobRate(BASE_JOB_RATE, character:Get(schedule.ability), 
-			character:Get(schedule.id), character:Get("stress"));
+			character:Get(character:GetScheduleHitKey(schedule.id)), character:Get("stress"));
     elseif (schedule.category == "vac") then
+		Trace("Category : Vacation");
 		rate = 1;
 	else
 		error("invalid schedule category!");
 	end
+	
+	Trace("Rate : " .. rate);
 
 	for i=1, numDays do
 		local roll = math.random();
@@ -128,9 +144,19 @@ function ScheduleManager:ProcessSchedule(id)
 		end
 	end
 	
-	Trace("successes: " .. numSuccesses);
-	
+	Trace("Successes : " .. numSuccesses);
 	self:ApplyEffect(effect);
+	
+	--output effect for debugging
+	
+	Trace("<Success Effect>");
+	self:TraceEffect(successeffect);
+	
+	Trace("<Failure Effect>");
+	self:TraceEffect(failureeffect);
+	
+	Trace("<Net Effect>");
+	self:TraceEffect(effect);
 	
 	if (numSuccesses >= numDays / 2) then
 		--success
@@ -144,6 +170,8 @@ function ScheduleManager:ProcessSchedule(id)
 		animation = schedule.failureani;
 	end
        
+	Trace("---------------------------");
+	
     return schedule.text, success, result, animation;
 end
 
@@ -159,6 +187,12 @@ function ScheduleManager:SaveEffect(target, source)
 		end
 		
 		target[i] = source[i] + target[i];
+	end
+end
+
+function ScheduleManager:TraceEffect(effect)
+	for i,v in pairs(effect) do
+		Trace(i .. " : " .. effect[i]);
 	end
 end
 
