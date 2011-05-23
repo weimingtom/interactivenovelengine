@@ -33,6 +33,7 @@ function ItemManager:ExtractItem(i)
     item.desc = self.csv:GetString(i, "desc");
     item.sellable = self.csv:GetBoolean(i, "sellable");
     item.shortdesc = self.csv:GetString(i, "shortdesc");
+    item.resulttext = self.csv:GetString(i, "resulttext");
     item.dressImage = self.csv:GetString(i, "dressImage");
     item.sta = self.csv:GetString(i, "sta");
     item.will = self.csv:GetString(i, "will");
