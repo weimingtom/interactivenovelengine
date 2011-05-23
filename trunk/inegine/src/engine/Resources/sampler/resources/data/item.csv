@@ -1,15 +1,15 @@
-category,id,text,desc,shortdesc,price,icon,dressImage,sta,will,int,cha,grace,moral,sense,rep,stress,mana,cook
-dress,ewear,普段着,娘の普段着。,test,0,resources/icon/i01.png,resources/scg/d01.png,0,0,0,0,0,0,0,0,0,0,0
-dress,pajamas,パジャマ,娘のパジャマ。,test,0,resources/icon/i02.png,resources/scg/d02.png,0,0,0,0,0,0,0,0,0,0,0
-dress,swear,夏服,涼しく着られる夏物の洋服。,test,180,resources/icon/i03.png,resources/scg/d03.png,0,0,0,0,0,0,10,0,0,0,0
-dress,wwear,冬服,暖かく着られる冬物の洋服。,test,220,resources/icon/i04.png,resources/scg/d04.png,0,0,0,0,0,0,10,0,0,0,0
-dress,aprondress,エプロンワンピ,エプロン付きのカントリー 風ワンピース。,test,400,resources/icon/i05.png,resources/scg/d05.png,0,0,0,10,0,10,0,0,0,0,0
-dress,sundaybest,外出着,娘の魅力を引き出せる可愛い外出着。,test,500,resources/icon/i08.png,resources/scg/d06.png,0,0,0,25,0,0,0,0,0,0,0
-instant,handker,ハンカチ,シンプルだが上質のリネンハンカチ。,test,0,resources/icon/i38.png,,0,10,0,0,0,0,5,0,0,0,0
-instant,taddybear,テディベア,大きいテディベア。ちょっと困ったような顔が可愛い。,test,150,resources/icon/i44.png,,0,20,0,0,0,10,0,0,0,0,0
-instant,postcard,絵ハガキ,外国の風景が描かれた絵ハガキ。送り手はあなたの弟。,test,0,resources/icon/i45.png,,0,0,0,0,0,0,10,0,0,0,0
-instant,lobster,ロブスター料理,水の都の名物、ロブスターのオーブン焼き。,test,300,resources/icon/i49.png,,20,0,0,0,0,0,0,0,0,0,0
-instant,childrunch,お子様ランチ,お子様が好きなものがいっぱい揃ってるメニュー。,test,150,resources/icon/i50.png,,0,10,0,0,0,0,5,0,0,0,0
-instant,vegestew,野菜シチュー,ほうれん草とニンジンが沢山入ってる、とてもヘルシーなシチュー。,test,150,resources/icon/i51.png,,10,0,0,0,0,0,0,0,0,0,5
-instant,eastrunch,東方風ランチ,「ナットウオニギリ」と「ウメボシ」のセット。頭にいいらしい。,test,200,resources/icon/i52.png,,0,0,15,0,0,0,0,0,0,0,0
-instant,strgelato,苺のジェラート,春苺の果汁で作った甘いジェラート。,test,130,resources/icon/i53.png,,0,0,0,0,0,0,8,0,-5,0,0
+category,id,text,desc,shortdesc,price,sellable,icon,dressImage,sta,will,int,cha,grace,moral,sense,rep,stress,mana,cook
+dress,ewear,普段着,娘の普段着。,test,0,no,resources/icon/i01.png,resources/scg/d01.png,0,0,0,0,0,0,0,0,0,0,0
+dress,pajamas,パジャマ,娘のパジャマ。,test,0,no,resources/icon/i02.png,resources/scg/d02.png,0,0,0,0,0,0,0,0,0,0,0
+dress,swear,夏服,涼しく着られる夏物の洋服。,test,180,yes,resources/icon/i03.png,resources/scg/d03.png,0,0,0,0,0,0,10,0,0,0,0
+dress,wwear,冬服,暖かく着られる冬物の洋服。,test,220,yes,resources/icon/i04.png,resources/scg/d04.png,0,0,0,0,0,0,10,0,0,0,0
+dress,aprondress,エプロンワンピ,エプロン付きのカントリー 風ワンピース。,test,400,yes,resources/icon/i05.png,resources/scg/d05.png,0,0,0,10,0,10,0,0,0,0,0
+dress,sundaybest,外出着,娘の魅力を引き出せる可愛い外出着。,test,500,yes,resources/icon/i08.png,resources/scg/d06.png,0,0,0,25,0,0,0,0,0,0,0
+instant,handker,ハンカチ,シンプルだが上質のリネンハンカチ。,test,0,no,resources/icon/i38.png,,0,10,0,0,0,0,5,0,0,0,0
+instant,taddybear,テディベア,大きいテディベア。ちょっと困ったような顔が可愛い。,test,150,no,resources/icon/i44.png,,0,20,0,0,0,10,0,0,0,0,0
+instant,postcard,絵ハガキ,外国の風景が描かれた絵ハガキ。送り手はあなたの弟。,test,0,no,resources/icon/i45.png,,0,0,0,0,0,0,10,0,0,0,0
+instant,lobster,ロブスター料理,水の都の名物、ロブスターのオーブン焼き。,test,300,no,resources/icon/i49.png,,20,0,0,0,0,0,0,0,0,0,0
+instant,childrunch,お子様ランチ,お子様が好きなものがいっぱい揃ってるメニュー。,test,150,no,resources/icon/i50.png,,0,10,0,0,0,0,5,0,0,0,0
+instant,vegestew,野菜シチュー,ほうれん草とニンジンが沢山入ってる、とてもヘルシーなシチュー。,test,150,no,resources/icon/i51.png,,10,0,0,0,0,0,0,0,0,0,5
+instant,eastrunch,東方風ランチ,「ナットウオニギリ」と「ウメボシ」のセット。頭にいいらしい。,test,200,no,resources/icon/i52.png,,0,0,15,0,0,0,0,0,0,0,0
+instant,strgelato,苺のジェラート,春苺の果汁で作った甘いジェラート。,test,130,no,resources/icon/i53.png,,0,0,0,0,0,0,8,0,-5,0,0
