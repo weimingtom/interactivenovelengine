@@ -195,8 +195,14 @@ end
 function InventoryPresenter:SellItem()
 	if (self.selectedItem ~= nil) then
 		local itemID = self.selectedItem;
+		local item = itemManager:GetItem(itemID);
+		--check if item is sellable
+		if (inventoryManager:ItemEquipped(itemID) or item.sellable == false) then
+			return;
+		end
+	
 		self.inventoryManager:RemoveItem(itemID);
-		local soldPrice = itemManager:GetItem(itemID).price / 2;
+		local soldPrice = item.price / 2;
 		character:Inc("gold", soldPrice)
 		self.inventoryView:CloseDetail();
 		self.selectedItem = nil;

@@ -426,7 +426,7 @@ function ScheduleView:CreateSelectedButton(buttonName, buttonText)
 end
 
 function ScheduleView:AddEducationItem(id, text, price, icon, effect)
-	self.educationView:Add(UIFactory.CreateItemButton(id, text, icon, price, 1, effect,
+	self.educationView:Add(UIFactory.CreateItemButton(id, text, icon, price .. "G", 1, effect,
 	 function(button, event, args)
 		self.selectedEvent(button, luaevent, id);
 	 end, false,
@@ -437,7 +437,7 @@ function ScheduleView:AddEducationItem(id, text, price, icon, effect)
 end
 
 function ScheduleView:AddWorkItem(id, text, price, icon, effect)
-	self.workView:Add(UIFactory.CreateItemButton(id, text, icon, price, 1, effect,
+	self.workView:Add(UIFactory.CreateItemButton(id, text, icon, "", 1, effect,
 	 function(button, event, args)
 		self.selectedEvent(button, luaevent, id);
 	 end, false,
@@ -448,7 +448,7 @@ function ScheduleView:AddWorkItem(id, text, price, icon, effect)
 end
 
 function ScheduleView:AddVacationItem(id, text, price, icon, effect)
-	self.vacationView:Add(UIFactory.CreateItemButton(id, text, icon, price, 1, effect,
+	self.vacationView:Add(UIFactory.CreateItemButton(id, text, icon, price .. "G", 1, effect,
 	 function(button, event, args)
 		self.selectedEvent(button, luaevent, id);
 	 end, false,

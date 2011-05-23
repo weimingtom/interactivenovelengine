@@ -233,6 +233,7 @@ function UIFactory.CreateItemButton(id, name, icon, price, count, effect, event,
 	end
 	frame:AddComponent(button);
 	
+	--item count
 	local button = Button();
 	button.Width = 20;
 	button.Height = 22;
@@ -251,7 +252,7 @@ function UIFactory.CreateItemButton(id, name, icon, price, count, effect, event,
 	frame:AddComponent(button);
 	
 	
-	
+	--item name
 	local button = Button();
 	button.Width = 110;
 	button.Height = 21;
@@ -264,6 +265,7 @@ function UIFactory.CreateItemButton(id, name, icon, price, count, effect, event,
 	button.VerticalAlignment = 1;
 	frame:AddComponent(button);
 	
+	--item price
 	local button = Button();
 	button.Width = 110;
 	button.Height = 20;
@@ -271,11 +273,12 @@ function UIFactory.CreateItemButton(id, name, icon, price, count, effect, event,
 	button.Y = 20;
 	button.font = GetFont("item_desc");
 	button.TextColor = 0x000000
-	button.Text = price .. "G"
+	button.Text = price
 	button.Alignment = 0;
 	button.VerticalAlignment = 1;
 	frame:AddComponent(button);
 	
+	--item description
 	local button = Button();
 	button.Width = 110;
 	button.Height = 20;

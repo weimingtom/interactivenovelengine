@@ -1,13 +1,14 @@
 ConditionManager = {}
 
-function ConditionManager:Evaluate(condition)	--M = month, S = affinity
-	local conditionString = "local M, S = ...;\n" 
+--condition variables
+-- Y = year
+-- M = month
+
+function ConditionManager:Evaluate(condition)
+	local conditionString = "local Y, M = ...;\n" 
 	conditionString = conditionString .. "return " .. condition;
 	local conditionFunction = assert(loadstring(conditionString));
+
 	
-	--TODO: temporary
-	local affinityTable = {};
-	affinityTable.lucy = 80;
-	
-	return conditionFunction(calendar:GetMonth(), affinityTable);
+	return conditionFunction(calendar:GetYear(), calendar:GetMonth());
 end
