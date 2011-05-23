@@ -242,6 +242,18 @@ function Character:SetBody(id)
 end
 --tachie related over
 
+function Character:UseItem(id)
+	local item = itemManager:GetItem(id);
+	Trace("Using item " .. id)
+	
+	for j,key in ipairs(self:GetKeys()) do
+		if (item[key] ~= nil) then
+			Trace("increasing " .. key .. " by " .. item[key]);
+			self:Inc(key, item[key]);
+		end
+	end
+end
+
 function Character:SetTriggerEvent(status, event)
 	self.trigger[status] = event;
 end
