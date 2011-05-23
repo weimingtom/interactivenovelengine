@@ -8,14 +8,35 @@ function TestCharacter:setUp()
 	local character = self.character;
 end
 
+
+function table.contains(tbl, item)
+	for i,v in ipairs(tbl) do
+		if (item == v) then
+            return true;
+        end
+	end
+    return false;
+end
+
+
 function TestCharacter:testGetSetStatus()
 	local character = self.character;
+	character:Add("int");
+	character:Add("cha");
+	character:Add("wis");
+	
 	character:Set("int", 1);
 	character:Set("cha", 2);
 	character:Set("wis", 3);
 	assertEquals(1, character:Get("int"))
 	assertEquals(2, character:Get("cha"))
 	assertEquals(3, character:Get("wis"))
+	
+	local keys = character:GetKeys();
+	
+	assertEquals(true, table.contains(keys, "int")); 
+	assertEquals(true, table.contains(keys, "cha")); 
+	assertEquals(true, table.contains(keys, "wis")); 
 	
 	character:Inc("wis", 100);
 	assertEquals(103, character:Get("wis"))
@@ -79,6 +100,12 @@ function TestCharacter:testItemEffect()
 	inventoryManager:AddItem("item4", "dress", 1);
 
 	local character = self.character;
+	character:Add("int");
+	character:Add("cha");
+	character:Add("wis");
+	character:Add("sta");
+	character:Add("grace");
+	
 	character:Set("int", 1);
 	character:Set("cha", 2);
 	character:Set("sta", 3);
@@ -95,6 +122,9 @@ end
 
 function TestCharacter:testSave()
 	local character = self.character;
+	character:Add("int");
+	character:Add("cha");
+	character:Add("wis");
 	character:Set("int", 1);
 	character:Set("cha", 2);
 	character:Set("wis", 3);

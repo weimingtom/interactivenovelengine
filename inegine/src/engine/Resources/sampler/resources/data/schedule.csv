@@ -1,6 +1,12 @@
 category,id,name,desc,shortdesc,price,condition,ability,icon,successani,failureani
-edu,homesc,一緒に勉強,父と一緒に本を読んだり、算数などのお勉強をする。,TEST,5,,will,resources/icon/sc01.png,resources/images/success_ani.gif,resources/images/failure_ani.gif
-edu,homeex,一緒に運動,父と一緒に体操やジョギングなどの軽い運動をする。,TEST,5,,will,resources/icon/sc03.png,resources/images/success_ani.gif,resources/images/failure_ani.gif
-job,housework,家事手伝い,家で家事を手伝う。,TEST,-5,,will,resources/icon/sc12.png,resources/images/success_ani.gif,resources/images/failure_ani.gif
-job,orchard,果樹園,果樹園の畑仕事をする。,TEST,-14,,sta,resources/icon/sc13.png,resources/images/success_ani.gif,resources/images/failure_ani.gif
-vac,athome,家で休む,父と一緒に家でのんびり過ごす。,TEST,0,,,resources/icon/sc21.png,resources/images/success_ani.gif,resources/images/success_ani.gif
+edu,homesc,一緒に勉強,父と一緒に本を読んだり、算数などのお勉強をする。,TEST,5,,will,resources/icon/sc01.png,resources/animation/01_homesc_01.gif,resources/animation/01_homesc_02.gif
+edu,homeex,一緒に運動,父と一緒に体操やジョギングなどの軽い運動をする。,TEST,5,,will,resources/icon/sc02.png,resources/animation/02_homeex_01.gif,resources/animation/02_homeex_02.gif
+edu,sword,剣道,魔法体系を勉強し、知識と経験を身につける。,TEST,13,,will,resources/icon/sc06.png,resources/animation/06_sword_01.gif,resources/animation/06_sword_02.gif
+edu,alchemy,錬金術,錬金学を勉強し、練成を行うことで知識と経験を身につける。,TEST,18,,will,resources/icon/sc08.png,resources/animation/08_alchemy_01.gif,resources/animation/08_alchemy_02.gif
+edu,music,音楽,バイオリンの指導を受け、感性と表現力を磨く。,TEST,17,,will,resources/icon/sc09.png,resources/animation/09_music_01.gif,resources/animation/09_music_02.gif
+edu,tea,茶道,東方のお茶の作法と、立ち振る舞いや言葉遣いのマナをーを学ぶ。,TEST,13,,will,resources/icon/sc11.png,resources/animation/11_tea_01.gif,resources/animation/11_tea_02.gif
+job,housework,家事手伝い,家で家事を手伝う。,TEST,0,,will,resources/icon/sc13.png,resources/animation/13_housework_01.gif,resources/animation/13_housework_02.gif
+job,orchard,果樹園,果樹園の畑仕事をする。,TEST,0,,sta,resources/icon/sc14.png,resources/animation/14_orchard_01.gif,resources/animation/14_orchard_02.gif
+job,cake,ケーキ屋,街のケーキ屋でケーキを作る。,TEST,0,,sense,resources/icon/sc15.png,resources/animation/15_cake_01.gif,resources/animation/15_cake_02.gif
+job,gondola,ゴンドリエ,ゴンドラを操縦し、お客さんや荷物を運ぶ。,TEST,0,,cha,resources/icon/sc17.png,resources/animation/17_gondola_01.gif,resources/animation/17_gondola_02.gif
+vac,sleep,睡眠,自分の部屋でぐっすり寝る。,TEST,0,,,resources/icon/sc22.png,resources/animation/22_sleep_01.gif,resources/animation/22_sleep_01.gif

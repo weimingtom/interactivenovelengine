@@ -141,6 +141,7 @@ function ShopPresenter:AddItems()
 	local itemList = shopManager:GetItems(self.shopName);
 	for i,listing in ipairs(itemList) do
 		local v = self.itemManager:GetItem(listing.id);
+		assert(v ~= nil, "item " .. listing.id .. " is null");
 	    if (self:ItemInPage(i, self.currentPage)) then 
             shopView:AddItem(v.id, v.text, v.icon, v.price, 1, v.shortdesc);
 	    end
