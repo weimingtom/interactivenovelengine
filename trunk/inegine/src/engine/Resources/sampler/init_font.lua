@@ -49,6 +49,8 @@ LoadFont("small", "C:\\Windows\\Fonts\\msgothic.ttc", 15);
 GetFont("small").LineSpacing = 10;
 GetFont("small").TextEffect = 0;
 
+LoadFont("selector", "C:\\Windows\\Fonts\\msgothic.ttc", 14);
+GetFont("selector").TextEffect = 0;
 
 LoadFont("verysmall", "C:\\Windows\\Fonts\\msgothic.ttc", 9);
 GetFont("verysmall").LineSpacing = 5;

@@ -104,10 +104,7 @@ function SaveManager:Load(id)
 	LoadScript "models\\logmanager.lua"
 	
     local loadData = LoadString(self:GenerateSaveFileName(id));
-    Trace("loading : " .. loadData);
-    if (loadData ~= nil) then 
-		Trace("closing state");
-		
+    if (loadData ~= nil) then 		
 		assert(loadstring(loadData))();
 		FadeOut(500)
 		Delay(500,

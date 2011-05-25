@@ -203,7 +203,6 @@
     <None Include="Resources\sampler\communication\talk.lua" />
     <None Include="Resources\sampler\communication\talklist.lua" />
     <None Include="Resources\sampler\components\dialoguewindow.lua" />
-    <None Include="Resources\sampler\components\eventview.lua" />
     <None Include="Resources\sampler\init_sound.lua" />
     <None Include="Resources\sampler\intro\makingstate.lua" />
     <None Include="Resources\sampler\intro\titlestate.lua" />
@@ -458,6 +457,7 @@
     <Content Include="Resources\sampler\resources\ui\schedule_vacation_rollover.png" />
     <Content Include="Resources\sampler\resources\ui\schedule_work_rollover.png" />
     <Content Include="Resources\sampler\resources\ui\scrollbar.png" />
+    <Content Include="Resources\sampler\resources\ui\selector.png" />
     <Content Include="Resources\sampler\resources\ui\state_menu.png" />
     <Content Include="Resources\sampler\resources\ui\state_window.png" />
     <Content Include="Resources\sampler\resources\ui\store_detail.png" />
@@ -524,7 +524,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>"$(ProjectDir)ScriptManager\compileifnewer.bat" "$(ProjectDir)ScriptManager\ine.ATG" "$(ProjectDir)ScriptManager\.ine.ATG"</PreBuildEvent>
+    <PreBuildEvent>"$(ProjectDir)ScriptManager\compileifnewer.bat" "$(ProjectDir)ScriptManager\ine.ATG" "$(ProjectDir)ScriptManager\.ine.ATG" "$(ProjectDir)ScriptManager\coco.exe"</PreBuildEvent>
     <PostBuildEvent>rmdir "$(ProjectDir)$(OutDir)BaseScripts"
 Mklink /D "$(ProjectDir)$(OutDir)BaseScripts" "$(ProjectDir)BaseScripts"
 rmdir "$(ProjectDir)$(OutDir)Resources"

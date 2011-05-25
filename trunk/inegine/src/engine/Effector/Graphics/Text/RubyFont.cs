@@ -22,18 +22,6 @@ namespace INovelEngine.Effector.Graphics.Text
         }
         private FreeFont _rubyFont;
 
-        public Color RubyColor
-        {
-            get
-            {
-                return _rubyFont.Color;
-            }
-            set
-            {
-                _rubyFont.Color = value;
-            }
-        }
-
         public RubyFont(GraphicsDeviceManager manager, string fontPath, int size, string rubyFontPath, int rubysize)
             : base(manager, fontPath, size)
         {
@@ -73,7 +61,7 @@ namespace INovelEngine.Effector.Graphics.Text
                         //_rubyFont.DrawString(sprite, _rubyString, _rubyX, 0);
                         Size rubyStringSize = _rubyFont.Measure(_rubyString);
                         int pos = _rubyX + (penx - _rubyX - rubyStringSize.Width) / 2;
-                        _rubyFont.Color = this.Color;
+                        _rubyFont.Color = this.RubyColor;
                         _rubyFont.DrawString(sprite, _rubyString, _x + pos, _y + _rubyY - rubyStringSize.Height - 5);
 
                     }

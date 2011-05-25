@@ -43,7 +43,7 @@ IGNORE cr
 
 PRODUCTIONS
 INESCRIPT
-= "PROGRAM"                               (. gen.StartScript(); .)
+= "[INESCRIPT]"                               (. gen.StartScript(); .)
 Stat { Stat }                             (. gen.EndScript(); .).
 
 Stat                                 (. string val; .)

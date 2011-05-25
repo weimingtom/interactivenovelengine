@@ -1,44 +1,56 @@
 -- selection UI component implemented in lua
+LoadScript "components\\flowview.lua"
+
 Selector = LuaView:New();
 
 function Selector:Init()
 	local gamestate = CurrentState();	
 	local parent = self.parent;
-	local font = GetFont("default"); 
-	self.font = font;
 	local name = self.name;
 
 	self.selectionList = {}
 	self.selectionCount = 0
-	self.SelectionHeight = 50
+	self.SelectionHeight = 28
 	self.Margin = 10
 	self.SelectedIndex = -1
 	self.Layer = 0
 	
 	--self.frame = TextWindow()
-	self.frame = ImageWindow()
+	self.frame = SpriteBase()
 	self.frame.Name = name
-	self.frame.Alpha = 155
-	self.frame.Width = 320
-	self.frame.Height = 240
-	self.frame.X = (GetWidth() - self.frame.Width) / 2;
-	self.frame.Y = (GetHeight() - self.frame.Height) / 2;
-	self.frame.Layer = 10
-	self.frame.LineSpacing = 20
+	self.frame.texture = "resources/ui/selector.png"
+	self.frame.Alpha = 255
+	self.frame.Width = 329
+	self.frame.Height = 162
+	self.frame.X = 236
+	self.frame.Y = 192
+	self.frame.Layer = 20
 	self.frame.Visible = false
 	self.frame.Enabled = false
-	self.frame.Font = font
-    --self.frame.RectSize = 40;
-	--self.frame.WindowTexture = "resources/window.png"
-	self.frame.MouseLeave =
-		function(selectionWindow, event, args)
-			Trace("mouse leave: " .. selectionWindow.Name)	
-		end
-	
 	AddComponent(self.frame)
 	
-	self.nextx = self.Margin
-	self.nexty = self.Margin
+	local question = Button();
+	self.question = question;
+	question.x = 40;
+	question.Y = 30;
+	question.font = GetFont("small");
+	question.height = 30;
+	question.width = 289;
+	question.alignment = 0;
+	self.frame:AddComponent(question);
+	
+	local selectionBox = Flowview:New("dressview")
+	selectionBox.frame.relative = true;
+	selectionBox.frame.width = 289;
+	selectionBox.frame.height = 122;
+	selectionBox.frame.x = 35;
+	selectionBox.frame.y = 60;
+	selectionBox.frame.layer = 4;
+	selectionBox.spacing = 0;
+	selectionBox.padding = 0;
+	self.selectionBox = selectionBox;
+	self.frame:AddComponent(self.selectionBox.frame);
+	self.selectionBox:Show();
 end
 
 
@@ -47,11 +59,8 @@ function Selector:Remove()
 end
 
 function Selector:Show()
-	Trace("showing selector!")
-	self.frame.Layer = self.Layer
 	self.frame.Visible = true
 	self.frame.Enabled = true
-	Trace("layer: " .. self.Layer)
 end
 
 
@@ -60,58 +69,58 @@ function Selector:Hide()
 	self.frame.Enabled = false
 end
 
+function Selector:Ask(text)
+	self.question.text = text;
+end
+
+function Selector:SetMouseClick(event)
+	self.mouseClick = event;
+end
+
+function Selector:GetSelected()
+	local result = self.SelectedIndex;
+	self:Clear();
+	return result;
+end
 
 function Selector:Add(text)
 	local newSelection = TextWindow()
 	newSelection.Name = "selection" .. self.selectionCount;
-	newSelection.Alpha = 155
-	newSelection.Width = self.frame.Width - self.Margin * 2;
+	newSelection.Alpha = 0
+	newSelection.Width = 280;
 	newSelection.Height = self.SelectionHeight
 	newSelection.Relative = true;
-	newSelection.X = self.nextx;
-	newSelection.Y = self.nexty;
 	newSelection.Layer = 6
-	newSelection.LineSpacing = 20
+	newSelection.Margin = 0;
 	newSelection.Visible = true
-	newSelection.Font = self.frame.Font
-	newSelection.BackgroundColor = 0xFFFFFF
+	newSelection.Font = GetFont("selector");
 	newSelection.Text = text
-	newSelection.CenterText = true
-	newSelection.CenterTextVertically = true
+	newSelection.TextColor = 0x000000
+	newSelection.BackgroundColor = 0xFFFFFF
+	--newSelection.Alignment = 0
+	--newSelection.VerticalAlignment = 1
 	
 	local index = self.selectionCount;
 	newSelection.MouseClick =
 		function(selectionWindow, event, args)
 			self.SelectedIndex = index;
-			if (self.MouseClick ~= nil) then
+			if (self.mouseClick ~= nil) then
 				--self:Hide()
-				self:MouseClick()
+				self:mouseClick()
 			end
-		end
-	newSelection.MouseUp =
-		function(selectionWindow, event, args)
-			Trace("mouse up: " .. selectionWindow.Name)	
 		end
 	newSelection.MouseMove =
 		function(selectionWindow, event, args)
-			selectionWindow.Alpha = 200
+			newSelection.TextColor = 0xFF0000
 		end
 	newSelection.MouseLeave =
 		function(selectionWindow, event, args)
-			selectionWindow.Alpha = 155
+			newSelection.TextColor = 0x000000
 		end
-	self.frame:AddComponent(newSelection)
-	
+	self.selectionBox:Add(newSelection)
+	newSelection:Show();
 	table.insert(self.selectionList, newSelection.Name)
 	self.selectionCount = self.selectionCount + 1
-	self.nexty = self.nexty + newSelection.Height + self.Margin
-	self:SetDimensions()
-end
-
-function Selector:SetDimensions()
-	self.frame.Height = self.nexty
-	self.frame.X = (GetWidth() - self.frame.Width) / 2;
-	self.frame.Y = (GetHeight() - self.frame.Height) / 2;
 end
 
 function Selector:List()
@@ -121,12 +130,9 @@ function Selector:List()
 end
 
 function Selector:Clear()
-	for i,v in ipairs(self.selectionList) do 
-		self.frame:RemoveComponent(v) 
-	end
+	self.selectionBox:Clear();
 	self.selectionList = {}
 	self.selectionCount = 0
-	self.nextx = self.Margin
-	self.nexty = self.Margin
+	self.SelectedIndex = -1;
 end
 

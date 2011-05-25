@@ -762,6 +762,12 @@ namespace INovelEngine.Effector.Graphics.Text
             }
         }
 
+        public Color RubyColor
+        {
+            get;
+            set;
+        }
+
         #region IDisposable Members
 
         public void Dispose()
