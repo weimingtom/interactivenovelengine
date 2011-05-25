@@ -1,6 +1,6 @@
 --Import
 Calendar = {}
--- 2012≥‚¿Ã ¿∞º∫ 0≥‚, ø’±π∑¬ 314≥‚
+-- 2012≥‚¿Ã ¿∞º∫ 0≥ÅE ø’±π∑¬ 314≥ÅE
 function Calendar:New()
     local o = {}
 	setmetatable(o, self)
@@ -13,8 +13,14 @@ function Calendar:New()
     self.modifier = 0;
     self.weekLength = 7;
     self.weekNumber = 4;
-
+    
+	Calendar.instance = self;
+	
 	return o
+end
+
+function Calendar:GetInstance()
+	return Calendar.instance;
 end
 
 function Calendar:SetUpdateEvent(event)
@@ -44,6 +50,21 @@ end
 function Calendar:SetDate(year, month, day)
     self.year = year - self.modifier;
     self.month = month;
+    self.day = day;
+    self:Update();
+end
+
+function Calendar:SetYear(year)
+    self.year = year - self.modifier;
+    self:Update();
+end
+
+function Calendar:SetMonth(month)
+    self.month = month;
+    self:Update();
+end
+
+function Calendar:SetDay(day)
     self.day = day;
     self:Update();
 end
@@ -177,4 +198,8 @@ function Calendar:Save(target)
     saveString = saveString .. [[self:SetDate(]] ..  self:GetYear() .. "," 
 							..  self:GetMonth() .. "," .. self:GetDay() .. [[)]] .. "\n";    
     return saveString;
+end
+
+function SetDate(year, month, day)
+	Calendar:GetInstance():SetDate(year, month, day);
 end

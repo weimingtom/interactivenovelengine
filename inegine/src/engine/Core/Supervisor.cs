@@ -326,6 +326,8 @@ namespace INovelEngine
 
             ScriptManager.lua.RegisterFunction("Delay", this, this.GetType().GetMethod("Lua_DelayedCall"));
             ScriptManager.lua.RegisterFunction("LoadESS", this, this.GetType().GetMethod("Lua_LoadESS"));
+            ScriptManager.lua.RegisterFunction("AddESSCmd", this, this.GetType().GetMethod("Lua_AddESSCmd"));
+            ScriptManager.lua.RegisterFunction("ClearESSCmd", this, this.GetType().GetMethod("Lua_ClearESSCmd"));
             ScriptManager.lua.RegisterFunction("EssLine", this, this.GetType().GetMethod("Lua_GetESSLine"));
 
             ScriptManager.lua.RegisterFunction("SetVolume", this, this.GetType().GetMethod("Lua_SetVolume"));
@@ -453,11 +455,20 @@ namespace INovelEngine
             return result;
         }
 
+        public void Lua_AddESSCmd(string cmd)
+        {
+            ScriptManager.AddCommand(cmd);
+        }
+
+        public void Lua_ClearESSCmd()
+        {
+            ScriptManager.ClearCommands();
+        }
+
         public string Lua_GetESSLine(string path, int lineNumber)
         {
             return ScriptManager.GetESSLine(path, lineNumber);
         }
-
 
         public void Lua_SetTitle(string s)
         {

@@ -22,7 +22,7 @@ namespace INovelEngine.Effector
 
         protected TextNarrator textNarrator;
 
-        protected Color _textColor;
+        protected Color _textColor, _rubyColor;
         protected bool printOverCalled;
 
         public TextWindow()
@@ -49,6 +49,20 @@ namespace INovelEngine.Effector
             {
                 this._textColor = Color.FromArgb(value);
                 this._textColor = Color.FromArgb(255, _textColor); 
+            }
+        }
+
+        public int RubyColor
+        {
+            get
+            {
+                return this._rubyColor.ToArgb();
+            }
+
+            set
+            {
+                this._rubyColor = Color.FromArgb(value);
+                this._rubyColor = Color.FromArgb(255, _rubyColor);
             }
         }
 
@@ -299,6 +313,7 @@ namespace INovelEngine.Effector
             //}
             //else
             //{
+            TextRenderer.rubyColor = Color.FromArgb(255, this._rubyColor);
             TextRenderer.DrawText(this.sprite, this.freeFont, isStatic ? textNarrator.SourceString : textNarrator.OutputString,
                                   this.RealX + leftMargin, this.RealY + topMargin,
                                   Width - leftMargin * 2, Height - _margin * 2, Color.FromArgb(255, this._textColor));

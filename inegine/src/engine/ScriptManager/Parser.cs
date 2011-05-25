@@ -205,7 +205,7 @@ public class Errors {
 			case 3: s = "litstring expected"; break;
 			case 4: s = "numericstring expected"; break;
 			case 5: s = "label expected"; break;
-			case 6: s = "\"PROGRAM\" expected"; break;
+			case 6: s = "\"[INESCRIPT]\" expected"; break;
 			case 7: s = "??? expected"; break;
 			case 8: s = "invalid Stat"; break;
 

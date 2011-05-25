@@ -37,9 +37,16 @@ namespace INovelEngine.Effector
             set;
         }
 
+        public bool FadeOn
+        {
+            get;
+            set;
+        }
+
         public Tachie()
         {
             firstTime = true;
+            FadeOn = true;
             FadeTime = 300;
             sourceArea = new Rectangle();
             BackgroundWidth = Supervisor.GetInstance().GetWidth();
@@ -87,7 +94,14 @@ namespace INovelEngine.Effector
 
                     oldDressSprite = dressSprite;
                     oldDressSprite.Layer = 5;
-                    oldDressSprite.FadeOut(FadeTime * 2);
+                    if (FadeOn)
+                    {
+                        oldDressSprite.FadeOut(FadeTime * 2);
+                    }
+                    else
+                    {
+                        oldDressSprite.Hide();
+                    }
                 }
 
                 dressSprite = new SpriteBase();
@@ -100,7 +114,14 @@ namespace INovelEngine.Effector
 
                 if (!firstTime)
                 {
-                    dressSprite.FadeIn(FadeTime);
+                    if (FadeOn)
+                    {
+                        dressSprite.FadeIn(FadeTime);
+                    }
+                    else
+                    {
+                        dressSprite.Hide();
+                    }
                 }
 
                 firstTime = false;

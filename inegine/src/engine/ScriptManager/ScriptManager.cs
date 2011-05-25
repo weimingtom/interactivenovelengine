@@ -156,7 +156,8 @@ namespace INovelEngine.Script
     public static class ScriptManager
     {
         public static Lua lua = new Lua();
-            
+        private static List<String> commandList = new List<string>();
+    
         public static void Init()
         {
             try
@@ -166,6 +167,19 @@ namespace INovelEngine.Script
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+            }
+        }
+
+        public static void ClearCommands()
+        {
+            commandList.Clear();
+        }
+
+        public static void AddCommand(string cmd)
+        {
+            if (!commandList.Contains(cmd))
+            {
+                commandList.Add(cmd);
             }
         }
 
@@ -193,7 +207,9 @@ namespace INovelEngine.Script
     
             Parser parser = new Parser(scanner);
             parser.gen = new CodeGenerator();
+            parser.gen.CommandList = commandList;
             parser.Parse();
+            
             return parser.gen.GetScript();
         }
 

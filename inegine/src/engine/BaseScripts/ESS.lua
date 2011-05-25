@@ -1,17 +1,26 @@
 -- ESS lua module
 
+function RegisterESSEventHandler(handler)
+	ESSEventHandler = handler;
+end
+
+function UnregisterESSEventHandler()
+	ESSEventHandler = nil;
+end
+
 -- lua functions for managing ESS execution (called by lua/ESS scripts)
 function BeginESS(script)
     EssOver = false;
-    local currentState = CurrentState().state;
-	if (currentState.TextOut == nil or currentState.Clear == nil) then
+	if (ESSEventHandler == nil or ESSEventHandler.TextOut == nil or ESSEventHandler.Clear == nil) then
 		Trace "ESS interface undefined!"
 		return
 	end
 	Trace(script)
-	Trace "trying to load another script..."
-	local co = coroutine.create(assert(loadstring(LoadESS(script))))
-	Trace "resuming!..."
+	local translatedScript = LoadESS(script);
+	if (translatedScript == nil) then
+		error("ESScript execution error");
+	end
+	local co = coroutine.create(assert(loadstring(translatedScript)))
 	if (CurrentState().state == nil) then
 		CurrentState().state = {};
 	end
@@ -33,7 +42,7 @@ function ResumeEss()
 end
 
 function YieldESS()
-	Trace "yielding..."
+	Trace("----yielding!----");
 	coroutine.yield();
 end
 
@@ -56,106 +65,41 @@ function ESSOver()
 	end
 end
 
-function Wait(delay)
-	Delay(delay, function() ResumeEss() end)
-	coroutine.yield();
-end
-
-
 -- ESS text handling functions (used in string literals...)
 function PrintOver(state, luaevent, args) --called by ESS scripts when printing is over after yielding
-	CurrentState().state:PrintOver(state, luaevent, args)
+	ESSEventHandler:PrintOver(state, luaevent, args)
 end
 
 function TextOut(value) --called by ESS scripts to output text
-	CurrentState().state:TextOut(value)
+	ESSEventHandler:TextOut(value)
 end
 
 function Clear() --called by ESS scripts to clear text
-	CurrentState().state:Clear();
+	ESSEventHandler:Clear();
 end
 
 function ESSOverHandler() --called by ESS scripts when entire script is over
-	local state = CurrentState().state;
-	if (state ~= nil and state.ESSOverHandler ~= nil) then 
-		state:ESSOverHandler()
+	if (ESSEventHandler ~= nil and ESSEventHandler.ESSOverHandler ~= nil) then 
+		ESSEventHandler:ESSOverHandler()
     end
 end
 
--- ESS function synonyms (called by ESS as functions i.e. "#LoadScene "bgimg1", "Resources/daughterroom.png""
+-- ESS function synonyms (called by ESS as functions i.e. "#loadscene "bgimg1", "Resources/daughterroom.png""
 
--- for image handling
--- Scene & character managing functions
-
-function LoadSound(id, path)
-	try(function()
-		local sound = Sound();
-		sound.Name = id
-		sound.FileName = path;
-		sound.Loop = false;
-		InitResource(sound)	
-	end, "loading sound failed", 3);
+function wait(delay)
+	Delay(delay, function() ResumeEss() end)
+	coroutine.yield();
 end
+AddESSCmd("wait");
 
-function Load(id, image)
-	local status, bgimg = pcall(SpriteBase);
-	bgimg.Name = id
-	bgimg.Texture = image
-	bgimg.Visible = false;
-	bgimg.Layer = 0;
-	InitComponent(bgimg);
+--sound functions
+
+function play(id)
+	GetSound(id):Play()
 end
+AddESSCmd("play");
 
-function LoadCharacter(id, image)
-	local status, newCharacter = pcall(SpriteBase);
-	if (status) then
-		newCharacter.Name = id;
-		newCharacter.Texture = image;
-		newCharacter.X = (GetWidth() - newCharacter.Width)/2;
-		newCharacter.Y = (GetHeight() - newCharacter.Height);
-		newCharacter.Layer = 2;
-		newCharacter.Visible = false;
-		InitComponent(newCharacter);
-		Trace("loading " .. id .. " done (" .. newCharacter.Width .. "," .. newCharacter.Height .. ")");
-	else
-		Trace("loading " .. id .. " failed");
-	end
-end
-
-function Center(id)
-	local component = GetComponent(id)
-	if (component ~= nil) then
-		component.X = (GetWidth() - component.Width)/2;
-		component.Y = (GetHeight() - component.Height)/2;
-	else
-		Trace("invalid id: " .. id);
-	end
-end
-
-function Play(id)
-	local sound = GetResource(id)
-	if (sound ~= nil) then	
-		try(function()
-			if (delay == nil) then
-				sound:Play()
-			end
-		end, "playing sound " .. id  .. " failed", 3);
-	else
-		Trace("invalid id: " .. id);
-	end
-end
-
-function Volume(id, vol)
-
-	local sound = GetResource(id)
-	if (sound ~= nil) then
-		sound.Volume = vol;
-	else
-		Trace("invalid id: " .. id);
-	end
-end
-
-function Stop(id, delay)
+function stop(id, delay)
 	local sound = GetResource(id)
 	if (sound ~= nil) then
 		if (delay == nil) then
@@ -167,103 +111,57 @@ function Stop(id, delay)
 		Trace("invalid id: " .. id);
 	end
 end
+AddESSCmd("stop");
 
-function Show(id, delay)
-	local component = GetComponent(id)
-    if (delay == nil) then delay = 0; end
-	if (component ~= nil) then
-		component:LaunchTransition(delay, true) 
+function mute(delay)
+	if (delay == nil) then
+		delay = 0;
+	end
+	StopSounds(delay);
+end
+AddESSCmd("mute");
+
+function vol(id, vol)
+	local sound = GetResource(id)
+	if (sound ~= nil) then
+		sound.Volume = vol;
 	else
 		Trace("invalid id: " .. id);
 	end
 end
+AddESSCmd("vol");
 
-function Alpha(id, level)
-	local component = GetComponent(id)
-	if (component ~= nil) then
-		component.Alpha = level 
-	else
-		Trace("invalid id: " .. id);
-	end
+function sysvol(id, vol)
+	SetVolume(vol);
 end
+AddESSCmd("sysvol");
 
-function Hide(id, delay)
-	local component = GetComponent(id)
-    if (delay == nil) then delay = 0; end
-	if (component ~= nil) then
-		component:LaunchTransition(delay, false)	
-	else
-		Trace("invalid id: " .. id);
-	end
+---- for selection window
+--function AddSelection(text)
+	--CurrentState().state:AddSelection(text)
+--end
+--
+--function ShowSelection()
+	--CurrentState().state:ShowSelection()
+--end
+--
+--function SelectionOver(index)
+	--CurrentState().state:SelectionOver(index)
+--end
+
+--transition control functions
+
+function foi(duration, color)
+    FadeOutIn(duration, color);
 end
+AddESSCmd("foi");
 
-function Dissolve(id1, id2)
-	local first = GetComponent(id1)
-	local second = GetComponent(id2)
-	
-	if (second.Layer > first.Layer) then
-		local swap = first.Layer
-		first.Layer = second.Layer
-		second.Layer = swap
-	elseif(second.Layer == first.Layer) then
-		first.Layer = first.Layer + 1
-	end
-	--Trace(first.Layer .. " vs " .. second.Layer)
-	Show(id2, 0)
-	Hide(id1, 500)
+function fo(duration, color)
+	FadeOut(duration, color);
 end
+AddESSCmd("fo");
 
-
--- for selection window
-
-function AddSelection(text)
-	CurrentState().state:AddSelection(text)
+function fi(duration, color)
+    FadeIn(duration, color);
 end
-
-function ShowSelection()
-	CurrentState().state:ShowSelection()
-end
-
-function SelectionOver(index)
-	CurrentState().state:SelectionOver(index)
-end
-
-function Name(name, image)
-	CurrentState().state:Name(name, image)
-end
-
-function Nar()
-	CurrentState().state:Nar()
-end
-
-function HideCursor()
-	CurrentState().state:HideCursor()
-end
-
-function ShowCursor()
-	CurrentState().state:ShowCursor()
-end
-
-function HideDialogue()
-	CurrentState().state:HideDialogue()
-end
-
-function ShowDialogue()
-	CurrentState().state:ShowDialogue()
-end
-
-function FadeOutIn(duration, color)
-    if color == nil then color = 0xFFFFFF end
-    GetFader():FadeOutIn(GetWidth(), GetHeight(), duration, color);
-end
-
-function FadeOut(duration, color)
-	Trace(">>>fading out!");
-    if color == nil then color = 0xFFFFFF end
-    GetFader():Fade(GetWidth(), GetHeight(), duration, false, color);
-end
-
-function FadeIn(duration, color)
-    if color == nil then color = 0xFFFFFF end
-    GetFader():Fade(GetWidth(), GetHeight(), duration, true, color);
-end
+AddESSCmd("fi");

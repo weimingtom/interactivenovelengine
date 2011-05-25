@@ -15,7 +15,6 @@ inventoryManager = InventoryManager:New();
 
 inventoryManager:AddItem("ewear");
 inventoryManager:AddItem("pajamas");
-
 inventoryManager:EquipItem("ewear");
 
 --calendar

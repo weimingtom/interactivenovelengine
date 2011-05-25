@@ -39,7 +39,13 @@ function Main:New()
     
     StopSounds(1000);
 	    
+	Main.instance = self;
+	
 	return o
+end
+
+function Main:GetInstance()
+	return Main.instance;
 end
 
 --Component initialization
@@ -570,24 +576,29 @@ function Main:ProcessEvents(first)
 	local events = self.eventList;
 	if (table.getn(events) > 0) then
 		local nextItem = table.remove(events);
-		Trace("executing event: " .. nextItem.id);
 		Delay(delay,
 			function()
-				self:OpenEvent(nextItem.script);
+				self:OpenEvent(nextItem.script,
+						function()     
+							self:ProcessEvents(false);		
+						end);
 			end
 		)
 	else
 		FadeIn(1000)
-		Trace("no more event to process - returning to main ");
 		self:Enable();
 	end
 end
 
-function Main:OpenEvent(eventScript)
-    OpenState("event", "event/eventstate.lua", eventScript,
-    function()     
-		self:ProcessEvents(false);		
-    end)
+function Main:OpenEvent(eventScript, closingEvent)
+	Trace("executing event: " .. eventScript);
+	if (closingEvent == nil) then
+		closingEvent = 
+		function()     
+			FadeIn(1000)
+		end
+	end
+    OpenState("event", "event/eventstate.lua", eventScript, closingEvent);
 end
 
 --wallpaper
@@ -695,6 +706,18 @@ end
 main = Main:New();
 CurrentState().state = main;
 
+--set global actions
+function Event(event)
+	if (main ~= nil) then
+		Main:GetInstance():OpenEvent(event);
+	end
+end
+
 --extra actions
 main:Invalidate();
 main:SetBackground("resources/images/room03.jpg");
+
+
+
+--test code
+--main:OpenEvent("resources/event/testevent.ess",

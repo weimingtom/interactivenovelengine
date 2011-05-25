@@ -59,6 +59,21 @@ function GetComponent(id)
     return CurrentState():GetComponent(id);
 end
 
+function FadeOutIn(duration, color)
+    if color == nil then color = 0xFFFFFF end
+    GetFader():FadeOutIn(GetWidth(), GetHeight(), duration, color);
+end
+
+function FadeOut(duration, color)
+    if color == nil then color = 0xFFFFFF end
+    GetFader():Fade(GetWidth(), GetHeight(), duration, false, color);
+end
+
+function FadeIn(duration, color)
+    if color == nil then color = 0xFFFFFF end
+    GetFader():Fade(GetWidth(), GetHeight(), duration, true, color);
+end
+
 function DebugString(level)
 	local info = debug.getinfo(level)
 	local source = info.short_src;

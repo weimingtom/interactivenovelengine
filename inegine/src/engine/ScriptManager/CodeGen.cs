@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
 
 namespace INovelEngine.Script
 {
@@ -8,8 +9,15 @@ namespace INovelEngine.Script
     public class CodeGenerator
     {
         private StringBuilder compiledScript = new StringBuilder("");
-        
-        
+        private int row, col;
+        private Errors error = new Errors();
+
+        public List<String> CommandList
+        {
+            get;
+            set;
+        }
+
         private enum FunctionType
         {
             Function, Goto, Load, If, Elseif, Else, Ifend, Return
@@ -70,9 +78,18 @@ namespace INovelEngine.Script
             }
             else
             {
-                callType = FunctionType.Function;
-                compiledScript.Append(name);
-                compiledScript.Append("(");
+                foreach (string cmd in CommandList)
+                {
+                    if (cmd.Equals(name))
+                    {
+                        callType = FunctionType.Function;
+                        compiledScript.Append(name);
+                        compiledScript.Append("(");
+                        return;
+                    }
+                }
+                error.SemErr(row, col, name + " is unrecognized");
+                throw new Exception("ESS parsing error");
             }
         }
 
@@ -212,7 +229,9 @@ namespace INovelEngine.Script
 
         /* todo: toggle for debug/production mode? */
         public void SetDebugInfo(int row, int col)
-        {   
+        {
+            this.row = row;
+            this.col = col;
             //compiledScript.Append("currentLine = " + row + "; ");
             //compiledScript.Append("currentCol = " + col + ";\n");
         }
