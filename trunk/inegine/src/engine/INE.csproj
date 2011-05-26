@@ -137,6 +137,7 @@
     <Compile Include="Effector\Graphics\Components\IComponentManager.cs" />
     <Compile Include="Effector\Graphics\Components\Label\Label.cs" />
     <Compile Include="Effector\Graphics\Components\Sprite\AnimatedSprite.cs" />
+    <Compile Include="Effector\Graphics\Components\Sprite\FadingSprite.cs" />
     <Compile Include="Effector\Graphics\Components\Sprite\Tachie.cs" />
     <Compile Include="Effector\Graphics\Components\View\View.cs" />
     <Compile Include="Effector\Graphics\Components\Window\TextNarrator.cs" />
@@ -330,6 +331,8 @@
     <Content Include="Resources\sampler\resources\button\button2.png" />
     <Content Include="Resources\sampler\resources\button\tabbutton.png" />
     <Content Include="Resources\sampler\resources\calendar.png" />
+    <Content Include="Resources\sampler\resources\cg\03_2.jpg" />
+    <Content Include="Resources\sampler\resources\cg\cg01.jpg" />
     <Content Include="Resources\sampler\resources\down.png" />
     <Content Include="Resources\sampler\resources\icon.png" />
     <Content Include="Resources\sampler\resources\icon\i01.png" />

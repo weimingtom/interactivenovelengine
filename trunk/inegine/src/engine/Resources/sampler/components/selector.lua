@@ -25,8 +25,7 @@ function Selector:Init()
 	self.frame.X = 236
 	self.frame.Y = 192
 	self.frame.Layer = 20
-	self.frame.Visible = false
-	self.frame.Enabled = false
+	self.frame:Hide();
 	AddComponent(self.frame)
 	
 	local question = Button();
@@ -59,14 +58,14 @@ function Selector:Remove()
 end
 
 function Selector:Show()
-	self.frame.Visible = true
-	self.frame.Enabled = true
+	self.frame.enabled = true;
+	self.frame:FadeIn(250);
 end
 
 
 function Selector:Hide()
-	self.frame.Visible = false
-	self.frame.Enabled = false
+	self.frame.enabled = false;
+	self.frame:FadeOut(250);
 end
 
 function Selector:Ask(text)
@@ -84,9 +83,8 @@ function Selector:GetSelected()
 end
 
 function Selector:Add(text)
-	local newSelection = TextWindow()
+	local newSelection = Button()
 	newSelection.Name = "selection" .. self.selectionCount;
-	newSelection.Alpha = 0
 	newSelection.Width = 280;
 	newSelection.Height = self.SelectionHeight
 	newSelection.Relative = true;
@@ -96,9 +94,8 @@ function Selector:Add(text)
 	newSelection.Font = GetFont("selector");
 	newSelection.Text = text
 	newSelection.TextColor = 0x000000
-	newSelection.BackgroundColor = 0xFFFFFF
-	--newSelection.Alignment = 0
-	--newSelection.VerticalAlignment = 1
+	newSelection.Alignment = 0
+	newSelection.VerticalAlignment = 1
 	
 	local index = self.selectionCount;
 	newSelection.MouseClick =

@@ -29,22 +29,29 @@ TestInventory = {}
         inventory:AddItem("testItem2");
         inventory:AddItem("testItem3");
         inventory:AddItem("testItem4", nil, 2);
+        inventory:AddItem("testItem5", nil, 10);
 
         
 		assertEquals(true, inventory:ItemExists("testItem1"))
 		assertEquals(true, inventory:ItemExists("testItem2"))
 		assertEquals(true, inventory:ItemExists("testItem3"))
 		assertEquals(true, inventory:ItemExists("testItem4"))
+		assertEquals(true, inventory:ItemExists("testItem5"))
 
         inventory:RemoveItem("testItem1");
         inventory:RemoveItem("testItem2");
         inventory:RemoveItem("testItem3");
         inventory:RemoveItem("testItem4");
+        inventory:RemoveItem("testItem5", 5);
 
 		assertEquals(false, inventory:ItemExists("testItem1"))
 		assertEquals(false, inventory:ItemExists("testItem2"))
 		assertEquals(false, inventory:ItemExists("testItem3"))
 		assertEquals(true, inventory:ItemExists("testItem4"))
+		assertEquals(true, inventory:ItemExists("testItem5"))
+
+        inventory:RemoveItem("testItem5", 5);
+		assertEquals(false, inventory:ItemExists("testItem5"))
     end
 
     function TestInventory:testGetItems()

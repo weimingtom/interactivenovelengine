@@ -8,13 +8,20 @@ function Character:New()
 	
 	self.status = {}
 	self.statusNames = {}
+	self.flag = {}
 	self.max = {}
 	self.min = {}
 	self.trigger = {}
 	self.dress = nil;
 	self:Initialize();	
 	
+	Character.instance = o;
+	
 	return o
+end
+
+function Character:GetInstance()
+	return Character.instance;
 end
 
 function Character:Initialize()
@@ -83,6 +90,18 @@ function Character:Add(key, value, min, max)
     self.status[key] = value;
     self.min[key] = min;
     self.max[key] = max;
+end
+
+function Character:SetFlag(id, value)
+	self.flag[id] = value;
+end
+
+function Character:GetFlag(id)
+	if (self.flag[id] ~= nil)  then
+		return self.flag[id];
+	else
+		return false;
+	end
 end
 
 function Character:Inc(key, value)
@@ -280,7 +299,15 @@ function Character:Save(target)
 	for i,v in pairs(self.status) do
         saveString = saveString .. "self:Set(\"" .. i .. "\"," .. v .. ")\n";
     end
-    
+      
+	for i,v in pairs(self.flag) do
+		local trueString = "false";
+		if (v) then
+			trueString = "true";
+		end
+        saveString = saveString .. "self:SetFlag(\"" .. i .. "\"," .. trueString .. ")\n";
+    end
+      
     return saveString;
 end
 
@@ -293,4 +320,32 @@ function Character:DumpTrace()
     for i,v in pairs(self.status) do
         Trace(i .. " : " .. v );
     end
+end
+
+function SetStat(stat, amount)
+	Character:GetInstance():Inc(stat, amount);
+end
+
+function GetStat(stat)
+	return Character:GetInstance():Get(stat);
+end
+
+function SetFlag(id, value)
+	Character:GetInstance():SetFlag(id, value);
+end
+
+function GetFlag(id)
+	return Character:GetInstance():GetFlag(id);
+end
+
+function Fathername()
+	return Character:GetInstance():GetFatherName();
+end
+
+function Lastname()
+	return Character:GetInstance():GetLastName();
+end
+
+function Firstname()
+	return Character:GetInstance():GetFirstName();
 end

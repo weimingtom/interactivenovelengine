@@ -50,7 +50,7 @@ namespace INovelEngine.Effector
             dressFirstTime = true;
             bodyFirstTime = true;
             FadeOn = true;
-            FadeTime = 300;
+            FadeTime = 150;
             Position = 0.5f;
             Width = 380;
             Height = 600;
@@ -136,7 +136,7 @@ namespace INovelEngine.Effector
                     oldDressSprite.Layer = 5;
                     if (FadeOn)
                     {
-                        oldDressSprite.FadeOut(FadeTime * 2);
+                        oldDressSprite.FadeOut(FadeTime * 3);
                     }
                     else
                     {
@@ -245,5 +245,7 @@ namespace INovelEngine.Effector
         {
             base.Dispose();
         }
+
+
     }
 }

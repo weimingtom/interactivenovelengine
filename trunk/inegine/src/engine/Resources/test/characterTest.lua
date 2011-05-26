@@ -28,9 +28,15 @@ function TestCharacter:testGetSetStatus()
 	character:Set("int", 1);
 	character:Set("cha", 2);
 	character:Set("wis", 3);
+	character:SetFlag(0, true);
+	character:SetFlag(1, false);
+	character:SetFlag("0", false);
 	assertEquals(1, character:Get("int"))
 	assertEquals(2, character:Get("cha"))
 	assertEquals(3, character:Get("wis"))
+	assertEquals(true, character:GetFlag(0))
+	assertEquals(false, character:GetFlag(1))
+	assertEquals(false, character:GetFlag(2))
 	
 	local keys = character:GetKeys();
 	
@@ -129,6 +135,9 @@ function TestCharacter:testSave()
 	character:Set("cha", 2);
 	character:Set("wis", 3);
 	character:SetBirthday(3, 19);
+	character:SetFlag(0, true);
+	character:SetFlag(1, false);
+	character:SetFlag("2", false);
 
     local saveString = character:Save("character");
     print(saveString);

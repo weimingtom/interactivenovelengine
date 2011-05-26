@@ -22,7 +22,6 @@ namespace INovelEngine.Effector
             set
             {
                 _textColor = Color.FromArgb(value);
-                _textColor = Color.FromArgb(255, _textColor);
             }
         }
 
@@ -154,12 +153,12 @@ namespace INovelEngine.Effector
             if (pushed)
             {
                 TextRenderer.DrawText(this.sprite, this.freeFont, Text, this.RealX + leftMargin + 2,
-                                      this.RealY + topMargin + 2, Width - leftMargin * 2, Height - topMargin * 2, _textColor);
+                                      this.RealY + topMargin + 2, Width - leftMargin * 2, Height - topMargin * 2, Color.FromArgb(this.renderColor.A, _textColor));
             }
             else
             {
                 TextRenderer.DrawText(this.sprite, this.freeFont, Text, this.RealX + leftMargin,
-                                       this.RealY + topMargin, Width - leftMargin * 2, Height - topMargin * 2, _textColor);
+                                       this.RealY + topMargin, Width - leftMargin * 2, Height - topMargin * 2, Color.FromArgb(this.renderColor.A, _textColor));
             }
         }
 

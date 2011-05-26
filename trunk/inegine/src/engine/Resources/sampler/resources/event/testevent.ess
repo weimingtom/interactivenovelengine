@@ -2,11 +2,6 @@
 #fi 1000
 #sd
 #bg "resources/images/room04.jpg"
-#ld 0, "resources/scg/ma.png", "resources/scg/d01.png"
-|changing clothing@
-#ld 0, "resources/scg/ma.png", "resources/scg/d05.png"
-|hiding tachie@
-#cl
 |testing selection@
 #sel "TEST1"
 #sel "TEST2"
@@ -14,6 +9,27 @@
 #ask "WHICH OF THIS?"
 |result is...@
 <selres()>. OK.@
+|Losing item...@
+#itemloss "sundaybest"
+|showing CG@
+#cg "resources/cg/cg01.jpg", 500
+|switching CG@
+#cg "resources/cg/03_2.jpg"
+|Hiding CG@
+#hcg 1000
+#if flag("test") == false
+|Flag is false@
+#flag "test", true
+#else
+|Flag is true@
+#end
+|I have <stat("gold")> gold@
+#ld 0, "resources/scg/ma.png", "resources/scg/d01.png"
+#sl 0, 500
+|changing clothing@
+#ld 0, "resources/scg/ma.png", "resources/scg/d05.png"
+|hiding tachie@
+#cl 0, 500
 |On the way@|[r=HOME]home[/r], I fell.@
 #name "Anna", "resources/images/f1.png"
 ;#Show "musume1", 100
@@ -22,6 +38,6 @@ What should I do? Damn...
 Haha...@
 #nar
 |She went home.
-|Hmm.. <FatherName()>testing@
+|Hmm.. <father()>testing@
 #fo 1000
 #wait 1000
