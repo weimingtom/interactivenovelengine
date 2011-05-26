@@ -22,11 +22,13 @@ namespace INovelEngine.Effector
             }
         }
 
-        private INETexture bodyTexture;
+        private SpriteBase oldBodySprite;
+        private SpriteBase bodySprite;
         private SpriteBase oldDressSprite;
         private SpriteBase dressSprite;
 
-        private bool firstTime;
+        private bool dressFirstTime;
+        private bool bodyFirstTime;
         
         private Rectangle sourceArea;
         private float relativePosition;
@@ -45,9 +47,13 @@ namespace INovelEngine.Effector
 
         public Tachie()
         {
-            firstTime = true;
+            dressFirstTime = true;
+            bodyFirstTime = true;
             FadeOn = true;
             FadeTime = 300;
+            Position = 0.5f;
+            Width = 380;
+            Height = 600;
             sourceArea = new Rectangle();
             BackgroundWidth = Supervisor.GetInstance().GetWidth();
         }
@@ -56,26 +62,55 @@ namespace INovelEngine.Effector
         {
             get
             {
-                if (this.bodyTexture != null)
-                {
-                    return this.bodyTexture.TextureFile;
-                }
-                else
-                {
-                    return null;
-                }
+                return this.bodySprite.Texture;
             }
             set
             {
-                if (this.bodyTexture != null) resources.Remove(bodyTexture);
-                bodyTexture = new INETexture(value);
-                resources.Add(bodyTexture);
-                if (this.loaded)
+                if (this.bodySprite != null && this.bodySprite.Texture == value) 
                 {
-                    bodyTexture.Initialize(manager);
-                    bodyTexture.LoadContent();
+                    return; //do nothing since nothing changed
                 }
-                SetDimensions(bodyTexture);
+
+                if (!bodyFirstTime)
+                {
+                    if (oldBodySprite != null)
+                        RemoveComponent(oldBodySprite.Name);
+
+                    oldBodySprite = bodySprite;
+                    oldBodySprite.Layer = 5;
+                    if (FadeOn)
+                    {
+                        oldBodySprite.FadeOut(FadeTime * 2);
+                    }
+                    else
+                    {
+                        oldBodySprite.Hide();
+                    }
+                }
+
+                bodySprite = new SpriteBase();
+                bodySprite.Layer = 9;
+                bodySprite.Texture = value;
+                bodySprite.Relative = true;
+                bodySprite.X = 0;
+                bodySprite.Y = 0;
+                bodySprite.Width = Width;
+                bodySprite.Height = Height;
+                AddComponent(bodySprite);
+
+                if (!bodyFirstTime)
+                {
+                    if (FadeOn)
+                    {
+                        bodySprite.FadeIn(FadeTime);
+                    }
+                    else
+                    {
+                        bodySprite.Show();
+                    }
+                }
+
+                bodyFirstTime = false;
             }
         }
 
@@ -87,7 +122,12 @@ namespace INovelEngine.Effector
             }
             set
             {
-                if (!firstTime)
+                if (this.dressSprite != null && this.dressSprite.Texture == value)
+                {
+                    return; //do nothing since nothing changed
+                }
+
+                if (!dressFirstTime)
                 {
                     if (oldDressSprite != null)
                         RemoveComponent(oldDressSprite.Name);
@@ -110,9 +150,11 @@ namespace INovelEngine.Effector
                 dressSprite.Relative = true;
                 dressSprite.X = 0;
                 dressSprite.Y = 0;
+                dressSprite.Width = Width;
+                dressSprite.Height = Height;
                 AddComponent(dressSprite);
 
-                if (!firstTime)
+                if (!dressFirstTime)
                 {
                     if (FadeOn)
                     {
@@ -120,11 +162,11 @@ namespace INovelEngine.Effector
                     }
                     else
                     {
-                        dressSprite.Hide();
+                        dressSprite.Show();
                     }
-                }
+               }
 
-                firstTime = false;
+                dressFirstTime = false;
             }
         }
 
@@ -157,23 +199,16 @@ namespace INovelEngine.Effector
         #region IGameComponent Members
 
         protected override void DrawInternal()
-        {
-            sprite.Begin(SpriteFlags.AlphaBlend);        
-            if (this.bodyTexture != null)
+        {   
+            if (BackgroundWidth > 100 && Width > 50 && relativePosition > 0f && relativePosition < 1f)
             {
-                sprite.Draw(this.bodyTexture.Texture, this.sourceArea, new Vector3(), new Vector3(RealX, RealY, 0), renderColor);
+                X = (int)(BackgroundWidth * relativePosition - Width / 2);
             }
-            sprite.End();
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-
-            if (BackgroundWidth > 100 && Width > 50 && relativePosition > 0f && relativePosition < 1f)
-            {
-                X = (int)(BackgroundWidth * relativePosition - Width / 2);
-            }
         }
 
         #endregion
