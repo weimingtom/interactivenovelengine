@@ -200,25 +200,46 @@ namespace INovelEngine.Script
         public string ReplaceString(string content)
         {
             StringBuilder output = new StringBuilder();
-            content = content.Replace("\"", "\\\""); // escape " characters so it won't interfere...
+            //content = content.Replace("\"", "\\\""); // escape " characters so it won't interfere...
             int index = content.IndexOf('<');
             int endindex = content.IndexOf('>');
             if (index > -1)
             {
                 while (index > -1 && endindex > -1 && index < endindex)
                 {
-                    output.Append(content.Substring(0, index));
-                    output.Append("\" .. ");
-                    output.Append(content.Substring(index + 1, endindex - index - 1));
-                    output.Append(" .. \"");
+                    output.Append(content.Substring(0, index).Replace("\"", "\\\""));
+                    output.Append("\" .. tostring(");
+                    String token = content.Substring(index + 1, endindex - index - 1);
+
+                    int tokenIndex = token.IndexOf('(');
+                    if (tokenIndex < 0 || !checkToken(token.Substring(0, tokenIndex)))
+                    {
+                        error.SemErr(row, col, token.Substring(0, tokenIndex) + " is unrecognized");
+                        throw new Exception("ESS parsing error");
+                    }
+                    output.Append(token);
+                    
+                    output.Append(") .. \"");
                     if (index <= content.Length - 1) content = content.Substring(endindex + 1);
                     index = content.IndexOf('<');
                     endindex = content.IndexOf('>');
                 }
 
             }
-            output.Append(content);
+            output.Append(content.Replace("\"", "\\\""));
             return output.ToString();
+        }
+
+        private bool checkToken(string token)
+        {
+            foreach (string cmd in CommandList)
+            {
+                if (cmd.Equals(token))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void AddText(string val)
