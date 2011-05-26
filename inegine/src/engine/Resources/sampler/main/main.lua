@@ -53,6 +53,12 @@ function Main:InitComponents()
 	
 	local gamestate = self.gamestate;
 
+
+	local background = SpriteBase();
+	self.background = background;
+	background.Layer = 1;
+	InitComponent(background);
+	
 	local calendarBackground = SpriteBase();
 	calendarBackground.Name = "calBackground";
 	self.calendarBackground = calendarBackground;
@@ -603,16 +609,7 @@ end
 
 --wallpaper
 function Main:SetBackground(filename)
-	if (GetComponent("background") ~= nil) then
-		RemoveComponent("background");
-	end
-	
-	local background = SpriteBase();
-	background.Name = "background";
-	background.Texture = filename
-	background.Visible = true;
-	background.Layer = 0;
-	InitComponent(background);
+	self.background.texture = filename;
 end
 
 --tachie
@@ -721,3 +718,6 @@ main:SetBackground("resources/images/room03.jpg");
 
 --test code
 --main:OpenEvent("resources/event/testevent.ess",
+function test()
+	Event("resources/event/testevent.ess");
+end

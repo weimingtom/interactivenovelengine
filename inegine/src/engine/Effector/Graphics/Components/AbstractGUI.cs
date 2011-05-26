@@ -187,14 +187,24 @@ namespace INovelEngine.Effector
             this.Enabled = true;
         }
 
-        public void FadeIn(float duration)
+        public virtual void FadeIn(float duration)
         {
             LaunchTransition(duration, true);
+
+            foreach (AbstractGUIComponent component in this.componentList)
+            {
+                component.FadeIn(duration);
+            }
         }
 
-        public void FadeOut(float duration)
+        public virtual void FadeOut(float duration)
         {
             LaunchTransition(duration, false);
+
+            foreach (AbstractGUIComponent component in this.componentList)
+            {
+                component.FadeOut(duration);
+            }
         }
 
         public void LaunchTransition(float duration, bool isFadingIn)

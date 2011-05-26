@@ -11,11 +11,16 @@ function InventoryManager:New()
     self.categoryList = {};    
 	self.equippedItems = {};
 	
+	InventoryManager.instance = o;
+	
 	return o
 end
 
+function InventoryManager:GetInstance()
+	return InventoryManager.instance;
+end
+
 function InventoryManager:AddItem(id, category, count)
-	
 	if (category == nil and itemManager ~= nil) then
 		category = itemManager:GetItem(id).category;
 	end
@@ -46,13 +51,17 @@ function InventoryManager:AddItem(id, category, count)
     end
 end
 
-function InventoryManager:RemoveItem(id)
+function InventoryManager:RemoveItem(id, count)
+	if (count == nil) then
+		count = 1;
+	end
+	
     if (table.contains(self.itemList, id)) then
-        if (self.countMap[id] == 1) then
+        if (self.countMap[id] == count) then
             table.removeItem(self.itemList, id);
             self.categoryMap[id] = nil;
         else
-            self.countMap[id] = self.countMap[id] - 1;
+            self.countMap[id] = self.countMap[id] - count;
         end
     end
 end
@@ -164,4 +173,12 @@ function InventoryManager:Save(target)
         end
 	end      
     return saveString;
+end
+
+function ItemGet(id, count)
+	InventoryManager:GetInstance():AddItem(id, nil, count);
+end
+
+function ItemLoss(id, count)
+	InventoryManager:GetInstance():RemoveItem(id, count);
 end

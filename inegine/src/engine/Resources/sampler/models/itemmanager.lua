@@ -6,7 +6,13 @@ function ItemManager:New()
 	setmetatable(o, self)
 	self.__index = self
 
+	ItemManager.instance = o;
+	
 	return o
+end
+
+function ItemManager:GetInstance()
+	return ItemManager.instance;
 end
 
 function ItemManager:Load()
@@ -64,4 +70,5 @@ function ItemManager:GetItem(id)
 			return self:ExtractItem(i);
         end
     end
+    error(id .. " is non existent");
 end

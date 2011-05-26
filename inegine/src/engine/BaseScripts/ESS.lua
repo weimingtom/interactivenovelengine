@@ -71,7 +71,9 @@ function PrintOver(state, luaevent, args) --called by ESS scripts when printing 
 end
 
 function TextOut(value) --called by ESS scripts to output text
-	ESSEventHandler:TextOut(value)
+	if (value ~= nil and value ~= "") then
+		ESSEventHandler:TextOut(value)
+	end
 end
 
 function Clear() --called by ESS scripts to clear text

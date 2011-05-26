@@ -8,7 +8,7 @@ using SampleFramework;
 
 namespace INovelEngine.Effector
 {
-    class View : AbstractGUIComponent
+    public class View : AbstractGUIComponent
     {
         protected Line line
         {
