@@ -59,11 +59,13 @@ namespace INovelEngine.StateManager
 
         public void OnStarting()
         {
+            Removed = false;
             Console.WriteLine(this.Name + " is starting!");
         }
 
         public void OnExiting()
         {
+            Removed = true;
             Console.WriteLine(this.Name + " is closing!");
             generalResources.Dispose();
         }
@@ -82,6 +84,7 @@ namespace INovelEngine.StateManager
 
         public void Draw()
         {
+            if (this._removed) return;
             foreach (IGameComponent component in componentList)
             {
                 component.Draw();
@@ -90,6 +93,7 @@ namespace INovelEngine.StateManager
 
         public void Update(GameTime gameTime)
         {
+            if (this._removed) return;
             foreach (IGameComponent component in componentList)
             {
                 component.Update(gameTime);
