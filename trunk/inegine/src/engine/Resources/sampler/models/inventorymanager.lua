@@ -182,3 +182,7 @@ end
 function ItemLoss(id, count)
 	InventoryManager:GetInstance():RemoveItem(id, count);
 end
+
+function ItemHas(id)
+	return InventoryManager:GetInstance():ItemExists(id);
+end
