@@ -19,6 +19,8 @@ namespace INovelEngine
     {
         private static Supervisor instance;
 
+        private LuaConsole luaConsole;
+
         static int InitialWidth = 800;
         static int InitialHeight = 600;
 
@@ -100,9 +102,25 @@ namespace INovelEngine
 #endif
 
 #if DEBUG
-            LuaConsole luaConsole = new LuaConsole();
+            luaConsole = new LuaConsole();
             luaConsole.Show();
+            AdjustLuaConsole();
+            this.Window.LocationChanged += new EventHandler(Window_LocationChanged);
 #endif
+        }
+
+        void Window_LocationChanged(object sender, EventArgs e)
+        {
+#if DEBUG
+            AdjustLuaConsole();
+#endif
+        }
+
+        private void AdjustLuaConsole()
+        {
+            luaConsole.Width = this.Window.Width;
+            luaConsole.Left = this.Window.Left;
+            luaConsole.Top = this.Window.Top + this.Window.Height + 10;
         }
 
         public Sprite GetSpriteBatch()
@@ -263,7 +281,7 @@ namespace INovelEngine
 
         private void displayFPS()
         {
-            this.Window.Text = Clock.GetFPS().ToString();
+            this.Window.Text = "[DEBUG MODE] FPS: " + Clock.GetFPS().ToString();
         }
 
         protected override void Initialize()

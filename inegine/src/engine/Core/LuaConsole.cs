@@ -22,19 +22,43 @@ namespace INovelEngine.Core
             {
                 textBox1.SelectAll();
             }
+            else if (e.KeyCode == Keys.Enter && e.Control)
+            {
+                RunLuaString(GetSelectedText());
+                e.SuppressKeyPress = true;
+                e.Handled = true;
+            }
             else if (e.KeyCode == Keys.F5)
             {
-                try
-                {
-                    INovelEngine.Script.ScriptManager.lua.DoString(textBox1.Text);
-                    Console.WriteLine("[console input executed]");
-                }
-                catch (Exception exception)
-                {
-                    Console.WriteLine(exception.Message);
-                }
-                    
-                    e.Handled = true;
+                RunLuaString(textBox1.Text);
+
+                e.Handled = true;
+            }
+        }
+
+        public string GetSelectedText()
+        {
+            // Get selected character.
+            int charIndex = textBox1.SelectionStart;
+
+            // Get line index from selected character.
+            int lineIndex = textBox1.GetLineFromCharIndex(charIndex);
+
+            // Get line.
+            string line = textBox1.Lines[lineIndex];
+            return line;
+        }
+
+        void RunLuaString(string text)
+        {
+            try
+            {
+                INovelEngine.Script.ScriptManager.lua.DoString(text);
+                Console.WriteLine("[console input executed]");
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
             }
         }
     }
