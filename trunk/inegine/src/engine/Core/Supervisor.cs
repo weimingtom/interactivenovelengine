@@ -458,7 +458,6 @@ namespace INovelEngine
             try
             {
                 result = ScriptManager.ParseESS(path);
-                Console.WriteLine(result);
             }
             catch (Exception e)
             {

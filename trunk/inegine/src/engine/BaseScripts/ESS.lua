@@ -15,8 +15,11 @@ function BeginESS(script)
 		Trace "ESS interface undefined!"
 		return
 	end
-	Trace(script)
-	local translatedScript = LoadESS(script);
+	
+	--save for debug
+	scriptName = script;
+	translatedScript = LoadESS(script);
+	
 	if (translatedScript == nil) then
 		error("ESScript execution error");
 	end
@@ -27,6 +30,13 @@ function BeginESS(script)
 	CurrentState().state["ess_path"] = script;
 	CurrentState().state["ess"] = co;
 	ResumeEss();
+end
+
+function TraceEss()
+	if (scriptName ~= nil and translatedScript ~= nil) then
+		Trace("[ESScript] : " .. scriptName);
+		Trace(translatedScript);
+	end
 end
 
 -- todo: need more elaborate error tracking system...
