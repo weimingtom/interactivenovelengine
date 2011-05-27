@@ -40,10 +40,7 @@ function SaveView:Init()
 	saveLoadWindow.relative = true;
 	saveLoadWindow.width = 480
 	saveLoadWindow.height = 310
-	--saveLoadWindow.leftMargin = 90;
-	--saveLoadWindow.margin = 12;
-	--saveLoadWindow.font = GetFont("smalldefault");
-    --saveLoadWindow.linespacing = 5
+	
 	saveLoadWindow.x = (self.frame.width - saveLoadWindow.width) / 2;
 	saveLoadWindow.y = (self.frame.height - saveLoadWindow.height) / 2;
     --saveLoadWindow.WindowTexture = "resources/window.png"
