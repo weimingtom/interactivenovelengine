@@ -81,8 +81,6 @@ function EventView:Clear() --called by ESS scripts to clear text
 end
 
 function EventView:ESSOverHandler() --called by ESS scripts when entire script is over
-	Trace("ESS Over!!!!")
-    Trace("event view essover handler called!");
     CloseState()
     if (self.eventClosingEvent ~= nil) then
         self:eventClosingEvent();

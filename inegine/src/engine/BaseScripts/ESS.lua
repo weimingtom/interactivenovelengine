@@ -34,8 +34,8 @@ function ResumeEss()
 	if (true ~= EssOver and CurrentState().state ~= nil and CurrentState().state["ess"] ~= nil) then
 		local success, msg = coroutine.resume(CurrentState().state["ess"])
 		if (success == false) then
-            --Trace("error at " .. CurrentState().state["ess_path"] .. ":" .. currentLine)
-            --Trace("(" .. EssLine(CurrentState().state["ess_path"], currentLine) .. ")")	
+            Trace("error at " .. CurrentState().state["ess_path"] .. ":" .. currentLine)
+            Trace("(" .. EssLine(CurrentState().state["ess_path"], currentLine) .. ")")	
 			ESSOver()
 		end
 	end
@@ -60,7 +60,6 @@ function ESSOver()
 		return
 	end
 	if (ESSOverHandler ~= nil) then
-		Trace("...ESSOver!");
 		return ESSOverHandler()
 	end
 end

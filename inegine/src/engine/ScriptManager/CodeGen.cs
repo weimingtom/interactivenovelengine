@@ -253,8 +253,8 @@ namespace INovelEngine.Script
         {
             this.row = row;
             this.col = col;
-            //compiledScript.Append("currentLine = " + row + "; ");
-            //compiledScript.Append("currentCol = " + col + ";\n");
+            compiledScript.Append("currentLine = " + row + "; ");
+            compiledScript.Append("currentCol = " + col + ";\n");
         }
     }
 
