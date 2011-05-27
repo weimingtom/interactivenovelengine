@@ -344,6 +344,13 @@ function itemloss(id, count)
 end
 AddESSCmd("itemloss");
 
+function itemhas(id)
+	ItemHas(id);
+end
+AddESSCmd("itemhas");
+
+
+
 RegisterESSEventHandler(event);
 event:DoEvent(argument);
 event:SetEventClosingEvent(closingEvent);
