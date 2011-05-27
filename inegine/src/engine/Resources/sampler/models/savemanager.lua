@@ -43,7 +43,6 @@ end
 
 function SaveManager:LoadRecords()
     local loadData = LoadString(self.saveFile);
-    Trace("loading : " .. loadData);
     if (loadData ~= nil) then 
         assert(loadstring(loadData))(self);
 		return true;

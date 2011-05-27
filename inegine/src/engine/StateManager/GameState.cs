@@ -60,13 +60,13 @@ namespace INovelEngine.StateManager
         public void OnStarting()
         {
             Removed = false;
-            Console.WriteLine(this.Name + " is starting!");
+            Supervisor.Info("State " + this.Name + " is starting!");
         }
 
         public void OnExiting()
         {
             Removed = true;
-            Console.WriteLine(this.Name + " is closing!");
+            Supervisor.Info("State " + this.Name + " is closing!");
             generalResources.Dispose();
         }
 
@@ -74,7 +74,6 @@ namespace INovelEngine.StateManager
 
         public void Dispose()
         {
-            Console.WriteLine("disposing game state - " + this.Name);
             graphicalResources.Dispose();
         }
 

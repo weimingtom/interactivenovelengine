@@ -160,7 +160,6 @@ function TitleState:OpenSystem()
 	self.savePresenter:Init(saveView, saveManager);
 	self.savePresenter:SetClosingEvent(
 		function()
-			Trace("disposing save presenter!");
 			self.savePresenter = nil;
 			self.view:Show();
 		end

@@ -57,9 +57,6 @@ function TalkManager:GetMusumeLine()
 	for i,v in ipairs(candidates) do
 		if (self:TestCondition(v.condition)) then
 			table.insert(eventList, v)
-			Trace(v.id .. " true");
-		else
-			Trace(v.id .. " false");
 		end
 	end
 	return eventList[math.random(#eventList)];
@@ -71,9 +68,6 @@ function TalkManager:GetGoddessLine()
 	for i,v in ipairs(candidates) do
 		if (self:TestCondition(v.condition)) then
 			table.insert(eventList, v)
-			Trace(v.id .. " true");
-		else
-			Trace(v.id .. " false");
 		end
 	end
 	return eventList[math.random(#eventList)];

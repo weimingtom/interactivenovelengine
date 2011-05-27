@@ -20,7 +20,7 @@ namespace INovelEngine.Effector.Audio
 
         public static void SetVolume(int newVolumePercentage)
         {
-            Console.WriteLine("setting overall volume to " + newVolumePercentage);
+            Supervisor.Info("setting overall volume to " + newVolumePercentage);
             // Set the same volume for both the left and the right channels
             uint NewVolumeAllChannels = ((uint)(0x0000ffff * newVolumePercentage / 100f))
                                         + ((uint)(0xffff0000 * (100 - newVolumePercentage) / 100f));
@@ -38,7 +38,7 @@ namespace INovelEngine.Effector.Audio
 
         public static void LoadSound(string file)
         {
-            Console.WriteLine("loading " + file);
+            Supervisor.Info("loading " + file);
             mciSendString("open \"" + file + "\" alias " + file, null, 0, IntPtr.Zero);
         }
 
@@ -52,11 +52,10 @@ namespace INovelEngine.Effector.Audio
         {
             StopSound(file);
             string commandString = "play \"" + file + "\" from 0";
-            Console.WriteLine(commandString);
             int mcierror = mciSendString(commandString, null, 0, IntPtr.Zero);
             if (mcierror != 0)
             {
-                Console.WriteLine("playing sound " + file + " failed!");
+                Supervisor.Error("playing sound " + file + " failed!");
                 throw new Exception("playing sound failed!");
             }
         }

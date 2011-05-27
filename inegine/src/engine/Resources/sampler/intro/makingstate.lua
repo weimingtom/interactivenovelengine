@@ -159,7 +159,6 @@ function MakingState:RegisterEvents()
 end
 
 function MakingState:KeyDown(handler, luaevent, args)
-	Trace("key down : " .. args[0]);
 	local code = args[0];
 	if (code == 32) then --space
 		self.talkWindow:Advance();

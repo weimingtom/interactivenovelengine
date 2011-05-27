@@ -19,10 +19,7 @@ end
 function LuaView:Dispose()
 	if (self.disposed ~= true) then
 	
-		if(self.Finalize ~= nil) then self:Finalize();
-		else
-			Trace("finalize is nil!");
-		end
+		if(self.Finalize ~= nil) then self:Finalize(); end
 	
 		self.parent:RemoveComponent(self.name)
 		if (self.closingEvent ~= nil) then 

@@ -45,7 +45,6 @@ function SavePresenter:RegisterEvents()
 
 	saveView:SetSelectedEvent(
 		function (id)
-            Trace(id);
 			self.selectedID = id;
 		end
 	)

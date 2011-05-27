@@ -70,7 +70,6 @@ function EventView:PrintOver(state, luaevent, args) --called by ESS scripts when
 end
 
 function EventView:TextOut(value) --called by ESS scripts to output text
-	Trace("[" .. value .. "]");
     self.dialogueWin:SetDialogueText(value);
     logManager:SetLine(value);
 	YieldESS();
@@ -127,7 +126,6 @@ end
 
 function EventView:InitHandlers()
 	CurrentState().KeyDown = function(handler, luaevent, args)
-		Trace("key down : " .. args[0]);
 		local code = args[0];
 		if (code == 32) then --space
 			self:Advance();

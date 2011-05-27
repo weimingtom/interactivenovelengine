@@ -46,7 +46,7 @@ namespace INovelEngine.ResourceManager
 
         public void Play()
         {
-            Console.WriteLine("playing sound " + this.Name);
+            Supervisor.Info("playing sound " + this.Name);
             SoundPlayer.PlaySound(this.FileName, Loop);
         }
 
@@ -122,7 +122,7 @@ namespace INovelEngine.ResourceManager
 
         public override void Dispose()
         {
-            Console.WriteLine("disposing:" + this.Name + "(" + this.ToString()  + ")");
+            Supervisor.Info("disposing:" + this.Name + "(" + this.ToString()  + ")");
             SoundPlayer.StopSound(FileName);
             SoundPlayer.CloseSound(FileName);
             base.Dispose();
@@ -141,7 +141,7 @@ namespace INovelEngine.ResourceManager
 
         public void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
-            Console.WriteLine("initializing sound manager!");
+            Supervisor.Info("initializing sound manager!");
             resources.Initialize(graphicsDeviceManager);
         }
 
@@ -162,7 +162,7 @@ namespace INovelEngine.ResourceManager
 
         public void Dispose()
         {
-            Console.WriteLine("disposing sound manager!");
+            Supervisor.Info("disposing sound manager!");
             resources.Dispose();
         }
 

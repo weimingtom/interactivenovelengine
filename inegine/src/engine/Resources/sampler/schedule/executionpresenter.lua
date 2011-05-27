@@ -38,7 +38,6 @@ end
 
 function ExecutionPresenter:HandleKeyDown(handler, luaevent, args)
 	local code = args[0];
-	Trace("key down! : " .. code);
 	if (code == 32) then --space
 		self.executionView:Advance();
 	end

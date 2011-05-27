@@ -114,7 +114,6 @@ function DialogueWindow:Init()
 	
 	local logButton = UIFactory.CreateRollOverButton(
 		function()
-			Trace("opening log state!");
 			OpenState("log", "log/logstate.lua");
 		end,
 		function ()

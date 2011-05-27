@@ -92,10 +92,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\NAudio.dll</HintPath>
     </Reference>
-    <Reference Include="SampleFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\SampleFramework.dll</HintPath>
+      <HintPath>.\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="SampleFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86" />
     <Reference Include="SlimDX, Version=2.0.7.41, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\SlimDX.dll</HintPath>
@@ -185,6 +186,9 @@
     </Compile>
     <None Include="app.config" />
     <None Include="BaseScripts\sound.lua" />
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\sampler\common\observer.lua" />
     <None Include="BaseScripts\save.lua" />
     <None Include="BaseScripts\csv.lua" />
@@ -300,6 +304,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="msvcr90.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="NLog.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\sampler\resources\after.png" />
@@ -483,6 +490,7 @@
     <Content Include="Resources\sampler\resources\window.png" />
     <Content Include="Resources\sampler\resources\windows\dialoguewin.png" />
     <Content Include="SampleFramework.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="zlib1.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

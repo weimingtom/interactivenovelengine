@@ -339,7 +339,6 @@ function Main:OpenSchedule()
 	self.schedulePresenter:Init(self, schedule, scheduleManager);
 	self.schedulePresenter:SetClosingEvent(
 		function()
-			Trace("disposing schedule presenter!");
 			self.schedulePresenter = nil;
 			self:Enable();
 		end
@@ -442,7 +441,6 @@ function Main:NormalTalk(pic, name, line)
 			talkView:Advance()
 		end
 	)
-	Trace("outputting log");
 	
 	talkView:SetTalk(pic, name, line);
 	logManager:SetDate();
@@ -461,7 +459,6 @@ function Main:NormalTalk(pic, name, line)
 			self:Enable();
 		end
 	);
-	Trace("showing talk view");
 	talkView:Show();
 end
 
@@ -476,7 +473,6 @@ function Main:OpenStatus()
 	self.statusPresenter:Init(self, statusView, character);
 	self.statusPresenter:SetClosingEvent(
 		function()
-			Trace("disposing schedule presenter!");
 			self.statusPresenter = nil;
 			self:Enable();
 		end
@@ -507,7 +503,6 @@ function Main:OpenShopList()
 						 main_shop_greeting_msg);
 	shoplist:SetShopSelectedEvent(
 		function(button, luaevent, arg)
-			Trace(arg);
 			shoplist:Hide();
 			self:OpenShop(arg);
 		end
@@ -544,7 +539,6 @@ function Main:OpenInventory()
 	self.inventoryPresenter:Init(self, inventory, itemManager, inventoryManager);
 	self.inventoryPresenter:SetClosingEvent(
 		function()
-			Trace("disposing schedule presenter!");
 			self.inventoryPresenter = nil;
 			self:Enable();
 			self:SetTachiePosition(0.5);
@@ -567,12 +561,10 @@ end
 function Main:PostScheduleTrigger()
 	self.executionPresenter = nil;
 	self.eventList = eventManager:GetPostEvents();
-	Trace("got list of events");
 	self:ProcessEvents();
 end
 
 function Main:ProcessEvents(first)
-	Trace("processing events");
 	local delay = 0;
 	if (first == nil) then
 		FadeOut(1000)
@@ -597,7 +589,7 @@ function Main:ProcessEvents(first)
 end
 
 function Main:OpenEvent(eventScript, closingEvent)
-	Trace("executing event: " .. eventScript);
+	Info("executing event: " .. eventScript);
 	if (closingEvent == nil) then
 		closingEvent = 
 		function()     

@@ -28,7 +28,6 @@ namespace INovelEngine.Core
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("entered!");
             value = this.textBox.Text;
             this.DialogResult = DialogResult.OK;
             this.Close();
