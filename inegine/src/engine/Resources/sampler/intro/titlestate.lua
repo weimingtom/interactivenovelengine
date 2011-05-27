@@ -46,7 +46,7 @@ function TitleState:InitComponents()
 	titleText.Width = 640;
 	titleText.Height = 240;
 	titleText.Text = titlestate_title;
-	titleText.Font = GetFont("verylarge");
+	titleText.Font = GetFont("default");
 	titleText.TextColor = 0xEEEEEE
 	titleText.Layer = 3
 	titleText.MouseDoubleClick = 
