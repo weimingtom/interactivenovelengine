@@ -36,6 +36,13 @@ function ResumeEss()
 		if (success == false) then
             Trace("error at " .. CurrentState().state["ess_path"] .. ":" .. currentLine)
             Trace("(" .. EssLine(CurrentState().state["ess_path"], currentLine) .. ")")	
+            if (msg ~= nil) then
+				if (type(msg) == "userdata") then
+					Trace(msg:toString());
+				elseif (type(msg) == "string") then
+					Trace(msg);
+				end
+            end
 			ESSOver()
 		end
 	end
