@@ -43,7 +43,7 @@ end
 
 function SaveManager:LoadRecords()
     local loadData = LoadString(self.saveFile);
-    Trace("loading : " .. loadData);
+    Info("loading records");
     if (loadData ~= nil) then 
         assert(loadstring(loadData))(self);
 		return true;
@@ -104,7 +104,6 @@ function SaveManager:Load(id)
 	LoadScript "models\\logmanager.lua"
 	
     local loadData = LoadString(self:GenerateSaveFileName(id));
-    Trace("loading : " .. loadData);
     if (loadData ~= nil) then 
 		Trace("closing state");
 		

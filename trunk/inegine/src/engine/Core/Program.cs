@@ -29,7 +29,10 @@ namespace INovelEngine
         static void Main(string[] args)
         {
             using (Supervisor game = Supervisor.GetInstance())
-                game.Run();        
+            {
+                game.StartGame();
+                game.Run();
+            }
         }
     }
 }

@@ -136,7 +136,7 @@ function Character:Set(key, value)
     self.status[key] = value;
     
     if (self.trigger[key] ~= nil) then
-		Trace("trigger event executed!");
+		Info("trigger event executed for " .. key);
 		self.trigger[key]();
 	end
 end
@@ -243,7 +243,6 @@ end
 function Character:SetDress(id)
 	self.dress = id;
     if (self.lookEvent ~= nil) then
-		Trace("look event executed!");
 		self.lookEvent();
 	end
 end
@@ -255,7 +254,6 @@ end
 function Character:SetBody(id)
 	self.body = id;
     if (self.lookEvent ~= nil) then
-		Trace("look event executed!");
 		self.lookEvent();
 	end
 end
@@ -263,11 +261,11 @@ end
 
 function Character:UseItem(id)
 	local item = itemManager:GetItem(id);
-	Trace("Using item " .. id)
+	Info("Using item " .. id)
 	
 	for j,key in ipairs(self:GetKeys()) do
 		if (item[key] ~= nil) then
-			Trace("increasing " .. key .. " by " .. item[key]);
+			Info("increasing " .. key .. " by " .. item[key]);
 			self:Inc(key, item[key]);
 		end
 	end

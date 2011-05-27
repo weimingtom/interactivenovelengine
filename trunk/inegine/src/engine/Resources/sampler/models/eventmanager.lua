@@ -55,9 +55,6 @@ function EventManager:GetPostEvents()
 	for i,v in ipairs(candidates) do
 		if (self:TestCondition(v.condition)) then
 			table.insert(eventList, v)
-			Trace(v.id .. " true");
-		else
-			Trace(v.id .. " false");
 		end
 	end
 	return eventList;
@@ -69,9 +66,6 @@ function EventManager:GetMusumeEvents()
 	for i,v in ipairs(candidates) do
 		if (self:TestCondition(v.condition)) then
 			table.insert(eventList, v)
-			Trace(v.id .. " true");
-		else
-			Trace(v.id .. " false");
 		end
 	end
 	return eventList;
@@ -83,9 +77,6 @@ function EventManager:GetGoddessEvents()
 	for i,v in ipairs(candidates) do
 		if (self:TestCondition(v.condition)) then
 			table.insert(eventList, v)
-			Trace(v.id .. " true");
-		else
-			Trace(v.id .. " false");
 		end
 	end
 	return eventList;

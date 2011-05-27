@@ -123,7 +123,7 @@ end
 
 function InventoryManager:EquipItem(id)
 	if (self.categoryMap[id] == "dress") then
-		Trace("Equipping " .. id);
+		Info("Equipping " .. id);
 		if (character:GetDress() ~= id) then
 			character:SetDress(id);
 			for i,v in ipairs(self:GetItems("dress")) do
@@ -135,7 +135,7 @@ function InventoryManager:EquipItem(id)
 end
 
 function InventoryManager:UnequipItem(id)
-	Trace("Unequipping " .. id);
+	Info("Unequipping " .. id);
 	self.equippedItems[id] = false;
 end
 

@@ -17,7 +17,7 @@ namespace INovelEngine
 {
     class Supervisor : Game
     {
-        private static Supervisor instance;
+        private static Supervisor instance = null;
 
         private LuaConsole luaConsole;
 
@@ -34,6 +34,7 @@ namespace INovelEngine
         private FontManager fontManager = new FontManager();
         private CsvManager csvManager = new CsvManager();
         private SoundManager soundManager = new SoundManager();
+        private LogManager logManager = new LogManager();
 
         private FadingTransition fadingTransition = new FadingTransition();
 
@@ -54,16 +55,24 @@ namespace INovelEngine
         }
 
         // singleton
+        static readonly object padlock = new object();
         public static Supervisor GetInstance()
         {
-            if (instance == null)
+            lock (padlock)
             {
-                instance = new Supervisor();
+                if (instance == null)
+                {
+                    instance = new Supervisor();
+                }
+                return instance;
             }
-            return instance;
         }
 
-        public Supervisor()
+        private Supervisor()
+        {
+        }
+
+        public void StartGame()
         {
             ClearColor = Color.White;
             Window.ClientSize = new Size(InitialWidth, InitialHeight);
@@ -147,23 +156,23 @@ namespace INovelEngine
 
         protected override void Dispose(bool disposing)
         {
-            Console.WriteLine("disposing supervisor!");
+            Supervisor.Info("disposing supervisor!");
             base.Dispose(disposing);
 
             sharedSprite.Dispose();
             sharedLine.Dispose();
-            Console.WriteLine("supervisor disposed!");
+            Supervisor.Info("supervisor disposed!");
         }
   
         public static void DumpObjects()
         {
-            Console.WriteLine("Dumping undisposed dx objects\n====");
+            Supervisor.Info("Dumping undisposed dx objects\n====");
             ReadOnlyCollection<ComObject> table = ObjectTable.Objects;
             foreach (ComObject obj in table)
             {
-                Console.WriteLine(obj.GetType().ToString() + ":" + obj.CreationTime.ToString());
+                Supervisor.Info(obj.GetType().ToString() + ":" + obj.CreationTime.ToString());
             }
-            Console.WriteLine("\n====\nDumping undisposed dx objects over");
+            Supervisor.Info("\n====\nDumping undisposed dx objects over");
 
 #if DEBUG
             MessageBox.Show("Terminating INE");
@@ -254,7 +263,7 @@ namespace INovelEngine
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Supervisor.Error(e.Message);
                 }
             }
 
@@ -328,6 +337,8 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("GetHeight", this, this.GetType().GetMethod("GetHeight"));
 
             ScriptManager.lua.RegisterFunction("Trace", this, this.GetType().GetMethod("Lua_Trace"));
+            ScriptManager.lua.RegisterFunction("Info", this, this.GetType().GetMethod("Lua_Info"));
+            ScriptManager.lua.RegisterFunction("Error", this, this.GetType().GetMethod("Lua_Error"));
 
 
             ScriptManager.lua.RegisterFunction("LoadScript", this, this.GetType().GetMethod("Lua_LoadScript"));
@@ -370,12 +381,12 @@ namespace INovelEngine
             }
             catch (LuaInterface.LuaException e)
             {
-                Console.WriteLine(">" + e.Message);
+                Supervisor.Error(e.Message);
 
             }
             catch (Exception e)
             {
-                Console.WriteLine("]" + e.Message);
+                Supervisor.Error(e.Message);
             }
         }
 
@@ -448,8 +459,33 @@ namespace INovelEngine
         }
 
         public void Lua_Trace(string s)
-        {  
-            Console.WriteLine(">" + s);
+        {
+            Trace(s);
+        }
+
+        public static void Trace(string msg)
+        {
+            Supervisor.GetInstance().logManager.Trace(msg);
+        }
+
+        public void Lua_Info(string s)
+        {
+            Info(s);
+        }
+
+        public static void Info(string msg)
+        {
+            Supervisor.GetInstance().logManager.Info(msg);
+        }
+
+        public void Lua_Error(string s)
+        {
+            Error(s);
+        }
+
+        public static void Error(string msg)
+        {
+            Supervisor.GetInstance().logManager.Error(msg);
         }
 
         public string Lua_LoadESS(string path)
@@ -461,7 +497,7 @@ namespace INovelEngine
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Supervisor.Error(e.Message);
             }
             return result;
         }

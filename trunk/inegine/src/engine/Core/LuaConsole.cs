@@ -54,11 +54,11 @@ namespace INovelEngine.Core
             try
             {
                 INovelEngine.Script.ScriptManager.lua.DoString(text);
-                Console.WriteLine("[console input executed]");
+                Supervisor.Trace("[console input executed]");
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.Message);
+                Supervisor.Error(exception.Message);
             }
         }
     }

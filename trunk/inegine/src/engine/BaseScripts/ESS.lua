@@ -12,7 +12,7 @@ end
 function BeginESS(script)
     EssOver = false;
 	if (ESSEventHandler == nil or ESSEventHandler.TextOut == nil or ESSEventHandler.Clear == nil) then
-		Trace "ESS interface undefined!"
+		Error "ESS interface undefined!"
 		return
 	end
 	
@@ -44,13 +44,13 @@ function ResumeEss()
 	if (true ~= EssOver and CurrentState().state ~= nil and CurrentState().state["ess"] ~= nil) then
 		local success, msg = coroutine.resume(CurrentState().state["ess"])
 		if (success == false) then
-            Trace("error at " .. CurrentState().state["ess_path"] .. ":" .. currentLine)
-            Trace("(" .. EssLine(CurrentState().state["ess_path"], currentLine) .. ")")	
+            Error("error at " .. CurrentState().state["ess_path"] .. ":" .. currentLine)
+            Error("(" .. EssLine(CurrentState().state["ess_path"], currentLine) .. ")")	
             if (msg ~= nil) then
 				if (type(msg) == "userdata") then
-					Trace(msg:toString());
+					Error(msg:toString());
 				elseif (type(msg) == "string") then
-					Trace(msg);
+					Error(msg);
 				end
             end
 			ESSOver()
@@ -59,7 +59,7 @@ function ResumeEss()
 end
 
 function YieldESS()
-	Trace("----yielding!----");
+	Info("----yielding!----");
 	coroutine.yield();
 end
 
@@ -69,10 +69,10 @@ end
 SupressESSOver = false;
 EssOver = false;
 function ESSOver()
-	Trace("ESSOver called");
+	Info("ESSOver called");
     EssOver = true;
 	if (SupressESSOver) then
-		Trace("...ignoring ESSOver");
+		Info("...ignoring ESSOver");
 		SupressESSOver = false;
 		return
 	end
@@ -126,7 +126,7 @@ function stop(id, delay)
 			sound:Fadeout(delay)
 		end 
 	else
-		Trace("invalid id: " .. id);
+		Error("invalid id: " .. id);
 	end
 end
 AddESSCmd("stop");
@@ -144,7 +144,7 @@ function vol(id, vol)
 	if (sound ~= nil) then
 		sound.Volume = vol;
 	else
-		Trace("invalid id: " .. id);
+		Error("invalid id: " .. id);
 	end
 end
 AddESSCmd("vol");

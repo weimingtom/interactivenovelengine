@@ -87,7 +87,7 @@ namespace INovelEngine.Script
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Supervisor.Error(e.ToString());
             }
         }
 
@@ -141,7 +141,7 @@ namespace INovelEngine.Script
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Supervisor.Error(e.ToString());
             }
         }
 
@@ -166,7 +166,7 @@ namespace INovelEngine.Script
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Supervisor.Error(e.Message);
             }
         }
 
@@ -241,7 +241,7 @@ namespace INovelEngine.Script
                                                     }
                                                     catch (Exception e)
                                                     {
-                                                        Console.WriteLine(e.Message);
+                                                        Supervisor.Error(e.Message);
                                                     }    
                                                 });
             Clock.AddTimeEvent(eventToDo);

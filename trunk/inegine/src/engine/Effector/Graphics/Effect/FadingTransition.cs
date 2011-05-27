@@ -32,11 +32,11 @@ namespace INovelEngine.Effector
         public void FadeOutIn(int width, int height, int duration, int fadeColor)
         {
             this.LaunchTransition(width, height, duration / 2, false, Color.FromArgb(fadeColor));
-            Console.WriteLine("fading out!");
+            Supervisor.Info("fading out!");
             Clock.AddTimeEvent(new TimeEvent(1, duration / 2, 
                 delegate()
                 {
-                    Console.WriteLine("fading in!");
+                    Supervisor.Info("fading in!");
                     this.LaunchTransition(width, height, duration / 2, true, Color.FromArgb(fadeColor));
                 }
             ));

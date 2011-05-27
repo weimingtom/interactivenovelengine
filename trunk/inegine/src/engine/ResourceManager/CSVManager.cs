@@ -229,7 +229,7 @@ namespace INovelEngine.ResourceManager
 
         public void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
-            Console.WriteLine("initializing csv manager!");
+            Supervisor.Info("initializing csv manager!");
             resources.Initialize(graphicsDeviceManager);
         }
 
@@ -250,7 +250,7 @@ namespace INovelEngine.ResourceManager
 
         public void Dispose()
         {
-            Console.WriteLine("disposing csv manager!");
+            Supervisor.Info("disposing csv manager!");
             resources.Dispose();
         }
 

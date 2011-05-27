@@ -88,12 +88,12 @@ function try(call, error, level)
 		return true;
 	else
 		local info = DebugString(level);
-			Trace(type("test"));
+			Error(type("test"));
         if (res ~= nil and type(res) == "string") then
-            Trace(info .. ": " .. error);
-            Trace(" " .. res .. "\n");
+            Error(info .. ": " .. error);
+            Error(" " .. res .. "\n");
         else
-		    Trace(info .. ": " .. error);
+		    Error(info .. ": " .. error);
         end
 		return false;
 	end 

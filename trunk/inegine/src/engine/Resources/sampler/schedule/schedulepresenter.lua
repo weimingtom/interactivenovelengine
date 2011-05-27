@@ -72,11 +72,9 @@ function SchedulePresenter:RegisterEvents()
 
 	scheduleView:SetSelectedFocusEvent(
 		function (button, luaevent, args)
-			Trace("focus selected event called from " .. args);
             self.focusedScheduleID = args;
             scheduleView:FocusSelectedItem(args);
             local scheduleID =  self.scheduleKeyMap[args];
-            Trace(args);
             scheduleView:SetDetailText(scheduleManager:GetItem(scheduleID).desc);
 		end
 	)
@@ -121,7 +119,6 @@ function SchedulePresenter:RegisterEvents()
     scheduleView:SetDownButtonEvent(
         function()
             local activeTab = scheduleView:GetActiveTab();
-            Trace("active tab: " .. activeTab);
             if (activeTab == schedule_view_education) then
                 if (self:SetEduPage(1)) then self:Update(); end
             elseif (activeTab == schedule_view_work) then

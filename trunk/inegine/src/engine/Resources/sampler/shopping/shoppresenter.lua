@@ -208,7 +208,7 @@ function ShopPresenter:RefreshCount()
 end
 
 function ShopPresenter:BuyItem()
-	Trace("buying " .. self.selectedItem)
+	Info("buying " .. self.selectedItem)
 	local item = self.itemManager:GetItem(self.selectedItem);
 	
 	--check if item is dress and already in inventory

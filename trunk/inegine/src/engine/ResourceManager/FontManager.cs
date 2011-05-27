@@ -126,7 +126,7 @@ namespace INovelEngine.ResourceManager
 
         public override void Dispose()
         {
-            Console.WriteLine("disposing font - " + this.Name);
+            Supervisor.Info("disposing font - " + this.Name);
             Font.Dispose();
         }
 
@@ -143,7 +143,7 @@ namespace INovelEngine.ResourceManager
 
         public void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
-            Console.WriteLine("initializing font manager!");
+            Supervisor.Info("initializing font manager!");
             graphicalResources.Initialize(graphicsDeviceManager);
         }
 
@@ -164,7 +164,7 @@ namespace INovelEngine.ResourceManager
 
         public void Dispose()
         {
-            Console.WriteLine("disposing font manager!");
+            Supervisor.Info("disposing font manager!");
             graphicalResources.Dispose();
         }
 
