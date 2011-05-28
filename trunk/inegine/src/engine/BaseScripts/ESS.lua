@@ -59,7 +59,7 @@ function ResumeEss()
 end
 
 function YieldESS()
-	Info("----yielding!----");
+	Info("yielding (line:" .. currentLine .. ")");
 	coroutine.yield();
 end
 

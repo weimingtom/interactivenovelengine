@@ -208,6 +208,7 @@
     <None Include="Resources\sampler\communication\talk.lua" />
     <None Include="Resources\sampler\communication\talklist.lua" />
     <None Include="Resources\sampler\components\dialoguewindow.lua" />
+    <None Include="Resources\sampler\init_global_functions.lua" />
     <None Include="Resources\sampler\init_sound.lua" />
     <None Include="Resources\sampler\intro\makingstate.lua" />
     <None Include="Resources\sampler\intro\titlestate.lua" />

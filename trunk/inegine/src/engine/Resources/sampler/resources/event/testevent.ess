@@ -29,7 +29,7 @@
 |Hiding them all...@
 #cl 1
 #cl 2
-#sl 0
+#cl 0
 #pl 0, 0.5
 |Losing item...@
 #itemloss "sundaybest"
@@ -50,8 +50,6 @@
 #sl 0, 500
 |changing clothing@
 #ld 0, "resources/scg/ma.png", "resources/scg/d05.png"
-|hiding tachie@
-#cl 0, 500
 |On the way@|[r=HOME]home[/r], I fell.@
 #name "Anna", "resources/images/f1.png"
 ;#Show "musume1", 100

@@ -576,7 +576,8 @@ function Main:ProcessEvents(first)
 		local nextItem = table.remove(events);
 		Delay(delay,
 			function()
-				self:OpenEvent(nextItem.script,
+				logManager:SetDate(calendar:GetYear(), calendar:GetMonth(), calendar:GetWeek());
+				OpenEvent(nextItem.script,
 						function()     
 							self:ProcessEvents(false);		
 						end);
@@ -586,17 +587,6 @@ function Main:ProcessEvents(first)
 		FadeIn(1000)
 		self:Enable();
 	end
-end
-
-function Main:OpenEvent(eventScript, closingEvent)
-	Info("executing event: " .. eventScript);
-	if (closingEvent == nil) then
-		closingEvent = 
-		function()     
-			FadeIn(1000)
-		end
-	end
-    OpenState("event", "event/eventstate.lua", eventScript, closingEvent);
 end
 
 --wallpaper
@@ -695,21 +685,6 @@ end
 main = Main:New();
 CurrentState().state = main;
 
---set global actions
-function Event(event)
-	if (main ~= nil) then
-		Main:GetInstance():OpenEvent(event);
-	end
-end
-
 --extra actions
 main:Invalidate();
 main:SetBackground("resources/images/room03.jpg");
-
-
-
---test code
---main:OpenEvent("resources/event/testevent.ess",
-function test()
-	Event("resources/event/testevent.ess");
-end

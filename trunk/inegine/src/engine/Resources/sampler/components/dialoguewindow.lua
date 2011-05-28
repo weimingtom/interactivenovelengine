@@ -12,6 +12,8 @@ function DialogueWindow:Init()
 	local parent = self.parent;
 	local name = self.name;
 	
+	self.printing = false;
+	
 	self.frame = View()
 	self.frame.Name = name
 	self.frame.Width = 800;
@@ -70,6 +72,7 @@ function DialogueWindow:Init()
 	dialogueWin.Cursor:Begin(100, 0, 2, true);
 	dialogueWin.PrintOver = 
 		function (window, luaevent, args)
+				self.printing = false;
                 if (self.dialogueOverEvent~=nil) then 
 					self.dialogueOverEvent(window, luaevent, args);
 				end
@@ -149,6 +152,7 @@ function DialogueWindow:ClearDialogueName()
 end
 
 function DialogueWindow:SetDialogueText(text)
+	self.printing = true;
 	self.dialogueWin:Print(text)
 end
 
@@ -161,5 +165,9 @@ function DialogueWindow:SetDialogueOverEvent(event)
 end
 
 function DialogueWindow:Advance()
-    self.dialogueWin:AdvanceText();
+	if (self.printing) then
+		self.dialogueWin:AdvanceText();
+    else
+		Trace("can't advance because not printing!");
+    end
 end

@@ -28,18 +28,21 @@ function EventView:InitComponents()
 	
 	self.tachie = {};
 	self.tachie[0] = Tachie()
+	self.tachie[0].Name = "tachie0";
 	self.tachie[0].layer = 5
 	self.tachie[0].Position = 0.5;
 	self.tachie[0]:Hide();
 	AddComponent(self.tachie[0]);
 	
 	self.tachie[1] = Tachie()
+	self.tachie[1].Name = "tachie1";
 	self.tachie[1].layer = 5
 	self.tachie[1].Position = 0.25;
 	self.tachie[1]:Hide();
 	AddComponent(self.tachie[1]);
 	
 	self.tachie[2] = Tachie()
+	self.tachie[2].Name = "tachie2";
 	self.tachie[2].layer = 5
 	self.tachie[2].Position = 0.75;
 	self.tachie[2]:Hide();
@@ -84,7 +87,7 @@ end
 
 function EventView:TextOut(value) --called by ESS scripts to output text
     self.dialogueWin:SetDialogueText(value);
-    logManager:SetLine(value);
+    if (logManager ~= nil) then logManager:SetLine(value); end
 	YieldESS();
 end
 
@@ -113,20 +116,25 @@ function EventView:Name(name, portrait)
 end
 
 function EventView:CursorHandler(state, luaevent, args)
-	local cursorSprite = GetComponent("cursor")
-	--if (cursorSprite.Visible == false) then cursorSprite.Visible = true end
-	cursorSprite.x = args[0] + 1;
-	cursorSprite.y = args[1] + 1;
+	local cursorSprite = self.cursor;
+	if (cursor ~= nil) then
+		cursorSprite.x = args[0] + 1;
+		cursorSprite.y = args[1] + 1;
+	end
 end
 
 function EventView:HideCursor()
-	local cursorSprite = GetComponent("cursor")
-	cursorSprite.Visible = false;
+	local cursorSprite = self.cursor;
+	if (cursor ~= nil) then
+		cursorSprite.Visible = false;
+	end
 end
 
 function EventView:ShowCursor()
-	local cursorSprite = GetComponent("cursor")
-	cursorSprite.Visible = true;
+	local cursorSprite = self.cursor;
+	if (cursor ~= nil) then
+		cursorSprite.Visible = true;
+	end
 end
 
 function EventView:HideDialogue()
@@ -148,9 +156,7 @@ end
 
 function EventView:DoEvent(script)
     if (script ~= nil) then
-		--log date
-		logManager:SetDate(calendar:GetYear(), calendar:GetMonth(), calendar:GetWeek());
-		
+		--log date		
         BeginESS(script);
     end
 end
