@@ -2,10 +2,6 @@ dofile "../sampler/components/flowview.lua"
 require "luaunit"
 require "mockview"
 
-function Trace(msg)
-    print(msg);
-end
-
 function table.contains(tbl, item)
 	for i,v in ipairs(tbl) do 
 		if (item == v) then

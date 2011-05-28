@@ -62,16 +62,19 @@ end
 
 function FadeOutIn(duration, color)
     if color == nil then color = 0xFFFFFF end
+    if duration == nil then duration = 100; end
     GetFader():FadeOutIn(GetWidth(), GetHeight(), duration, color);
 end
 
 function FadeOut(duration, color)
     if color == nil then color = 0xFFFFFF end
+    if duration == nil then duration = 100; end
     GetFader():Fade(GetWidth(), GetHeight(), duration, false, color);
 end
 
 function FadeIn(duration, color)
     if color == nil then color = 0xFFFFFF end
+    if duration == nil then duration = 100; end
     GetFader():Fade(GetWidth(), GetHeight(), duration, true, color);
 end
 

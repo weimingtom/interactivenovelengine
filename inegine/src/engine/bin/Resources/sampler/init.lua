@@ -7,13 +7,8 @@ LoadScript("init_global_functions.lua");
 
 
 --test code
---main:OpenEvent("resources/event/testevent.ess",
-function test()
-	Event("resources/event/testevent.ess");
-end
-
 function prologue()
-	Event("resources/event/prologue.ess");
+	Event("resources/event/nightmare.ess");
 end
 
 OpenState("title", "intro/titlestate.lua");

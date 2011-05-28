@@ -570,7 +570,10 @@ namespace INovelEngine.Effector.Graphics.Text
             }
 
             // copy freetype glyph bitmap to C# memory...
-            Marshal.Copy(bitmap.buffer, buffer, 0, buffer.Length);
+            if (bitmap.buffer != (System.IntPtr)0)
+            {
+                Marshal.Copy(bitmap.buffer, buffer, 0, buffer.Length);
+            }
 
             const int unitLength = 4;
             // loop through glyph bitmap bytes to generate pixel bitmap
