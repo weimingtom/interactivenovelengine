@@ -83,6 +83,7 @@ function Selector:GetSelected()
 end
 
 function Selector:Add(text)
+	--Info("adding selection : " .. text);
 	local newSelection = Button()
 	newSelection.Name = "selection" .. self.selectionCount;
 	newSelection.Width = 280;

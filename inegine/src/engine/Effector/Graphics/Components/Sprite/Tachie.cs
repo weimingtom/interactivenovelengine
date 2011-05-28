@@ -185,6 +185,10 @@ namespace INovelEngine.Effector
             set
             {
                 this.relativePosition = value;
+                if (BackgroundWidth > 100 && Width > 50 && relativePosition > 0f && relativePosition < 1f)
+                {
+                    X = (int)(BackgroundWidth * relativePosition - Width / 2);
+                }
             }
         }
 
@@ -200,15 +204,10 @@ namespace INovelEngine.Effector
 
         protected override void DrawInternal()
         {   
-            if (BackgroundWidth > 100 && Width > 50 && relativePosition > 0f && relativePosition < 1f)
-            {
-                X = (int)(BackgroundWidth * relativePosition - Width / 2);
-            }
         }
 
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
         }
 
         #endregion
