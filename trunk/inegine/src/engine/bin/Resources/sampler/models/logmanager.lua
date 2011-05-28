@@ -10,6 +10,8 @@ function LogManager:New()
     self.currentLine = {};
     self.state = -1;
     
+    self.lineLength = 22;
+    	
     self.prevYear = nil;
     self.prevMonth = nil;
     self.prevWeek = nil;
@@ -67,18 +69,44 @@ function LogManager:SetName(name, face)
     self.state = 1;
 end
 
+function split(str, pat)
+   local t = {}  -- NOTE: use {n = 0} in Lua-5.0
+   local fpat = "(.-)" .. pat
+   local last_end = 1
+   local s, e, cap = str:find(fpat, 1)
+   while s do
+      if s ~= 1 or cap ~= "" then
+	 table.insert(t,cap)
+      end
+      last_end = e+1
+      s, e, cap = str:find(fpat, last_end)
+   end
+   if last_end <= #str then
+      cap = str:sub(last_end)
+      table.insert(t, cap)
+   end
+   return t
+end
+
 function LogManager:SetLine(line)
-	line = string.gsub(line, "@", "");
-	line = string.gsub(line, "|", "");
-	 
+	line = Replace(line, "@", "");
+	line = Replace(line, "|", "");
     if (string.len(line) <= 0) then
 		return;
 	end
     
+    if (Length(line) > self.lineLength) then
+		self:SetLine_(Substring(line, 0, self.lineLength));
+		self:SetLine_(Substring(line, self.lineLength, -1));
+    else
+		self:SetLine_(line);
+    end
+end
+
+function LogManager:SetLine_(line)
     self.currentLine.line = line;
     self.state = 2;
     self:pushLine();
-    
 end
 
 function LogManager:GetSize()

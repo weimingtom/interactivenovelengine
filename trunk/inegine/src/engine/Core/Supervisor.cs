@@ -340,7 +340,10 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("Info", this, this.GetType().GetMethod("Lua_Info"));
             ScriptManager.lua.RegisterFunction("Error", this, this.GetType().GetMethod("Lua_Error"));
 
-
+            ScriptManager.lua.RegisterFunction("Replace", this, this.GetType().GetMethod("Lua_Replace"));
+            ScriptManager.lua.RegisterFunction("Substring", this, this.GetType().GetMethod("Lua_Substring"));
+            ScriptManager.lua.RegisterFunction("Length", this, this.GetType().GetMethod("Lua_Length"));
+            
             ScriptManager.lua.RegisterFunction("LoadScript", this, this.GetType().GetMethod("Lua_LoadScript"));
             ScriptManager.lua.RegisterFunction("CloseState", this, this.GetType().GetMethod("Lua_CloseState"));
 
@@ -630,6 +633,31 @@ namespace INovelEngine
                 ArchiveManager.SetPath(path);
             }
         }
+
+        public string Lua_Replace(string source, string pattern, string target)
+        {
+            return source.Replace(pattern, target);
+        }
+
+
+        public string Lua_Substring(string source, int pos, int length)
+        {
+            if (length == -1)
+            {
+                return source.Substring(pos); 
+            }
+            else
+            {
+                return source.Substring(pos, length);
+            }
+        }
+
+
+        public int Lua_Length(string source)
+        {
+            return source.Length;
+        }
+
 
         #endregion
 

@@ -14,6 +14,7 @@ function LogState:New()
 
 	self.numItems = 0;
 	self.itemsPerPage = 14;
+	self.lineLength = 43;
 	self.currentLine = 0;
 	self.scrollUnit = 6;
 	self:Bottom();
@@ -343,7 +344,7 @@ function LogState:CreateLineItem(id, width, height, name, face, line)
 	button.Height = height;
 	button.X = 0;
 	button.Y = 0;
-	button.font = GetFont("default");
+	button.font = GetFont("selector");
 	button.TextColor = 0xFFFFFF
 	button.Text = name;
 	button.Alignment = 0;
@@ -356,7 +357,7 @@ function LogState:CreateLineItem(id, width, height, name, face, line)
 	button.Height = height;
 	button.X = width / 4;
 	button.Y = 0;
-	button.font = GetFont("default");
+	button.font = GetFont("selector");
 	button.TextColor = 0xFFFFFF
 	button.Text = line;
 	button.Alignment = 0;
