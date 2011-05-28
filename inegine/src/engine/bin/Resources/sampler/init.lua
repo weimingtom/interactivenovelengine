@@ -12,4 +12,8 @@ function test()
 	Event("resources/event/testevent.ess");
 end
 
+function prologue()
+	Event("resources/event/prologue.ess");
+end
+
 OpenState("title", "intro/titlestate.lua");

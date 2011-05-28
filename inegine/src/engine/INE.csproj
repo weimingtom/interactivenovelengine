@@ -298,6 +298,10 @@
     <Content Include="bin\Resources\sampler\resources\animation\22_sleep_01.gif" />
     <Content Include="bin\Resources\sampler\resources\animation\24_atpark_01.gif" />
     <Content Include="bin\Resources\sampler\resources\before.png" />
+    <Content Include="bin\Resources\sampler\resources\bg\black.png" />
+    <Content Include="bin\Resources\sampler\resources\bg\living.png" />
+    <Content Include="bin\Resources\sampler\resources\bg\street.png" />
+    <Content Include="bin\Resources\sampler\resources\bg\white.png" />
     <Content Include="bin\Resources\sampler\resources\box.png" />
     <Content Include="bin\Resources\sampler\resources\button.png" />
     <Content Include="bin\Resources\sampler\resources\button\button.png" />
@@ -306,6 +310,11 @@
     <Content Include="bin\Resources\sampler\resources\calendar.png" />
     <Content Include="bin\Resources\sampler\resources\cg\03_2.jpg" />
     <Content Include="bin\Resources\sampler\resources\cg\cg01.jpg" />
+    <Content Include="bin\Resources\sampler\resources\cg\cg02.jpg" />
+    <Content Include="bin\Resources\sampler\resources\cg\cg03.jpg" />
+    <Content Include="bin\Resources\sampler\resources\cg\cg03_1.jpg" />
+    <Content Include="bin\Resources\sampler\resources\cg\cg03_2.jpg" />
+    <Content Include="bin\Resources\sampler\resources\cg\cg03_3.jpg" />
     <Content Include="bin\Resources\sampler\resources\cursor.png" />
     <Content Include="bin\Resources\sampler\resources\down.png" />
     <Content Include="bin\Resources\sampler\resources\icon.png" />
