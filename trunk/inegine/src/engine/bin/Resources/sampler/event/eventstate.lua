@@ -21,8 +21,9 @@ function EventView:InitComponents()
 	local gamestate = CurrentState();
 	self.gamestate = gamestate;
 	
-	local background = SpriteBase();
+	local background = FadingSprite();
 	self.background = background;
+	self.background.BackgroundColor = 0x000000
 	self.background.layer = 1
 	AddComponent(background);
 	
@@ -105,14 +106,20 @@ end
 function EventView:Nar()
     self.dialogueWin:ClearDialogueName();
     self.dialogueWin:ClearPortraitTexture();
-	logManager:SetName(nil);
+    if (logManager ~= nil) then
+		logManager:SetName(nil);
+	end
 end
 
 function EventView:Name(name, portrait)
     self.dialogueWin:SetDialogueName(name);
-    self.dialogueWin:SetPortraitTexture(portrait);
+    if (portrait ~= nil) then
+		self.dialogueWin:SetPortraitTexture(portrait);
+    end
     
-    logManager:SetName(name, portrait);
+    if (logManager ~= nil) then
+		logManager:SetName(name, portrait);
+	end
 end
 
 function EventView:CursorHandler(state, luaevent, args)
@@ -165,7 +172,9 @@ function EventView:Advance()
 	self.dialogueWin:Advance();
 end
 
-function EventView:SetBackground(image)
+function EventView:SetBackground(image, delay)
+	self.background:Show();
+	self.background.FadeTime = delay;
 	self.background.texture = image;
 end
 
@@ -203,12 +212,9 @@ function EventView:ShowTachie(index, delay)
 end
 
 function EventView:SetCG(image, delay)
+	self.cg:Show();
+	self.cg.FadeTime = delay;
 	self.cg.texture = image;
-	if (delay ~= nil) then
-		self.cg:FadeIn(delay);
-	else
-		self.cg:Show();
-	end
 end
 
 function EventView:HideCG(delay)
@@ -268,8 +274,8 @@ end
 AddESSCmd("sc");
 
 --gfx functions
-function bg(image)
-	event:SetBackground(image);	
+function bg(image, delay)
+	event:SetBackground(image, delay);	
 end
 AddESSCmd("bg");
 
