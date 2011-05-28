@@ -164,7 +164,10 @@ namespace INovelEngine.Effector
         public bool Visible
         {
             get { return _visible; }
-            set { _visible = value; }
+            set {
+                StopTransition();
+                _visible = value;
+            }
         }
 
         protected int _alpha = 255;
@@ -214,7 +217,12 @@ namespace INovelEngine.Effector
             endTick = beginTick + (int)duration;
             fadeIn = isFadingIn;
             Fading = true;
-            Visible = true;
+            _visible = true;
+        }
+
+        public void StopTransition()
+        {
+            Fading = false;
         }
 
         #region IGameComponent Members
@@ -223,7 +231,7 @@ namespace INovelEngine.Effector
         {
             UpdateFadeRate();
 
-            if (this.Visible)
+            if (this._visible)
             {
                 if (this.Fading)
                 {
@@ -264,8 +272,8 @@ namespace INovelEngine.Effector
 
                 if (currentTick >= endTick)
                 {
-                    Fading = false;
-                    Visible = fadeIn == true;
+                    StopTransition();
+                    _visible = fadeIn == true;
                 }
                 else
                 {
