@@ -185,8 +185,11 @@ namespace INovelEngine.Script
 
         public static void DoLua(string path)
         {
-            StreamReader reader = new StreamReader(ArchiveManager.GetStream(path), Encoding.Default);
-            string script = reader.ReadToEnd();
+            string script = "";
+            using (StreamReader reader = new StreamReader(ArchiveManager.GetStream(path), Encoding.Default))
+            {
+                script = reader.ReadToEnd();
+            }
             lua.DoString(script, path); 
         }
 
@@ -203,13 +206,16 @@ namespace INovelEngine.Script
         public static string ParseESS(string path)
         {
             Scanner scanner;
-            scanner = new Scanner(ArchiveManager.GetStream(path));
-    
-            Parser parser = new Parser(scanner);
-            parser.gen = new CodeGenerator();
-            parser.gen.CommandList = commandList;
-            parser.Parse();
-            
+            Parser parser;
+            using (Stream s = ArchiveManager.GetStream(path))
+            {
+                scanner = new Scanner(s);
+
+                parser = new Parser(scanner);
+                parser.gen = new CodeGenerator();
+                parser.gen.CommandList = commandList;
+                parser.Parse();
+            }
             return parser.gen.GetScript();
         }
 

@@ -26,11 +26,24 @@ function EventView:InitComponents()
 	self.background.layer = 1
 	AddComponent(background);
 	
-	self.tachie = Tachie()
-	self.tachie.layer = 5
-	self.tachie.Position = 0.5;
-	self.tachie:Hide();
-	AddComponent(self.tachie);
+	self.tachie = {};
+	self.tachie[0] = Tachie()
+	self.tachie[0].layer = 5
+	self.tachie[0].Position = 0.5;
+	self.tachie[0]:Hide();
+	AddComponent(self.tachie[0]);
+	
+	self.tachie[1] = Tachie()
+	self.tachie[1].layer = 5
+	self.tachie[1].Position = 0.25;
+	self.tachie[1]:Hide();
+	AddComponent(self.tachie[1]);
+	
+	self.tachie[2] = Tachie()
+	self.tachie[2].layer = 5
+	self.tachie[2].Position = 0.75;
+	self.tachie[2]:Hide();
+	AddComponent(self.tachie[2]);
 		
 	local cg = FadingSprite();
 	self.cg = cg;
@@ -150,24 +163,36 @@ function EventView:SetBackground(image)
 	self.background.texture = image;
 end
 
-function EventView:SetTachie(pos, body, dress)
-	self.tachie.BodyTexture = body;
-	self.tachie.DressTexture = dress;
+function EventView:SetTachie(index, body, dress)
+	assert(index < 3 and index >= 0, "wrong tachie index");
+	self.tachie[index].BodyTexture = body;
+	self.tachie[index].DressTexture = dress;
 end
 
-function EventView:HideTachie(pos, delay)
-	if (delay == nil) then
-		self.tachie:Hide();
-	else
-		self.tachie:FadeOut(delay);	
+function EventView:SetTachiePosition(index, position)
+	assert(index < 3 and index >= 0, "wrong tachie index");
+	if (position ~= nil) then
+		self.tachie[index].Position = position;
 	end
 end
 
-function EventView:ShowTachie(pos, delay)
+
+
+function EventView:HideTachie(index, delay)
+	assert(index < 3 and index >= 0, "wrong tachie index");
 	if (delay == nil) then
-		self.tachie:Show();
+		self.tachie[index]:Hide();
 	else
-		self.tachie:FadeIn(delay);	
+		self.tachie[index]:FadeOut(delay);	
+	end
+end
+
+function EventView:ShowTachie(index, delay)
+	assert(index < 3 and index >= 0, "wrong tachie index");
+	if (delay == nil) then
+		self.tachie[index]:Show();
+	else
+		self.tachie[index]:FadeIn(delay);	
 	end
 end
 
@@ -252,12 +277,17 @@ function hcg(delay)
 end
 AddESSCmd("hcg");
 
-function ld(pos, body, dress)
+function ld(index, body, dress)
 	if (body ~= nil and dress ~= nil) then
-		event:SetTachie(pos, body, dress);
+		event:SetTachie(index, body, dress);
 	end
 end
 AddESSCmd("ld");
+
+function pl(index, position)
+	event:SetTachiePosition(index, position);
+end
+AddESSCmd("pl");
 
 function cl(pos, delay)
 	event:HideTachie(pos, delay);

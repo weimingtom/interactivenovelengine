@@ -3,12 +3,34 @@
 #sd
 #bg "resources/images/room04.jpg"
 |testing selection@
-#sel "TEST1"
-#sel "TEST2"
-#sel "TEST3"
+#sel "TEST123123"
+#sel "TEST2123123"
+#sel "TEST3123123"
 #ask "WHICH OF THIS?"
 |result is...@
 <selres()>. OK.@
+|first tachie@
+#ld 0, "resources/scg/ma.png", "resources/scg/d01.png"
+#pl 0, 0.5
+#sl 0, 500
+|second tachie@
+#pl 0, 0.333
+#ld 1, "resources/scg/ma.png", "resources/scg/d01.png"
+#pl 1, 0.666
+#sl 1, 500
+|third tachie@
+#ld 0, "resources/scg/ma.png", "resources/scg/d01.png", 0.2
+#pl 0, 0.2
+#ld 1, "resources/scg/ma.png", "resources/scg/d01.png", 0.5
+#pl 1, 0.5
+#ld 2, "resources/scg/ma.png", "resources/scg/d01.png", 0.8
+#pl 2, 0.8
+#sl 2, 500
+|Hiding them all...@
+#cl 1
+#cl 2
+#sl 0
+#pl 0, 0.5
 |Losing item...@
 #itemloss "sundaybest"
 |showing CG@
