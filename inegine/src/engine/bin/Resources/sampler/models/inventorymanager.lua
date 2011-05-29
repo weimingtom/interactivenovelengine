@@ -186,3 +186,19 @@ end
 function ItemHas(id)
 	return InventoryManager:GetInstance():ItemExists(id);
 end
+
+--ESS functions
+function itemget(id, count)
+	ItemGet(id, count);
+end
+AddESSCmd("itemget");
+
+function itemloss(id, count)
+	ItemLoss(id, count);
+end
+AddESSCmd("itemloss");
+
+function itemhas(id)
+	ItemHas(id);
+end
+AddESSCmd("itemhas");

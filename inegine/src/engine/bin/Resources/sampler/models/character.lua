@@ -347,3 +347,49 @@ end
 function Firstname()
 	return Character:GetInstance():GetFirstName();
 end
+
+--ESS functions
+function father()
+	return Fathername();
+end
+AddESSCmd("father");
+
+function lastname()
+	return Lastname();
+end
+AddESSCmd("lastname");
+
+function daughter()
+	return Firstname();
+end
+AddESSCmd("daughter");
+
+function stat(id, amount)
+	if (id == nil) then
+		--raise error?
+		return -1;
+	end
+
+	if (amount == nil) then
+		return GetStat(id);
+	else
+		SetStat(id, amount);
+		return GetStat(id);
+	end
+end
+AddESSCmd("stat");
+
+function flag(id, value)
+	if (id == nil) then
+		--raise error?
+		return false;
+	end
+
+	if (amount == nil) then
+		return GetFlag(id);
+	else
+		SetFlag(id, value);
+		return GetFlag(id);
+	end
+end
+AddESSCmd("flag");
