@@ -203,3 +203,19 @@ end
 function SetDate(year, month, day)
 	Calendar:GetInstance():SetDate(year, month, day);
 end
+
+--ESS functions
+function month()
+	return calendar:GetMonth();
+end
+AddESSCmd("month");
+
+function year()
+	return calendar:GetYear();
+end
+AddESSCmd("year");
+
+function week()
+	return calendar:GetWeek();
+end
+AddESSCmd("week");
