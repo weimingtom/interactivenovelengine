@@ -380,7 +380,7 @@ function flag(id, value)
 		return false;
 	end
 
-	if (amount == nil) then
+	if (value == nil) then
 		return GetFlag(id);
 	else
 		SetFlag(id, value);

@@ -2,6 +2,8 @@
 #fi 1000
 #sd
 #bg "resources/images/room04.jpg"
+|setting flag@
+#flag "test", true
 |testing selection@
 #sel "TEST123123"
 #sel "TEST2123123"
@@ -34,9 +36,9 @@
 |Losing item...@
 #itemloss "sundaybest"
 |showing CG@
-#cg "resources/cg/cg01.jpg", 500
+#cg "resources/cg/p01.jpg", 500
 |switching CG@
-#cg "resources/cg/03_2.jpg"
+#cg "resources/cg/p03a.jpg"
 |Hiding CG@
 #hcg 1000
 #if flag("test") == false
@@ -60,4 +62,3 @@ Haha...@
 |She went home.
 |Hmm.. <father()>testing@
 #fo 1000
-#wait 1000

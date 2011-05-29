@@ -1,6 +1,6 @@
 ﻿[INESCRIPT]
-#mute
 #fi 1000
+#mute
 #sd
 #nar
 |昔々あるところへ、
@@ -14,12 +14,15 @@
 運命とは何と残酷なものでしょうか。@
 |ある日、突然な事故によって男は
 一人娘さえ失ってしまったのです。@
-#bg "resources/bg/black.png", 1000
+#bg "resources/bg/black.png", 500
+#wait 500
 |男は生きる意味を無くし、
 暗い部屋に引きこもって毎日を過ごすようになりました。.@
-#bg "resources/bg/living.png", 1000
+#bg "resources/bg/Droom_PM2.png", 500
+#wait 500
 |そんなある日のことです。@
 #bg "resources/bg/white.png", 1000
+#wait 1000
 |彼の前に現れたのはあ、
 聖なる光に包まれた一人の女性でした。@
 #ld 0, "resources/scg/ss.png", "resources/scg/ss.png"
@@ -30,7 +33,7 @@
 私は天界のもの、セラフ。@
 |あなたの悲しみを理解するとは言いません。@
 だが、私があなたにして差し上げられることが一つあります。@
-#cg "resources/cg/p01.jpg", 1000
+#cg "resources/cg/p01.jpg", 500
 |この少女はあなたの娘と同じ姿ではあるが、
 あなたの娘と全く同じ存在ではありません。@
 |この子の魂は赤ん坊のように純粋で汚れてないもの。@
@@ -38,15 +41,18 @@
 |もしあなたがそれをお望みなら、この子をあなたに預けましょう。@
 |だが、いつかきっとあなたは、報いを受けることになりましょう。@
 |それでも良かったら、彼女の手を取りなさい。@
-#cg "resources/cg/p02.png", 1000
-#wait 1000
+#cg "resources/cg/p02.png", 500
+#wait 500
 |願わくばそれが、あなたと彼女にとって最善の選択になりますように。@
-#cg "resources/cg/p03a.jpg", 1000
-#wait 1000
-#cg "resources/cg/p03b.jpg", 1000
+#cg "resources/cg/p03a.jpg", 500
+#wait 1500
+#cg "resources/cg/p03b.jpg", 500
+#wait 500
 #name "少女"
 |パ、パ……？@
 #cg "resources/cg/p03c.jpg", 1000
-#wait 200
+#wait 1000
 |そうやって再び、父と娘の物語が始まったのです。@
 #fo 1000
+#wait 1000
+#charmake

@@ -112,7 +112,14 @@ function SystemView:Init()
 		
 	self.confirmWindow = UIFactory.CreateConfirmWindow(
 		system_confirm_title,
-		function() saveManager:Title(); end,
+		function()
+			FadeOut(500)
+			Delay(500,
+				function()
+					title();
+					FadeIn(500)
+				end);
+		end,
 		function() self.confirmWindow:Hide() end);
 	self.confirmWindow:Hide();
 	self.confirmWindow.layer = 10;

@@ -1,6 +1,5 @@
 ﻿[INESCRIPT]
 #mute
-#fi 1000
 #sd
 #bg "resources/bg/black.png", 1000
 #name father()
@@ -81,23 +80,23 @@
 #name father()
 |今回は、いい夢を見ているようだな。
 よかった。@
-#name "バト"
+#name common_batou
 |ご主人さま？　まだお早いですが、失礼します。@
 |お嬢さまが見当たりませんが、もしご存知…
 あっ。@
 #name father()
 |しっ、昨日悪夢を見たらしくて、ここに来たんだ。
 今は寝かせてくれよう。@
-#name "バト"
+#name common_batou
 |お嬢さまったら甘えんぼうさんですね。
 承知しました。では僕は朝食の支度をするので。@
 #name father()
 |あ、そう、バト。@
-#name "バト"
+#name common_batou
 |はい、何でしょう？@
 #name father()
 |今日のおやつはチーズケーキにしよう。@
-#name "バト"
+#name common_batou
 |はい、分かりました。お嬢さまがお喜びになられるでしょうね。@
 |では、お嬢さんが起きましたらご一緒に降りてきてください。
 僕は先に…@
@@ -109,4 +108,3 @@
 #name father()
 |やれやれ。
 もうちょっと時間がかかりそうだな。@
-#fo 1000
