@@ -38,14 +38,8 @@ function Main:New()
     self:RegisterEvents()
     
     StopSounds(1000);
-	    
-	Main.instance = self;
-	
+	    	
 	return o
-end
-
-function Main:GetInstance()
-	return Main.instance;
 end
 
 --Component initialization

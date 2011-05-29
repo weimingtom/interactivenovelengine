@@ -5,6 +5,7 @@ function EventManager:New()
     local o = {}
 	setmetatable(o, self)
 	self.__index = self
+	
 	return o
 end
 
@@ -84,4 +85,20 @@ end
 
 function EventManager:TestCondition(condition)
 	return ConditionManager:Evaluate(condition);
+end
+
+function EventManager:TestEvent(id)
+	local event = self:GetItem(id);
+	return ConditionManager:Evaluate(event.condition);
+end
+
+function TestEvent(id)
+	return eventManager:TestEvent(id);
+end
+
+function DoEvent(id)
+	local event = eventManager:GetItem(id);
+	if (event ~= nil and event.script ~= nil) then
+		Event(event.script);
+	end
 end

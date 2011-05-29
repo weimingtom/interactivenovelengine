@@ -6,13 +6,7 @@ function ItemManager:New()
 	setmetatable(o, self)
 	self.__index = self
 
-	ItemManager.instance = o;
-	
 	return o
-end
-
-function ItemManager:GetInstance()
-	return ItemManager.instance;
 end
 
 function ItemManager:Load()

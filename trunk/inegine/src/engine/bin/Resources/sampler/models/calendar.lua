@@ -13,14 +13,8 @@ function Calendar:New()
     self.modifier = 0;
     self.weekLength = 7;
     self.weekNumber = 4;
-    
-	Calendar.instance = self;
-	
+    	
 	return o
-end
-
-function Calendar:GetInstance()
-	return Calendar.instance;
 end
 
 function Calendar:SetUpdateEvent(event)
@@ -48,9 +42,18 @@ function Calendar:SetWeekNumber(weeks)
 end
 
 function Calendar:SetDate(year, month, day)
-    self.year = year - self.modifier;
-    self.month = month;
-    self.day = day;
+	if (year ~= nil) then
+	    self.year = year - self.modifier;
+    end
+    
+    if (month ~= nil) then
+		self.month = month;
+    end
+    
+    if (day ~= nil) then
+		self.day = day;
+    end
+    
     self:Update();
 end
 
@@ -201,7 +204,7 @@ function Calendar:Save(target)
 end
 
 function SetDate(year, month, day)
-	Calendar:GetInstance():SetDate(year, month, day);
+	calendar:SetDate(year, month, day);
 end
 
 --ESS functions

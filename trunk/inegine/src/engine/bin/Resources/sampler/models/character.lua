@@ -14,15 +14,10 @@ function Character:New()
 	self.trigger = {}
 	self.dress = nil;
 	self:Initialize();	
-	
-	Character.instance = o;
-	
+		
 	return o
 end
 
-function Character:GetInstance()
-	return Character.instance;
-end
 
 function Character:Initialize()
 	--profile
@@ -321,31 +316,31 @@ function Character:DumpTrace()
 end
 
 function SetStat(stat, amount)
-	Character:GetInstance():Inc(stat, amount);
+	character:Inc(stat, amount);
 end
 
 function GetStat(stat)
-	return Character:GetInstance():Get(stat);
+	return character:Get(stat);
 end
 
 function SetFlag(id, value)
-	Character:GetInstance():SetFlag(id, value);
+	character:SetFlag(id, value);
 end
 
 function GetFlag(id)
-	return Character:GetInstance():GetFlag(id);
+	return character:GetFlag(id);
 end
 
 function Fathername()
-	return Character:GetInstance():GetFatherName();
+	return character:GetFatherName();
 end
 
 function Lastname()
-	return Character:GetInstance():GetLastName();
+	return character:GetLastName();
 end
 
 function Firstname()
-	return Character:GetInstance():GetFirstName();
+	return character:GetFirstName();
 end
 
 --ESS functions
