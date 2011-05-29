@@ -12,6 +12,9 @@ namespace INovelEngine.StateManager
     // GameState class representing a game state. 
     public class GameState : AbstractLuaEventHandler, IResource, IGameComponent, IComponentManager
     {
+        /* event handlers */
+        public LuaEventHandler StateClosing;
+
         /* resources managed by state */
         protected ResourceCollection graphicalResources = new ResourceCollection();
         protected Dictionary<string, AbstractResource> graphicalResourcesMap = new Dictionary<string, AbstractResource>();
@@ -67,6 +70,12 @@ namespace INovelEngine.StateManager
         {
             Removed = true;
             Supervisor.Info("State " + this.Name + " is closing!");
+            
+            if (StateClosing != null)
+            {
+                StateClosing(this, ScriptEvents.SteteClosing, null);
+            }
+
             generalResources.Dispose();
         }
 

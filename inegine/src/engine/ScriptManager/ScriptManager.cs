@@ -22,6 +22,7 @@ namespace INovelEngine.Script
         KeyPress,
         AnimationOver,
         Update,
+        SteteClosing,
         Etc
     }
 

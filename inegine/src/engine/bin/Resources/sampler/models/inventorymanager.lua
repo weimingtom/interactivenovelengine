@@ -119,7 +119,7 @@ end
 function InventoryManager:EquipItem(id)
 	if (self.categoryMap[id] == "dress") then
 		Info("Equipping " .. id);
-		if (character:GetDress() ~= id) then
+		if (character:GetDress() ~= id) then			
 			character:SetDress(id);
 			for i,v in ipairs(self:GetItems("dress")) do
 				if (v ~= id) then self:UnequipItem(v); end
