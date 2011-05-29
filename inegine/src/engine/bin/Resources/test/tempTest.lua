@@ -28,6 +28,10 @@ function TestTemp:testTemp()
 	
 end
 
+--mock functions
+function Replace(line) return line end
+function Length(line) return string.len(line) end
+function Substring() end
 
 function TestTemp:testLog()
     local logMan = LogManager:New();

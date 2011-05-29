@@ -10,15 +10,10 @@ function InventoryManager:New()
     self.countMap = {};    
     self.categoryList = {};    
 	self.equippedItems = {};
-	
-	InventoryManager.instance = o;
-	
+		
 	return o
 end
 
-function InventoryManager:GetInstance()
-	return InventoryManager.instance;
-end
 
 function InventoryManager:AddItem(id, category, count)
 	if (category == nil and itemManager ~= nil) then
@@ -176,15 +171,15 @@ function InventoryManager:Save(target)
 end
 
 function ItemGet(id, count)
-	InventoryManager:GetInstance():AddItem(id, nil, count);
+	inventoryManager:AddItem(id, nil, count);
 end
 
 function ItemLoss(id, count)
-	InventoryManager:GetInstance():RemoveItem(id, count);
+	inventoryManager:RemoveItem(id, count);
 end
 
 function ItemHas(id)
-	return InventoryManager:GetInstance():ItemExists(id);
+	return inventoryManager:ItemExists(id);
 end
 
 --ESS functions
