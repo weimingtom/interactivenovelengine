@@ -1,4 +1,5 @@
 ﻿[INESCRIPT]
+#fi 1000
 #mute
 #sd
 #bg "resources/bg/black.png", 1000
@@ -108,3 +109,4 @@
 #name father()
 |やれやれ。
 もうちょっと時間がかかりそうだな。@
+#fo 1000
