@@ -23,7 +23,9 @@ end
 function MakingState:InitComponents()
 	local gamestate = self.gamestate;
 	
-	self:SetBackground("resources/images/title.jpg");
+	FadeIn(1000);
+	
+	self:SetBackground("resources/bg/living.png");
 	
 	
 	self.frame = View()
@@ -133,8 +135,8 @@ function MakingState:InitComponents()
 	talkWindow:Hide();
 	
 	self.confirmWindow = UIFactory.CreateConfirmWindow(
-		system_confirm_title,
-		function() saveManager:Title(); end,
+		"Go back to prologue?",
+		function() prologue(); end,
 		function() self.confirmWindow:Hide() end);
 	self.confirmWindow:Hide();
 	self.confirmWindow.layer = 10;
@@ -246,7 +248,6 @@ function MakingState:PromptFirstName()
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
-	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText(makingstate_dialogue_firstname1);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
@@ -306,7 +307,6 @@ function MakingState:PromptLastName()
 	
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
-	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText(makingstate_dialogue_lastname1);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
@@ -365,7 +365,6 @@ function MakingState:PromptBirthday()
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
-	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText(makingstate_dialogue_birthday1);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
@@ -466,7 +465,6 @@ function MakingState:PromptBloodType()
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
-	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText(makingstate_dialogue_bloodtype1);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
@@ -574,7 +572,6 @@ function MakingState:PromptFatherName()
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
-	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText(makingstate_dialogue_fathername1);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
@@ -632,7 +629,6 @@ function MakingState:PromptFatherBirthday()
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
-	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText(makingstate_dialogue_fatherbirthday1);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
@@ -727,7 +723,6 @@ function MakingState:PromptSummary()
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
-	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText(makingstate_dialogue_summary1);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
@@ -776,7 +771,6 @@ function MakingState:PromptFinish()
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
-	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText(makingstate_dialogue_finish);
 	self.talkWindow:SetDialogueOverEvent(
 		function()
@@ -786,8 +780,7 @@ function MakingState:PromptFinish()
 		    FadeOut(500)
 			Delay(500,
 			function()
-				CloseState();
-				OpenState("main", "main/main.lua");
+				startmain()
 				FadeIn(500)
 			end);
 		end);
@@ -800,7 +793,6 @@ function MakingState:PromptReset()
 	self.talkWindow:Show();
     self.talkWindow:ClearDialogueText();
 	self.talkWindow:SetDialogueName(makingstate_dialogue_name);
-	self.talkWindow:SetPortraitTexture("resources/images/f2.png");
 	self.talkWindow:SetDialogueText(makingstate_dialogue_reset);
 	self.talkWindow:SetDialogueOverEvent(
 		function()

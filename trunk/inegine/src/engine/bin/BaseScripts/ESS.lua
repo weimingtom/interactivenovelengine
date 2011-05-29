@@ -76,9 +76,7 @@ function ESSOver()
 		SupressESSOver = false;
 		return
 	end
-	if (ESSOverHandler ~= nil) then
-		return ESSOverHandler()
-	end
+	return ESSOverHandler()
 end
 
 -- ESS text handling functions (used in string literals...)
@@ -97,16 +95,19 @@ function Clear() --called by ESS scripts to clear text
 end
 
 function ESSOverHandler() --called by ESS scripts when entire script is over
-	if (ESSEventHandler ~= nil and ESSEventHandler.ESSOverHandler ~= nil) then 
+	if (ESSEventHandler ~= nil) then 
 		ESSEventHandler:ESSOverHandler()
     end
 end
 
--- ESS function synonyms (called by ESS as functions i.e. "#loadscene "bgimg1", "Resources/daughterroom.png""
-
-function wait(delay)
+function Wait(delay)
 	Delay(delay, function() ResumeEss() end)
 	coroutine.yield();
+end
+
+-- ESS function synonyms (called by ESS as functions i.e. "#loadscene "bgimg1", "Resources/daughterroom.png""
+function wait(delay)
+	Wait(delay)
 end
 AddESSCmd("wait");
 

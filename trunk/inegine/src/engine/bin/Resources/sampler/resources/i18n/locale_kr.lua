@@ -4,6 +4,7 @@
 common_close = "Close"
 common_cancel = "Cancel"
 common_priceunit = "G"
+common_batou = "Batou"
 
 --main
 main_shop_greeting_name = "Batou"
@@ -18,7 +19,7 @@ main_state_mana =   "Mana  "
 --charater making state
 makingstate_previous_button =  "Previous"
 makingstate_next_button = "Ok"
-makingstate_dialogue_name = "Batou"
+makingstate_dialogue_name = common_batou
 makingstate_dialogue_firstname1 = "NIL.@\nNIL?@"
 makingstate_dialogue_firstname2 = "NIL."
 makingstate_dialogue_lastname1 = "NIL?@"

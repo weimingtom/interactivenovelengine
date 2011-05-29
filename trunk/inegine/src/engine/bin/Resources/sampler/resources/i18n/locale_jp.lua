@@ -5,6 +5,7 @@
 common_close = "Close"
 common_cancel = "Cancel"
 common_priceunit = "G"
+common_batou = "バト"
 
 --main
 main_shop_greeting_name = "Batou"
@@ -19,7 +20,7 @@ main_state_mana =   "Mana  "
 --charater making state
 makingstate_previous_button =  "Back"
 makingstate_next_button = "Ok"
-makingstate_dialogue_name = "Batou"
+makingstate_dialogue_name = common_batou
 makingstate_dialogue_firstname1 = "あなたの娘がどんな子なのか、教えて頂けますか？@\nまず、名前は？@"
 makingstate_dialogue_firstname2 = "娘の名前を教えてください"
 makingstate_dialogue_lastname1 = "娘の苗字も教えて頂けましょうか？@"

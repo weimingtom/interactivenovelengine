@@ -12,6 +12,7 @@ using INovelEngine.StateManager;
 using INovelEngine.Script;
 using System.Collections.Generic;
 using INovelEngine.ResourceManager;
+using System.Text;
 
 namespace INovelEngine
 {
@@ -290,7 +291,16 @@ namespace INovelEngine
 
         private void displayFPS()
         {
-            this.Window.Text = "[DEBUG MODE] FPS: " + Clock.GetFPS().ToString();
+            StringBuilder output = new StringBuilder();
+            output.Append("[DEBUG MODE] FPS: ");
+            output.Append(Clock.GetFPS());
+            output.Append(" STATES:");
+            foreach (GameState state in this.stateList)
+            {
+                output.Append(" ");
+                output.Append(state.Name);
+            }
+            this.Window.Text = output.ToString();;
         }
 
         protected override void Initialize()
@@ -346,7 +356,8 @@ namespace INovelEngine
             
             ScriptManager.lua.RegisterFunction("LoadScript", this, this.GetType().GetMethod("Lua_LoadScript"));
             ScriptManager.lua.RegisterFunction("CloseState", this, this.GetType().GetMethod("Lua_CloseState"));
-
+            ScriptManager.lua.RegisterFunction("CloseStates", this, this.GetType().GetMethod("Lua_CloseStates"));
+            
             ScriptManager.lua.RegisterFunction("SwitchState", this, this.GetType().GetMethod("Lua_SwitchState"));
             ScriptManager.lua.RegisterFunction("LoadState", this, this.GetType().GetMethod("Lua_LoadState"));
             ScriptManager.lua.RegisterFunction("CurrentState", this, this.GetType().GetMethod("Lua_CurrentState"));
@@ -437,6 +448,14 @@ namespace INovelEngine
             else
             {
                 this.activeState = null;
+            }
+        }
+
+        public void Lua_CloseStates()
+        {
+            while (this.stateList.Count > 0)
+            {
+                this.Lua_CloseState();
             }
         }
 

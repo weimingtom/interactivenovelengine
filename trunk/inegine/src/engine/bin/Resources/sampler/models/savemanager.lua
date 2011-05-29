@@ -90,8 +90,7 @@ function SaveManager:Title()
 	FadeOut(500)
 	Delay(500,
 	function()
-		CloseState();
-		OpenState("title", "intro/titlestate.lua");
+		title();
 		FadeIn(500)
 	end);
 end

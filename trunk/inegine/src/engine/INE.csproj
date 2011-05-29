@@ -220,6 +220,7 @@
     <None Include="bin\Resources\sampler\resources\data\shopdata.csv" />
     <None Include="bin\Resources\sampler\resources\data\shoplist.csv" />
     <None Include="bin\Resources\sampler\resources\data\talklist.csv" />
+    <None Include="bin\Resources\sampler\resources\event\opening.ess" />
     <None Include="bin\Resources\sampler\resources\event\nightmare.ess" />
     <None Include="bin\Resources\sampler\resources\event\prologue.ess" />
     <None Include="bin\Resources\sampler\resources\event\testevent.ess" />

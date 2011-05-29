@@ -573,7 +573,11 @@ function Main:ProcessEvents(first)
 				logManager:SetDate(calendar:GetYear(), calendar:GetMonth(), calendar:GetWeek());
 				OpenEvent(nextItem.script,
 						function()     
-							self:ProcessEvents(false);		
+							FadeOutIn(2000);
+							Delay(1000, function()
+								CloseState();
+								self:ProcessEvents(false)
+							end);
 						end);
 			end
 		)

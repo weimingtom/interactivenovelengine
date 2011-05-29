@@ -59,7 +59,6 @@ function TitleState:InitComponents()
 	local newGameButton = self:CreateButton(titlestate_newgame,
 		function (button, luaevent, args)
 			Trace("new game button clicked!");
-			CloseState();
 			LoadScript("startgame.lua");
 		end);
 	newGameButton.X = 550;

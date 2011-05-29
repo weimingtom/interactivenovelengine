@@ -25,4 +25,4 @@ calendar:SetDate(0, 1, 1);
 --log manager
 logManager = LogManager:New();
 
-OpenState("character making", "intro/makingstate.lua");
+prologue();
