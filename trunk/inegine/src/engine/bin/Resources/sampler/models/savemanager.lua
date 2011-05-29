@@ -107,8 +107,7 @@ function SaveManager:Load(id)
 		FadeOut(500)
 		Delay(500,
 		function()
-			CloseState();
-			OpenState("main", "main/main.lua");
+			startmain()
 			FadeIn(500)
 		end);
 		return true;

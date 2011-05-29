@@ -185,6 +185,7 @@
     <None Include="bin\Resources\sampler\components\tabview.lua" />
     <None Include="bin\Resources\sampler\components\uifactory.lua" />
     <None Include="bin\Resources\sampler\condition\conditionmanager.lua" />
+    <None Include="bin\Resources\sampler\init_test_functions.lua" />
     <None Include="bin\Resources\sampler\event\eventstate.lua" />
     <None Include="bin\Resources\sampler\init.lua" />
     <None Include="bin\Resources\sampler\init_csv.lua" />
