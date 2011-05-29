@@ -128,9 +128,8 @@ namespace INovelEngine
 
         private void AdjustLuaConsole()
         {
-            luaConsole.Width = this.Window.Width;
             luaConsole.Left = this.Window.Left;
-            luaConsole.Top = this.Window.Top + this.Window.Height + 10;
+            luaConsole.Top = this.Window.Top + this.Window.Height + 5;
         }
 
         public Sprite GetSpriteBatch()
