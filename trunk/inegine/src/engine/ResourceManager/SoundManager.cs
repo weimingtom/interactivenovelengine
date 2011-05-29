@@ -47,6 +47,7 @@ namespace INovelEngine.ResourceManager
         public void Play()
         {
             Supervisor.Info("playing sound " + this.Name);
+            SetVolume(_volume);
             SoundPlayer.PlaySound(this.FileName, Loop);
         }
 
@@ -65,9 +66,13 @@ namespace INovelEngine.ResourceManager
             set
             {
                 _volume = value;
-                if (this.loaded) SoundPlayer.SetVolume(this.FileName, _volume);
-
+                SetVolume(_volume);
             }
+        }
+
+        private void SetVolume(float vol)
+        {
+            if (this.loaded) SoundPlayer.SetVolume(this.FileName, vol);
         }
 
         private void FadeOutStep()
@@ -207,14 +212,6 @@ namespace INovelEngine.ResourceManager
             }
         }
         
-        public void Fade(int fadeDuration)
-        {
-            foreach (INESound sound in this.resources)
-            {
-                sound.Fadeout(fadeDuration);
-            }
-        }
-
         public void RemoveResource(string id)
         {
             if (resourcesMap.ContainsKey(id))

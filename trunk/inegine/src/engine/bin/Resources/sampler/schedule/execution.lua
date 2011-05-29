@@ -3,9 +3,7 @@ LoadScript "components\\luaview.lua"
 
 ExecutionView = LuaView:New();
 
-function ExecutionView:Init()
-	StopSounds(1000);
-    
+function ExecutionView:Init()    
     self:InitComponents();
 end
 

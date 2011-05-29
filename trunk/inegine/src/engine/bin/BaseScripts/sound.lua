@@ -9,7 +9,3 @@ function GetSound(alias)
 		return nil;
 	end
 end
-
-function StopSounds(duration)	
-	try(function() SoundManager():Fade(duration) end, "stopping all sound failed");
-end

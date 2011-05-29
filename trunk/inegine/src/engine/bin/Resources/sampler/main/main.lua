@@ -37,7 +37,12 @@ function Main:New()
     self:InitComponents()
     self:RegisterEvents()
     
-    StopSounds(1000);
+    self:PlayMusic();
+    CurrentState().StateClosing =
+    function(state, event, args)
+		self:StopMusic();
+    end
+    
 	    	
 	return o
 end
@@ -279,6 +284,14 @@ function Main:InitComponents()
 	self.tachie.Position = 0.5;
 end
 
+function Main:PlayMusic()
+    play("spring");
+end
+
+function Main:StopMusic()
+    stop("spring", 1000);
+end
+
 function Main:ShowMenu(menu, show)
 	self.menuItemSprite:Hide();
 	self.menuScheduleSprite:Hide();
@@ -340,6 +353,7 @@ function Main:OpenSchedule()
 end
 
 function Main:OpenScheduleExecution()
+	self:StopMusic();
 	self:Disable(false, false);
 	local execution = ExecutionView:New("executionView", CurrentState());
 	execution:Init();
@@ -563,6 +577,7 @@ function Main:ProcessEvents(first)
 	if (first == nil) then
 		FadeOut(1000)
 		delay = 1000;
+		self:StopMusic();
 	end
 	
 	local events = self.eventList;
@@ -584,6 +599,7 @@ function Main:ProcessEvents(first)
 	else
 		FadeIn(1000)
 		self:Enable();
+		self:PlayMusic();
 	end
 end
 

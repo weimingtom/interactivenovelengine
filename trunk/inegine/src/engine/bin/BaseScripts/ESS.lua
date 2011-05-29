@@ -119,7 +119,7 @@ end
 AddESSCmd("play");
 
 function stop(id, delay)
-	local sound = GetResource(id)
+	local sound = GetSound(id)
 	if (sound ~= nil) then
 		if (delay == nil) then
 			sound:Stop()
@@ -132,16 +132,8 @@ function stop(id, delay)
 end
 AddESSCmd("stop");
 
-function mute(delay)
-	if (delay == nil) then
-		delay = 0;
-	end
-	StopSounds(delay);
-end
-AddESSCmd("mute");
-
 function vol(id, vol)
-	local sound = GetResource(id)
+	local sound = GetSound(id)
 	if (sound ~= nil) then
 		sound.Volume = vol;
 	else
@@ -150,23 +142,10 @@ function vol(id, vol)
 end
 AddESSCmd("vol");
 
-function sysvol(id, vol)
+function sysvol(vol)
 	SetVolume(vol);
 end
 AddESSCmd("sysvol");
-
----- for selection window
---function AddSelection(text)
-	--CurrentState().state:AddSelection(text)
---end
---
---function ShowSelection()
-	--CurrentState().state:ShowSelection()
---end
---
---function SelectionOver(index)
-	--CurrentState().state:SelectionOver(index)
---end
 
 --transition control functions
 

@@ -51,6 +51,10 @@ namespace INovelEngine.Effector.Audio
         {
             StopSound(file);
             string commandString = "play \"" + file + "\" from 0";
+            if (loop)
+            {
+                commandString = commandString + " repeat";
+            }
             int mcierror = mciSendString(commandString, null, 0, IntPtr.Zero);
             if (mcierror != 0)
             {

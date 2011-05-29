@@ -186,8 +186,17 @@ end
 function InventoryPresenter:EquipItem()
 	if (self.selectedItem ~= nil) then
 		local itemID = self.selectedItem;
+		local item = itemManager:GetItem(itemID);
+		
+		--play BGM for dress
+		if (item.category == "dress" and character:GetDress() ~= itemID) then
+			--play BGM
+			play("clothes");
+		end
+		
 		self.inventoryManager:EquipItem(itemID);
 		self:SelectItem(itemID);
+		self.inventoryView:CloseDetail();
 		self:Update();
 	end
 end
