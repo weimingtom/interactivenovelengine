@@ -22,7 +22,8 @@ namespace INovelEngine.Script
         KeyPress,
         AnimationOver,
         Update,
-        SteteClosing,
+        StateEnable,
+        StateDisable,
         Etc
     }
 

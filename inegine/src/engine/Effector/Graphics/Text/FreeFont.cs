@@ -218,7 +218,6 @@ namespace INovelEngine.Effector.Graphics.Text
             int error = FT.FT_Init_FreeType(out _library);
             if (error != 0) throw new Exception("freetype library init error!");
 
-            /* todo: support loading from package */
             error = FT.FT_New_Face(_library, fontPath, 0, out _face);
             
             if (error != 0) throw new Exception("face init error!");
@@ -542,6 +541,11 @@ namespace INovelEngine.Effector.Graphics.Text
             Glyph g = new Glyph(Glyph.GlyphType.Default, index, fslot);
 
             RenderBitmap(g, 0, 0);
+            
+            
+#if DEBUG
+            g.Texture.Tag = c.ToString();
+#endif
 
             this._glyphCache.Add(c, g);
             return g;
@@ -683,7 +687,7 @@ namespace INovelEngine.Effector.Graphics.Text
 
         #region IDisposable Members
 
-        public void Dispose()
+        public virtual void Dispose()
         {
 
             glyphBuffer.Dispose();
@@ -694,8 +698,8 @@ namespace INovelEngine.Effector.Graphics.Text
 
             }
             /* to do: fix error in face & library freeing.. */
-            //FT.FT_Done_Face(_face);
-            //FT.FT_Done_FreeType(_library);
+            FT.FT_Done_Face(_face);
+            FT.FT_Done_FreeType(_library);
         }
 
         #endregion

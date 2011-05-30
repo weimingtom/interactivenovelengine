@@ -1,4 +1,5 @@
 ﻿[INESCRIPT]
+#playbgm "teatime"
 #fi 1000
 #sd
 #bg "resources/images/room04.jpg"
@@ -11,6 +12,7 @@
 #ask "WHICH OF THIS?"
 |result is...@
 <selres()>. OK.@
+#playbgm "arbeit"
 |first tachie@
 #ld 0, "resources/scg/ma.png", "resources/scg/d01.png"
 #pl 0, 0.5

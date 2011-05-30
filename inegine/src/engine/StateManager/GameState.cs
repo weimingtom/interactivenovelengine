@@ -13,7 +13,8 @@ namespace INovelEngine.StateManager
     public class GameState : AbstractLuaEventHandler, IResource, IGameComponent, IComponentManager
     {
         /* event handlers */
-        public LuaEventHandler StateClosing;
+        public LuaEventHandler StateDisable;
+        public LuaEventHandler StateEnable;
 
         /* resources managed by state */
         protected ResourceCollection graphicalResources = new ResourceCollection();
@@ -64,19 +65,31 @@ namespace INovelEngine.StateManager
         {
             Removed = false;
             Supervisor.Info("State " + this.Name + " is starting!");
+            Enable();
         }
 
         public void OnExiting()
         {
             Removed = true;
             Supervisor.Info("State " + this.Name + " is closing!");
-            
-            if (StateClosing != null)
-            {
-                StateClosing(this, ScriptEvents.SteteClosing, null);
-            }
-
+            Disable();
             generalResources.Dispose();
+        }
+
+        public void Enable()
+        {
+            if (StateEnable != null)
+            {
+                StateEnable(this, ScriptEvents.StateEnable, null);
+            }
+        }
+
+        public void Disable()
+        {
+            if (StateDisable != null)
+            {
+                StateDisable(this, ScriptEvents.StateDisable, null);
+            }
         }
 
         #region IDisposable Members

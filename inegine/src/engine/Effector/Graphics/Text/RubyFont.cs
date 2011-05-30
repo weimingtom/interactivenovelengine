@@ -74,5 +74,15 @@ namespace INovelEngine.Effector.Graphics.Text
                 }
             }
         }
+        #region IDisposable Members
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            _rubyFont.Dispose();
+        }
+
+        #endregion
+
     }
 }
