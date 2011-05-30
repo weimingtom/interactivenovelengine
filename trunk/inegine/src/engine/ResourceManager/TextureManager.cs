@@ -137,19 +137,21 @@ namespace INovelEngine.ResourceManager
             {
                 if (this.Texture != null) this.Texture.Dispose();
 
-
                 using (MemoryStream ms = new MemoryStream())
                 {
                     scaledBitmap.Save(ms, ImageFormat.Png);
                     byte[] bitmapData = ms.ToArray();
                     this.Texture = Texture.FromMemory(device, bitmapData);
+                    bitmapData = null;
                 }
                 
                 scaledBitmap.Dispose();
                 scaledBitmap = null;
+                
+#if DEBUG
+                Texture.Tag = this.fileName;
+#endif
             }
-
-
 
             base.LoadContent();
         }

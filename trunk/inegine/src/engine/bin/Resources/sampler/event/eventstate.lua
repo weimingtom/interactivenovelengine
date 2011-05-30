@@ -240,6 +240,20 @@ end
 
 event = EventView:New(); --initialize event view using current state
 
+CurrentState().StateDisable =
+function(state, event, args)
+	stopbgm();
+end
+
+CurrentState().StateEnable =
+function(state, event, args)
+	playbgm();
+end
+
+------------------
+-- ESS HANDLERS --
+------------------
+
 --dialogue control functions
 function name(name, image)
 	event:Name(name, image)

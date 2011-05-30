@@ -112,6 +112,28 @@ end
 AddESSCmd("wait");
 
 --sound functions
+function playbgm(id)
+	if (currentbgm ~= nil) then
+		currentbgm:Stop()
+	end
+	
+	if (id ~= nil) then
+		currentbgm = GetSound(id)
+	end
+	
+	if (currentbgm ~= nil) then
+		currentbgm:Play()
+	end
+end
+AddESSCmd("playbgm");
+
+function stopbgm()
+	if (currentbgm ~= nil) then
+		currentbgm:Stop()
+	end
+	currentbgm = nil;
+end
+AddESSCmd("stopbgm");
 
 function play(id)
 	GetSound(id):Play()

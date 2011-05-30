@@ -148,10 +148,12 @@ namespace INovelEngine
 
             csvManager.Dispose();
             soundManager.Dispose();
-            
             this.Dispose();
 
             DumpObjects();
+#if DEBUG
+            MessageBox.Show("Terminating INE");
+#endif
         }
 
         protected override void Dispose(bool disposing)
@@ -166,17 +168,26 @@ namespace INovelEngine
   
         public static void DumpObjects()
         {
-            Supervisor.Info("Dumping undisposed dx objects\n====");
+            Supervisor.Info("Dumping undisposed dx objects");
+            Supervisor.Info("====");
             ReadOnlyCollection<ComObject> table = ObjectTable.Objects;
             foreach (ComObject obj in table)
             {
-                Supervisor.Info(obj.GetType().ToString() + ":" + obj.CreationTime.ToString());
+                StringBuilder sb = new StringBuilder();
+                sb.Append(obj.GetType().ToString());
+                sb.Append(":");
+                sb.Append(obj.CreationTime.ToString());
+                sb.Append(":");
+                if (obj.Tag != null)
+                {
+                    sb.Append((string)obj.Tag);
+                }
+                Supervisor.Info(sb.ToString());
             }
-            Supervisor.Info("\n====\nDumping undisposed dx objects over");
+            Supervisor.Info("====");
+            Supervisor.Info("Dumping undisposed dx objects over");
 
-#if DEBUG
-            MessageBox.Show("Terminating INE");
-#endif
+
 
         }
  
@@ -357,7 +368,6 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("CloseState", this, this.GetType().GetMethod("Lua_CloseState"));
             ScriptManager.lua.RegisterFunction("CloseStates", this, this.GetType().GetMethod("Lua_CloseStates"));
             
-            ScriptManager.lua.RegisterFunction("SwitchState", this, this.GetType().GetMethod("Lua_SwitchState"));
             ScriptManager.lua.RegisterFunction("LoadState", this, this.GetType().GetMethod("Lua_LoadState"));
             ScriptManager.lua.RegisterFunction("CurrentState", this, this.GetType().GetMethod("Lua_CurrentState"));
 
@@ -384,6 +394,10 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("SaveData", this, this.GetType().GetMethod("Lua_SaveData"));
             ScriptManager.lua.RegisterFunction("LoadData", this, this.GetType().GetMethod("Lua_LoadData"));
 
+            ScriptManager.lua.RegisterFunction("Dump", this, this.GetType().GetMethod("DumpObjects"));
+
+            
+
         }
 
         public void Lua_LoadScript(string ScriptFile)
@@ -406,24 +420,24 @@ namespace INovelEngine
         /* create a new state and initialize the state using given lua script */
         public void Lua_LoadState(string stateName, string ScriptFile)
         {
+            if (states.ContainsKey(stateName))
+            {
+                throw new Exception("duplicate state name exists!");
+            }
+
             GameState newState = new GameState();
             newState.Name = stateName;
-            newState.OnStarting();
             
-            this.activeState = newState;  // set the new state as the active state
-
-            ScriptManager.lua.DoString("CurrentState().State = {}"); // initialize state table
-
-            AddState(newState);
+            //disable old state
+            if (activeState != null)
+                activeState.Disable();
+            activeState = newState;  // set the new state as the active state
             Lua_LoadScript(ScriptFile);
-        }
+            newState.OnStarting();
 
-        public void Lua_SwitchState(string id)
-        {
-            if (states.ContainsKey(id))
-            {
-                this.activeState = states[id];
-            }
+            states.Add(newState.Name, newState);
+            stateList.Add(newState);
+            Resources.Add(newState);
         }
 
         public void Lua_CloseState()
@@ -442,11 +456,12 @@ namespace INovelEngine
 
             if (stateList.Count > 0)
             {
-                this.activeState = stateList[stateList.Count - 1];
+                activeState = stateList[stateList.Count - 1];
+                activeState.Enable();
             }
             else
             {
-                this.activeState = null;
+                activeState = null;
             }
         }
 
@@ -456,22 +471,6 @@ namespace INovelEngine
             {
                 this.Lua_CloseState();
             }
-        }
-
-        public void AddState(GameState state)
-        {
-            if (states.ContainsKey(state.Name))
-            {
-                throw new Exception("duplicate state name exists!");
-            }
-
-            states.Add(state.Name, state);
-            
-            stateList.Add(state);
-
-            this.activeState = state;
-
-            Resources.Add(state);
         }
 
         public GameState Lua_CurrentState()

@@ -36,14 +36,7 @@ function Main:New()
 
     self:InitComponents()
     self:RegisterEvents()
-    
-    self:PlayMusic();
-    CurrentState().StateClosing =
-    function(state, event, args)
-		self:StopMusic();
-    end
-    
-	    	
+  	    	
 	return o
 end
 
@@ -588,11 +581,9 @@ function Main:ProcessEvents(first)
 				logManager:SetDate(calendar:GetYear(), calendar:GetMonth(), calendar:GetWeek());
 				OpenEvent(nextItem.script,
 						function()     
-							FadeOutIn(2000);
-							Delay(1000, function()
-								CloseState();
-								self:ProcessEvents(false)
-							end);
+							FadeIn(1000);
+							CloseState();
+							self:ProcessEvents(false)
 						end);
 			end
 		)
@@ -697,7 +688,15 @@ end
 
 --entry point
 main = Main:New();
-CurrentState().state = main;
+CurrentState().StateDisable =
+function(state, event, args)
+	main:StopMusic();
+end
+CurrentState().StateEnable =
+function(state, event, args)
+	main:Invalidate();
+	main:PlayMusic();
+end
 
 --extra actions
 main:Invalidate();
