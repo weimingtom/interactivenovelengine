@@ -544,7 +544,7 @@ namespace INovelEngine.Effector.Graphics.Text
             
             
 #if DEBUG
-            g.Texture.Tag = c.ToString();
+            g.Texture.Tag = "[glyph]:" + c.ToString();
 #endif
 
             this._glyphCache.Add(c, g);

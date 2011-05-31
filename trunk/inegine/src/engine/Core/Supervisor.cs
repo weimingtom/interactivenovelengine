@@ -181,14 +181,29 @@ namespace INovelEngine
                 if (obj.Tag != null)
                 {
                     sb.Append((string)obj.Tag);
+
                 }
-                Supervisor.Info(sb.ToString());
+                if (obj.Tag == null || !((string)obj.Tag).StartsWith("[glyph]"))
+                {
+                    Supervisor.Info(sb.ToString());
+                }
             }
             Supervisor.Info("====");
             Supervisor.Info("Dumping undisposed dx objects over");
+        }
 
-
-
+        public static int CountObjects()
+        {
+            int numObjects = 0;
+            ReadOnlyCollection<ComObject> table = ObjectTable.Objects;
+            foreach (ComObject obj in table)
+            {
+                if (obj.Tag == null || !((string)obj.Tag).StartsWith("[glyph]"))
+                {
+                    numObjects++;
+                }
+            }
+            return numObjects;
         }
  
         private void InitDevice()
@@ -254,13 +269,6 @@ namespace INovelEngine
                 this.activeState.Update(gameTime);
                 this.activeState.SendEvent(ScriptEvents.Update, Clock.GetTime());
             }
-
-            //for (int i = 0; i < stateList.Count; i++)
-            //{
-            //    stateList[i].Update(gameTime);
-            //}
-
-            //activeState.SendEvent(ScriptEvents.Update, Clock.GetTime());
 
             Clock.Tick();
 
@@ -432,6 +440,7 @@ namespace INovelEngine
             if (activeState != null)
                 activeState.Disable();
             activeState = newState;  // set the new state as the active state
+            ScriptManager.lua.DoString("CurrentState().State = {}"); // initialize state table
             Lua_LoadScript(ScriptFile);
             newState.OnStarting();
 

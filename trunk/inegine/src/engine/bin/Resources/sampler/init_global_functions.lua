@@ -3,8 +3,7 @@ function OpenEvent(eventScript, closingEvent)
 	if (closingEvent == nil) then
 		closingEvent = 
 		function()
-			FadeIn(1000);
-			CloseState();  
+			FadeIn(1000);  
 		end
 	end
 	OpenState("event", "event/eventstate.lua", eventScript, closingEvent)
