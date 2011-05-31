@@ -84,10 +84,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
-    <Reference Include="LuaInterface, Version=2.0.0.16708, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="LuaInterface, Version=2.0.0.16708, Culture=neutral, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL" />
-    <Reference Include="SampleFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86" />
     <Reference Include="SlimDX, Version=2.0.7.41, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86" />
+    <Reference Include="SlimDXFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86" />
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
@@ -510,9 +512,8 @@
     </Content>
     <Content Include="bin\NLog.dll">
     </Content>
-    <Content Include="bin\SampleFramework.dll">
-    </Content>
     <Content Include="bin\SlimDX.dll" />
+    <Content Include="bin\SlimDXFramework.dll" />
     <Content Include="bin\zlib1.dll">
     </Content>
   </ItemGroup>
