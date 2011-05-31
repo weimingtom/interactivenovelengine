@@ -36,9 +36,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\NAudio.dll</HintPath>
     </Reference>
-    <Reference Include="SampleFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="SlimDXFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\bin\SampleFramework.dll</HintPath>
+      <HintPath>..\bin\SlimDXFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
