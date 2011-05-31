@@ -12,7 +12,13 @@ namespace INovelEngine.Effector
 {
     class FadingTransition : AbstractTransition
     {
-        private Line line;
+        private Line line
+        {
+            get
+            {
+                return Supervisor.GetInstance().GetLineBatch();
+            }
+        }
         private Vector2[] linePath = new Vector2[2];
 
         
@@ -75,7 +81,6 @@ namespace INovelEngine.Effector
         public override void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
             base.Initialize(graphicsDeviceManager);
-            this.line = new Line(manager.Direct3D9.Device);
         }
 
         /// <summary>
@@ -84,7 +89,6 @@ namespace INovelEngine.Effector
         public override void LoadContent()
         {
             base.LoadContent();
-            line.OnResetDevice();
         }
 
         /// <summary>
@@ -93,7 +97,6 @@ namespace INovelEngine.Effector
         public override void UnloadContent()
         {
             base.UnloadContent();
-            line.OnLostDevice();
         }
 
 
@@ -103,7 +106,6 @@ namespace INovelEngine.Effector
         public override void Dispose()
         {
             base.Dispose();
-            line.Dispose();
         }
 
 

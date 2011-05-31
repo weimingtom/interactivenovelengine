@@ -12,6 +12,10 @@ namespace INovelEngine.StateManager
     // GameState class representing a game state. 
     public class GameState : AbstractLuaEventHandler, IResource, IGameComponent, IComponentManager
     {
+
+#if DEBUG
+        public int COMobjectCount = 0;
+#endif
         /* event handlers */
         public LuaEventHandler StateDisable;
         public LuaEventHandler StateEnable;
@@ -63,6 +67,11 @@ namespace INovelEngine.StateManager
 
         public void OnStarting()
         {
+            
+#if DEBUG
+            this.COMobjectCount = Supervisor.CountObjects();
+#endif
+
             Removed = false;
             Supervisor.Info("State " + this.Name + " is starting!");
             Enable();
@@ -74,6 +83,11 @@ namespace INovelEngine.StateManager
             Supervisor.Info("State " + this.Name + " is closing!");
             Disable();
             generalResources.Dispose();
+
+#if DEBUG
+            int newCount = Supervisor.CountObjects();
+            Supervisor.Trace("SlimDX COM precount: " + this.COMobjectCount + " | postcount: " + newCount);
+#endif
         }
 
         public void Enable()
