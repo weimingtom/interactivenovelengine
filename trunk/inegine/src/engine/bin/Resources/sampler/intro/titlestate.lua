@@ -24,7 +24,7 @@ end
 function TitleState:InitComponents()
 	local gamestate = self.gamestate;
 	
-	self:SetBackground("resources/images/title.jpg");
+	--self:SetBackground("resources/images/title.jpg");
 	
 	local view = View();
 	self.view = view;

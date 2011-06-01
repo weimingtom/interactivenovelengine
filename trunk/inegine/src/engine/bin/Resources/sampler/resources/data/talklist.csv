@@ -1,4 +1,4 @@
 category,id,condition,pic,name,line
-musume,testevent1,1 == 1,resources/images/f2.png,Bato,"Talk1.@"
-musume,testevent2,1 == 1,resources/images/f2.png,Bato,"Talk2.@"
-goddess,testevent3,1 == 1,resources/images/f2.png,Bato,"Talk3.@"
+musume,testevent1,1 == 1,resources/ba_temp.png,Bato,"Talk1.@"
+musume,testevent2,1 == 1,resources/ba_temp.png,Bato,"Talk2.@"
+goddess,testevent3,1 == 1,resources/ba_temp.png,Bato,"Talk3.@"

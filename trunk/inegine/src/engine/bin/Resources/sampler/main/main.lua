@@ -500,7 +500,7 @@ function Main:OpenShopList()
 	local shoplist = ShopListView:New("shoplistview", CurrentState());
 	self.shoplist = shoplist;
 	shoplist:Init();
-	shoplist:SetGreeting("resources/images/f2.png", main_shop_greeting_name,
+	shoplist:SetGreeting("resources/ba_temp.png", main_shop_greeting_name,
 						 main_shop_greeting_msg);
 	shoplist:SetShopSelectedEvent(
 		function(button, luaevent, arg)
@@ -700,4 +700,4 @@ end
 
 --extra actions
 main:Invalidate();
-main:SetBackground("resources/images/room03.jpg");
+main:SetBackground("resources/bg/living.png");
