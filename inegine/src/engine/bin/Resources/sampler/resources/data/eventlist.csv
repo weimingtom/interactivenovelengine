@@ -1,9 +1,0 @@
-category,id,condition,script
-post,testevent1,month() == 2 and flag("test") == false,resources/event/testevent.ess
-post,testevent2,month() == 3 and stat("refa") > 50,resources/event/testevent.ess
-post,testevent3,month() == 4 and stat("sword") > 100,resources/event/testevent.ess
-post,testevent4,month() == 5 and stat("sta") > 500,resources/event/testevent.ess
-musume,testevent4,month() == 2,resources/event/testevent.ess
-goddess,testevent5,month() == 2,resources/event/testevent.ess
-musume,testevent6,month() == 3,resources/event/testevent.ess
-goddess,testevent7,month() == 3,resources/event/testevent.ess
