@@ -172,7 +172,24 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="bin\BaseScripts\sound.lua" />
+    <None Include="BaseScripts\csv.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="BaseScripts\ESS.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="BaseScripts\font.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="BaseScripts\Init.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="BaseScripts\save.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="BaseScripts\sound.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="bin\Resources\fonts\NanumGothicBold.ttf" />
     <None Include="bin\Resources\fonts\NanumMyeongjoBold.ttf" />
     <None Include="bin\Resources\sampler\common\observer.lua" />
@@ -251,11 +268,6 @@
     <None Include="bin\Resources\test\runtest.lua" />
     <None Include="bin\Resources\test\schedulemanagerTest.lua" />
     <None Include="bin\Resources\test\tempTest.lua" />
-    <None Include="bin\BaseScripts\save.lua" />
-    <None Include="bin\BaseScripts\csv.lua" />
-    <None Include="bin\BaseScripts\ESS.lua" />
-    <None Include="bin\BaseScripts\font.lua" />
-    <None Include="bin\BaseScripts\Init.lua" />
     <None Include="LocalTestRun.testrunconfig" />
     <None Include="Microsoft.VC90.CRT.manifest">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
