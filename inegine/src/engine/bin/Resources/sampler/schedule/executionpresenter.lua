@@ -77,17 +77,17 @@ function ExecutionPresenter:RunSchedule()
         local sound = "";
         if (success) then
             dialog2 = execution_presenter_success_msg
-            portrait2 = "resources/images/f2.png"
+            portrait2 = "resources/ba_temp.png"
             sound = "failure";
         else
             dialog2 = execution_presenter_failure_msg
-            portrait2 = "resources/images/f1.png"
+            portrait2 = "resources/ba_temp.png"
             sound = "failure";
         end
 
 	    self.executionView:ExecuteSchedule(execution_presenter_dialogue_name,
 								  execution_presenter_dialogue_text1 ..  scheduleName .. execution_presenter_dialogue_text2,
-							      "resources/images/f3.png", 
+							      "resources/ba_temp.png", 
 							      animation,
 							      result,
 							      dialog2,

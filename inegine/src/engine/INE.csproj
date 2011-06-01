@@ -211,7 +211,6 @@
     <None Include="bin\Resources\sampler\init_global_functions.lua" />
     <None Include="bin\Resources\sampler\init_masterdata.lua" />
     <None Include="bin\Resources\sampler\init_sound.lua" />
-    <None Include="bin\Resources\sampler\intro\intro.ess" />
     <None Include="bin\Resources\sampler\intro\intro.lua" />
     <None Include="bin\Resources\sampler\intro\makingstate.lua" />
     <None Include="bin\Resources\sampler\intro\titlestate.lua" />

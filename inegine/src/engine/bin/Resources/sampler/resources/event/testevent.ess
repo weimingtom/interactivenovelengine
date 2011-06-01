@@ -2,7 +2,7 @@
 #playbgm "teatime"
 #fi 1000
 #sd
-#bg "resources/images/room04.jpg"
+#bg "resources/bg/living.png"
 |setting flag@
 #flag "test", true
 |testing selection@
@@ -55,7 +55,7 @@
 |changing clothing@
 #ld 0, "resources/scg/ma.png", "resources/scg/d05.png"
 |On the way@|[r=HOME]home[/r], I fell.@
-#name "Anna", "resources/images/f1.png"
+#name "Anna", "resources/ba_temp.png"
 ;#Show "musume1", 100
 |It hurts... *sob*...
 What should I do? Damn...
