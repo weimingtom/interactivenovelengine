@@ -38,7 +38,6 @@ namespace INovelEngine.Script
         public LuaEventHandler MouseEnter;
         public LuaEventHandler MouseLeave;
         public LuaEventHandler KeyDown;
-        public LuaEventHandler StateUpdate;
         public LuaEventHandler AnimationOver;
 
         public AbstractLuaEventHandler mouseDownLocked;
@@ -125,9 +124,6 @@ namespace INovelEngine.Script
                             break;
                         case ScriptEvents.MouseLeave:
                             if (MouseLeave != null) MouseLeave(handler, luaevent, args);
-                            break;
-                        case ScriptEvents.Update:
-                            if (StateUpdate != null) StateUpdate(handler, luaevent, args);
                             break;
                         default:
                             if (GeneralEvent != null) GeneralEvent(handler, luaevent, args);

@@ -267,7 +267,6 @@ namespace INovelEngine
             if (this.activeState != null)
             {
                 this.activeState.Update(gameTime);
-                this.activeState.SendEvent(ScriptEvents.Update, Clock.GetTime());
             }
 
             Clock.Tick();
