@@ -572,7 +572,7 @@ namespace INovelEngine.Effector.Graphics.Text
             {
                 buffer = new byte[width*height];
             }
-
+            
             // copy freetype glyph bitmap to C# memory...
             if (bitmap.buffer != (System.IntPtr)0)
             {
@@ -609,7 +609,7 @@ namespace INovelEngine.Effector.Graphics.Text
                         textureBuffer[offset] = 255;
                         textureBuffer[offset + 1] = 255;
                         textureBuffer[offset + 2] = 255;
-                        textureBuffer[offset + 3] = (byte) (alpha*this._color.A/255);
+                        textureBuffer[offset + 3] = (byte)alpha;
 
                         if (g.Box.xMin > x) g.Box.xMin = x;
                         if (g.Box.xMax < x) g.Box.xMin = x;

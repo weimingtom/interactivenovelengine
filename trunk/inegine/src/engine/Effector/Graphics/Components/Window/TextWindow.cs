@@ -218,7 +218,12 @@ namespace INovelEngine.Effector
             }
         }
 
-        private Line line;
+        private Line line {
+            get
+            {
+                return Supervisor.GetInstance().GetLineBatch();
+            }
+        }
 
         private INEFont fontManager;
 
@@ -407,7 +412,6 @@ namespace INovelEngine.Effector
         public override void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
             base.Initialize(graphicsDeviceManager);
-            this.line = new Line(graphicsDeviceManager.Direct3D9.Device);
         }
 
 
@@ -416,7 +420,6 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void LoadContent()
         {
-            this.line.OnResetDevice();
             base.LoadContent();
         }
 
@@ -425,13 +428,11 @@ namespace INovelEngine.Effector
         /// </summary>
         public override void UnloadContent()
         {
-            this.line.OnLostDevice();
             base.UnloadContent();
         }
 
         public override void Dispose()
         {
-            line.Dispose();
             base.Dispose();
         }
 
