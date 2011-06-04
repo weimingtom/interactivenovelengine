@@ -133,6 +133,7 @@
     <Compile Include="Effector\Graphics\Components\Window\TextNarrator.cs" />
     <Compile Include="Effector\Graphics\Effect\AbstractTransition.cs" />
     <Compile Include="Effector\Graphics\Effect\TransitionManager.cs" />
+    <Compile Include="Effector\Graphics\Text\CachedDictionary.cs" />
     <Compile Include="Effector\Graphics\Text\FreeFont.cs" />
     <Compile Include="Effector\Graphics\Text\FreeType.cs" />
     <Compile Include="Effector\Graphics\Text\RubyFont.cs" />
