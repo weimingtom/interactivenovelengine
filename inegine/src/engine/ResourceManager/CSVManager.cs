@@ -63,13 +63,6 @@ namespace INovelEngine.ResourceManager
                     this.columns.Add(row[i].ToString());
                     this.columnMap[row[i].ToString()] = i;
                 }
-
-                //this.row = null;
-
-                //foreach (Object col in row)
-                //{
-                //    this.columns.Add(col.ToString());
-                //}
                 this.row = null;
             }
         }
@@ -141,9 +134,14 @@ namespace INovelEngine.ResourceManager
         public int GetInt(int row, string col)
         {
             Object obj = this.rows[row][GetColumnID(col)];
-            if (obj.GetType().ToString().Equals("System.Byte"))
+            string typeString = obj.GetType().ToString();
+            if (typeString.Equals("System.Byte"))
             {
                 return (int)((Byte)obj);
+            }
+            else if (typeString.Equals("System.Int16"))
+            {
+                return (int)((short)obj);
             }
             else
             {
@@ -154,13 +152,18 @@ namespace INovelEngine.ResourceManager
         public float GetFloat(int row, string col)
         {
             Object obj = this.rows[row][GetColumnID(col)];
-            if (obj.GetType().ToString().Equals("System.Single"))
+            string typeString = obj.GetType().ToString();
+            if (typeString.Equals("System.Single"))
             {
                 return (float)obj;
             }
-            else if (obj.GetType().ToString().Equals("System.Byte"))
+            else if (typeString.Equals("System.Byte"))
             {
                 return (float)(Byte)obj;
+            }
+            else if (typeString.Equals("System.Int16"))
+            {
+                return (float)(short)obj;
             }
             else
             {
