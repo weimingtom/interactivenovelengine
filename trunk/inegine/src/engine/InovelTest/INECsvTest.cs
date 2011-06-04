@@ -37,7 +37,8 @@ namespace InovelTest.ResourceManager
 3.15,테스트
 3.14,ウィキペディア
 3.14,""g,gg""
-3.14,""""""g,gg""";
+3.14,""""""g,gg""
+-4,test";
             ineCsv.csvReader = new CSVReader(csvData);
         }
 
@@ -123,6 +124,8 @@ namespace InovelTest.ResourceManager
             Assert.AreEqual("ウィキペディア", ineCsv.GetString(14, "F2"));
             Assert.AreEqual("g,gg", ineCsv.GetString(15, "F2"));
             Assert.AreEqual("\"g,gg", ineCsv.GetString(16, "F2"));
+            Assert.AreEqual(-4f, ineCsv.GetFloat(17, "F1"));
+            Assert.AreEqual(-4, ineCsv.GetInt(17, "F1"));
             
         }
 
