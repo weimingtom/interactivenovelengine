@@ -156,7 +156,7 @@ namespace INovelEngine.Effector.Graphics.Text
         private Vector3 _center = new Vector3();
         private Vector3 _pos = new Vector3();
 
-        private readonly Dictionary<char, Glyph> _glyphCache;
+        private readonly CachedDictionary<char, Glyph> _glyphCache;
         protected readonly List<GlyphHolder> _glyphList;
 
         private string _prevString;
@@ -208,7 +208,13 @@ namespace INovelEngine.Effector.Graphics.Text
             this._size = Math.Min(Maxsize / 2, size);
             this._lastPos = new Vector2();
 
-            _glyphCache = new Dictionary<char, Glyph>();
+            _glyphCache = new CachedDictionary<char, Glyph>(1024,
+                    delegate(Glyph disposalTarget)
+                    {
+                        disposalTarget.Dispose();
+                    }
+                );
+
             _glyphList = new List<GlyphHolder>();
             _colorStack = new Stack<Color>();
 
@@ -449,14 +455,17 @@ namespace INovelEngine.Effector.Graphics.Text
 
                         if (Effect == TextEffect.Shadow)
                         {
-                            _pos.X += 2;
-                            _pos.Y += 2;
+                            _pos.X += 1;
                             sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, Color.Black);
-                            _pos.X--;
-                            _pos.Y--;
+                            _pos.X -= 2;
                             sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, Color.Black);
-                            _pos.Y--;
-                            _pos.X--;
+                            _pos.X += 1;
+
+                            _pos.Y += 1;
+                            sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, Color.Black);
+                            _pos.Y -= 2;
+                            sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, Color.Black);
+                            _pos.Y += 1;
                         }
 
                         sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, this._color);
@@ -691,12 +700,8 @@ namespace INovelEngine.Effector.Graphics.Text
         {
 
             glyphBuffer.Dispose();
+            _glyphCache.Dispose();
 
-            foreach (Glyph glyph in _glyphCache.Values)
-            {
-                glyph.Dispose();
-
-            }
             /* to do: fix error in face & library freeing.. */
             FT.FT_Done_Face(_face);
             FT.FT_Done_FreeType(_library);

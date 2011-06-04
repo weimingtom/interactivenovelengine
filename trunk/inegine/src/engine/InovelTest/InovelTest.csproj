@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="INEFontTest.cs" />
     <Compile Include="INETextureTest.cs" />
     <Compile Include="SaveMangerTest.cs" />
     <Compile Include="INECsvTest.cs" />
