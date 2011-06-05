@@ -123,6 +123,8 @@ namespace INovelEngine.Effector.Graphics.Text
 
     }
 
+    /* TODO: merge FreeType API calls to singleton and reuse typeface already opened */
+
     public class FreeFont : IDisposable
     {
         public enum TextEffect
