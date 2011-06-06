@@ -438,14 +438,17 @@ namespace INovelEngine
             //disable old state
             if (activeState != null)
                 activeState.Disable();
+
+            states.Add(newState.Name, newState);
+            stateList.Add(newState);
+
             activeState = newState;  // set the new state as the active state
             ScriptManager.lua.DoString("CurrentState().State = {}"); // initialize state table
             Lua_LoadScript(ScriptFile);
             newState.OnStarting();
 
-            states.Add(newState.Name, newState);
-            stateList.Add(newState);
             Resources.Add(newState);
+
         }
 
         public void Lua_CloseState()

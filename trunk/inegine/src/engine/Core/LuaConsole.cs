@@ -77,21 +77,6 @@ namespace INovelEngine.Core
             RunLuaString("if (CurrentState().Name == \"event\") then CloseState() end");
         }
 
-        private void toolStripButton3_Click(object sender, EventArgs e)
-        {
-            openFileDialog1.Title = "Select event script";
-            openFileDialog1.InitialDirectory = System.Environment.CurrentDirectory + "\\resources\\sampler\\resources\\event";
-            openFileDialog1.Filter = "ESS|*.ess|All Files|*.*";
-
-            if (openFileDialog1.ShowDialog() != DialogResult.Cancel)
-            {
-                string fileName = openFileDialog1.FileName;
-                fileName = fileName.Replace(System.Environment.CurrentDirectory + "\\Resources\\sampler\\", "");
-                fileName = fileName.Replace("\\", "\\\\");
-                RunLuaString("openevent(\"" + fileName + "\")");
-            }
-        }
-
         private void openToolStripButton_Click(object sender, EventArgs e)
         {
             RunLuaString("load()");
@@ -105,15 +90,15 @@ namespace INovelEngine.Core
         private void copyToolStripButton_Click(object sender, EventArgs e)
         {
             openFileDialog1.Title = "Select event script";
-            openFileDialog1.InitialDirectory = System.Environment.CurrentDirectory + "\\resources\\sampler\\resources\\event";
+            openFileDialog1.InitialDirectory = System.Environment.CurrentDirectory + "\\resources\\musume\\resources\\event";
             openFileDialog1.Filter = "ESS|*.ess|All Files|*.*";
 
             if (openFileDialog1.ShowDialog() != DialogResult.Cancel)
             {
                 string fileName = openFileDialog1.FileName;
-                fileName = fileName.Replace(System.Environment.CurrentDirectory + "\\Resources\\sampler\\", "");
+                fileName = fileName.Replace(System.Environment.CurrentDirectory + "\\Resources\\musume\\", "");
                 fileName = fileName.Replace("\\", "\\\\");
-                RunLuaString("openevent(\"" + fileName + "\")");
+                RunLuaString("testevent(\"" + fileName + "\", true)");
             }
         }
     }

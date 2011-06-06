@@ -232,6 +232,7 @@ namespace INovelEngine.Script
                 counter++;
             }
 
+            reader.Close();
             return buffer;
         }
 
