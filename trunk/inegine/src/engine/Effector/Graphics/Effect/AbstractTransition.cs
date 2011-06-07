@@ -17,7 +17,22 @@ namespace INovelEngine.Effector.Graphics.Effect
         protected float tickLength;
         protected bool inTransition;
         protected bool fadeIn;
-        protected bool fadedOut = false;
+        protected bool _fadedOut = false;
+        protected bool fadedOut
+        {
+            get
+            {
+                return _fadedOut;
+            }
+            set
+            {
+                if (value)
+                {
+                    progress = 1.0f;
+                }
+                _fadedOut = value;
+            }
+        }
 
         protected Color color;
 
@@ -49,7 +64,7 @@ namespace INovelEngine.Effector.Graphics.Effect
             {
                 currentTick = Clock.GetTime();
 
-                progress = Math.Min(1.0f, (currentTick - beginTick) / tickLength);
+                progress = Math.Max(0, Math.Min(1.0f, (currentTick - beginTick) / tickLength));
                 if (fadeIn) progress = 1.0f - progress;
 
                 if (currentTick >= endTick)

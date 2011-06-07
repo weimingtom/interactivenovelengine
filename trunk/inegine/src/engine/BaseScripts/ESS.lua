@@ -21,9 +21,29 @@ function BeginESS(script)
 	translatedScript = LoadESS(script);
 	
 	if (translatedScript == nil) then
-		error("ESScript execution error");
+		Error("ESScript execution error : " .. script);
+		ESSOver()
+		CloseState();
+		return;
 	end
-	local co = coroutine.create(assert(loadstring(translatedScript)))
+	
+	local func, msg = loadstring(translatedScript);
+	
+	if (func == nil) then
+		if (msg ~= nil) then
+			Error("ESScript execution error : " .. script);
+			if (type(msg) == "userdata") then
+				Error(msg:toString());
+			elseif (type(msg) == "string") then
+				Error(msg);
+			end
+		end
+		ESSOver()
+		CloseState();
+		return;
+	end
+	
+	local co = coroutine.create(func)
 	if (CurrentState().state == nil) then
 		CurrentState().state = {};
 	end
@@ -105,11 +125,15 @@ function Wait(delay)
 	coroutine.yield();
 end
 
--- ESS function synonyms (called by ESS as functions i.e. "#loadscene "bgimg1", "Resources/daughterroom.png""
 function wait(delay)
 	Wait(delay)
 end
 AddESSCmd("wait");
+
+function rand()
+	return math.random() ;
+end
+AddESSCmd("rand");
 
 --sound functions
 function playbgm(id)
@@ -127,32 +151,28 @@ function playbgm(id)
 end
 AddESSCmd("playbgm");
 
-function stopbgm()
+function stopbgm(delay)
 	if (currentbgm ~= nil) then
-		currentbgm:Stop()
+		if (delay ~= nil) then
+			currentbgm:FadeOut(delay)
+		else
+			currentbgm:Stop()
+		end
 	end
 	currentbgm = nil;
 end
 AddESSCmd("stopbgm");
 
 function play(id)
-	GetSound(id):Play()
+	local sound = GetSound(id)
+	if (sound ~=nil) then
+		sound:Play()
+	else
+		Error("playing invalid sfx: " .. id);
+	end
 end
 AddESSCmd("play");
 
-function stop(id, delay)
-	local sound = GetSound(id)
-	if (sound ~= nil) then
-		if (delay == nil) then
-			sound:Stop()
-		else
-			sound:Fadeout(delay)
-		end 
-	else
-		Error("invalid id: " .. id);
-	end
-end
-AddESSCmd("stop");
 
 function vol(id, vol)
 	local sound = GetSound(id)
