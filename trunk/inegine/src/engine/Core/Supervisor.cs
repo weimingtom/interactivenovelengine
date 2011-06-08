@@ -13,6 +13,8 @@ using INovelEngine.Script;
 using System.Collections.Generic;
 using INovelEngine.ResourceManager;
 using System.Text;
+using AxShockwaveFlashObjects;
+using System.Xml;
 
 namespace INovelEngine
 {
@@ -43,6 +45,12 @@ namespace INovelEngine
 
         private Sprite sharedSprite;
         private Line sharedLine;
+
+        //flash panel
+        private System.Windows.Forms.Panel videoPlaceholder;
+        private AxShockwaveFlashObjects.AxShockwaveFlash flashPlayer;
+        private LuaEventHandler overHandler;
+        private bool playingVideo = false;
 
         public Device Device
         {
@@ -76,6 +84,7 @@ namespace INovelEngine
         public void StartGame()
         {
             ClearColor = Color.White;
+            Window.KeyPreview = true;
             Window.ClientSize = new Size(InitialWidth, InitialHeight);
             Window.KeyDown += new KeyEventHandler(Window_KeyDown);
             Window.MouseDown += new MouseEventHandler(Window_MouseDown);
@@ -117,6 +126,95 @@ namespace INovelEngine
             AdjustLuaConsole();
             this.Window.LocationChanged += new EventHandler(Window_LocationChanged);
 #endif
+            /* initialize flash player panel for displaying videos */
+            InitializeFlashPanel();
+
+        }
+
+        private void InitializeFlashPanel()
+        {
+            this.videoPlaceholder = new System.Windows.Forms.Panel();
+            this.flashPlayer = new AxShockwaveFlashObjects.AxShockwaveFlash();
+            // 
+            // videoPlaceholder
+            // 
+            this.videoPlaceholder.BackColor = System.Drawing.Color.White;
+            this.videoPlaceholder.Controls.Add(this.flashPlayer);
+            this.videoPlaceholder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.videoPlaceholder.Location = new System.Drawing.Point(0, 0);
+            this.videoPlaceholder.Name = "videoPlaceholder";
+            this.videoPlaceholder.Size = new System.Drawing.Size(800, 600);
+            this.videoPlaceholder.TabIndex = 6;
+            this.videoPlaceholder.Visible = true;
+            this.videoPlaceholder.Hide();
+
+            // 
+            // flashPlayer
+            // 
+            this.flashPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flashPlayer.Enabled = true;
+            this.flashPlayer.Location = new System.Drawing.Point(0, 0);
+            this.flashPlayer.Name = "flashPlayer";
+            this.flashPlayer.Size = new System.Drawing.Size(800, 600);
+            this.flashPlayer.TabIndex = 0;
+
+            this.Window.Controls.Add(videoPlaceholder);
+
+        }
+
+        private void LoadVideo(string videoPath)
+        {
+            try
+            {
+                playingVideo = true;
+                this.videoPlaceholder.Show();
+                flashPlayer.LoadMovie(0, Application.StartupPath + "\\player.swf");
+                this.flashPlayer.FlashCall += new _IShockwaveFlashEvents_FlashCallEventHandler(flashPlayer_FlashCall);
+            }
+            catch (Exception ex)
+            {
+                Error("Unable to load SWF video player, please verify you have Flash Player 8 installed and try again.");
+                Error(ex.Message);
+            }
+            try
+            {
+                flashPlayer.CallFunction("<invoke name=\"loadAndPlayVideo\" returntype=\"xml\"><arguments><string>" + videoPath + "</string></arguments></invoke>");
+            }
+            catch (Exception ex)
+            {
+                Error("unable to load given video from " + videoPath);
+                Error(ex.Message);
+            }
+            this.Window.Focus();
+        }
+
+        private void StopVideo()
+        {
+            if (playingVideo)
+            {
+                Trace("Stopping Video playback");
+                playingVideo = false;
+                flashPlayer.CallFunction("<invoke name=\"stopVideo\" returntype=\"xml\"><arguments></arguments></invoke>");
+                this.videoPlaceholder.Hide();
+                if (overHandler != null) overHandler(this, ScriptEvents.Etc, null);
+            }
+        }
+
+        private void flashPlayer_FlashCall(object sender, _IShockwaveFlashEvents_FlashCallEvent e)
+        {
+            //XmlDocument document = new XmlDocument();
+            //document.LoadXml(e.request);
+
+            //XmlAttributeCollection attributes = document.FirstChild.Attributes;
+            //String command = attributes.Item(0).InnerText;
+
+            //switch (command)
+            //{
+            //    case "VideoOver":
+                    Trace("Video playback over");
+                    StopVideo();
+            //        break;
+            //}
         }
 
         void Window_LocationChanged(object sender, EventArgs e)
@@ -227,6 +325,8 @@ namespace INovelEngine
 
         void Window_KeyDown(object sender, KeyEventArgs e)
         {
+            StopVideo();
+
             if (activeState != null) activeState.SendEvent(ScriptEvents.KeyPress, e.KeyValue);
         }
 
@@ -403,6 +503,7 @@ namespace INovelEngine
 
             ScriptManager.lua.RegisterFunction("Dump", this, this.GetType().GetMethod("DumpObjects"));
 
+            ScriptManager.lua.RegisterFunction("Video", this, this.GetType().GetMethod("Lua_Video"));
             
 
         }
@@ -686,6 +787,11 @@ namespace INovelEngine
             return source.Length;
         }
 
+        public void Lua_Video(string path, LuaEventHandler overHandler)
+        {
+            this.overHandler = overHandler;
+            this.LoadVideo(path);
+        }
 
         #endregion
 

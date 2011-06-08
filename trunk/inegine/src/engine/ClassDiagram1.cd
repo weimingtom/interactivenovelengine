@@ -1,0 +1,750 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="INovelEngine.Core.TextureLoadError" Collapsed="true">
+    <Position X="16.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Core\Exceptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Core.LogManager" Collapsed="true">
+    <Position X="18.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQACAAAAAAAAAAAAABAAAAAAAEAAAAA=</HashCode>
+      <FileName>Core\LogManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Core.LuaConsole" Collapsed="true">
+    <Position X="20" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAABAAAMEWgUgIiAAAAAAAAEAIAQAAAAAQ=</HashCode>
+      <FileName>Core\LuaConsole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Core.TextInput" Collapsed="true">
+    <Position X="21.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAACAAAAACAACAAAACAAAYAiAAAEAAAAAAAAA=</HashCode>
+      <FileName>Core\TextInput.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Core.Clock" Collapsed="true">
+    <Position X="18.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAiACAAACAwAAAAAIAIAAIEEAABAAAAQAQAA=</HashCode>
+      <FileName>Core\TimeManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Core.TimeEvent" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="18.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAEAAAATCAAAIAAAAAAAAAAAAAAQACAAAAAA=</HashCode>
+      <FileName>Core\TimeManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="INovelEngine.Program" Collapsed="true">
+    <Position X="23.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Core\Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Supervisor" Collapsed="true">
+    <Position X="18.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AFSLFIQAAiQgB4BSQIiBEIL4hBFAmniESDABJkNBtMw=</HashCode>
+      <FileName>Core\Supervisor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.Audio.SoundPlayer" Collapsed="true">
+    <Position X="14.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAACgACAAAIAAAAAAAggIAAgAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Audio\SoundPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.AbstractGUIComponent" Collapsed="true">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAyAEAAEBDKYYyQFkQiAREYEhQAFABYMAIAAAAAJYIU=</HashCode>
+      <FileName>Effector\Graphics\Components\AbstractGUI.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="INovelEngine.Effector.Button" Collapsed="true">
+    <Position X="5.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAgAgACAAAIACAABAAABAQAAQEAABAACAECAIA=</HashCode>
+      <FileName>Effector\Graphics\Components\Button\Button.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.Label" Collapsed="true">
+    <Position X="5.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Components\Label\Label.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.AnimatedSprite" Collapsed="true">
+    <Position X="7.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAyAAAABhAAAAEAAAAAAAMAAAAAgEAAQIAAAgAACAAU=</HashCode>
+      <FileName>Effector\Graphics\Components\Sprite\AnimatedSprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.FadingSprite" Collapsed="true">
+    <Position X="12.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAgAAAAAAAAgAAJAAABAAAAIAAAQAAgA=</HashCode>
+      <FileName>Effector\Graphics\Components\Sprite\FadingSprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.SpriteBase" Collapsed="true">
+    <Position X="6.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAEAAAACAEASAAAAAAAAAABBAAAAAAAAIAAAAAAAQ=</HashCode>
+      <FileName>Effector\Graphics\Components\Sprite\SpriteBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.Tachie" Collapsed="true">
+    <Position X="10" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABwQEAAAACAAASCiIAgAAAgABBAAABQAAAAAAAAAAAU=</HashCode>
+      <FileName>Effector\Graphics\Components\Sprite\Tachie.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.View" Collapsed="true">
+    <Position X="12.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECEAAAACAAAQAAAAAAAAAAjAIAAAAAAAAEAAAAAAQ=</HashCode>
+      <FileName>Effector\Graphics\Components\View\View.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.ImageWindow" Collapsed="true">
+    <Position X="3.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgEEAAAACAAAwAAAAAAIAABAAKAAAAgAAAAAAAAAAQ=</HashCode>
+      <FileName>Effector\Graphics\Components\Window\ImageWindow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.TextNarrator" Collapsed="true">
+    <Position X="23.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIgAAAAAIAAAAAIAAAAAAgAAAEAAAABABJQAA=</HashCode>
+      <FileName>Effector\Graphics\Components\Window\TextNarrator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.TextWindow" Collapsed="true">
+    <Position X="3.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEUAEIUQIyASBwoIAAACQADIIQIUCAEgBBQACEHGALQ=</HashCode>
+      <FileName>Effector\Graphics\Components\Window\TextWindow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.WindowBase" Collapsed="true">
+    <Position X="3.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCEAAAACAAAQAAAAAAAAAADBAAAAAgAAAAAAAAAIQ=</HashCode>
+      <FileName>Effector\Graphics\Components\Window\WindowBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.FadingTransition" Collapsed="true">
+    <Position X="3.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAUAEAAAACAAAwAAAAAABAAAAAAAAAIQAAAAAAAAAAQ=</HashCode>
+      <FileName>Effector\Graphics\Effect\FadingTransition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.TextRenderer" Collapsed="true">
+    <Position X="14.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAEAAAAAAAAAAACAAAAAAAAAAAIA=</HashCode>
+      <FileName>Effector\Graphics\Text\TextRenderer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.AbstractResource" Collapsed="true">
+    <Position X="4" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAADAAAQABAAAAAAQAAAAAAAAAAQAAAAAAAAQ=</HashCode>
+      <FileName>ResourceManager\AbstractResource.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="INovelEngine.Effector.Graphics.Components.ComponentManagerHelper" Collapsed="true">
+    <Position X="21.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Components\IComponentManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.Graphics.Effect.AbstractTransition" Collapsed="true">
+    <Position X="3.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAEAAAACAAAwEAgQqAAAAEQAAAAASAAIAAAAAAAoU=</HashCode>
+      <FileName>Effector\Graphics\Effect\AbstractTransition.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="INovelEngine.Effector.Graphics.Effect.TransitionManager" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="21.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAACAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Effector\Graphics\Effect\TransitionManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="INovelEngine.Effector.Graphics.Text.IndexedLinkedList&lt;T&gt;" Collapsed="true">
+    <Position X="16.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAQAAAAAABAQAAAAQAAAAAAAQAABBAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\CachedDictionary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.Graphics.Text.CachedDictionary&lt;K, T&gt;" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="16.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAACAEAAABCAAABAQABAAAAAAAAAAQIAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\CachedDictionary.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="INovelEngine.Effector.Graphics.Text.GlyphHolder" Collapsed="true">
+    <Position X="14.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAQIAAAAAYAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeFont.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.Graphics.Text.Glyph" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAIAAAAAAQMAAAAAAgA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeFont.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="INovelEngine.Effector.Graphics.Text.Tag" Collapsed="true">
+    <Position X="20" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAQAAAAAACAAAQAggAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeFont.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Effector.Graphics.Text.FreeFont" Collapsed="true">
+    <Position X="0.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oIGoABAImDwIpAQABYBIAQBQAAESwAABKBwAwAsQwCI=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeFont.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="INovelEngine.Effector.Graphics.Text.RubyFont" Collapsed="true">
+    <Position X="0.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAASAAAAAIgEAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\RubyFont.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tao.FreeType.FT" Collapsed="true">
+    <Position X="21.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ldNe+3snfBsU9wEqRQO54wv1Px3wRvkjzv2rv+u3Kr0=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Properties.Resources" Collapsed="true">
+    <Position X="14.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Properties.Settings" Collapsed="true">
+    <Position X="21.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.ResourceManager.ArchiveManager" Collapsed="true">
+    <Position X="14.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAABAAAEACIAAAAAAAIAAAAAAAAgAAAAA=</HashCode>
+      <FileName>ResourceManager\ArchiveManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.ResourceManager.INECsv" Collapsed="true">
+    <Position X="3" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAUAAAACAAAAAAAABATAQCwAEAAAACCBAAABLAAAQ=</HashCode>
+      <FileName>ResourceManager\CSVManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.ResourceManager.CsvManager" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAEAAAACAACSAAAAAAAAAAAAAAAAABAgAAAAAAEAQ=</HashCode>
+      <FileName>ResourceManager\CSVManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="INovelEngine.ResourceManager.INEFont" Collapsed="true">
+    <Position X="5.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEACEAAAACAAgQAAAAAAEAAEgAAQAAAAAAQABQACgAQ=</HashCode>
+      <FileName>ResourceManager\FontManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.ResourceManager.FontManager" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAACAAAQAAAAAAAAAAEAwAAAAAAAAgABAAAAw=</HashCode>
+      <FileName>ResourceManager\FontManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="INovelEngine.ResourceManager.SaveManager" Collapsed="true">
+    <Position X="16.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAQAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>ResourceManager\SaveManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.ResourceManager.INESound" Collapsed="true">
+    <Position X="7.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAECAIACAAAIAAAAAAAAgCAAABAACAoAIAAALQAAQ=</HashCode>
+      <FileName>ResourceManager\SoundManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.ResourceManager.SoundManager" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="23.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAACAADSAAAAAAAAAIAAAAAAAAIAAgAAAAIAQ=</HashCode>
+      <FileName>ResourceManager\SoundManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="INovelEngine.ResourceManager.INETexture" Collapsed="true">
+    <Position X="0.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAACBCAAAUAAABAAAMAAAAAAAAEEAEIAgAgAAAQ=</HashCode>
+      <FileName>ResourceManager\TextureManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Com.StellmanGreene.CSVReader.CSVReader" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="14.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAACACAAgAAAAAAAAAAAAAAEAAAEAAAAAAQQAEA=</HashCode>
+      <FileName>ResourceManager\CSVReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Com.StellmanGreene.CSVReader.StringConverter" Collapsed="true">
+    <Position X="16.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAIAAAAAAAAMABAAA=</HashCode>
+      <FileName>ResourceManager\StringConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Script.CodeGenerator" Collapsed="true">
+    <Position X="20" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAASAAAAAAAAAABAEEECQgCAAASEgAAAAgAKEAAAAA=</HashCode>
+      <FileName>ScriptManager\CodeGen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Script.AbstractLuaEventHandler" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAABAAgAAAAwMAAAgAAEARAAAAAEAAUQAAMAACAJAA=</HashCode>
+      <FileName>ScriptManager\ScriptManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.Script.ScriptManager" Collapsed="true">
+    <Position X="20" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIBAAAAAACACAAAAAAAAAACAAAAEAAADAAAACgg=</HashCode>
+      <FileName>ScriptManager\ScriptManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Parser" Collapsed="true">
+    <Position X="21.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QEAkIhAgEIQAAQBIQRUAQAAABQgAAAAIGI5AEAAEEQA=</HashCode>
+      <FileName>ScriptManager\Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Errors" Collapsed="true">
+    <Position X="16.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAgAAAAAAAABAAAABAAAAAAAAAAAAAAAAAAABE=</HashCode>
+      <FileName>ScriptManager\Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FatalError" Collapsed="true">
+    <Position X="18.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ScriptManager\Parser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Token" Collapsed="true">
+    <Position X="20" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAIAAAAAAAAAAQAAAAYAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>ScriptManager\Scanner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Buffer" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgACBAAEAAQAAAQABACgAAOAEAAACAAIAACAAAA=</HashCode>
+      <FileName>ScriptManager\Scanner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UTF8Buffer" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ScriptManager\Scanner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scanner" Collapsed="true">
+    <Position X="18.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEc0ABAAFAQEAAEgAAAQBYAAAACAAEAAAARCAAAAISA=</HashCode>
+      <FileName>ScriptManager\Scanner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="INovelEngine.StateManager.GameState" Collapsed="true">
+    <Position X="1" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AESAEAAAICAIQwAAAAAADAQAEwQRAAEEAAAgCAQIAAQ=</HashCode>
+      <FileName>StateManager\GameState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Struct Name="Tao.FreeType.MemoryRec_" Collapsed="true">
+    <Position X="21.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAACAAAAAAAAAAAAAAAABAAAAAAAQA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_StreamRec" Collapsed="true">
+    <Position X="14.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAFAAKAAAIAAAAEAAAAIAIAIAAIAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_StreamDesc" Collapsed="true">
+    <Position X="23.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_Vector" Collapsed="true">
+    <Position X="18.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_BBox" Collapsed="true">
+    <Position X="18.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAgAEAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_Bitmap" Collapsed="true">
+    <Position X="20" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgYABAACCAAAAAAEAAAABAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_Outline" Collapsed="true">
+    <Position X="20" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACABAAAAAAAAAABAAAAAAAAAAAAAABAAAAAACQ=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_Outline_Funcs" Collapsed="true">
+    <Position X="21.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAACAAAACAAAAAAAIAAAACAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.RasterRec_" Collapsed="true">
+    <Position X="14.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_Span" Collapsed="true">
+    <Position X="21.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAiAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_Raster_Params" Collapsed="true">
+    <Position X="16.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAIAAAAKAAAAIGAAAAAAAAAAAAAQQ=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_Raster_Funcs" Collapsed="true">
+    <Position X="14.75" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAACAAAABAAEAAAAAAAAAAAAAAkAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_UnitVector" Collapsed="true">
+    <Position X="16.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_Matrix" Collapsed="true">
+    <Position X="16.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AGAAAAAAAAAAAIABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_Data" Collapsed="true">
+    <Position X="14.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_Generic" Collapsed="true">
+    <Position X="18.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAQAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_ListNodeRec" Collapsed="true">
+    <Position X="23.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQAAIAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_ListRec" Collapsed="true">
+    <Position X="14.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_Glyph_Metrics" Collapsed="true">
+    <Position X="20" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAQAQAAAAAAAAAAQAAAAIAAgAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_Bitmap_Size" Collapsed="true">
+    <Position X="21.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQCQIAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.LibraryRec_" Collapsed="true">
+    <Position X="20" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.ModuleRec_" Collapsed="true">
+    <Position X="23.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.DriverRec_" Collapsed="true">
+    <Position X="14.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.RendererRec_" Collapsed="true">
+    <Position X="16.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_FaceRec" Collapsed="true">
+    <Position X="16.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABEAEAAAKBAAARADIQAoACAgIAEAiEACAAAQyIIABI=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_SizeRec" Collapsed="true">
+    <Position X="20" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAQAAAAAAAQAAQAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_GlyphSlotRec" Collapsed="true">
+    <Position X="21.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAEAAAAJAQBIAAAASCAIAAQAAAAAAAQAUQYBABA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_CharMapRec" Collapsed="true">
+    <Position X="23.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAQAAIAAEAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.Face_InternalRec_" Collapsed="true">
+    <Position X="16.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.Size_InternalRec_" Collapsed="true">
+    <Position X="18.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_Size_Metrics" Collapsed="true">
+    <Position X="18.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAQCAgQAAQAAAAAEAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.SubGlyphRec_" Collapsed="true">
+    <Position X="21.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.Slot_InternalRec_" Collapsed="true">
+    <Position X="20" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_Parameter" Collapsed="true">
+    <Position X="23.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Tao.FreeType.FT_Open_Args" Collapsed="true">
+    <Position X="18.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAACAAABAEAAICAAAAAIAAAQ=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="INovelEngine.Effector.IGUIComponent" Collapsed="true">
+    <Position X="16.5" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Components\AbstractGUI.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="INovelEngine.Effector.Graphics.Components.IComponentManager" Collapsed="true">
+    <Position X="14.75" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAABAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Components\IComponentManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="INovelEngine.Effector.NarrationState" Collapsed="true">
+    <Position X="23.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAIAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Effector\Graphics\Components\Window\TextNarrator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="INovelEngine.Effector.ResourceType" Collapsed="true">
+    <Position X="14.75" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ResourceManager\AbstractResource.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Tao.FreeType.FT_Pixel_Mode" Collapsed="true">
+    <Position X="20" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAIAAAIAAIACAAAAAAAAAAAACCAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Tao.FreeType.FT_Glyph_Format" Collapsed="true">
+    <Position X="16.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAEAIAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Tao.FreeType.FT_Encoding" Collapsed="true">
+    <Position X="14.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAEAACAIIGAAAQAAgAAAAAICAAAAGEAAAARAAAIAAQA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Tao.FreeType.FT_Render_Mode" Collapsed="true">
+    <Position X="21.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAABAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAIUAAAA=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Tao.FreeType.FT_Kerning_Mode" Collapsed="true">
+    <Position X="18.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAg=</HashCode>
+      <FileName>Effector\Graphics\Text\FreeType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="INovelEngine.Script.ScriptEvents" Collapsed="true">
+    <Position X="16.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQABAAAAAAAAEAAAgAAEABAAAABGAUAAAAIAACAAAA=</HashCode>
+      <FileName>ScriptManager\ScriptManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="INovelEngine.Script.LuaEventHandler" Collapsed="true">
+    <Position X="14.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAABAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ScriptManager\ScriptManager.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Malgun Gothic" Size="9" />
+</ClassDiagram>
