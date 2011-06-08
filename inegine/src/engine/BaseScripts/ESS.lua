@@ -78,9 +78,12 @@ function ResumeEss()
 	end
 end
 
+
 function YieldESS()
-	Info("yielding (line:" .. currentLine .. ")");
-	coroutine.yield();
+	if (CurrentState().state ~= nil and CurrentState().state["ess"] ~= nil) then
+		Info("yielding (line:" .. currentLine .. ")");
+		coroutine.yield();
+	end
 end
 
  

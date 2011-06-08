@@ -85,6 +85,7 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AxInterop.ShockwaveFlashObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL" />
     <Reference Include="LuaInterface, Version=2.0.0.16708, Culture=neutral, processorArchitecture=x86" />
     <Reference Include="NAudio, Version=1.3.8.0, Culture=neutral, processorArchitecture=x86" />
@@ -193,6 +194,8 @@
     <None Include="BaseScripts\sound.lua">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="player.fla" />
     <None Include="Resources\fonts\NanumGothicBold.ttf" />
     <None Include="Resources\fonts\NanumMyeongjoBold.ttf" />
     <None Include="Resources\sampler\common\observer.lua" />
@@ -295,6 +298,15 @@
     <Compile Include="Effector\Graphics\Components\Window\WindowBase.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AxInterop.ShockwaveFlashObjects.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Interop.ShockwaveFlashObjects.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="player.swf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\sampler\resources\after.png" />
     <Content Include="Resources\sampler\resources\animation\01_homesc_01.gif" />
     <Content Include="Resources\sampler\resources\animation\01_homesc_02.gif" />
