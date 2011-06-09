@@ -134,10 +134,12 @@ namespace INovelEngine
         private void InitializeFlashPanel()
         {
             this.videoPlaceholder = new System.Windows.Forms.Panel();
+            this.flashPlayer = new AxShockwaveFlashObjects.AxShockwaveFlash();
             // 
             // videoPlaceholder
             // 
             this.videoPlaceholder.BackColor = System.Drawing.Color.White;
+            this.videoPlaceholder.Controls.Add(this.flashPlayer);
             this.videoPlaceholder.Dock = System.Windows.Forms.DockStyle.Fill;
             this.videoPlaceholder.Location = new System.Drawing.Point(0, 0);
             this.videoPlaceholder.Name = "videoPlaceholder";
@@ -145,22 +147,23 @@ namespace INovelEngine
             this.videoPlaceholder.TabIndex = 6;
             this.videoPlaceholder.Visible = true;
             this.videoPlaceholder.Hide();
-            this.Window.Controls.Add(videoPlaceholder);
-        }
 
-        private void LoadVideo(string videoPath)
-        {
-
-            /* initialize flash player */
-            this.flashPlayer = new AxShockwaveFlashObjects.AxShockwaveFlash();
+            // 
+            // flashPlayer
+            // 
             this.flashPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flashPlayer.Enabled = true;
             this.flashPlayer.Location = new System.Drawing.Point(0, 0);
             this.flashPlayer.Name = "flashPlayer";
             this.flashPlayer.Size = new System.Drawing.Size(800, 600);
             this.flashPlayer.TabIndex = 0;
-            this.videoPlaceholder.Controls.Add(this.flashPlayer);
 
+            this.Window.Controls.Add(videoPlaceholder);
+
+        }
+
+        private void LoadVideo(string videoPath)
+        {
             try
             {
                 playingVideo = true;
@@ -194,9 +197,6 @@ namespace INovelEngine
                 playingVideo = false;
                 flashPlayer.CallFunction("<invoke name=\"stopVideo\" returntype=\"xml\"><arguments></arguments></invoke>");
                 flashPlayer.Stop();
-                flashPlayer.Dispose();
-                this.videoPlaceholder.Controls.Remove(flashPlayer);
-                flashPlayer = null;
                 videoPlaceholder.Hide();
                 if (overHandler != null) overHandler(this, ScriptEvents.Etc, null);
             }
@@ -213,8 +213,8 @@ namespace INovelEngine
             //switch (command)
             //{
             //    case "VideoOver":
-                    Trace("Video playback over");
-                    StopVideo();
+            Trace("Video playback over");
+            StopVideo();
             //        break;
             //}
         }
