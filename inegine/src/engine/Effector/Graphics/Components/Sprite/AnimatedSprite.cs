@@ -47,6 +47,25 @@ namespace INovelEngine.Effector
             }
         }
 
+        public new string Texture
+        {
+            get
+            {
+                return base.Texture;
+            }
+            set
+            {
+                base.Texture = value;
+                if (this.textureManager.Rows != -1)
+                {
+                    this.Rows = this.textureManager.Rows;
+                    this.Cols = this.textureManager.Cols;
+                    this.Width = this.textureManager.Width;
+                    this.Height = this.textureManager.Height;
+                }
+            }
+        }
+
         protected int startFrame = 0;
         protected int endFrame = 0;
         public bool inAnimation = false;
@@ -189,13 +208,6 @@ namespace INovelEngine.Effector
         public override void LoadContent()
         {
             base.LoadContent();
-            if (this.textureManager.Rows != -1)
-            {
-                this.Rows = this.textureManager.Rows;
-                this.Cols = this.textureManager.Cols;
-                this.Width = this.textureManager.Width;
-                this.Height = this.textureManager.Height;
-            }
         }
     }
 }
