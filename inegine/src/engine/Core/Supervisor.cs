@@ -164,12 +164,12 @@ namespace INovelEngine
 
         private void LoadVideo(string videoPath)
         {
+            Trace("Starting Video playback");
             try
             {
                 playingVideo = true;
                 this.videoPlaceholder.Show();
-                flashPlayer.Play();
-                flashPlayer.LoadMovie(0, Application.StartupPath + "\\player.swf");
+                flashPlayer.LoadMovie(0, Application.StartupPath + "\\inovelplayer.dat");
                 this.flashPlayer.FlashCall += new _IShockwaveFlashEvents_FlashCallEventHandler(flashPlayer_FlashCall);
             }
             catch (Exception ex)
@@ -196,7 +196,6 @@ namespace INovelEngine
                 Trace("Stopping Video playback");
                 playingVideo = false;
                 flashPlayer.CallFunction("<invoke name=\"stopVideo\" returntype=\"xml\"><arguments></arguments></invoke>");
-                flashPlayer.Stop();
                 videoPlaceholder.Hide();
                 if (overHandler != null) overHandler(this, ScriptEvents.Etc, null);
             }

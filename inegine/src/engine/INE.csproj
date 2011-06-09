@@ -195,7 +195,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="ClassDiagram1.cd" />
-    <None Include="player.fla" />
+    <None Include="inovelplayer.fla" />
     <None Include="Resources\fonts\NanumGothicBold.ttf" />
     <None Include="Resources\fonts\NanumMyeongjoBold.ttf" />
     <None Include="Resources\sampler\common\observer.lua" />
@@ -301,10 +301,10 @@
     <Content Include="AxInterop.ShockwaveFlashObjects.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Interop.ShockwaveFlashObjects.dll">
+    <Content Include="inovelplayer.dat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="player.swf">
+    <Content Include="Interop.ShockwaveFlashObjects.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\sampler\resources\after.png" />
