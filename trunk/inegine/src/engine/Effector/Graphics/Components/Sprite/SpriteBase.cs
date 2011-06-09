@@ -58,7 +58,7 @@ namespace INovelEngine.Effector
 
         protected override void DrawInternal()
         {
-            if (this.Texture == null) return;
+            if (this.Texture == null || this.textureManager.Texture == null) return;
             sprite.Begin(SpriteFlags.AlphaBlend);
   
             sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(), new Vector3(RealX, RealY, 0), renderColor);

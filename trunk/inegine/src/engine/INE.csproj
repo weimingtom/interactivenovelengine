@@ -77,7 +77,7 @@
     </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <OutputPath>..\..\..\..\Dropbox\Project Ore 공유폴더\30 게임 릴리즈\trial_version\</OutputPath>
+    <OutputPath>..\..\..\..\Dropbox\Project Ore 공유폴더\30 클라이언트\trial_version\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>

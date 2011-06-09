@@ -336,11 +336,11 @@ namespace INovelEngine.Effector
                     }
                     cursorSprite.X += this.RealX + leftMargin;
 
-                    if (cursorSprite.RealY + cursorSprite.Height <= this.Height)
-                    {
-                        cursorSprite.Y += this.RealY + topMargin;
-                        cursorSprite.Show();
-                    }
+                    //if (cursorSprite.RealY + cursorSprite.Height <= this.Height)
+                    //{
+                    cursorSprite.Y += this.RealY + topMargin;
+                    cursorSprite.Show();
+                    //}
                 }
             }
             else
