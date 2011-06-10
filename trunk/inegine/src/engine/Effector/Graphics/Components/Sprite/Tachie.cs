@@ -78,9 +78,14 @@ namespace INovelEngine.Effector
 
                     oldBodySprite = bodySprite;
                     oldBodySprite.Layer = 5;
-                    if (FadeOn)
+                    if (!this.Visible)
                     {
-                        oldBodySprite.FadeOut(FadeTime * 2);
+                        RemoveComponent(oldBodySprite.Name);
+                        oldBodySprite = null;
+                    }
+                    else if (FadeOn)
+                    {
+                        oldBodySprite.FadeOut(FadeTime * 3);
                     }
                     else
                     {
@@ -89,7 +94,7 @@ namespace INovelEngine.Effector
                 }
 
                 bodySprite = new SpriteBase();
-                bodySprite.Layer = 9;
+                bodySprite.Layer = 4;
                 bodySprite.Texture = value;
                 bodySprite.Relative = true;
                 bodySprite.X = 0;
@@ -100,14 +105,14 @@ namespace INovelEngine.Effector
 
                 if (!bodyFirstTime)
                 {
-                    if (FadeOn)
-                    {
-                        bodySprite.FadeIn(FadeTime);
-                    }
-                    else
-                    {
+                    //if (FadeOn)
+                    //{
+                    //    bodySprite.FadeIn(FadeTime / 2);
+                    //}
+                    //else
+                    //{
                         bodySprite.Show();
-                    }
+                    //}
                 }
 
                 bodyFirstTime = false;
@@ -133,8 +138,13 @@ namespace INovelEngine.Effector
                         RemoveComponent(oldDressSprite.Name);
 
                     oldDressSprite = dressSprite;
-                    oldDressSprite.Layer = 5;
-                    if (FadeOn)
+                    oldDressSprite.Layer = 10;
+                    if (!this.Visible)
+                    {
+                        RemoveComponent(oldDressSprite.Name);
+                        oldDressSprite = null;
+                    }
+                    else if (FadeOn && this.Visible)
                     {
                         oldDressSprite.FadeOut(FadeTime * 3);
                     }
@@ -145,7 +155,7 @@ namespace INovelEngine.Effector
                 }
 
                 dressSprite = new SpriteBase();
-                dressSprite.Layer = 10;
+                dressSprite.Layer = 9;
                 dressSprite.Texture = value;
                 dressSprite.Relative = true;
                 dressSprite.X = 0;
@@ -156,14 +166,14 @@ namespace INovelEngine.Effector
 
                 if (!dressFirstTime)
                 {
-                    if (FadeOn)
-                    {
-                        dressSprite.FadeIn(FadeTime);
-                    }
-                    else
-                    {
+                    //if (FadeOn)
+                    //{
+                    //    dressSprite.FadeIn(FadeTime);
+                    //}
+                    //else
+                    //{
                         dressSprite.Show();
-                    }
+                    //}
                }
 
                 dressFirstTime = false;
