@@ -123,7 +123,7 @@ namespace INovelEngine
 #if DEBUG
             luaConsole = new LuaConsole();
             luaConsole.Show();
-            AdjustLuaConsole();
+            //AdjustLuaConsole();
             this.Window.LocationChanged += new EventHandler(Window_LocationChanged);
 #endif
             /* initialize flash player panel for displaying videos */
@@ -221,7 +221,7 @@ namespace INovelEngine
         void Window_LocationChanged(object sender, EventArgs e)
         {
 #if DEBUG
-            AdjustLuaConsole();
+            //AdjustLuaConsole();
 #endif
         }
 
