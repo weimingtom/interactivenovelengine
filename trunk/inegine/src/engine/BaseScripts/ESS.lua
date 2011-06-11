@@ -143,6 +143,7 @@ AddESSCmd("rand");
 
 --sound functions
 function playbgm(id)
+	Info("playing bgm : " .. id);
 	if (currentbgm ~= nil) then
 		currentbgm:Stop()
 	end
@@ -152,12 +153,13 @@ function playbgm(id)
 	end
 	
 	if (currentbgm ~= nil) then
-		currentbgm:Play()
+		Delay(500, function() currentbgm:Play() end)
 	end
 end
 AddESSCmd("playbgm");
 
 function stopbgm(delay)
+	Info("stopping current bgm");
 	if (currentbgm ~= nil) then
 		if (delay ~= nil) then
 			currentbgm:FadeOut(delay)
@@ -165,7 +167,6 @@ function stopbgm(delay)
 			currentbgm:Stop()
 		end
 	end
-	currentbgm = nil;
 end
 AddESSCmd("stopbgm");
 
