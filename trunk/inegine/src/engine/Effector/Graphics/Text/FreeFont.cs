@@ -210,7 +210,7 @@ namespace INovelEngine.Effector.Graphics.Text
             this._size = Math.Min(Maxsize / 2, size);
             this._lastPos = new Vector2();
 
-            _glyphCache = new CachedDictionary<char, Glyph>(1024,
+            _glyphCache = new CachedDictionary<char, Glyph>(128,
                     delegate(Glyph disposalTarget)
                     {
                         disposalTarget.Dispose();

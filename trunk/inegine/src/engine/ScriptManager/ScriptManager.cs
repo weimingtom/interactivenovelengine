@@ -160,6 +160,9 @@ namespace INovelEngine.Script
         {
             try
             {
+                lua.DoString("print(os.setlocale())");
+                lua.DoString("os.setlocale(\"UTF-8\")");
+                lua.DoString("print(os.setlocale())");
                 lua.DoFile("BaseScripts/Init.lua");
             }
             catch (Exception e)
@@ -181,14 +184,16 @@ namespace INovelEngine.Script
             }
         }
 
-        public static void DoLua(string path)
+        public static string LoadLua(string path)
         {
             string script = "";
-            using (StreamReader reader = new StreamReader(ArchiveManager.GetStream(path), Encoding.Default))
+            
+            using (StreamReader reader = new StreamReader(ArchiveManager.GetStream(path), Encoding.UTF8))
             {
                 script = reader.ReadToEnd();
             }
-            lua.DoString(script, path); 
+
+            return script;
         }
 
         public static Object Pop()
@@ -214,7 +219,10 @@ namespace INovelEngine.Script
                 parser.gen.CommandList = commandList;
                 parser.Parse();
             }
-            return parser.gen.GetScript();
+
+            string output = parser.gen.GetScript();
+        
+            return output;
         }
 
         public static string GetESSLine(string path, int line)
