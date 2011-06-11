@@ -10,6 +10,9 @@ end
 
 -- lua functions for managing ESS execution (called by lua/ESS scripts)
 function BeginESS(script)
+	currentLine = 0;
+	currentCol = 0;
+    
     EssOver = false;
 	if (ESSEventHandler == nil or ESSEventHandler.TextOut == nil or ESSEventHandler.Clear == nil) then
 		Error "ESS interface undefined!"

@@ -38,6 +38,14 @@ namespace INovelEngine.Effector
             lines = new Vector2[2];
         }
 
+        public bool Printing
+        {
+            get
+            {
+                return (textNarrator.State == NarrationState.Going);
+            }
+        }
+
         public int TextColor
         {
             get

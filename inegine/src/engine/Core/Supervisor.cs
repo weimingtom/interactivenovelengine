@@ -365,9 +365,14 @@ namespace INovelEngine
         {
             base.Update(gameTime);
 
-            if (this.activeState != null)
+            //if (this.activeState != null)
+            //{
+            //    this.activeState.Update(gameTime);
+            //}
+
+            foreach (GameState state in this.stateList)
             {
-                this.activeState.Update(gameTime);
+                state.Update(gameTime);
             }
 
             Clock.Tick();
@@ -397,9 +402,14 @@ namespace INovelEngine
 
             base.Draw(gameTime);
 
-            if (this.activeState != null)
+            //if (this.activeState != null)
+            //{
+            //    this.activeState.Draw();
+            //}
+
+            foreach (GameState state in this.stateList)
             {
-                this.activeState.Draw();
+                state.Draw();
             }
 
             fadingTransition.Draw();
@@ -558,10 +568,7 @@ namespace INovelEngine
 
             GameState newState = new GameState();
             newState.Name = stateName;
-            
-            //disable old state
-            if (activeState != null)
-                activeState.Disable();
+            GameState oldState = activeState;
 
             states.Add(newState.Name, newState);
             stateList.Add(newState);
@@ -571,7 +578,12 @@ namespace INovelEngine
             Lua_LoadScript(ScriptFile);
             newState.OnStarting();
 
+            //disable old state
+            if (oldState != null && newState.disableOthers)
+                oldState.Disable();
+
             Resources.Add(newState);
+
 
         }
 
@@ -592,7 +604,10 @@ namespace INovelEngine
             if (stateList.Count > 0)
             {
                 activeState = stateList[stateList.Count - 1];
-                activeState.Enable();
+                if (removedState.disableOthers)
+                {
+                    activeState.Enable();
+                }
             }
             else
             {
