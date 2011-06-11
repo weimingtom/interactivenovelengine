@@ -19,6 +19,7 @@ namespace INovelEngine.StateManager
         /* event handlers */
         public LuaEventHandler StateDisable;
         public LuaEventHandler StateEnable;
+        public bool disableOthers = true;
 
         /* resources managed by state */
         protected ResourceCollection graphicalResources = new ResourceCollection();
