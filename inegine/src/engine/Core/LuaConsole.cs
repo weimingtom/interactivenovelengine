@@ -5,6 +5,8 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace INovelEngine.Core
 {
@@ -53,6 +55,12 @@ namespace INovelEngine.Core
         {
             try
             {
+                //byte[] buffer = Encoding.UTF8.GetBytes(text);
+                //System.IO.FileStream st = new System.IO.FileStream("c:\\temp.dat", System.IO.FileMode.Create);
+                //st.Write(buffer, 0, buffer.Length);
+                //st.Close();
+                ////INovelEngine.Script.ScriptManager.lua.DoString("dofile(\"c:\\\\temp.dat\")");
+                //INovelEngine.Script.ScriptManager.lua.DoFile("c:\\\\temp.dat");//buffer);
                 INovelEngine.Script.ScriptManager.lua.DoString(text);
                 Supervisor.Trace("[console input executed]");
             }

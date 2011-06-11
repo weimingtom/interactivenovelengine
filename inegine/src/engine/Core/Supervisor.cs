@@ -473,6 +473,8 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("Length", this, this.GetType().GetMethod("Lua_Length"));
             
             ScriptManager.lua.RegisterFunction("LoadScript", this, this.GetType().GetMethod("Lua_LoadScript"));
+            ScriptManager.lua.RegisterFunction("ReadScript", this, this.GetType().GetMethod("Lua_ReadScript"));
+
             ScriptManager.lua.RegisterFunction("CloseState", this, this.GetType().GetMethod("Lua_CloseState"));
             ScriptManager.lua.RegisterFunction("CloseStates", this, this.GetType().GetMethod("Lua_CloseStates"));
             
@@ -505,15 +507,35 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("Dump", this, this.GetType().GetMethod("DumpObjects"));
 
             ScriptManager.lua.RegisterFunction("Video", this, this.GetType().GetMethod("Lua_Video"));
-            
 
+
+            ScriptManager.lua.RegisterFunction("Test", this, this.GetType().GetMethod("Test"));
         }
+
+        public string Lua_ReadScript(string ScriptFile)
+        {
+            string script = null;
+            try
+            {
+                script = ScriptManager.LoadLua(ScriptFile);
+            }
+            catch (LuaInterface.LuaException e)
+            {
+                Supervisor.Error(e.Message);
+            }
+            catch (Exception e)
+            {
+                Supervisor.Error(e.Message);
+            }
+            return script;
+        }
+        
 
         public void Lua_LoadScript(string ScriptFile)
         {
             try
             {
-                ScriptManager.DoLua(ScriptFile);
+                ScriptManager.lua.DoString("loadstring(ReadScript([[" + ScriptFile + "]]))()");
             }
             catch (LuaInterface.LuaException e)
             {
@@ -792,6 +814,11 @@ namespace INovelEngine
         {
             this.overHandler = overHandler;
             this.LoadVideo(path);
+        }
+
+        public string Test()
+        {
+            return "A能A行AくA先A";
         }
 
         #endregion
