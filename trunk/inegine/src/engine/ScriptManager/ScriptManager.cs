@@ -14,6 +14,7 @@ namespace INovelEngine.Script
     {
         MouseDown,
         MouseUp,
+        MouseRightUp,
         MouseMove,
         MouseClick,
         MouseDoubleClick,
@@ -32,6 +33,7 @@ namespace INovelEngine.Script
         public LuaEventHandler GeneralEvent;
         public LuaEventHandler MouseDown;
         public LuaEventHandler MouseUp;
+        public LuaEventHandler MouseRightUp;
         public LuaEventHandler MouseMove;
         public LuaEventHandler MouseDoubleClick;
         public LuaEventHandler MouseClick;
@@ -109,6 +111,9 @@ namespace INovelEngine.Script
                             break;
                         case ScriptEvents.MouseUp:
                             if (MouseUp != null) MouseUp(handler, luaevent, args);
+                            break;
+                        case ScriptEvents.MouseRightUp:
+                            if (MouseRightUp != null) MouseRightUp(handler, luaevent, args);
                             break;
                         case ScriptEvents.MouseMove:
                             if (MouseMove != null) MouseMove(handler, luaevent, args);

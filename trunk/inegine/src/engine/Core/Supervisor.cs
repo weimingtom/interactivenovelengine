@@ -333,12 +333,24 @@ namespace INovelEngine
 
         void Window_MouseDown(object sender, MouseEventArgs e)
         {
-            if (activeState != null) activeState.SendEvent(ScriptEvents.MouseDown, e.X, e.Y);
+            if (e.Button == MouseButtons.Left)
+            {
+                if (activeState != null) activeState.SendEvent(ScriptEvents.MouseDown, e.X, e.Y);
+            }
         }
 
         void Window_MouseUp(object sender, MouseEventArgs e)
         {
-            if (activeState != null) activeState.SendEvent(ScriptEvents.MouseUp, e.X, e.Y);
+            if (activeState == null) return; 
+
+            if (e.Button == MouseButtons.Left)
+            {
+                activeState.SendEvent(ScriptEvents.MouseUp, e.X, e.Y);
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                activeState.SendEvent(ScriptEvents.MouseRightUp, e.X, e.Y);
+            }
         }
 
         void Window_MouseMove(object sender, MouseEventArgs e)
@@ -348,13 +360,19 @@ namespace INovelEngine
 
         void Window_MouseClick(object sender, MouseEventArgs e)
         {
-            if (activeState != null) activeState.SendEvent(ScriptEvents.MouseClick, e.X, e.Y);
+            if (e.Button == MouseButtons.Left)
+            {
+                if (activeState != null) activeState.SendEvent(ScriptEvents.MouseClick, e.X, e.Y);
+            }
         }
 
 
         void Window_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (activeState != null) activeState.SendEvent(ScriptEvents.MouseDoubleClick, e.X, e.Y);
+            if (e.Button == MouseButtons.Left)
+            {
+                if (activeState != null) activeState.SendEvent(ScriptEvents.MouseDoubleClick, e.X, e.Y);
+            }
         }
 
 
