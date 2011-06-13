@@ -120,10 +120,15 @@ function Clear() --called by ESS scripts to clear text
 	ESSEventHandler:Clear();
 end
 
+function CancelESSOver()
+	ESSOverCanceled = true;
+end
+
 function ESSOverHandler() --called by ESS scripts when entire script is over
-	if (ESSEventHandler ~= nil) then 
+	if (ESSEventHandler ~= nil and ESSOverCanceled ~= true) then 
 		ESSEventHandler:ESSOverHandler()
     end
+    ESSOverCanceled = false;
 end
 
 function Wait(delay)

@@ -61,6 +61,9 @@ namespace INovelEngine.Effector.Graphics.Components
                     if (parent.mouseDownLocked != null) handler = parent.mouseDownLocked;
                     parent.mouseDownLocked = null;
                     break;
+                case ScriptEvents.MouseRightUp:
+                    handler = parent;
+                    break;
                 case ScriptEvents.MouseDoubleClick:
                     handler = ComponentManagerHelper.GetCollidingComponent(componentList, (int)args[0], (int)args[1]);
                     if (handler == null) handler = parent;
