@@ -18,6 +18,7 @@ namespace INovelEngine.Script
         MouseMove,
         MouseClick,
         MouseDoubleClick,
+        MouseWheel,
         MouseEnter,
         MouseLeave,
         KeyPress,
@@ -36,6 +37,7 @@ namespace INovelEngine.Script
         public LuaEventHandler MouseRightUp;
         public LuaEventHandler MouseMove;
         public LuaEventHandler MouseDoubleClick;
+        public LuaEventHandler MouseWheel;
         public LuaEventHandler MouseClick;
         public LuaEventHandler MouseEnter;
         public LuaEventHandler MouseLeave;
@@ -114,6 +116,9 @@ namespace INovelEngine.Script
                             break;
                         case ScriptEvents.MouseRightUp:
                             if (MouseRightUp != null) MouseRightUp(handler, luaevent, args);
+                            break;
+                        case ScriptEvents.MouseWheel:
+                            if (MouseWheel != null) MouseWheel(handler, luaevent, args);
                             break;
                         case ScriptEvents.MouseMove:
                             if (MouseMove != null) MouseMove(handler, luaevent, args);

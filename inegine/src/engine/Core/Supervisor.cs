@@ -92,6 +92,7 @@ namespace INovelEngine
             Window.MouseMove += new MouseEventHandler(Window_MouseMove);
             Window.MouseClick += new MouseEventHandler(Window_MouseClick);
             Window.MouseDoubleClick += new MouseEventHandler(Window_MouseDoubleClick);
+            Window.MouseWheel += new MouseEventHandler(Window_MouseWheel);
 
             // init device
             InitDevice();
@@ -375,6 +376,10 @@ namespace INovelEngine
             }
         }
 
+        void Window_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (activeState != null) activeState.SendEvent(ScriptEvents.MouseWheel, e.Delta);
+        }
 
         #endregion
 
