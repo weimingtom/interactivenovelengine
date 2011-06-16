@@ -19,10 +19,12 @@ ScriptManager = luanet.import_type("INovelEngine.Script.ScriptManager");
 
 Supervisor = Supervisor()
 
-function OpenState(name, script, arg, closingEvt)
+function OpenState(name, script, arg, closingEvt, enableDlg)
     argument = arg;
     closingEvent = closingEvt;
+    enableDialogue = enableDlg;
     LoadState(name, script); --create a new state using script
+    enableDialogue = nil;
     argument = nil;
     closingEvent = nil;
 end

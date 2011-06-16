@@ -33,6 +33,21 @@ namespace INovelEngine.Effector
         private Rectangle sourceArea;
         private float relativePosition;
 
+        public Tachie()
+        {
+            dressFirstTime = true;
+            bodyFirstTime = true;
+            FadeOn = true;
+            FadeTime = 150;
+            Position = 0.5f;
+            Width = 380;
+            Height = 600;
+            sourceArea = new Rectangle();
+            BackgroundWidth = Supervisor.GetInstance().GetWidth();
+
+            handleMyself = true;
+        }
+
         public float FadeTime
         {
             get;
@@ -45,17 +60,21 @@ namespace INovelEngine.Effector
             set;
         }
 
-        public Tachie()
+        public override void FadeIn(float duration)
         {
-            dressFirstTime = true;
-            bodyFirstTime = true;
-            FadeOn = true;
-            FadeTime = 150;
-            Position = 0.5f;
-            Width = 380;
-            Height = 600;
-            sourceArea = new Rectangle();
-            BackgroundWidth = Supervisor.GetInstance().GetWidth();
+            LaunchTransition(duration, true);
+
+            bodySprite.FadeIn(duration);
+            dressSprite.FadeIn(duration / 2);
+
+        }
+
+        public override void FadeOut(float duration)
+        {
+            LaunchTransition(duration, false);
+
+            bodySprite.FadeOut(duration / 2);
+            dressSprite.FadeOut(duration);
         }
 
         public string BodyTexture

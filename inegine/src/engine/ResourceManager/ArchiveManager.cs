@@ -15,7 +15,7 @@ namespace INovelEngine.ResourceManager
         public static void SetPackage(string package, string password)
         {
             ArchiveManager.package = package;
-            ArchiveManager.password = password;
+            ArchiveManager.password = password.GetHashCode().ToString();
         }
 
         public static void SetPath(string path)
