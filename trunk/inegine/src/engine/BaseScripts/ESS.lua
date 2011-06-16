@@ -177,8 +177,6 @@ function stopbgm(delay)
 			currentbgm:FadeOut(delay)
 		else
 			currentbgm:Stop()
-			currentbgm = nil;
-			currentbgmId = nil;
 		end
 	end
 end
