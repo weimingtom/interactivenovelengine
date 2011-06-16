@@ -53,6 +53,7 @@ namespace INovelEngine.Effector
             FirstTimeFadeOn = true;
             FadeOn = true;
             FadeTime = 300;
+            handleMyself = true;
         }
 
         public string Texture
