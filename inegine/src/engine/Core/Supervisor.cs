@@ -528,7 +528,7 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("SetVolume", this, this.GetType().GetMethod("Lua_SetVolume"));
 
             ScriptManager.lua.RegisterFunction("GetInput", this, this.GetType().GetMethod("Lua_GetInput"));
-
+            
             ScriptManager.lua.RegisterFunction("ShowWinCursor", this, this.GetType().GetMethod("Lua_ShowCursor"));
             ScriptManager.lua.RegisterFunction("HideWinCursor", this, this.GetType().GetMethod("Lua_HideCursor"));
 
@@ -800,6 +800,7 @@ namespace INovelEngine
             {
                 inputForm.numeric = numeric;
                 DialogResult dialogResult = inputForm.ShowDialog();
+                
                 if (dialogResult == DialogResult.Cancel)
                 {
                     result = null;
