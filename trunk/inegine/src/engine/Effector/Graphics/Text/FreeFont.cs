@@ -57,7 +57,10 @@ namespace INovelEngine.Effector.Graphics.Text
 
         public void Dispose()
         {
+            //Supervisor.Trace("discarding glyph texture : " + this.GetHashCode());
+
             if (Texture != null) Texture.Dispose();
+            Texture = null;
         }
 
         #endregion
@@ -210,7 +213,7 @@ namespace INovelEngine.Effector.Graphics.Text
             this._size = Math.Min(Maxsize / 2, size);
             this._lastPos = new Vector2();
 
-            _glyphCache = new CachedDictionary<char, Glyph>(128,
+            _glyphCache = new CachedDictionary<char, Glyph>(5120,
                     delegate(Glyph disposalTarget)
                     {
                         disposalTarget.Dispose();
@@ -455,6 +458,8 @@ namespace INovelEngine.Effector.Graphics.Text
                         _prevx = penx;
                         penx += _glyphList[i].Glyph.Slot.advance.x / 64;
 
+                        if (_glyphList[i].Glyph.Texture == null) break;
+
                         if (Effect == TextEffect.Shadow)
                         {
                             _pos.X += 1;
@@ -469,7 +474,6 @@ namespace INovelEngine.Effector.Graphics.Text
                             sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, Color.Black);
                             _pos.Y += 1;
                         }
-
                         sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, this._color);
                         break;
                     default:

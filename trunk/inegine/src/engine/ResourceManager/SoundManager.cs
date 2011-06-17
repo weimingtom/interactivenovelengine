@@ -46,7 +46,6 @@ namespace INovelEngine.ResourceManager
 
         public void Play()
         {
-            Supervisor.Info("playing sound " + this.Name);
             SetVolume(_volume);
             SoundPlayer.PlaySound(this.FileName, Loop);
         }
