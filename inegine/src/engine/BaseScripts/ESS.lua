@@ -67,8 +67,8 @@ function ResumeEss()
 	if (true ~= EssOver and CurrentState().state ~= nil and CurrentState().state["ess"] ~= nil) then
 		local success, msg = coroutine.resume(CurrentState().state["ess"])
 		if (success == false) then
-            Error("error at " .. CurrentState().state["ess_path"] .. ":" .. currentLine)
-            Error("(" .. EssLine(CurrentState().state["ess_path"], currentLine) .. ")")	
+            --Error("error at " .. CurrentState().state["ess_path"] .. ":" .. currentLine)
+            --Error("(" .. EssLine(CurrentState().state["ess_path"], currentLine) .. ")")	
             if (msg ~= nil) then
 				if (type(msg) == "userdata") then
 					Error(msg:toString());
@@ -120,9 +120,6 @@ function Clear() --called by ESS scripts to clear text
 	ESSEventHandler:Clear();
 end
 
-function CancelESSOver()
-	ESSOverCanceled = true;
-end
 
 function ESSOverHandler() --called by ESS scripts when entire script is over
 	if (ESSEventHandler ~= nil and ESSOverCanceled ~= true) then 
@@ -148,36 +145,39 @@ AddESSCmd("rand");
 
 --sound functions
 function playbgm(id)
-	Info("playing bgm : " .. id);
 	
 	--return since bgm is already playing
-	if (currentbgmId == id) then
+	if (currentbgmId == id or id == nil) then
 		return;
 	end
 	
 	if (currentbgm ~= nil) then
+		Info("stopping existing bgm : " .. currentbgmId);
 		currentbgm:Stop()
+	else
+		Info("not stopping existing bgm since it's null");
 	end
 	
-	if (id ~= nil) then
-		currentbgm = GetSound(id)
-		currentbgmId = id;
-	end
+	currentbgm = GetSound(id)
+	currentbgmId = id; 
 	
-	if (currentbgm ~= nil) then
-		Delay(500, function() currentbgm:Play() end)
-	end
+	Info("playing bgm : " .. id);
+	bgmwaiting = currentbgm;
+	Delay(500, function() bgmwaiting:Play(); bgmwaiting = nil; end)
+
 end
 AddESSCmd("playbgm");
 
 function stopbgm(delay)
-	Info("stopping current bgm");
 	if (currentbgm ~= nil) then
+		Info("stopping current bgm : " .. currentbgmId);
 		if (delay ~= nil) then
 			currentbgm:FadeOut(delay)
 		else
 			currentbgm:Stop()
 		end
+		currentbgm = nil;
+		currentbgmId = nil; 
 	end
 end
 AddESSCmd("stopbgm");
@@ -192,6 +192,15 @@ function play(id)
 end
 AddESSCmd("play");
 
+function stop(id)
+	local sound = GetSound(id)
+	if (sound ~=nil) then
+		sound:Stop()
+	else
+		Error("stopping invalid sfx: " .. id);
+	end
+end
+AddESSCmd("stop");
 
 function vol(id, vol)
 	local sound = GetSound(id)

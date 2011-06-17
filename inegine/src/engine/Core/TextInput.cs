@@ -10,7 +10,13 @@ namespace INovelEngine.Core
 {
     public partial class TextInput : Form
     {
-        public string value;
+        public string value
+        {
+            get
+            {
+                return this.textBox.Text;
+            }
+        }
         public bool numeric;
 
         public TextInput()
@@ -26,11 +32,22 @@ namespace INovelEngine.Core
                 if (e.KeyChar != '\b' && ((e.KeyChar < '0') || (e.KeyChar > '9'))) e.Handled = true;
         }
 
+        void textBox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                button1_Click(null, null);
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-            value = this.textBox.Text;
             this.DialogResult = DialogResult.OK;
             this.Close();
+        }
+
+        private void TextInput_Load(object sender, EventArgs e)
+        {
+            if (this.numeric)
+                this.textBox.ImeMode = ImeMode.Off;
         }
 
     }

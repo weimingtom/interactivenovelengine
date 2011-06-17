@@ -1,5 +1,5 @@
 luanet.load_assembly("System.Windows.Forms");
-luanet.load_assembly("INovelEngine");
+luanet.load_assembly("OrenoMusume");
 
 GameState = luanet.import_type("INovelEngine.StateManager.GameState");
 TextWindow = luanet.import_type("INovelEngine.Effector.TextWindow");
@@ -19,11 +19,14 @@ ScriptManager = luanet.import_type("INovelEngine.Script.ScriptManager");
 
 Supervisor = Supervisor()
 
-function OpenState(name, script, arg, closingEvt, enableDlg)
+function OpenState(name, script, arg, closingEvt, enableDlg, disableState)
     argument = arg;
     closingEvent = closingEvt;
     enableDialogue = enableDlg;
-    LoadState(name, script); --create a new state using script
+    if (disableState == nil) then
+    	disableState = true;
+    end
+    LoadState(name, script, disableState); --create a new state using script
     enableDialogue = nil;
     argument = nil;
     closingEvent = nil;

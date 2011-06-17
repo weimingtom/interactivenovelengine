@@ -6,14 +6,13 @@
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F1C6583A-8DAC-453B-AC68-FD2BDD0F4C6A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>INovelEngine</RootNamespace>
-    <AssemblyName>INovelEngine</AssemblyName>
+    <AssemblyName>OrenoMusume</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>oremus_icon.ico</ApplicationIcon>
     <StartupObject>INovelEngine.Program</StartupObject>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -307,6 +306,7 @@
     <Content Include="Interop.ShockwaveFlashObjects.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="oremus_icon.ico" />
     <Content Include="Resources\sampler\resources\after.png" />
     <Content Include="Resources\sampler\resources\animation\01_homesc_01.gif" />
     <Content Include="Resources\sampler\resources\animation\01_homesc_02.gif" />

@@ -38,11 +38,13 @@
             this.textBox.Location = new System.Drawing.Point(10, 13);
             this.textBox.Name = "textBox";
             this.textBox.Size = new System.Drawing.Size(109, 20);
-            this.textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(textBox_KeyPress);
             this.textBox.TabIndex = 0;
+            this.textBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_KeyDown);
+            this.textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_KeyPress);
             // 
             // button1
             // 
+            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button1.Location = new System.Drawing.Point(10, 39);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(50, 23);
@@ -75,6 +77,7 @@
             this.Name = "TextInput";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Load += new System.EventHandler(this.TextInput_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

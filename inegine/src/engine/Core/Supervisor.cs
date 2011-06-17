@@ -582,7 +582,7 @@ namespace INovelEngine
         }
 
         /* create a new state and initialize the state using given lua script */
-        public void Lua_LoadState(string stateName, string ScriptFile)
+        public void Lua_LoadState(string stateName, string ScriptFile, bool disableExistingState)
         {
             if (states.ContainsKey(stateName))
             {
@@ -591,19 +591,21 @@ namespace INovelEngine
 
             GameState newState = new GameState();
             newState.Name = stateName;
+            newState.disableOthers = disableExistingState;
             GameState oldState = activeState;
 
             states.Add(newState.Name, newState);
             stateList.Add(newState);
+
+            //disable old state
+            if (oldState != null && newState.disableOthers)
+                oldState.Disable();
 
             activeState = newState;  // set the new state as the active state
             ScriptManager.lua.DoString("CurrentState().State = {}"); // initialize state table
             Lua_LoadScript(ScriptFile);
             newState.OnStarting();
 
-            //disable old state
-            if (oldState != null && newState.disableOthers)
-                oldState.Disable();
 
             Resources.Add(newState);
 
