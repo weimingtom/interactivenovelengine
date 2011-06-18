@@ -180,6 +180,7 @@ namespace INovelEngine
             }
             try
             {
+                flashPlayer.CallFunction("<invoke name=\"stopVideo\" returntype=\"xml\"><arguments></arguments></invoke>");
                 flashPlayer.CallFunction("<invoke name=\"loadAndPlayVideo\" returntype=\"xml\"><arguments><string>" + videoPath + "</string></arguments></invoke>");
             }
             catch (Exception ex)
@@ -601,6 +602,7 @@ namespace INovelEngine
             if (oldState != null && newState.disableOthers)
                 oldState.Disable();
 
+            Supervisor.Trace("starting new state: " + stateName);
             activeState = newState;  // set the new state as the active state
             ScriptManager.lua.DoString("CurrentState().State = {}"); // initialize state table
             Lua_LoadScript(ScriptFile);
