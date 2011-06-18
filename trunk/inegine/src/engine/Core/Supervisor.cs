@@ -77,6 +77,8 @@ namespace INovelEngine
             }
         }
 
+        public bool consoleOn = false;
+
         private Supervisor()
         {
         }
@@ -121,12 +123,13 @@ namespace INovelEngine
             Clock.AddTimeEvent(new TimeEvent(1000, displayFPS));
 #endif
 
-#if DEBUG
-            luaConsole = new LuaConsole();
-            luaConsole.Show();
-            //AdjustLuaConsole();
-            this.Window.LocationChanged += new EventHandler(Window_LocationChanged);
-#endif
+            if (consoleOn)
+            {
+                luaConsole = new LuaConsole();
+                luaConsole.Show();
+                //AdjustLuaConsole();
+                this.Window.LocationChanged += new EventHandler(Window_LocationChanged);
+            }
             /* initialize flash player panel for displaying videos */
             InitializeFlashPanel();
 
