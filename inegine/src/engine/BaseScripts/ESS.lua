@@ -145,39 +145,45 @@ AddESSCmd("rand");
 
 --sound functions
 function playbgm(id)
-	
-	--return since bgm is already playing
-	if (currentbgmId == id or id == nil) then
+	if (id == nil) then
 		return;
 	end
 	
-	if (currentbgm ~= nil) then
+	--return since bgm is already playing
+	if (currentbgmId == id) then
+		return;
+	end
+	
+	if (currentbgmId ~= nil) then
 		Info("stopping existing bgm : " .. currentbgmId);
-		currentbgm:Stop()
+		GetSound(currentbgmId):Stop()
 	else
 		Info("not stopping existing bgm since it's null");
 	end
 	
-	currentbgm = GetSound(id)
-	currentbgmId = id; 
+	currentbgmId = id;
+	local currentbgm = GetSound(id)
 	
 	Info("playing bgm : " .. id);
-	bgmwaiting = currentbgm;
-	Delay(500, function() bgmwaiting:Play(); bgmwaiting = nil; end)
+	
+	Delay(500, function() currentbgm:Play(); currentbgm = nil; end)
 
 end
 AddESSCmd("playbgm");
 
 function stopbgm(delay)
-	if (currentbgm ~= nil) then
+	if (currentbgmId ~= nil) then
+		local currentbgm = GetSound(currentbgmId)
 		Info("stopping current bgm : " .. currentbgmId);
 		if (delay ~= nil) then
 			currentbgm:FadeOut(delay)
 		else
 			currentbgm:Stop()
 		end
+		currentbgmId = nil;
 		currentbgm = nil;
-		currentbgmId = nil; 
+	else
+		Info("current bgm is nil");
 	end
 end
 AddESSCmd("stopbgm");
