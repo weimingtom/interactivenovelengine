@@ -59,7 +59,7 @@ namespace INovelEngine.Effector.Audio
             if (mcierror != 0)
             {
                 Supervisor.Error("playing sound " + file + " failed!");
-                throw new Exception("playing sound failed!");
+                //throw new Exception("playing sound failed!");
             }
         }
 
