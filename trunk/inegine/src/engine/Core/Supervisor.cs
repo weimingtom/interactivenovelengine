@@ -81,6 +81,9 @@ namespace INovelEngine
 
         private Supervisor()
         {
+#if DEBUG
+            this.consoleOn = true;
+#endif
         }
 
         public void StartGame()
