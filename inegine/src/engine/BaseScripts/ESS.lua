@@ -67,6 +67,7 @@ function ResumeEss()
 	if (true ~= EssOver and CurrentState().state ~= nil and CurrentState().state["ess"] ~= nil) then
 		local success, msg = coroutine.resume(CurrentState().state["ess"])
 		if (success == false) then
+			Error("resuming script "  .. CurrentState().state["ess_path"] .. " failed");
             --Error("error at " .. CurrentState().state["ess_path"] .. ":" .. currentLine)
             --Error("(" .. EssLine(CurrentState().state["ess_path"], currentLine) .. ")")	
             if (msg ~= nil) then
@@ -163,7 +164,10 @@ function playbgm(id)
 	
 	currentbgmId = id;
 	local currentbgm = GetSound(id)
-	
+	if (currentbgm == nil) then
+		Error("current bgm is nil");
+		return;
+	end
 	Info("playing bgm : " .. id);
 	
 	Delay(500, function() currentbgm:Play(); currentbgm = nil; end)
@@ -174,6 +178,10 @@ AddESSCmd("playbgm");
 function stopbgm(delay)
 	if (currentbgmId ~= nil) then
 		local currentbgm = GetSound(currentbgmId)
+		if (currentbgm == nil) then
+			Error("current bgm is nil");
+			return;
+		end
 		Info("stopping current bgm : " .. currentbgmId);
 		if (delay ~= nil) then
 			currentbgm:FadeOut(delay)
@@ -183,7 +191,7 @@ function stopbgm(delay)
 		currentbgmId = nil;
 		currentbgm = nil;
 	else
-		Info("current bgm is nil");
+		Error("current bgm is nil");
 	end
 end
 AddESSCmd("stopbgm");

@@ -26,6 +26,7 @@ namespace INovelEngine.Script
         Update,
         StateEnable,
         StateDisable,
+        StateExit,
         Etc
     }
 

@@ -652,8 +652,13 @@ namespace INovelEngine
         {
             while (this.stateList.Count > 0)
             {
-                this.Lua_CloseState();
+                GameState removedState = stateList[stateList.Count - 1];
+                stateList.Remove(removedState);
+                states.Remove(removedState.Name);
+                Resources.Remove(removedState);
+                removedState.OnExiting();
             }
+            activeState = null;
         }
 
         public GameState Lua_CurrentState()
