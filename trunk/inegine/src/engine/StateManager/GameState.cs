@@ -19,6 +19,7 @@ namespace INovelEngine.StateManager
         /* event handlers */
         public LuaEventHandler StateDisable;
         public LuaEventHandler StateEnable;
+        public LuaEventHandler StateExit;
         public bool disableOthers = true;
 
         /* resources managed by state */
@@ -83,6 +84,7 @@ namespace INovelEngine.StateManager
             Removed = true;
             Supervisor.Info("State " + this.Name + " is closing!");
             Disable();
+            Exit();
             generalResources.Dispose();
 
 #if DEBUG
@@ -104,6 +106,14 @@ namespace INovelEngine.StateManager
             if (StateDisable != null)
             {
                 StateDisable(this, ScriptEvents.StateDisable, null);
+            }
+        }
+
+        public void Exit()
+        {
+            if (StateExit != null)
+            {
+                StateExit(this, ScriptEvents.StateExit, null);
             }
         }
 
