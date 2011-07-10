@@ -32,7 +32,7 @@ namespace INovelEngine.Script
 
         public void StartScript()
         {
-            compiledScript.Append("function init()\n");
+            compiledScript.Append("function init()\nSupressESSOver = false\n");
         }
 
         public void EndScript()
