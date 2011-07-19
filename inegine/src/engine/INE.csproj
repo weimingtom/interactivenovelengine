@@ -524,9 +524,6 @@
     <Content Include="Resources\test\lua.exe" />
     <Content Include="Resources\test\lua5.1.dll" />
     <Content Include="Resources\test\lua51.dll" />
-    <Content Include="D3DX9_41.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="freetype6.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

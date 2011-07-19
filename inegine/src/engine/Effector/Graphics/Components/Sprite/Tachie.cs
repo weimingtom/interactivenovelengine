@@ -14,6 +14,11 @@ namespace INovelEngine.Effector
 {
     public class Tachie : AbstractGUIComponent
     {
+        private RenderToSurface rtsHelper;
+        private Surface renderSurface;
+        private Viewport renderViewport;
+        private bool dressInvalidated;
+
         protected Sprite sprite
         {
             get
@@ -22,29 +27,30 @@ namespace INovelEngine.Effector
             }
         }
 
-        private SpriteBase oldBodySprite;
-        private SpriteBase bodySprite;
-        private SpriteBase oldDressSprite;
-        private SpriteBase dressSprite;
+        private INETexture bodyTexture;
+        private INETexture dressTexture;
 
-        private bool dressFirstTime;
-        private bool bodyFirstTime;
-        
+        private Texture renderTexture;
+
         private Rectangle sourceArea;
         private float relativePosition;
 
         public Tachie()
         {
-            dressFirstTime = true;
-            bodyFirstTime = true;
             FadeOn = true;
             FadeTime = 150;
             Position = 0.5f;
             Width = 380;
             Height = 600;
             sourceArea = new Rectangle();
+            sourceArea.X = 0;
+            sourceArea.Y = 0;
+            sourceArea.Width = Width;
+            sourceArea.Height = Height;
             BackgroundWidth = Supervisor.GetInstance().GetWidth();
-
+            renderViewport = new Viewport(0, 0, Width, Height);
+            renderViewport.MaxZ = 1.0f;
+            dressInvalidated = true;
             handleMyself = true;
         }
 
@@ -64,138 +70,72 @@ namespace INovelEngine.Effector
         {
             LaunchTransition(duration, true);
 
-            bodySprite.FadeIn(duration);
-            dressSprite.FadeIn(duration / 2);
-
         }
 
         public override void FadeOut(float duration)
         {
             LaunchTransition(duration, false);
-
-            bodySprite.FadeOut(duration / 2);
-            dressSprite.FadeOut(duration);
         }
 
         public string BodyTexture
         {
             get
             {
-                return this.bodySprite.Texture;
+                return this.bodyTexture.TextureFile;
             }
             set
             {
-                if (this.bodySprite != null && this.bodySprite.Texture == value) 
-                {
-                    return; //do nothing since nothing changed
-                }
-
-                if (!bodyFirstTime)
-                {
-                    if (oldBodySprite != null)
-                        RemoveComponent(oldBodySprite.Name);
-
-                    oldBodySprite = bodySprite;
-                    oldBodySprite.Layer = 5;
-                    if (!this.Visible)
-                    {
-                        RemoveComponent(oldBodySprite.Name);
-                        oldBodySprite = null;
-                    }
-                    else if (FadeOn)
-                    {
-                        oldBodySprite.FadeOut(FadeTime * 3);
-                    }
-                    else
-                    {
-                        oldBodySprite.Hide();
-                    }
-                }
-
-                bodySprite = new SpriteBase();
-                bodySprite.Layer = 4;
-                bodySprite.Texture = value;
-                bodySprite.Relative = true;
-                bodySprite.X = 0;
-                bodySprite.Y = 0;
-                bodySprite.Width = Width;
-                bodySprite.Height = Height;
-                AddComponent(bodySprite);
-
-                if (!bodyFirstTime)
-                {
-                    //if (FadeOn)
-                    //{
-                    //    bodySprite.FadeIn(FadeTime / 2);
-                    //}
-                    //else
-                    //{
-                        bodySprite.Show();
-                    //}
-                }
-
-                bodyFirstTime = false;
+                if (this.bodyTexture != null) resources.Remove(bodyTexture);
+                bodyTexture = new INETexture(value);
+                resources.Add(bodyTexture);
             }
+        }
+
+        private void processDressTexture()
+        {
+            if (bodyTexture == null)
+            {
+                Supervisor.Error("body texture not loaded");
+                return;
+            }
+
+
+            if (dressTexture == null)
+            {
+                Supervisor.Error("body texture not loaded");
+                return;
+            }
+
+            using (renderSurface = renderTexture.GetSurfaceLevel(0))
+            {
+                rtsHelper.BeginScene(renderSurface, renderViewport);
+                
+                Device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.Transparent, 1.0f, 0);
+              
+                sprite.Begin(SpriteFlags.AlphaBlend);
+
+                sprite.Draw(this.bodyTexture.Texture, this.sourceArea, new Vector3(), new Vector3(0, 0, 0), Color.White);
+                sprite.Draw(this.dressTexture.Texture, this.sourceArea, new Vector3(), new Vector3(0, 0, 0), Color.White);
+            
+                sprite.End();
+
+                rtsHelper.EndScene(Filter.None);
+            }
+
+            Supervisor.Trace("tachie rendered");
         }
 
         public string DressTexture
         {
             get
             {
-                return dressSprite.Texture;
+                return this.dressTexture.TextureFile;
             }
             set
             {
-                if (this.dressSprite != null && this.dressSprite.Texture == value)
-                {
-                    return; //do nothing since nothing changed
-                }
-
-                if (!dressFirstTime)
-                {
-                    if (oldDressSprite != null)
-                        RemoveComponent(oldDressSprite.Name);
-
-                    oldDressSprite = dressSprite;
-                    oldDressSprite.Layer = 10;
-                    if (!this.Visible)
-                    {
-                        RemoveComponent(oldDressSprite.Name);
-                        oldDressSprite = null;
-                    }
-                    else if (FadeOn && this.Visible)
-                    {
-                        oldDressSprite.FadeOut(FadeTime * 3);
-                    }
-                    else
-                    {
-                        oldDressSprite.Hide();
-                    }
-                }
-
-                dressSprite = new SpriteBase();
-                dressSprite.Layer = 9;
-                dressSprite.Texture = value;
-                dressSprite.Relative = true;
-                dressSprite.X = 0;
-                dressSprite.Y = 0;
-                dressSprite.Width = Width;
-                dressSprite.Height = Height;
-                AddComponent(dressSprite);
-
-                if (!dressFirstTime)
-                {
-                    //if (FadeOn)
-                    //{
-                    //    dressSprite.FadeIn(FadeTime);
-                    //}
-                    //else
-                    //{
-                        dressSprite.Show();
-                    //}
-               }
-
-                dressFirstTime = false;
+                if (this.dressTexture != null) resources.Remove(dressTexture);
+                dressTexture = new INETexture(value);
+                resources.Add(dressTexture);
             }
         }
 
@@ -232,11 +172,22 @@ namespace INovelEngine.Effector
         #region IGameComponent Members
 
         protected override void DrawInternal()
-        {   
+        {
+            if (this.renderTexture == null) return;
+            sprite.Begin(SpriteFlags.AlphaBlend);
+
+            sprite.Draw(this.renderTexture, this.sourceArea, new Vector3(), new Vector3(RealX, RealY, 0), renderColor);
+
+            sprite.End();
         }
 
         public override void Update(GameTime gameTime)
         {
+            if (dressInvalidated && loaded)
+            {
+                processDressTexture();
+                dressInvalidated = false;
+            }
         }
 
         #endregion
@@ -247,6 +198,11 @@ namespace INovelEngine.Effector
         public override void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
             base.Initialize(graphicsDeviceManager);
+
+            rtsHelper = new RenderToSurface(Device, renderViewport.Width, renderViewport.Height, Format.A8R8G8B8, 
+                Format.D16);
+            renderTexture = new Texture(Device, renderViewport.Width, renderViewport.Height, 1, Usage.RenderTarget,
+                Format.A8R8G8B8, Pool.Default);
         }
 
         /// <summary>
@@ -272,6 +228,7 @@ namespace INovelEngine.Effector
         public override void Dispose()
         {
             base.Dispose();
+            rtsHelper.Dispose();
         }
 
 
