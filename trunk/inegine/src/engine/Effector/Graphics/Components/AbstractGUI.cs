@@ -51,6 +51,11 @@ namespace INovelEngine.Effector
             get { return manager.Direct3D9.Device; }
         }
 
+        public bool Loaded
+        {
+            get { return loaded; }
+        }
+
         public GameState ManagingState
         {
             get;
