@@ -33,6 +33,14 @@ namespace INovelEngine.Effector
             set;
         }
 
+        public bool Loaded
+        {
+            get
+            {
+                return loaded;
+            }
+        }
+
         #region IResource Members
 
         public virtual void Initialize(GraphicsDeviceManager graphicsDeviceManager)
