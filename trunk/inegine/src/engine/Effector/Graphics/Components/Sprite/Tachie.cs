@@ -12,13 +12,12 @@ using INovelEngine.Core;
 
 namespace INovelEngine.Effector
 {
-    public class Tachie : AbstractGUIComponent
+    public class TachieBase : AbstractGUIComponent
     {
         private RenderToSurface rtsHelper;
         private Surface renderSurface;
         private Viewport renderViewport;
-        private bool dressInvalidated;
-
+        
         protected Sprite sprite
         {
             get
@@ -35,11 +34,8 @@ namespace INovelEngine.Effector
         private Rectangle sourceArea;
         private float relativePosition;
 
-        public Tachie()
+        public TachieBase()
         {
-            FadeOn = true;
-            FadeTime = 150;
-            Position = 0.5f;
             Width = 380;
             Height = 600;
             sourceArea = new Rectangle();
@@ -47,34 +43,9 @@ namespace INovelEngine.Effector
             sourceArea.Y = 0;
             sourceArea.Width = Width;
             sourceArea.Height = Height;
-            BackgroundWidth = Supervisor.GetInstance().GetWidth();
             renderViewport = new Viewport(0, 0, Width, Height);
             renderViewport.MaxZ = 1.0f;
-            dressInvalidated = true;
             handleMyself = true;
-        }
-
-        public float FadeTime
-        {
-            get;
-            set;
-        }
-
-        public bool FadeOn
-        {
-            get;
-            set;
-        }
-
-        public override void FadeIn(float duration)
-        {
-            LaunchTransition(duration, true);
-
-        }
-
-        public override void FadeOut(float duration)
-        {
-            LaunchTransition(duration, false);
         }
 
         public string BodyTexture
@@ -91,16 +62,16 @@ namespace INovelEngine.Effector
             }
         }
 
-        private void processDressTexture()
+        private void ImposeTextures()
         {
-            if (bodyTexture == null)
+            if (bodyTexture == null || !bodyTexture.Loaded)
             {
                 Supervisor.Error("body texture not loaded");
                 return;
             }
 
 
-            if (dressTexture == null)
+            if (dressTexture == null || !dressTexture.Loaded)
             {
                 Supervisor.Error("body texture not loaded");
                 return;
@@ -122,7 +93,7 @@ namespace INovelEngine.Effector
                 rtsHelper.EndScene(Filter.None);
             }
 
-            Supervisor.Trace("tachie rendered");
+            Supervisor.Trace("texture imposing complete");
         }
 
         public string DressTexture
@@ -136,7 +107,181 @@ namespace INovelEngine.Effector
                 if (this.dressTexture != null) resources.Remove(dressTexture);
                 dressTexture = new INETexture(value);
                 resources.Add(dressTexture);
+
+                ImposeTextures();
             }
+        }
+
+        protected virtual void SetDimensions(INETexture texture)
+        {
+            sourceArea.Width = texture.Width;
+            sourceArea.Height = texture.Height;
+            Width = texture.Width;
+            Height = texture.Height;
+        }
+
+        #region IGameComponent Members
+
+        protected override void DrawInternal()
+        {
+            if (this.renderTexture == null) return;
+            sprite.Begin(SpriteFlags.AlphaBlend);
+
+            sprite.Draw(this.renderTexture, this.sourceArea, new Vector3(), new Vector3(RealX, RealY, 0), renderColor);
+
+            sprite.End();
+        }
+
+        #endregion
+        /// <summary>
+        /// Initializes the resource.
+        /// </summary>
+        /// <param name="graphicsDeviceManager">The graphics device manager.</param>
+        public override void Initialize(GraphicsDeviceManager graphicsDeviceManager)
+        {
+            base.Initialize(graphicsDeviceManager);
+
+            rtsHelper = new RenderToSurface(Device, renderViewport.Width, renderViewport.Height, Format.A8R8G8B8, 
+                Format.D16);
+            renderTexture = new Texture(Device, renderViewport.Width, renderViewport.Height, 1, Usage.RenderTarget,
+                Format.A8R8G8B8, Pool.Default);
+        }
+
+        /// <summary>
+        /// Allows the resource to load any short-term graphical content.
+        /// </summary>
+        public override void LoadContent()
+        {
+            base.LoadContent();
+
+            ImposeTextures();
+        }
+
+        /// <summary>
+        /// Allows the resource to unload any short-term graphical content.
+        /// </summary>
+        public override void UnloadContent()
+        {
+            base.UnloadContent();
+        }
+
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
+        {
+            base.Dispose();
+            rtsHelper.Dispose();
+        }
+
+
+    }
+
+    public class Tachie : AbstractGUIComponent
+    {
+        protected Sprite sprite
+        {
+            get
+            {
+                return Supervisor.GetInstance().GetSpriteBatch();
+            }
+        }
+
+        private TachieBase oldTachie;
+        public TachieBase tachie;
+
+        private bool firstTime;
+        
+        private Rectangle sourceArea;
+        private float relativePosition;
+
+        public Tachie()
+        {
+            firstTime = true;
+            FadeOn = true;
+            FadeTime = 300;
+            Position = 0.5f;
+            Width = 380;
+            Height = 600;
+            sourceArea = new Rectangle();
+            BackgroundWidth = Supervisor.GetInstance().GetWidth();
+
+            handleMyself = true;
+        }
+
+        public float FadeTime
+        {
+            get;
+            set;
+        }
+
+        public bool FadeOn
+        {
+            get;
+            set;
+        }
+
+        public override void FadeIn(float duration)
+        {
+            LaunchTransition(duration, true);
+
+            tachie.FadeIn(duration);
+
+        }
+
+        public override void FadeOut(float duration)
+        {
+            LaunchTransition(duration, false);
+
+            tachie.FadeOut(duration);
+        }
+
+        public void SetTexture(string body, string dress)
+        {
+            if (this.tachie != null && this.tachie.BodyTexture == body && this.tachie.DressTexture == dress)
+            {
+                return; //do nothing since nothing changed
+            }
+
+            if (!firstTime)
+            {
+                if (oldTachie != null)
+                    RemoveComponent(oldTachie.Name);
+
+                oldTachie = tachie;
+                oldTachie.Layer = 5;
+                if (!this.Visible)
+                {
+                    RemoveComponent(oldTachie.Name);
+                    oldTachie = null;
+                }
+                else if (FadeOn)
+                {
+                    oldTachie.FadeOut(FadeTime * 3);
+                }
+                else
+                {
+                    oldTachie.Hide();
+                }
+            }
+
+            tachie = new TachieBase();
+            tachie.Layer = 4;
+            tachie.BodyTexture = body;
+            tachie.DressTexture = dress;
+            tachie.Relative = true;
+            tachie.X = 0;
+            tachie.Y = 0;
+            tachie.Width = Width;
+            tachie.Height = Height;
+            AddComponent(tachie);
+
+            tachie.Show();
+            
+
+
+            firstTime = false;
         }
 
         public float BackgroundWidth
@@ -173,21 +318,10 @@ namespace INovelEngine.Effector
 
         protected override void DrawInternal()
         {
-            if (this.renderTexture == null) return;
-            sprite.Begin(SpriteFlags.AlphaBlend);
-
-            sprite.Draw(this.renderTexture, this.sourceArea, new Vector3(), new Vector3(RealX, RealY, 0), renderColor);
-
-            sprite.End();
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (dressInvalidated && loaded)
-            {
-                processDressTexture();
-                dressInvalidated = false;
-            }
         }
 
         #endregion
@@ -198,11 +332,6 @@ namespace INovelEngine.Effector
         public override void Initialize(GraphicsDeviceManager graphicsDeviceManager)
         {
             base.Initialize(graphicsDeviceManager);
-
-            rtsHelper = new RenderToSurface(Device, renderViewport.Width, renderViewport.Height, Format.A8R8G8B8, 
-                Format.D16);
-            renderTexture = new Texture(Device, renderViewport.Width, renderViewport.Height, 1, Usage.RenderTarget,
-                Format.A8R8G8B8, Pool.Default);
         }
 
         /// <summary>
@@ -228,9 +357,9 @@ namespace INovelEngine.Effector
         public override void Dispose()
         {
             base.Dispose();
-            rtsHelper.Dispose();
         }
 
 
     }
+
 }
