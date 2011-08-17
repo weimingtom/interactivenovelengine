@@ -32,7 +32,6 @@ namespace INovelEngine.Effector
         private Texture renderTexture;
 
         private Rectangle sourceArea;
-        private float relativePosition;
 
         public TachieBase()
         {
