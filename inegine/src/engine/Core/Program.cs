@@ -30,9 +30,16 @@ namespace INovelEngine
         {
             using (Supervisor game = Supervisor.GetInstance())
             {
-                if (args.Length > 0 && args[0].Equals("_inoveldebug_"))
+                if (args.Length > 0)
                 {
-                    game.consoleOn = true;
+                    if (args[0].Equals("_inoveldebug_"))
+                    {
+                        game.consoleOn = true;
+                    }
+                    else if (args.Length > 1 && args[0].Equals("_script_"))
+                    {
+                        game.startingScript = args[1];
+                    }
                 }
 
                 game.StartGame();

@@ -21,8 +21,9 @@ namespace INovelEngine
     class Supervisor : Game
     {
         private static Supervisor instance = null;
+        private const string defaultScript = "Resources/start.lua";
 
-        private LuaConsole luaConsole;
+        public LuaConsole luaConsole;
 
         static int InitialWidth = 800;
         static int InitialHeight = 600;
@@ -78,6 +79,7 @@ namespace INovelEngine
         }
 
         public bool consoleOn = false;
+        public string startingScript = defaultScript;
 
         private Supervisor()
         {
@@ -116,8 +118,6 @@ namespace INovelEngine
             soundManager.Initialize(this.GraphicsDeviceManager);
             soundManager.LoadContent();
 
-            /* load lua entry script */
-            Lua_LoadScript("Resources/start.lua");
 
             this.Window.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.Window.MaximizeBox = false;
@@ -136,6 +136,8 @@ namespace INovelEngine
             /* initialize flash player panel for displaying videos */
             InitializeFlashPanel();
 
+            /* load lua entry script */
+            Lua_LoadScript(startingScript);
         }
 
         private void InitializeFlashPanel()
@@ -258,9 +260,6 @@ namespace INovelEngine
             this.Dispose();
 
             DumpObjects();
-#if DEBUG
-            MessageBox.Show("Terminating INE");
-#endif
         }
 
         protected override void Dispose(bool disposing)
@@ -545,11 +544,10 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("LoadData", this, this.GetType().GetMethod("Lua_LoadData"));
 
             ScriptManager.lua.RegisterFunction("Dump", this, this.GetType().GetMethod("DumpObjects"));
+            ScriptManager.lua.RegisterFunction("CloseGame", this, this.GetType().GetMethod("Lua_CloseGame"));
 
             ScriptManager.lua.RegisterFunction("Video", this, this.GetType().GetMethod("Lua_Video"));
 
-
-            ScriptManager.lua.RegisterFunction("Test", this, this.GetType().GetMethod("Test"));
         }
 
         public string Lua_ReadScript(string ScriptFile)
@@ -870,9 +868,9 @@ namespace INovelEngine
             this.LoadVideo(path);
         }
 
-        public string Test()
+        public void Lua_CloseGame()
         {
-            return "A能A行AくA先A";
+            this.Exit();
         }
 
         #endregion
