@@ -117,6 +117,14 @@ namespace INovelEngine.StateManager
             }
         }
 
+        public void Shake(float duration)
+        {
+            foreach (AbstractGUIComponent component in componentList)
+            {
+                component.Shake(duration);
+            }
+        }
+
         #region IDisposable Members
 
         public void Dispose()

@@ -9,11 +9,17 @@ namespace INovelEngine.Core
     public class Clock
     {
         static private List<TimeEvent> timeEventList = new List<TimeEvent>();
+        static private Random random = new Random(System.Environment.TickCount);
         static private int startUpTime = GetTime();
         static private int timeBetweenFrames;
         static private int timeOfLastTick = GetTime();
         static private int frameRate = 0;
         static private int totalEvents = 0;
+
+        static public int GetRand(int start, int end)
+        {
+            return random.Next(start, end);
+        }
 
         static public int GetTime()
         {

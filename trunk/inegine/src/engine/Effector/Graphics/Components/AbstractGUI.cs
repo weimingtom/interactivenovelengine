@@ -18,16 +18,26 @@ namespace INovelEngine.Effector
 
     public abstract class AbstractGUIComponent : AbstractLuaEventHandler, IGUIComponent, IComponentManager
     {
+        /* shake scale */
+        public const int SHAKE_X_SCALE = 2;
+        public const int SHAKE_Y_SCALE = 0;
+
         protected GraphicsDeviceManager manager;
 
-        protected int beginTick;
-        protected int endTick;
-        protected int currentTick;
-        protected int tickLength;
+        /* fade related fields */
+        protected int beginFadeTick;
+        protected int endFadeTick;
+        protected int currentFadeTick;
+        protected int fadeTickLength;
         protected bool fadeIn;
         protected bool inTransition = false;
-        protected Color renderColor = Color.White;
         protected float progress = 0;
+
+        /* shaking related fields */
+        protected int endShakeTick;
+        protected bool shaking = false;
+
+        protected Color renderColor = Color.White;
 
         protected bool loaded = false;
         protected bool initialized = false;
@@ -35,7 +45,7 @@ namespace INovelEngine.Effector
 
         protected ResourceCollection resources = new ResourceCollection();
 
-        // componentList sorted by z-order (higher, higher)
+        /* componentList sorted by z-order (higher, higher (front)) */
         protected List<AbstractGUIComponent> componentList = new List<AbstractGUIComponent>();
         protected Dictionary<string, AbstractGUIComponent> componentMap =
             new Dictionary<string, AbstractGUIComponent>();
@@ -96,11 +106,25 @@ namespace INovelEngine.Effector
             {
                 if (Relative && Parent != null)
                 {
-                    return Parent.RealX + X;
+                    if (shaking)
+                    {
+                        return Parent.RealX + X + Clock.GetRand(-SHAKE_X_SCALE, SHAKE_X_SCALE);
+                    }
+                    else
+                    {
+                        return Parent.RealX + X;
+                    }
                 }
                 else
                 {
-                    return X;
+                    if (shaking)
+                    {
+                        return X + Clock.GetRand(-SHAKE_X_SCALE, SHAKE_X_SCALE);
+                    }
+                    else
+                    {
+                        return X;
+                    }
                 }
             }
         }
@@ -111,11 +135,25 @@ namespace INovelEngine.Effector
             {
                 if (Relative && Parent != null)
                 {
-                    return Parent.RealY + Y;
+                    if (shaking)
+                    {
+                        return Parent.RealY + Y + Clock.GetRand(-SHAKE_Y_SCALE, SHAKE_Y_SCALE);
+                    }
+                    else
+                    {
+                        return Parent.RealY + Y;
+                    }
                 }
                 else
                 {
-                    return Y;
+                    if (shaking)
+                    {
+                        return Y + Clock.GetRand(-SHAKE_Y_SCALE, SHAKE_Y_SCALE);
+                    }
+                    else
+                    {
+                        return Y;
+                    }
                 }
             }
         }
@@ -217,9 +255,9 @@ namespace INovelEngine.Effector
 
         public void LaunchTransition(float duration, bool isFadingIn)
         {
-            beginTick = Clock.GetTime();
-            tickLength = (int)duration;
-            endTick = beginTick + (int)duration;
+            beginFadeTick = Clock.GetTime();
+            fadeTickLength = (int)duration;
+            endFadeTick = beginFadeTick + (int)duration;
             fadeIn = isFadingIn;
             Fading = true;
             _visible = true;
@@ -230,11 +268,25 @@ namespace INovelEngine.Effector
             Fading = false;
         }
 
+        public void Shake(float duration)
+        {
+            endShakeTick = Clock.GetTime() + (int)duration;
+            shaking = true;
+
+            foreach (AbstractGUIComponent component in this.componentList)
+            {
+                component.Shake(duration);
+            }
+        }
+
         #region IGameComponent Members
 
         public virtual void Draw()
         {
+            /* update fade rate and shake are in Draw() because fade rate needs to be 
+             * updated even when update is disabled */
             UpdateFadeRate();
+            UpdateShake();
 
             if (this._visible)
             {
@@ -273,9 +325,9 @@ namespace INovelEngine.Effector
         {
             if (Fading)
             {
-                currentTick = Clock.GetTime();
+                currentFadeTick = Clock.GetTime();
 
-                if (currentTick >= endTick)
+                if (currentFadeTick >= endFadeTick)
                 {
                     StopTransition();
                     _visible = fadeIn == true;
@@ -283,10 +335,22 @@ namespace INovelEngine.Effector
                 else
                 {
                     progress = fadeIn
-                                   ? Math.Min(1.0f, (float)(currentTick - beginTick) / (float)tickLength)
-                                   : 1.0f - Math.Min(1.0f, (float)(currentTick - beginTick) / (float)tickLength);
+                                   ? Math.Min(1.0f, (float)(currentFadeTick - beginFadeTick) / (float)fadeTickLength)
+                                   : 1.0f - Math.Min(1.0f, (float)(currentFadeTick - beginFadeTick) / (float)fadeTickLength);
 
                 }
+            }
+        }
+
+        protected void UpdateShake()
+        {
+            if (shaking)
+            {
+                if (Clock.GetTime() >= endShakeTick)
+                {
+                    shaking = false;
+                }
+               
             }
         }
 
