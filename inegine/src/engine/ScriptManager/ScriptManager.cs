@@ -171,9 +171,7 @@ namespace INovelEngine.Script
         {
             try
             {
-                lua.DoString("print(os.setlocale())");
-                lua.DoString("os.setlocale(\"UTF-8\")");
-                lua.DoString("print(os.setlocale())");
+                lua.DoString("math.randomseed(os.time())");
                 lua.DoFile("BaseScripts/Init.lua");
             }
             catch (Exception e)

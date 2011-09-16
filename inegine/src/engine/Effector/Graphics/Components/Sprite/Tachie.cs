@@ -91,8 +91,6 @@ namespace INovelEngine.Effector
 
                 rtsHelper.EndScene(Filter.None);
             }
-
-            Supervisor.Trace("texture imposing complete");
         }
 
         public string DressTexture
@@ -171,6 +169,7 @@ namespace INovelEngine.Effector
         public override void Dispose()
         {
             base.Dispose();
+            renderTexture.Dispose();
             rtsHelper.Dispose();
         }
 
