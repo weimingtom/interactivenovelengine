@@ -15,6 +15,7 @@ using INovelEngine.ResourceManager;
 using System.Text;
 using AxShockwaveFlashObjects;
 using System.Xml;
+using System.IO;
 
 namespace INovelEngine
 {
