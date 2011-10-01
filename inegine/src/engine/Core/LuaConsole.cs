@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using System.IO;
 
 namespace INovelEngine.Core
 {
@@ -15,8 +16,32 @@ namespace INovelEngine.Core
         public LuaConsole()
         {
             InitializeComponent();
+            this.textBox1.TextChanged += new EventHandler(textBox1_TextChanged);
+            readText();
         }
 
+        private void readText()
+        {
+            try
+            {
+                TextReader reader = new StreamReader("buffer.txt");
+                string history = reader.ReadToEnd();
+                reader.Close();
+                EditorText = history;
+            }
+            catch (Exception e)
+            {
+                Supervisor.Error(e.Message);
+            }
+        }
+
+        void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            TextWriter writer = new StreamWriter("buffer.txt");
+            writer.Write(EditorText);
+            writer.Close();
+        }
+        
 
         void textBox1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
@@ -38,6 +63,18 @@ namespace INovelEngine.Core
             }
         }
 
+        public string EditorText
+        {
+            get
+            {
+                return this.textBox1.Text;
+            }
+            set
+            {
+                this.textBox1.Text = value;
+            }
+        }
+
         public string GetSelectedText()
         {
             // Get selected character.
@@ -51,7 +88,7 @@ namespace INovelEngine.Core
             return line;
         }
 
-        void RunLuaString(string text)
+        private void RunLuaString(string text)
         {
             try
             {
