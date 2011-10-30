@@ -48,6 +48,12 @@ namespace INovelEngine
         private Sprite sharedSprite;
         private Line sharedLine;
 
+#if DEBUG
+        public Sprite debugFontSprite;
+        public SlimDX.Direct3D9.Font debugFont;
+        public Point cursorPosition;
+#endif
+
         //flash panel
         private System.Windows.Forms.Panel videoPlaceholder;
         private AxShockwaveFlashObjects.AxShockwaveFlash flashPlayer;
@@ -80,6 +86,7 @@ namespace INovelEngine
         }
 
         public bool consoleOn = false;
+        public bool debugInfoOn = false;
         public string startingScript = defaultScript;
 
         private Supervisor()
@@ -89,21 +96,38 @@ namespace INovelEngine
 #endif
         }
 
+        private Boolean headLessMode = false;
+
+        public Boolean headLess
+        {
+            get
+            {
+                return headLessMode;
+            }
+            set
+            {
+                this.consoleOn = false;
+                headLessMode = value;
+            }
+        }
+
         public void StartGame()
         {
-            ClearColor = Color.White;
-            Window.KeyPreview = true;
-            Window.ClientSize = new Size(InitialWidth, InitialHeight);
-            Window.KeyDown += new KeyEventHandler(Window_KeyDown);
-            Window.MouseDown += new MouseEventHandler(Window_MouseDown);
-            Window.MouseUp += new MouseEventHandler(Window_MouseUp);
-            Window.MouseMove += new MouseEventHandler(Window_MouseMove);
-            Window.MouseClick += new MouseEventHandler(Window_MouseClick);
-            Window.MouseDoubleClick += new MouseEventHandler(Window_MouseDoubleClick);
-            Window.MouseWheel += new MouseEventHandler(Window_MouseWheel);
-
-            // init device
-            InitDevice();
+            if (!headLess)
+            {
+                ClearColor = Color.White;
+                Window.KeyPreview = true;
+                Window.ClientSize = new Size(InitialWidth, InitialHeight);
+                Window.KeyDown += new KeyEventHandler(Window_KeyDown);
+                Window.MouseDown += new MouseEventHandler(Window_MouseDown);
+                Window.MouseUp += new MouseEventHandler(Window_MouseUp);
+                Window.MouseMove += new MouseEventHandler(Window_MouseMove);
+                Window.MouseClick += new MouseEventHandler(Window_MouseClick);
+                Window.MouseDoubleClick += new MouseEventHandler(Window_MouseDoubleClick);
+                Window.MouseWheel += new MouseEventHandler(Window_MouseWheel);
+                // init device
+                InitDevice();
+            }
 
             this.RegisterLuaGlue();
 
@@ -120,23 +144,26 @@ namespace INovelEngine
             soundManager.LoadContent();
 
 
-            this.Window.FormBorderStyle = FormBorderStyle.FixedSingle;
-            this.Window.MaximizeBox = false;
+            if (!headLess)
+            {
+                this.Window.FormBorderStyle = FormBorderStyle.FixedSingle;
+                this.Window.MaximizeBox = false;
 
 #if DEBUG
-            Clock.AddTimeEvent(new TimeEvent(1000, displayFPS));
+                Clock.AddTimeEvent(new TimeEvent(1000, displayFPS));
 #endif
 
-            if (consoleOn)
-            {
-                luaConsole = new LuaConsole();
-                luaConsole.Show();
-                //AdjustLuaConsole();
-                this.Window.LocationChanged += new EventHandler(Window_LocationChanged);
-            }
-            /* initialize flash player panel for displaying videos */
-            InitializeFlashPanel();
+                if (consoleOn)
+                {
+                    luaConsole = new LuaConsole();
+                    luaConsole.Show();
+                    //AdjustLuaConsole();
+                    this.Window.LocationChanged += new EventHandler(Window_LocationChanged);
+                }
+                /* initialize flash player panel for displaying videos */
+                InitializeFlashPanel();
 
+            }
             /* load lua entry script */
             Lua_LoadScript(startingScript);
         }
@@ -363,6 +390,11 @@ namespace INovelEngine
 
         void Window_MouseMove(object sender, MouseEventArgs e)
         {
+
+#if DEBUG
+            cursorPosition = e.Location;
+#endif
+
             if (activeState != null) activeState.SendEvent(ScriptEvents.MouseMove, e.X, e.Y);
         }
 
@@ -467,6 +499,14 @@ namespace INovelEngine
 
             sharedSprite = new Sprite(this.Device);
             sharedLine = new Line(this.Device);
+
+
+#if DEBUG
+            debugFontSprite = new Sprite(this.Device);
+            debugFont = new SlimDX.Direct3D9.Font(this.Device, 15,
+              0, FontWeight.Normal, 0, false, CharacterSet.Default,
+              Precision.Default, FontQuality.ClearTypeNatural, PitchAndFamily.DontCare, "tahoma");
+#endif
         }
 
         protected override void LoadContent()
@@ -506,7 +546,7 @@ namespace INovelEngine
 
             ScriptManager.lua.RegisterFunction("Trace", this, this.GetType().GetMethod("Lua_Trace"));
             ScriptManager.lua.RegisterFunction("Info", this, this.GetType().GetMethod("Lua_Info"));
-            ScriptManager.lua.RegisterFunction("Error", this, this.GetType().GetMethod("Lua_Error"));
+            ScriptManager.lua.RegisterFunction("Lua_Error", this, this.GetType().GetMethod("Lua_Error"));
 
             ScriptManager.lua.RegisterFunction("Replace", this, this.GetType().GetMethod("Lua_Replace"));
             ScriptManager.lua.RegisterFunction("Substring", this, this.GetType().GetMethod("Lua_Substring"));
@@ -549,6 +589,12 @@ namespace INovelEngine
 
             ScriptManager.lua.RegisterFunction("Video", this, this.GetType().GetMethod("Lua_Video"));
 
+#if DEBUG
+
+            ScriptManager.lua.RegisterFunction("DebugInfo", this, this.GetType().GetMethod("Lua_SetDebugInfo"));
+#endif
+
+
         }
 
         public string Lua_ReadScript(string ScriptFile)
@@ -574,7 +620,7 @@ namespace INovelEngine
         {
             try
             {
-                ScriptManager.lua.DoString("loadstring(ReadScript([[" + ScriptFile + "]]))()");
+                ScriptManager.lua.DoString("loadstring(ReadScript([[" + ScriptFile + "]]), \"" + ScriptFile + "\")()");
             }
             catch (LuaInterface.LuaException e)
             {
@@ -667,7 +713,7 @@ namespace INovelEngine
 
         public void Lua_Trace(string s)
         {
-            Trace(s);
+            logManager.Trace(s);
         }
 
         public static void Trace(string msg)
@@ -677,7 +723,7 @@ namespace INovelEngine
 
         public void Lua_Info(string s)
         {
-            Info(s);
+            logManager.Info(s);
         }
 
         public static void Info(string msg)
@@ -687,12 +733,16 @@ namespace INovelEngine
 
         public void Lua_Error(string s)
         {
-            Error(s);
+            logManager.Error(s);
         }
 
         public static void Error(string msg)
         {
-            Supervisor.GetInstance().logManager.Error(msg);
+            System.Diagnostics.StackFrame frame = new System.Diagnostics.StackFrame(1);
+            StringBuilder sb = new StringBuilder("[");
+            sb.Append(frame.GetMethod());
+            sb.Append("]: ").Append(msg);
+            Supervisor.GetInstance().logManager.Error(sb.ToString());
         }
 
         public string Lua_LoadESS(string path)
@@ -873,6 +923,13 @@ namespace INovelEngine
         {
             this.Exit();
         }
+
+#if DEBUG
+        public void Lua_SetDebugInfo()
+        {
+            this.debugInfoOn = !this.debugInfoOn;
+        }
+#endif
 
         #endregion
 

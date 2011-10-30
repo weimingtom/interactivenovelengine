@@ -13,6 +13,8 @@ using SampleFramework;
 using SlimDX;
 using SlimDX.Direct3D9;
 using Com.StellmanGreene.CSVReader;
+using INovelEngine.Script;
+using LuaInterface;
 
 namespace INovelEngine.ResourceManager
 {
@@ -101,6 +103,61 @@ namespace INovelEngine.ResourceManager
             set
             {
             }
+        }
+
+        public LuaInterface.LuaTable GetRow(int row, LuaTable table)
+        {
+            for (int i = 0; i < this.ColumnCount; i++)
+            {
+                Object obj = this.rows[row][i];
+                string typeString = obj.GetType().ToString();
+                if (typeString.Equals("System.Single"))
+                {
+                    table[this.columns[i]] = (float)obj;
+                }
+                else if (typeString.Equals("System.Byte"))
+                {
+                    table[this.columns[i]] = (float)(Byte)obj;
+                }
+                else if (typeString.Equals("System.Int16"))
+                {
+                    table[this.columns[i]] = (float)(short)obj;
+                }
+                else
+                {
+                    table[this.columns[i]] = obj.ToString();
+                }
+            }
+          
+
+            return table;
+        }
+
+        public LuaInterface.LuaTable GetRow(string key, string value, LuaTable table)
+        {
+            if (!columns.Contains(key))
+            {
+                throw new Exception("key not found in column list");
+            }
+
+            /* find row number */
+            int row = -1;
+            for (int i = 0; i < this.rows.Count; i++)
+            {
+                if (this.GetString(i, key).Equals(value))
+                {
+                    row = i;
+                }
+            }
+            if (row == -1)
+            {
+                throw new Exception("row with value not found in row list");
+            }
+
+
+            table = this.GetRow(row, table);
+          
+            return table;
         }
 
         public string GetColumn(int i)

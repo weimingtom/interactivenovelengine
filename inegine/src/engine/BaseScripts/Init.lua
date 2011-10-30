@@ -37,6 +37,10 @@ function dofile (filename)
 	return f()
 end
 
+function Error(msg)
+	Lua_Error(DebugString(4) .. " - " .. msg)
+end
+
 function InitResource(resource)
     CurrentState():AddResource(resource);
 end
@@ -86,7 +90,10 @@ end
 function DebugString(level)
 	local info = debug.getinfo(level)
 	local source = info.short_src;
-	return string.sub(source, 1) .. ":" .. info.currentline;
+	if (info.name == nil) then
+		info.name = "NA"
+	end
+	return string.sub(source, 1) .. " " .. info.name .. ":" .. info.currentline;
 end
 
 function try(call, error, level)

@@ -36,9 +36,13 @@ namespace INovelEngine
                     {
                         game.consoleOn = true;
                     }
-                    else if (args.Length > 1 && args[0].Equals("_script_"))
+                    else if (args.Length > 1 && args[0].Equals("_testscript_"))
                     {
+                        /* run game in headless mode then exit */
+                        game.headLess = true;
                         game.startingScript = args[1];
+                        game.StartGame();
+                        return;
                     }
                 }
 

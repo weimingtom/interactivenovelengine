@@ -305,7 +305,83 @@ namespace INovelEngine.Effector
                     component.Draw();
                 }
             }
+
+#if DEBUG
+            DrawDebugInfo();
+#endif
         }
+
+#if DEBUG
+        protected void DrawDebugInfo()
+        {
+            if (!Supervisor.GetInstance().debugInfoOn)
+            {
+                return;
+            }
+
+            Point cursorPosition = Supervisor.GetInstance().cursorPosition;
+
+            if (cursorPosition.X < this.RealX || cursorPosition.X > (this.RealX + this.Width))
+            {
+                return;
+            }
+
+            if (cursorPosition.Y < this.RealY || cursorPosition.Y > (this.RealY + this.Height))
+            {
+                return;
+            }
+
+
+
+            Sprite fontSprite = Supervisor.GetInstance().debugFontSprite;
+            SlimDX.Direct3D9.Font font = Supervisor.GetInstance().debugFont;
+            String info = this.Name.Substring(0, Math.Min(this.Name.Length, 4)) + System.IO.Path.GetExtension(this.GetType().ToString());
+            Rectangle infoRect = font.MeasureString(fontSprite, info, DrawTextFormat.Left);
+            String dim = this.Width + "x" + this.Height;
+            Rectangle dimRect = font.MeasureString(fontSprite, dim, DrawTextFormat.Left);
+
+            SlimDX.Vector2[] lines = new SlimDX.Vector2[2];
+
+            Line line = Supervisor.GetInstance().GetLineBatch();
+
+
+            lines[0].X = RealX;
+            lines[0].Y = RealY + Height / 2;
+            lines[1].X = RealX + Width;
+            lines[1].Y = RealY + Height / 2;
+            line.Width = (float)Height;
+
+            line.Begin();
+            line.Draw(lines, Color.FromArgb(15, Color.Black));
+            line.End();
+
+            lines[0].X = this.RealX + (this.Width - infoRect.Width) / 2;
+            lines[0].Y = this.RealY + this.Height / 2 + infoRect.Height / 2;
+            lines[1].X = this.RealX + (this.Width - infoRect.Width) / 2 + infoRect.Width;
+            lines[1].Y = this.RealY + this.Height / 2 + infoRect.Height / 2;
+            line.Width = (float)infoRect.Height;
+            line.Begin();
+            line.Draw(lines, Color.FromArgb(255, Color.White));
+            line.End();
+
+            lines[0].X = this.RealX + this.Width - dimRect.Width;
+            lines[0].Y = this.RealY + this.Height - dimRect.Height + dimRect.Height / 2;
+            lines[1].X = this.RealX + this.Width;
+            lines[1].Y = this.RealY + this.Height - dimRect.Height + dimRect.Height / 2;
+            line.Width = (float)dimRect.Height;
+            line.Begin();
+            line.Draw(lines, Color.FromArgb(255, Color.White));
+            line.End();
+
+
+            fontSprite.Begin(SpriteFlags.AlphaBlend);
+            font.DrawString(fontSprite, this.X + "," + this.Y, this.RealX, this.RealY, Color.FromArgb(200, Color.Red));
+            font.DrawString(fontSprite, info, this.RealX + (this.Width - infoRect.Width) / 2, this.RealY + this.Height / 2, Color.FromArgb(200, Color.Red));
+            font.DrawString(fontSprite, dim, this.RealX + this.Width - dimRect.Width, this.RealY + this.Height - dimRect.Height, Color.FromArgb(200, Color.Red));
+            fontSprite.End();
+
+        }
+#endif
 
         protected abstract void DrawInternal();
 
