@@ -35,16 +35,23 @@ namespace INovelEngine.Effector
 
         public TachieBase()
         {
-            Width = 380;
-            Height = 600;
+            UpdateDiemensions(800, 600);
+            handleMyself = true;
+        }
+
+        private void UpdateDiemensions(int width, int height)
+        {
+            Width = width;
+            Height = height;
+            
             sourceArea = new Rectangle();
             sourceArea.X = 0;
             sourceArea.Y = 0;
             sourceArea.Width = Width;
             sourceArea.Height = Height;
+           
             renderViewport = new Viewport(0, 0, Width, Height);
             renderViewport.MaxZ = 1.0f;
-            handleMyself = true;
         }
 
         public string BodyTexture
@@ -74,6 +81,12 @@ namespace INovelEngine.Effector
             {
                 Supervisor.Error("body texture not loaded");
                 return;
+            }
+
+            if (bodyTexture.Width != this.Width || bodyTexture.Height != this.Height)
+            {
+                Supervisor.Trace("updating dimensions to " + bodyTexture.Width + "," + bodyTexture.Height);
+                this.UpdateDiemensions(bodyTexture.Width, bodyTexture.Height);
             }
 
             using (renderSurface = renderTexture.GetSurfaceLevel(0))
@@ -297,6 +310,15 @@ namespace INovelEngine.Effector
             set
             {
                 this.relativePosition = value;
+                this.UpdatePosition(this.relativePosition);
+            }
+        }
+
+        private void UpdatePosition(float position)
+        {
+            if (this.tachie != null && this.tachie.Loaded)
+            {
+                this.Width = this.tachie.Width;
                 if (BackgroundWidth > 100 && Width > 50 && relativePosition > 0f && relativePosition < 1f)
                 {
                     X = (int)(BackgroundWidth * relativePosition - Width / 2);
@@ -316,6 +338,7 @@ namespace INovelEngine.Effector
 
         protected override void DrawInternal()
         {
+            UpdatePosition(this.relativePosition);
         }
 
         public override void Update(GameTime gameTime)

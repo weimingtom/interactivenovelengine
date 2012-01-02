@@ -139,8 +139,12 @@ function wait(delay)
 end
 AddESSCmd("wait");
 
-function rand()
-	return math.random() ;
+function rand(max)
+	if (max == nil) then
+		return math.random();
+	else
+		return math.random(max);
+	end
 end
 AddESSCmd("rand");
 
@@ -157,7 +161,13 @@ function playbgm(id)
 	
 	if (currentbgmId ~= nil) then
 		Info("stopping existing bgm : " .. currentbgmId);
-		GetSound(currentbgmId):Stop()
+		local currentbgm = GetSound(currentbgmId)
+		if (currentbgm == nil) then
+			Error("cannot find bgm " .. id .. " to play");
+			error("cannot find bgm " .. id .. " to play")
+		return;
+	end
+		currentbgm:Stop()
 	else
 		Info("not stopping existing bgm since it's null");
 	end
@@ -165,7 +175,9 @@ function playbgm(id)
 	currentbgmId = id;
 	local currentbgm = GetSound(id)
 	if (currentbgm == nil) then
-		Error("current bgm is nil");
+		currentbgmId = nil;
+		Error("cannot find bgm " .. id .. " to play");
+		error("cannot find bgm " .. id .. " to play")
 		return;
 	end
 	Info("playing bgm : " .. id);
@@ -179,7 +191,7 @@ function stopbgm(delay)
 	if (currentbgmId ~= nil) then
 		local currentbgm = GetSound(currentbgmId)
 		if (currentbgm == nil) then
-			Error("current bgm is nil");
+			Error("cannot find " .. id .. " to stop");
 			return;
 		end
 		Info("stopping current bgm : " .. currentbgmId);
