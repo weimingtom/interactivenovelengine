@@ -620,7 +620,8 @@ namespace INovelEngine
         {
             try
             {
-                ScriptManager.lua.DoString("loadstring(ReadScript([[" + ScriptFile + "]]), \"" + ScriptFile + "\")()");
+                Supervisor.Info("loading script " + ScriptFile);
+                ScriptManager.lua.DoString("func, err = loadstring(ReadScript([[" + ScriptFile + "]]), \"" + ScriptFile + "\"); if (func == nil) then Error(err) else func(); end");
             }
             catch (LuaInterface.LuaException e)
             {
