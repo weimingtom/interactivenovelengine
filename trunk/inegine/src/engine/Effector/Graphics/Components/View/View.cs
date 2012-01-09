@@ -45,11 +45,11 @@ namespace INovelEngine.Effector
             line.Begin();
             if (this.Fading)
             {
-                line.Draw(this.lines, Color.FromArgb((int)(progress * _alpha), _backgroundColor));
+                line.Draw(this.lines, Color.FromArgb((int)(GetEffectiveProgress() * _alpha), _backgroundColor));
             }
             else
             {
-                line.Draw(this.lines, Color.FromArgb(_alpha, _backgroundColor));
+                line.Draw(this.lines, Color.FromArgb((int)(GetEffectiveProgress() * _alpha), _backgroundColor));
             }
             line.End();
         }

@@ -153,12 +153,12 @@ namespace INovelEngine.Effector
             if (pushed)
             {
                 TextRenderer.DrawText(this.sprite, this.freeFont, Text, this.RealX + leftMargin + 2,
-                                      this.RealY + topMargin + 2, Width - leftMargin * 2, Height - topMargin * 2, Color.FromArgb(this.renderColor.A, _textColor));
+                                      this.RealY + topMargin + 2, Width - leftMargin * 2, Height - topMargin * 2, Color.FromArgb((int)(this.renderColor.A * GetEffectiveProgress()), _textColor));
             }
             else
             {
                 TextRenderer.DrawText(this.sprite, this.freeFont, Text, this.RealX + leftMargin,
-                                       this.RealY + topMargin, Width - leftMargin * 2, Height - topMargin * 2, Color.FromArgb(this.renderColor.A, _textColor));
+                                       this.RealY + topMargin, Width - leftMargin * 2, Height - topMargin * 2, Color.FromArgb((int)(this.renderColor.A * GetEffectiveProgress()), _textColor));
             }
         }
 
@@ -169,12 +169,13 @@ namespace INovelEngine.Effector
 
             if (this.Texture != null)
             {
-                if (!Enabled)
-                {
-                    sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(),
-                                new Vector3(RealX, RealY, 0), Color.DimGray);
-                }
-                else if (pushed)
+                //if (!Enabled)
+                //{
+                //    sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(),
+                //                new Vector3(RealX, RealY, 0), Color.DimGray);
+                //}
+                //else
+                if (pushed)
                 {
                     sprite.Draw(this.textureManager.Texture, this.sourceArea, new Vector3(),
                                 new Vector3(RealX, RealY, 0), Color.LightSlateGray);
