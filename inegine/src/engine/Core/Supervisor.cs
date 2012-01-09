@@ -403,6 +403,8 @@ namespace INovelEngine
             if (e.Button == MouseButtons.Left)
             {
                 if (activeState != null) activeState.SendEvent(ScriptEvents.MouseClick, e.X, e.Y);
+
+                this.Lua_Trace("Click : " + e.X + "," + e.Y);
             }
         }
 
@@ -412,6 +414,8 @@ namespace INovelEngine
             if (e.Button == MouseButtons.Left)
             {
                 if (activeState != null) activeState.SendEvent(ScriptEvents.MouseDoubleClick, e.X, e.Y);
+
+                this.Lua_Trace("Double Click : " + e.X + "," + e.Y);
             }
         }
 

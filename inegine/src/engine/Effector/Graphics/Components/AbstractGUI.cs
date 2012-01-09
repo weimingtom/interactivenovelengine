@@ -31,7 +31,8 @@ namespace INovelEngine.Effector
         protected int fadeTickLength;
         protected bool fadeIn;
         protected bool inTransition = false;
-        protected float progress = 0;
+        protected float progress = 1.0f;
+        
 
         /* shaking related fields */
         protected int endShakeTick;
@@ -55,6 +56,13 @@ namespace INovelEngine.Effector
         {
             Relative = true;
         }
+
+
+        public override String ToString()
+        {
+            return "progress = " + progress + " render color = "  + this.renderColor.ToString() + " fading = " + this.Fading.ToString();
+        }
+
 
         public Device Device
         {
@@ -236,22 +244,25 @@ namespace INovelEngine.Effector
         public virtual void FadeIn(float duration)
         {
             LaunchTransition(duration, true);
-
-            foreach (AbstractGUIComponent component in this.componentList)
-            {
-                component.FadeIn(duration);
-            }
         }
 
         public virtual void FadeOut(float duration)
         {
             LaunchTransition(duration, false);
-
-            foreach (AbstractGUIComponent component in this.componentList)
-            {
-                component.FadeOut(duration);
-            }
         }
+
+        public float GetEffectiveProgress()
+        {
+            float effectiveProgress = progress;
+
+            if (Parent != null)
+            {
+                effectiveProgress = effectiveProgress * Parent.GetEffectiveProgress();
+            }
+
+            return effectiveProgress;
+        }
+
 
         public void LaunchTransition(float duration, bool isFadingIn)
         {
@@ -265,6 +276,13 @@ namespace INovelEngine.Effector
 
         public void StopTransition()
         {
+            if (Fading)
+            {
+                progress = fadeIn
+                    ? 1.0f
+                    : 0.0f;
+            }
+
             Fading = false;
         }
 
@@ -290,14 +308,17 @@ namespace INovelEngine.Effector
 
             if (this._visible)
             {
-                if (this.Fading)
-                {
-                    renderColor = Color.FromArgb((int) (progress*_alpha), Color.White);
-                }
-                else
-                {
-                    renderColor = Color.FromArgb(_alpha, Color.White);
-                }
+                //if (this.Fading)
+                //{
+
+
+                renderColor = Color.FromArgb((int)(GetEffectiveProgress() * _alpha), Color.White);
+                //}
+                //else
+                //{
+                //    renderColor = Color.FromArgb(_alpha, Color.White);
+                //}
+                
                 this.DrawInternal();
 
                 foreach (IGameComponent component in componentList)
@@ -407,6 +428,7 @@ namespace INovelEngine.Effector
                 {
                     StopTransition();
                     _visible = fadeIn == true;
+                    _enabled = fadeIn == true;
                 }
                 else
                 {

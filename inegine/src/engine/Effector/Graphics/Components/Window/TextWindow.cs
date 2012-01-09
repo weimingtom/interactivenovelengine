@@ -329,7 +329,7 @@ namespace INovelEngine.Effector
             TextRenderer.rubyColor = Color.FromArgb(255, this._rubyColor);
             TextRenderer.DrawText(this.sprite, this.freeFont, isStatic ? textNarrator.SourceString : textNarrator.OutputString,
                                   this.RealX + leftMargin, this.RealY + topMargin,
-                                  Width - leftMargin * 2, Height - _margin * 2, Color.FromArgb(255, this._textColor));
+                                  Width - leftMargin * 2, Height - _margin * 2, Color.FromArgb((int)(255 * GetEffectiveProgress()), this._textColor));
             //}
             if (textNarrator.State == NarrationState.Stopped)
             {
