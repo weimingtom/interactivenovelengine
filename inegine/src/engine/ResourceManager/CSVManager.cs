@@ -137,7 +137,7 @@ namespace INovelEngine.ResourceManager
         {
             if (!columns.Contains(key))
             {
-                throw new Exception("key not found in column list");
+                throw new Exception(this.FileName + " : unable to find key " + key);
             }
 
             /* find row number */
@@ -151,7 +151,7 @@ namespace INovelEngine.ResourceManager
             }
             if (row == -1)
             {
-                throw new Exception("row with value not found in row list");
+                throw new Exception(this.FileName + " : unable to find " + value + " for key " + key);
             }
 
 
@@ -178,7 +178,7 @@ namespace INovelEngine.ResourceManager
             }
             else
             {
-                throw new Exception("column name not found!");
+                throw new Exception(this.FileName + " : unable to find column " + columnMap);
             }
         }
 

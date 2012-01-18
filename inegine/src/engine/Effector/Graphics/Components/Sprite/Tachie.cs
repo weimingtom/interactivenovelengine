@@ -211,7 +211,7 @@ namespace INovelEngine.Effector
         {
             firstTime = true;
             FadeOn = true;
-            FadeTime = 300;
+            FadeTime = 200;
             Position = 0.5f;
             Width = 380;
             Height = 600;

@@ -20,11 +20,16 @@
 * THE SOFTWARE.
 */
 using System;
+using System.Runtime.InteropServices;
+
 
 namespace INovelEngine
 {
     static class Program
     {
+        [DllImport("kernel32.dll", EntryPoint = "AllocConsole", SetLastError = true, CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+        private static extern int AllocConsole();
+
         [STAThread]
         static void Main(string[] args)
         {
@@ -35,6 +40,7 @@ namespace INovelEngine
                     if (args[0].Equals("_inoveldebug_"))
                     {
                         game.consoleOn = true;
+                        AllocConsole();
                     }
                     else if (args.Length > 1 && args[0].Equals("_testscript_"))
                     {

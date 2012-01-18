@@ -31,7 +31,7 @@ namespace INovelEngine.Effector
         protected int fadeTickLength;
         protected bool fadeIn;
         protected bool inTransition = false;
-        protected float progress = 1.0f;
+        protected float visibleRate = 1.0f;
         
 
         /* shaking related fields */
@@ -60,7 +60,7 @@ namespace INovelEngine.Effector
 
         public override String ToString()
         {
-            return "progress = " + progress + " render color = "  + this.renderColor.ToString() + " fading = " + this.Fading.ToString();
+            return "progress = " + visibleRate + " render color = "  + this.renderColor.ToString() + " fading = " + this.Fading.ToString();
         }
 
 
@@ -218,6 +218,15 @@ namespace INovelEngine.Effector
             set {
                 StopTransition();
                 _visible = value;
+
+                if (_visible)
+                {
+                    visibleRate = 1.0f;
+                }
+                else
+                {
+                    visibleRate = 0f;
+                }
             }
         }
 
@@ -253,7 +262,7 @@ namespace INovelEngine.Effector
 
         public float GetEffectiveProgress()
         {
-            float effectiveProgress = progress;
+            float effectiveProgress = visibleRate;
 
             if (Parent != null)
             {
@@ -278,7 +287,7 @@ namespace INovelEngine.Effector
         {
             if (Fading)
             {
-                progress = fadeIn
+                visibleRate = fadeIn
                     ? 1.0f
                     : 0.0f;
             }
@@ -432,7 +441,7 @@ namespace INovelEngine.Effector
                 }
                 else
                 {
-                    progress = fadeIn
+                    visibleRate = fadeIn
                                    ? Math.Min(1.0f, (float)(currentFadeTick - beginFadeTick) / (float)fadeTickLength)
                                    : 1.0f - Math.Min(1.0f, (float)(currentFadeTick - beginFadeTick) / (float)fadeTickLength);
 
