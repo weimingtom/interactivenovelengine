@@ -56,6 +56,20 @@ namespace INovelEngine.Effector
             handleMyself = true;
         }
 
+        public void Reset()
+        {
+            this.firstTime = true;
+            if (oldSprite != null)
+            {
+                RemoveComponent(oldSprite.Name);
+            }
+            if (currentSprite != null)
+            {
+                RemoveComponent(currentSprite.Name);
+            }
+        }
+
+
         public string Texture
         {
             get
