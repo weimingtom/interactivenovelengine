@@ -103,15 +103,42 @@ namespace INovelEngine.Effector
 
                 // if current char is not @, add it to output buffer, advance index, and break
                 char currentChar = inputString[index];
-                if (currentChar != '@')
-                {
-                    outputStringBuffer.Append(currentChar);
-                    index++;
-                }
-                else
+              
+                if (currentChar == '@')
                 {
                     // if current char is @, advance index one more time and loop
                     state = NarrationState.Stopped;
+                    index++;
+                }
+                else if (currentChar == '[')
+                {
+                    int i = 0;
+
+                    outputStringBuffer.Append(currentChar);
+
+                    for (i = index + 1; i < inputString.Length; i++)
+                    {
+                        currentChar = inputString[i];
+                        outputStringBuffer.Append(currentChar);
+
+                        if (currentChar == ']')
+                        {
+                            i++;
+                            break;
+                        }
+                    }
+
+                    index = i;
+
+                    if (index > inputString.Length - 1)
+                    {
+                        state = NarrationState.Over;
+                        return;
+                    }
+                }
+                else
+                {
+                    outputStringBuffer.Append(currentChar);
                     index++;
                 }
             }

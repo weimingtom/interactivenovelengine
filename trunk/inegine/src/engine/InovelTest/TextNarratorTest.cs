@@ -85,6 +85,43 @@ namespace InovelTest
         }
 
         /// <summary>
+        ///A test for OutputString
+        ///</summary>
+        [TestMethod()]
+        public void OutputStringTestTag()
+        {
+            TextNarrator target = new TextNarrator(); // TODO: Initialize to an appropriate value
+            target.AppendText("[col=#3ea61a]6年後の「成人式」[/col]");
+
+            Assert.AreEqual("", target.OutputString);
+            target.Tick();
+            Assert.AreEqual("[col=#3ea61a]", target.OutputString);
+            target.Tick();
+            Assert.AreEqual("[col=#3ea61a]6", target.OutputString);
+            target.Tick();
+            Assert.AreEqual("[col=#3ea61a]6年", target.OutputString);
+            target.Tick();
+            Assert.AreEqual("[col=#3ea61a]6年後", target.OutputString);
+            target.Tick();
+            Assert.AreEqual("[col=#3ea61a]6年後の", target.OutputString);
+            target.Tick();
+            target.Tick();
+            target.Tick();
+            target.Tick();
+            target.Tick();
+            Assert.AreEqual("[col=#3ea61a]6年後の「成人式」", target.OutputString);
+            target.Tick();
+            Assert.AreEqual("[col=#3ea61a]6年後の「成人式」[/col]", target.OutputString);
+
+            target.Clear();
+            target.AppendText("[col=#3ea61a]");
+            target.Tick();
+            Assert.AreEqual("[col=#3ea61a]", target.OutputString);
+            target.Tick();
+            Assert.AreEqual("[col=#3ea61a]", target.OutputString);
+        }
+
+        /// <summary>
         ///A test for Clear
         ///</summary>
         [TestMethod()]
