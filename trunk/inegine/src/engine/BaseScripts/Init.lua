@@ -19,7 +19,7 @@ ScriptManager = luanet.import_type("INovelEngine.Script.ScriptManager");
 
 Supervisor = Supervisor()
 
-function OpenState(name, script, arg, closingEvt, enableDlg, disableSt)
+function OpenState(name, script, arg, closingEvt, enableDlg, disableSt, hideBg)
     argument = arg;
     closingEvent = closingEvt;
     enableDialogue = enableDlg;
@@ -28,12 +28,18 @@ function OpenState(name, script, arg, closingEvt, enableDlg, disableSt)
     	disableSt = true;
     end
     
+    if (hideBg == nil) then
+    	hideBg = true
+    end
+    
     disableState = disableSt;
+    hideBackground = hideBg;
     
     LoadState(name, script, disableSt); --create a new state using script
     enableDialogue = nil;
     argument = nil;
     closingEvent = nil;
+    hideBackground = nil;
 end
 
 function dofile (filename)
