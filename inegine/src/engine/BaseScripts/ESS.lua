@@ -148,6 +148,13 @@ function rand(max)
 end
 AddESSCmd("rand");
 
+function updateBGMVolume()
+	if (currentbgmId ~= nil) then
+		local currentbgm = GetSound(currentbgmId)
+		currentbgm.volume = bgmBaseVolume * optionManager:GetOption("bgmVolume") / 7
+	end
+end
+
 --sound functions
 function playbgm(id)
 	if (id == nil) then
@@ -182,7 +189,11 @@ function playbgm(id)
 	end
 	Info("playing bgm : " .. id);
 	
-	Delay(500, function() currentbgm:Play(); currentbgm = nil; end)
+	Delay(500, function()
+		 currentbgm.volume = bgmBaseVolume * optionManager:GetOption("bgmVolume") / 7;
+		 currentbgm:Play(); 
+		 currentbgm = nil; 
+	end)
 
 end
 AddESSCmd("playbgm");
@@ -211,6 +222,7 @@ AddESSCmd("stopbgm");
 function play(id)
 	local sound = GetSound(id)
 	if (sound ~=nil) then
+		sound.volume = effectBaseVolume * optionManager:GetOption("sfxVolume") / 7;
 		sound:Play()
 	else
 		Error("playing invalid sfx: " .. id);
