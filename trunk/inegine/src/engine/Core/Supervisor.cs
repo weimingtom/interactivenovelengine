@@ -16,6 +16,7 @@ using System.Text;
 using AxShockwaveFlashObjects;
 using System.Xml;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace INovelEngine
 {
@@ -555,6 +556,7 @@ namespace INovelEngine
             ScriptManager.lua.RegisterFunction("Replace", this, this.GetType().GetMethod("Lua_Replace"));
             ScriptManager.lua.RegisterFunction("Substring", this, this.GetType().GetMethod("Lua_Substring"));
             ScriptManager.lua.RegisterFunction("Length", this, this.GetType().GetMethod("Lua_Length"));
+            ScriptManager.lua.RegisterFunction("Escape", this, this.GetType().GetMethod("Lua_EscapeString"));
             
             ScriptManager.lua.RegisterFunction("LoadScript", this, this.GetType().GetMethod("Lua_LoadScript"));
             ScriptManager.lua.RegisterFunction("ReadScript", this, this.GetType().GetMethod("Lua_ReadScript"));
@@ -897,6 +899,11 @@ namespace INovelEngine
         public string Lua_Replace(string source, string pattern, string target)
         {
             return source.Replace(pattern, target);
+        }
+
+        public string Lua_EscapeString(string source)
+        {
+            return Regex.Replace(source, @"\[(.|\n)*?\]", string.Empty);
         }
 
 
