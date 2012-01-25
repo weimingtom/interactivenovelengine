@@ -134,11 +134,6 @@ function Wait(delay)
 	coroutine.yield();
 end
 
-function wait(delay)
-	Wait(delay)
-end
-AddESSCmd("wait");
-
 function rand(max)
 	if (max == nil) then
 		return math.random();
@@ -190,6 +185,11 @@ function playbgm(id)
 	Info("playing bgm : " .. id);
 	
 	Delay(500, function()
+		 if (currentbgm ~= GetSound(currentbgmId)) then
+		 	Trace("canceling bgm playback because another bgm already started")
+		 	return
+		 end
+		
 		 currentbgm.volume = bgmBaseVolume * optionManager:GetOption("bgmVolume") / 7;
 		 currentbgm:Play(); 
 		 currentbgm = nil; 
