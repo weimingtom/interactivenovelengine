@@ -595,12 +595,19 @@ namespace INovelEngine
 
             ScriptManager.lua.RegisterFunction("Video", this, this.GetType().GetMethod("Lua_Video"));
 
+            ScriptManager.lua.RegisterFunction("CallLater", this, this.GetType().GetMethod("Lua_CallLater"));
+
 #if DEBUG
 
             ScriptManager.lua.RegisterFunction("DebugInfo", this, this.GetType().GetMethod("Lua_SetDebugInfo"));
 #endif
 
 
+        }
+
+        public void Lua_CallLater(LuaEventHandler luaEvent)
+        {
+            defferedCallList.Enqueue(luaEvent);
         }
 
         public string Lua_ReadScript(string ScriptFile)
@@ -915,6 +922,11 @@ namespace INovelEngine
             }
             else
             {
+                if (length + pos > source.Length)
+                {
+                    length = source.Length - pos;
+                }
+
                 return source.Substring(pos, length);
             }
         }
