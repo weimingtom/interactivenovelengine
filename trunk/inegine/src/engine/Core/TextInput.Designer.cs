@@ -67,7 +67,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.Black;
+            this.BackColor = System.Drawing.Color.FromArgb(255, System.Drawing.Color.FromArgb(0x6f5939));
             this.CancelButton = this.button2;
             this.ClientSize = new System.Drawing.Size(129, 75);
             this.Controls.Add(this.button2);
