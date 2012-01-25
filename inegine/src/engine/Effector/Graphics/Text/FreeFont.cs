@@ -132,7 +132,7 @@ namespace INovelEngine.Effector.Graphics.Text
     {
         public enum TextEffect
         {
-            None, Shadow
+            None, Shadow, WhiteShadow
         };
 
         public TextEffect Effect;
@@ -213,7 +213,7 @@ namespace INovelEngine.Effector.Graphics.Text
             this._size = Math.Min(Maxsize / 2, size);
             this._lastPos = new Vector2();
 
-            _glyphCache = new CachedDictionary<char, Glyph>(5120,
+            _glyphCache = new CachedDictionary<char, Glyph>(512,
                     delegate(Glyph disposalTarget)
                     {
                         disposalTarget.Dispose();
@@ -472,6 +472,20 @@ namespace INovelEngine.Effector.Graphics.Text
                             sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, Color.Black);
                             _pos.Y -= 2;
                             sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, Color.Black);
+                            _pos.Y += 1;
+                        } 
+                        else if (Effect == TextEffect.WhiteShadow)
+                        {
+                            _pos.X += 1;
+                            sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, Color.White);
+                            _pos.X -= 2;
+                            sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, Color.White);
+                            _pos.X += 1;
+
+                            _pos.Y += 1;
+                            sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, Color.White);
+                            _pos.Y -= 2;
+                            sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, Color.White);
                             _pos.Y += 1;
                         }
                         sprite.Draw(_glyphList[i].Glyph.Texture, _center, _pos, this._color);
