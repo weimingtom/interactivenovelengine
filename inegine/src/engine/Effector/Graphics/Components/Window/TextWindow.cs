@@ -96,6 +96,8 @@ namespace INovelEngine.Effector
         }
 
         public LuaEventHandler PrintOver;
+        public LuaEventHandler PrintStopped;
+        protected Boolean printStoppedCalled = false;
         private TimeEvent tickEvent;
         
         protected bool isStatic;
@@ -395,6 +397,26 @@ namespace INovelEngine.Effector
 
         private void TickText()
         {
+            if (textNarrator.State == NarrationState.Stopped)
+            {
+                if (this.PrintStopped != null && printStoppedCalled == false)
+                {
+                    try
+                    {
+                        Supervisor.CallLater(PrintStopped);
+                        printStoppedCalled = true;
+                    }
+                    catch (Exception e)
+                    {
+                        Supervisor.Error(e.Message);
+                    }
+                }
+            }
+            else if (textNarrator.State == NarrationState.Going)
+            {
+                printStoppedCalled = false;
+            }
+
             if (textNarrator.State == NarrationState.Over && !printOverCalled)
             {
                 printOverCalled = true;
